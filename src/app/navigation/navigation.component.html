@@ -1,0 +1,54 @@
+
+  <nav class="mb-1 navbar navbar-expand-lg navbar-dark default-color bg-dark" id="nav">
+    <a class="navbar-brand" routerLink="/home">
+      <img src="../../assets/img/cooperlinia-logo.png" alt="logo" height="45px">
+    </a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav mr-auto">
+        <li>
+          <div class="btn-group" dropdown>
+            <button id="button-basic" dropdownToggle type="button" class="btn" aria-controls="dropdown-basic">
+                    Cadastros
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="button-basic">
+              <li role="menuitem"><a class="dropdown-item" routerLink="/condicoesDePagamento">Condicoes De Pagamento</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/familias">Familias</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/fornecedores">Fornecedores</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/motivosDeParada">Motivos De Parada</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/naturezaDasOperacoes">Natureza Das Operacoes</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/prensas">Prensas</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/produtos">Produtos</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/qualidades">Qualidades</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/socios">Socios</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/transportadoras">Transportadoras</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/unidadesDeMedida">Unidades De Medida</a></li>
+            </ul>
+          </div>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" routerLink="/home">Relatorios</a>
+        </li>
+
+      </ul>
+
+      <ul class="navbar-nav ml-auto nav-flex-icons">
+        <li class="nav-item avatar dropdown">
+          <div class="btn-group" dropdown placement="bottom left">
+            <button id="button-alignment" dropdownToggle type="button"
+                    class="btn" aria-controls="dropdown-alignment">
+                    <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg" class="rounded-circle z-depth-0"
+                    alt="avatar image" height="35">
+            </button>
+            <ul id="dropdown-alignment" *dropdownMenu class="dropdown-menu dropdown-menu-left float-left dropdown-config"
+                role="menu" aria-labelledby="button-alignment">
+              <li role="menuitem"><a class="dropdown-item" routerLink="/login">Login</a></li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+<router-outlet></router-outlet>

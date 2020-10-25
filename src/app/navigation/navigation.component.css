@@ -1,0 +1,40 @@
+#nav {
+    height: 65px;
+    width: 100%;
+    padding: 6px;
+    position: fixed;
+    /* margin-bottom: 0px!important; */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    z-index: 1;
+    /* margin-bottom: 65px; */
+}
+
+#nav a, #nav button {
+    color: rgb(201, 201, 201);
+    font-size: 20px;
+    cursor: pointer;
+}
+#nav a:hover, #nav button:hover {
+    color: white;
+}
+
+.dropdown-menu a {
+    color: rgb(201, 201, 201);
+    font-size: 20px;
+}
+.dropdown-menu a:hover {
+    color: white;
+    background-color: #343A40;
+}
+
+.dropdown-menu {
+    margin-top: 10px;
+    font-size: 20px;
+    background-color: #343A40;
+    border: none;
+    border-radius: 0px;
+}
+
+.dropdown-config {
+    left: -155px!important;
+}
