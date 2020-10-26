@@ -1,1 +1,103 @@
-<p>transportadoras works!</p>
+<div class="d-flex background">
+    <div class="center">
+      <h2 class="d-flex justify-content-between">Transportadoras    
+          <button class="{{showForm == true && 'btn btn-warning ' || 'btn btn-success'}}" (click)="showForm = !showForm"> <i class="fa fa-sign-in"></i>  Cadastrar</button>
+      </h2>
+
+        <!-- Tabela -->
+        <table class="table table-hover" *ngIf="!showForm">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">CNPJ/CPF</th>
+                <th scope="col">Razão social/Nome</th>
+                <th scope="col">IE</th>
+                <th scope="col">Endereço</th>
+                <th scope="col">Numero</th>
+                <th scope="col">Complemento</th>
+                <th scope="col">Bairro</th>
+                <th scope="col">CEP</th>
+                <th scope="col">UF</th>
+                <th scope="col">Cidade</th>
+                <th scope="col">Telefone</th>
+                <th scope="col">Email</th>
+                <th scope="col">Opções</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of tempItemsList">
+                <td>{{ item?.id }}</td>
+                <td>{{ item?.CNPJ_CPF }}</td>
+                <td>{{ item?.razao_social_nome }}</td>
+                <td>{{ item?.IE }}</td>
+                <td>{{ item?.endereco }}</td>
+                <td>{{ item?.numero }}</td>
+                <td>{{ item?.complemento }}</td>
+                <td>{{ item?.bairro }}</td>
+                <td>{{ item?.CEP }}</td>
+                <td>{{ item?.UF }}</td>
+                <td>{{ item?.cidade }}</td>
+                <td>{{ item?.telefone }}</td>
+                <td>{{ item?.email }}</td>
+                <td>
+                    <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
+                    <button type="button" class="btn btn-danger" (click)="deleteItem(item.id)"><i class="fa fa-trash"></i>Remover</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        <!-- ========== -->
+
+        <!-- Formulario -->
+        <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
+              
+          <input formControlName="id" hidden="true">
+          <label>CNPJ/CPF: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="CNPJ_CPF">
+
+          <label>Razao social/Nome: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="razao_social_nome">
+
+          <label>IE: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="IE">
+
+          <label>Endereço: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="endereco">
+
+          <label>Numero: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="numero">
+
+          <label>Complemento: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="complemento">
+
+          <label>Bairro: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="bairro">
+
+          <label>CEP: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="CEP">
+
+          <label>UF: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="UF">
+
+          <label>Cidade: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="cidade">
+
+          <label>Telefone: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="telefone">
+
+          <label>Email: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="email">
+        
+          <button class="btn btn-success ml-1 mt-3"  (click)="createUpdateItem()"><i class="fa fa-save"></i>Salvar</button>
+          
+          <!-- <p>Form Status: {{ }}</p> -->
+          <p>Form Status: {{ itemForm.status }}</p>
+          
+        </form>
+        <!-- ========== -->
+        <p class="help-block">
+          {{ itemForm.error }}
+        </p>
+
+    </div>
+</div>  

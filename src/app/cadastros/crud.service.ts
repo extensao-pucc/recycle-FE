@@ -25,4 +25,6 @@ export class CrudService {
   updateItem(component: string, item: any, id: any): Observable<any> {
     return this.http.put(`${environment.apiUrl}/${component}/${id}/`, item);
   }
+
+  
 }

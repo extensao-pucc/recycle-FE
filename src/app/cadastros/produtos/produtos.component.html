@@ -1,1 +1,111 @@
-<p>produtos works!</p>
+<div class="d-flex background">
+    <div class="center">
+      <h2 class="d-flex justify-content-between">Produtos    
+          <button class="{{showForm == true && 'btn btn-warning ' || 'btn btn-success'}}" (click)="showForm = !showForm"> <i class="fa fa-sign-in"></i>  Cadastrar</button>
+      </h2>
+
+        <!-- Tabela -->
+        <table class="table table-hover" *ngIf="!showForm">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Codigo</th>
+                <th scope="col">Descricao</th>
+                <th scope="col">Familia</th>
+                <th scope="col">Fornecedor</th>
+                <th scope="col">Qualidade</th>
+                <th scope="col">Unidade de medida</th>
+                <th scope="col">NCM</th>
+                <th scope="col">CSTE</th>
+                <th scope="col">CSTS</th>
+                <th scope="col">CFOPE</th>
+                <th scope="col">CFOPS</th>
+                <th scope="col">Preco de compra</th>
+                <th scope="col">preco de venda</th>
+                <th scope="col">Opções</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of tempItemsList">
+                <td>{{ item?.id }}</td>
+                <td>{{ item?.codigo }}</td>
+                <td>{{ item?.descricao }}</td>
+                <td>{{ item?.familia.nome }}</td>
+                <td>{{ item?.fornecedor.razao_social_nome }}</td>
+                <td>{{ item?.qualidade.nome }}</td>
+                <td>{{ item?.unidade_de_medida.descricao }}</td>
+                <td>{{ item?.NCM }}</td>
+                <td>{{ item?.CSTE }}</td>
+                <td>{{ item?.CSTS }}</td>
+                <td>{{ item?.CFOPE.codigo }}</td>
+                <td>{{ item?.CFOPS.codigo }}</td>
+                <td>{{ item?.preco_compra }}</td>
+                <td>{{ item?.preco_venda }}</td>
+                <td>
+                    <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
+                    <button type="button" class="btn btn-danger" (click)="deleteItem(item.id)"><i class="fa fa-trash"></i>Remover</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        <!-- ========== -->
+
+        <!-- Formulario -->
+        <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
+              
+          <input formControlName="id" hidden="true">
+          <label>Codigo: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="codigo">
+
+          <label>Descrição: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="descricao">
+
+          <label>Familia: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="familia">
+
+          <label>Fornecedor: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="fornecedor">
+
+          <label>Qualidade: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="qualidade">
+
+          <label>Complemento: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="complemento">
+
+          <label>Unidade de medida: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="unidade_de_medida">
+
+          <label>NCM: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="NCM">
+
+          <label>CSTE: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="CSTE">
+
+          <label>CSTS: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="CSTS">
+
+          <label>CFOPE: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="CFOPE">
+
+          <label>CFOPS: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="CFOPS">
+          
+          <label>Preço de compra: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="preco_compra">
+          
+          <label>Preço de venda: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="preco_venda">
+        
+          <button class="btn btn-success ml-1 mt-3"  (click)="createUpdateItem()"><i class="fa fa-save"></i>Salvar</button>
+          
+          <!-- <p>Form Status: {{ }}</p> -->
+          <p>Form Status: {{ itemForm.status }}</p>
+          
+        </form>
+        <!-- ========== -->
+        <p class="help-block">
+          {{ itemForm.error }}
+        </p>
+
+    </div>
+</div>  

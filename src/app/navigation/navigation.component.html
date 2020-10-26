@@ -26,7 +26,21 @@
             </ul>
           </div>
         </li>
-
+        
+        <li>
+          <div class="btn-group" dropdown>
+            <button id="button-basic" dropdownToggle type="button" class="btn" aria-controls="dropdown-basic">
+                    Produção
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="button-basic">
+              <li role="menuitem"><a class="dropdown-item" routerLink="/home">Triagem</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/home">Prensa</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/home">Remanufatura</a></li>
+            </ul>
+          </div>
+        </li>
+        
         <li class="nav-item">
           <a class="nav-link" routerLink="/home">Relatorios</a>
         </li>
