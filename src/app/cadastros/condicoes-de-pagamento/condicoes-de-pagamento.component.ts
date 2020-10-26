@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-<<<<<<< HEAD
-=======
-import { CondicoesDePagamentoService } from './condicoes-de-pagamento.service';
-
->>>>>>> 810816b8e9a68586f3a93e19fb1184438fb363a4
+import { FormBuilder, Validators } from '@angular/forms';
+import { CrudService } from '../crud.service';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-condicoes-de-pagamento',
@@ -11,21 +9,59 @@ import { CondicoesDePagamentoService } from './condicoes-de-pagamento.service';
   styleUrls: ['./condicoes-de-pagamento.component.css']
 })
 export class CondicoesDePagamentoComponent implements OnInit {
+  public tempItemsList: any;
+  public itemsList: any;
+  public itemForm: any;
+  public showForm = false;
 
-<<<<<<< HEAD
-  constructor() { }
+  constructor(
+    private crudService: CrudService,
+    private formBuilder: FormBuilder
+  ) { }
 
   ngOnInit(): void {
-=======
-  constructor(private condicoesDePagamentoService: CondicoesDePagamentoService) { }
+    this.getItems();
+    this.loadForm();
+  }
 
-  public lista: any;
-
-  ngOnInit(): void {
-    this.condicoesDePagamentoService.lista().subscribe(response => {
-      console.log(response)
+  loadForm(): void {
+    this.itemForm = this.formBuilder.group({
+      id: [null],
+      descricao: ['', Validators.required]
     });
->>>>>>> 810816b8e9a68586f3a93e19fb1184438fb363a4
+  }
+
+  getItems(): void {
+    this.crudService.getItems('condicoesDePagamento').subscribe(response => {
+      this.itemsList = response;
+      this.tempItemsList = _.clone(this.itemsList);
+    });
+  }
+
+  deleteItem(id): void {
+    this.crudService.deleteItem('condicoesDePagamento', id).subscribe(response => {
+      this.getItems();
+    });
+  }
+
+  updateItem(item: any): void {
+    console.log(item)
+    this.itemForm.controls.id.setValue(item.id);
+    this.itemForm.controls.descricao.setValue(item.descricao);
+  }
+
+  createUpdateItem(): void {
+    const formValues = this.itemForm.value;
+    console.log(formValues)
+    if (formValues.id) {
+      this.crudService.updateItem('condicoesDePagamento', formValues, formValues.id).subscribe(response => {
+        this.getItems();
+      });
+    } else {
+      this.crudService.createItem('condicoesDePagamento', formValues).subscribe(response => {
+        this.getItems();
+      });
+    }
   }
 
 }
