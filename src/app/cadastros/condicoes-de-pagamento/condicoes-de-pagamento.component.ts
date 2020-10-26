@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
-
+import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
+import { ToastService } from 'src/app/shared/toast/toast.service';
 @Component({
   selector: 'app-condicoes-de-pagamento',
   templateUrl: './condicoes-de-pagamento.component.html',
@@ -13,9 +14,12 @@ export class CondicoesDePagamentoComponent implements OnInit {
   public itemsList: any;
   public itemForm: any;
   public showForm = false;
+  public yesNoMessage: YesNoMessage = new YesNoMessage();
+  public showYesNoMessage: boolean;
 
   constructor(
     private crudService: CrudService,
+    private toastService: ToastService,
     private formBuilder: FormBuilder
   ) { }
 
@@ -66,6 +70,28 @@ export class CondicoesDePagamentoComponent implements OnInit {
     }
 
     this.loadForm();
+  }
+
+  test(): void {
+    this.yesNoMessage = {
+      title: `teste titulo`,
+      mainText: 'teste body',
+      items: [`bla bla bla`],
+      fontAwesomeClass: 'fa-ban',
+      action: {
+        onClickYes: () => {
+          console.log('funfoooo')
+        },
+        onClickNo: () => {
+          console.log('tchaaalll')
+        }
+      }
+    };
+    this.showYesNoMessage = true;
+  }
+
+  test2(): void {
+    this.toastService.addToast("cadu monstrao", "darkred");
   }
 
 }

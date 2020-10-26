@@ -1,12 +1,14 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 // uteis
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { SnackbarModule } from 'ngx-snackbar';
 
 // components
 import { AppRoutingModule } from './app-routing.module';
@@ -25,6 +27,7 @@ import { QualidadesComponent } from './cadastros/qualidades/qualidades.component
 import { SociosComponent } from './cadastros/socios/socios.component';
 import { TransportadorasComponent } from './cadastros/transportadoras/transportadoras.component';
 import { UnidadesDeMedidaComponent } from './cadastros/unidades-de-medida/unidades-de-medida.component';
+import { YesNoMessageComponent } from './shared/yes-no-message/yes-no-message.component';
 
 // providers
 import { AuthGuard } from './guards/auth.guard';
@@ -45,7 +48,8 @@ import { AuthGuard } from './guards/auth.guard';
     QualidadesComponent,
     SociosComponent,
     TransportadorasComponent,
-    UnidadesDeMedidaComponent
+    UnidadesDeMedidaComponent,
+    YesNoMessageComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +58,8 @@ import { AuthGuard } from './guards/auth.guard';
     HttpClientModule,
     TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
+    ModalModule.forRoot(),
+    SnackbarModule.forRoot(),
     FormsModule,
     ReactiveFormsModule
   ],

@@ -1,7 +1,7 @@
 <div class="d-flex background">
     <div class="center">
       <h2 class="d-flex justify-content-between">Condições de pagamento    
-        <button class="{{showForm == true && 'btn btn-warning ' || 'btn btn-success'}}" (click)="showForm = !showForm"> <i class="fa fa-sign-in"></i>  Cadastrar</button>
+        <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"> <i class="fa fa-sign-in"></i>  Cadastrar</button>
     </h2>
 
         <!-- Tabela -->
@@ -27,22 +27,25 @@
         <!-- ========== -->
 
         <!-- Formulario -->
-        <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
-              
-          <input formControlName="id" hidden="true">
-          <label>Descrição: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="descricao">
-        
-          <button class="btn btn-success ml-1 mt-3"  (click)="createUpdateItem()"><i class="fa fa-save"></i>Salvar</button>
-          
-          <!-- <p>Form Status: {{ }}</p> -->
-          <p>Form Status: {{ itemForm.status }}</p>
-          
-        </form>
+        <div class="row align-items-start">
+          <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
+                
+            <input formControlName="id" hidden="true">
+            <label>Descrição: </label>
+            <input class="form-control" type="text" maxlength="100" formControlName="descricao">
+  
+          </form>
+        </div>
+        <div class="row align-items-end">
+          <hr>
+
+          <div>
+            <button class="btn btn-success ml-1 mt-3 pull-right" (click)="createUpdateItem()"><i class="fa fa-save"></i>Salvar</button>
+          </div>
+        </div>
         <!-- ========== -->
-        <p class="help-block">
-          {{ itemForm.error }}
-        </p>
 
     </div>
 </div>  
+
+<app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>
