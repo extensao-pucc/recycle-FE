@@ -1,0 +1,13 @@
+.warning-icon {
+    font-size: 80px;
+    vertical-align: middle;
+}
+
+.yesNoButton{
+    width: 75px;
+}
+
+.yes-no-body {
+    max-height: 350px;
+    overflow: auto;
+}

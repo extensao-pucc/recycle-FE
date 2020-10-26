@@ -26,5 +26,4 @@ export class CrudService {
     return this.http.put(`${environment.apiUrl}/${component}/${id}/`, item);
   }
 
-  
 }
