@@ -45,14 +45,16 @@ export class CondicoesDePagamentoComponent implements OnInit {
   }
 
   updateItem(item: any): void {
-    console.log(item)
+    this.showForm = true;
+
     this.itemForm.controls.id.setValue(item.id);
     this.itemForm.controls.descricao.setValue(item.descricao);
   }
 
   createUpdateItem(): void {
+    this.showForm = false;
     const formValues = this.itemForm.value;
-    console.log(formValues)
+
     if (formValues.id) {
       this.crudService.updateItem('condicoesDePagamento', formValues, formValues.id).subscribe(response => {
         this.getItems();
@@ -62,6 +64,8 @@ export class CondicoesDePagamentoComponent implements OnInit {
         this.getItems();
       });
     }
+
+    this.loadForm();
   }
 
 }

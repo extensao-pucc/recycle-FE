@@ -1,7 +1,8 @@
 <div class="d-flex background">
     <div class="center">
-        <h2 class="mb-4">Condições de Pagamento</h2>
-        <button (click)="showForm = !showForm">Cadastrar</button>
+      <h2 class="d-flex justify-content-between">Condições de pagamento    
+        <button class="{{showForm == true && 'btn btn-warning ' || 'btn btn-success'}}" (click)="showForm = !showForm"> <i class="fa fa-sign-in"></i>  Cadastrar</button>
+    </h2>
 
         <!-- Tabela -->
         <table class="table table-hover" *ngIf="!showForm">
@@ -17,8 +18,8 @@
                 <td>{{ item?.id }}</td>
                 <td>{{ item?.descricao }}</td>
                 <td>
-                    <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i> Editar</button>
-                    <button type="button" class="btn btn-danger" (click)="deleteItem(item.id)"><i class="fa fa-trash-alt"></i> Remover</button>
+                    <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
+                    <button type="button" class="btn btn-danger" (click)="deleteItem(item.id)"><i class="fa fa-trash"></i>Remover</button>
                 </td>
               </tr>
             </tbody>
@@ -29,13 +30,19 @@
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
               
           <input formControlName="id" hidden="true">
-            <label>Descricao</label>
-            <input formControlName="descricao">
+          <label>Descrição: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="descricao">
+        
+          <button class="btn btn-success ml-1 mt-3"  (click)="createUpdateItem()"><i class="fa fa-save"></i>Salvar</button>
           
-            <button (click)="createUpdateItem()">salva</button>
+          <!-- <p>Form Status: {{ }}</p> -->
+          <p>Form Status: {{ itemForm.status }}</p>
+          
         </form>
-        <p>Form Status: {{ itemForm.status }}</p>
         <!-- ========== -->
+        <p class="help-block">
+          {{ itemForm.error }}
+        </p>
 
     </div>
 </div>  
