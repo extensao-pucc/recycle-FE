@@ -1,6 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-<<<<<<< HEAD
+import { HttpClientModule } from '@angular/common/http';
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 // uteis
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,17 +28,10 @@ import { UnidadesDeMedidaComponent } from './cadastros/unidades-de-medida/unidad
 
 // providers
 import { AuthGuard } from './guards/auth.guard';
-=======
-import { HttpClientModule } from '@angular/common/http';
-
-import { AppComponent } from './app.component';
-import { CondicoesDePagamentoComponent } from './cadastros/condicoes-de-pagamento/condicoes-de-pagamento.component';
->>>>>>> 810816b8e9a68586f3a93e19fb1184438fb363a4
 
 @NgModule({
   declarations: [
     AppComponent,
-<<<<<<< HEAD
     NavigationComponent,
     LoginComponent,
     HomeComponent,
@@ -57,19 +51,13 @@ import { CondicoesDePagamentoComponent } from './cadastros/condicoes-de-pagament
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     TooltipModule.forRoot(),
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [AuthGuard],
-=======
-    CondicoesDePagamentoComponent
-  ],
-  imports: [
-    BrowserModule,
-    HttpClientModule
-  ],
-  providers: [],
->>>>>>> 810816b8e9a68586f3a93e19fb1184438fb363a4
   bootstrap: [AppComponent]
 })
 export class AppModule { }

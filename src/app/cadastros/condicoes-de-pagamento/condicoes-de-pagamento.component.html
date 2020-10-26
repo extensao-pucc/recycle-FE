@@ -1,9 +1,41 @@
-<<<<<<< HEAD
 <div class="d-flex background">
     <div class="center">
-        <p>condicoes-de-pagamento works!</p>
+        <h2 class="mb-4">Condições de Pagamento</h2>
+        <button (click)="showForm = !showForm">Cadastrar</button>
+
+        <!-- Tabela -->
+        <table class="table table-hover" *ngIf="!showForm">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Opções</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of tempItemsList">
+                <td>{{ item?.id }}</td>
+                <td>{{ item?.descricao }}</td>
+                <td>
+                    <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i> Editar</button>
+                    <button type="button" class="btn btn-danger" (click)="deleteItem(item.id)"><i class="fa fa-trash-alt"></i> Remover</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        <!-- ========== -->
+
+        <!-- Formulario -->
+        <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
+              
+          <input formControlName="id" hidden="true">
+            <label>Descricao</label>
+            <input formControlName="descricao">
+          
+            <button (click)="createUpdateItem()">salva</button>
+        </form>
+        <p>Form Status: {{ itemForm.status }}</p>
+        <!-- ========== -->
+
     </div>
 </div>  
-=======
-<p>condicoes-de-pagamento works!</p>
->>>>>>> 810816b8e9a68586f3a93e19fb1184438fb363a4
