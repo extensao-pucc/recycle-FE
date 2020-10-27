@@ -95,7 +95,7 @@ export class FamiliasComponent implements OnInit {
     this.yesNoMessage = {
       title,
       mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
-      items: [title === 'Deletar' ? items.nome : formValues.descricao],
+      items: [title === 'Deletar' ? items.nome : formValues.nome],
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {

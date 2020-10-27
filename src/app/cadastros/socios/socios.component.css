@@ -28,3 +28,8 @@ i {
 th,td {
     white-space: nowrap;
 }
+
+.alert {
+    width: 100%;
+}
+

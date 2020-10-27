@@ -39,7 +39,7 @@
             <tbody>
               <tr *ngFor="let item of tempItemsList">
                   <tr *ngFor="let item of tempItemsList">
-                    <td>{{ item?.foto }}</td>
+                    <td></td>
                     <td>{{ item?.id }}</td>
                     <td>{{ item?.matricula }}</td>
                     <td>{{ item?.nome }}</td>
@@ -64,7 +64,6 @@
                     <td>{{ item?.data_de_admissao }}</td>
                     <td>{{ item?.data_de_demissao }}</td>
                     <td>{{ item?.situacao }}</td>
-                    <td>
                 <td>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
                     <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
@@ -85,13 +84,13 @@
             <input class="form-control" type="text" maxlength="100" formControlName="nome">
   
             <label>Data de nascimento: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="data_de_nascimento">
+            <input class="form-control" type="date" maxlength="100" formControlName="data_de_nascimento">
   
             <label>RG: </label>
             <input class="form-control" type="text" maxlength="100" formControlName="RG">
   
             <label>Data emissão: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="data_emissao">
+            <input class="form-control" type="date" maxlength="100" formControlName="data_emissao">
   
             <label>Local emissao: </label>
             <input class="form-control" type="text" maxlength="100" formControlName="local_emissao">
@@ -138,23 +137,17 @@
             <label>Email: </label>
             <input class="form-control" type="text" maxlength="100" formControlName="email">
   
-            <label>Email: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="email">
+            <label>Data de admissão: </label>
+            <input class="form-control" type="date" maxlength="100" formControlName="data_de_admissao">
   
-            <label>Email: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="email">
-  
-            <label>data_de_admissao: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="data_de_admissao">
-  
-            <label>data_de_demissao: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="data_de_demissao">
+            <label>data de demissão: </label>
+            <input class="form-control" type="date" maxlength="100" formControlName="data_de_demissao">
   
             <label>Situação: </label>
             <input class="form-control" type="text" maxlength="100" formControlName="situacao">
            
             <label>Foto: </label>
-            <input class="form-control" type="file" formControlName="Foto">
+            <input class="form-control" type="file" accept="image/*" formControlName="foto">
             
             <label>Perfil: </label>
             <input class="form-control" type="text" maxlength="100" formControlName="perfil">

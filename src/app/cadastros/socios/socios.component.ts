@@ -85,31 +85,31 @@ export class SociosComponent implements OnInit {
     this.showForm = true;
 
     this.itemForm.controls.id.setValue(item.id);
-    this.itemForm.controls.descricao.setValue(item.matricula);
-    this.itemForm.controls.descricao.setValue(item.nome);
-    this.itemForm.controls.descricao.setValue(item.data_de_nascimento);
-    this.itemForm.controls.descricao.setValue(item.RG);
-    this.itemForm.controls.descricao.setValue(item.data_emissao);
-    this.itemForm.controls.descricao.setValue(item.local_emissao);
-    this.itemForm.controls.descricao.setValue(item.orgao_expedidor);
-    this.itemForm.controls.descricao.setValue(item.CPF);
-    this.itemForm.controls.descricao.setValue(item.titulo_de_Eleitor);
-    this.itemForm.controls.descricao.setValue(item.PIS_PASEP);
-    this.itemForm.controls.descricao.setValue(item.NIT);
-    this.itemForm.controls.descricao.setValue(item.nome_da_Mae);
-    this.itemForm.controls.descricao.setValue(item.nome_do_Pai);
-    this.itemForm.controls.descricao.setValue(item.endereco);
-    this.itemForm.controls.descricao.setValue(item.numero);
-    this.itemForm.controls.descricao.setValue(item.complemento);
-    this.itemForm.controls.descricao.setValue(item.UF);
-    this.itemForm.controls.descricao.setValue(item.cidade);
-    this.itemForm.controls.descricao.setValue(item.telefone);
-    this.itemForm.controls.descricao.setValue(item.email);
-    this.itemForm.controls.descricao.setValue(item.data_de_admissao);
-    this.itemForm.controls.descricao.setValue(item.data_de_demissao);
-    this.itemForm.controls.descricao.setValue(item.situacao);
-    this.itemForm.controls.descricao.setValue(item.foto);
-    this.itemForm.controls.descricao.setValue(item.perfil);
+    this.itemForm.controls.matricula.setValue(item.matricula);
+    this.itemForm.controls.nome.setValue(item.nome);
+    this.itemForm.controls.data_de_nascimento.setValue(item.data_de_nascimento);
+    this.itemForm.controls.RG.setValue(item.RG);
+    this.itemForm.controls.data_emissao.setValue(item.data_emissao);
+    this.itemForm.controls.local_emissao.setValue(item.local_emissao);
+    this.itemForm.controls.orgao_expedidor.setValue(item.orgao_expedidor);
+    this.itemForm.controls.CPF.setValue(item.CPF);
+    this.itemForm.controls.titulo_de_Eleitor.setValue(item.titulo_de_Eleitor);
+    this.itemForm.controls.PIS_PASEP.setValue(item.PIS_PASEP);
+    this.itemForm.controls.NIT.setValue(item.NIT);
+    this.itemForm.controls.nome_da_Mae.setValue(item.nome_da_Mae);
+    this.itemForm.controls.nome_do_Pai.setValue(item.nome_do_Pai);
+    this.itemForm.controls.endereco.setValue(item.endereco);
+    this.itemForm.controls.numero.setValue(item.numero);
+    this.itemForm.controls.complemento.setValue(item.complemento);
+    this.itemForm.controls.UF.setValue(item.UF);
+    this.itemForm.controls.cidade.setValue(item.cidade);
+    this.itemForm.controls.telefone.setValue(item.telefone);
+    this.itemForm.controls.email.setValue(item.email);
+    this.itemForm.controls.data_de_admissao.setValue(item.data_de_admissao);
+    this.itemForm.controls.data_de_demissao.setValue(item.data_de_demissao);
+    this.itemForm.controls.situacao.setValue(item.situacao);
+    this.itemForm.controls.foto.setValue(item.foto);
+    this.itemForm.controls.perfil.setValue(item.perfil);
   }
 
   createUpdateItem(): void {
@@ -130,6 +130,7 @@ export class SociosComponent implements OnInit {
           this.getItems();
           this.toastService.addToast('Cadastrado com sucesso');
         }, err => {
+          console.log(err);
           this.toastService.addToast(err['message'], 'darkred');
         });
       }
@@ -144,7 +145,7 @@ export class SociosComponent implements OnInit {
     this.yesNoMessage = {
       title,
       mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
-      items: [title === 'Deletar' ? items.descricao : formValues.descricao],
+      items: [title === 'Deletar' ? items.nome : formValues.nome],
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {

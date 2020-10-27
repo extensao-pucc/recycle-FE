@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
+import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
+import { ToastService } from 'src/app/shared/toast/toast.service';
 
 @Component({
   selector: 'app-produtos',
@@ -13,9 +15,12 @@ export class ProdutosComponent implements OnInit {
   public itemsList: any;
   public itemForm: any;
   public showForm = false;
+  public yesNoMessage: YesNoMessage = new YesNoMessage();
+  public showYesNoMessage: boolean;
 
   constructor(
     private crudService: CrudService,
+    private toastService: ToastService,
     private formBuilder: FormBuilder
   ) { }
 
@@ -53,6 +58,9 @@ export class ProdutosComponent implements OnInit {
   deleteItem(id): void {
     this.crudService.deleteItem('produtos', id).subscribe(response => {
       this.getItems();
+      this.toastService.addToast('Deletado com sucesso');
+    }, err => {
+      this.toastService.addToast(err['message'], 'darkred');
     });
   }
 
@@ -60,19 +68,19 @@ export class ProdutosComponent implements OnInit {
     this.showForm = true;
 
     this.itemForm.controls.id.setValue(item.id);
-    this.itemForm.controls.descricao.setValue(item.codigo);
+    this.itemForm.controls.codigo.setValue(item.codigo);
     this.itemForm.controls.descricao.setValue(item.descricao);
-    this.itemForm.controls.descricao.setValue(item.familia);
-    this.itemForm.controls.descricao.setValue(item.fornecedor);
-    this.itemForm.controls.descricao.setValue(item.qualidade);
-    this.itemForm.controls.descricao.setValue(item.unidade_de_medida);
-    this.itemForm.controls.descricao.setValue(item.NCM);
-    this.itemForm.controls.descricao.setValue(item.CSTE);
-    this.itemForm.controls.descricao.setValue(item.CSTS);
-    this.itemForm.controls.descricao.setValue(item.CFOPE);
-    this.itemForm.controls.descricao.setValue(item.CFOPS);
-    this.itemForm.controls.descricao.setValue(item.preco_compra);
-    this.itemForm.controls.descricao.setValue(item.preco_venda);
+    this.itemForm.controls.familia.setValue(item.familia.id);
+    this.itemForm.controls.fornecedor.setValue(item.fornecedor);
+    this.itemForm.controls.qualidade.setValue(item.qualidade);
+    this.itemForm.controls.unidade_de_medida.setValue(item.unidade_de_medida);
+    this.itemForm.controls.NCM.setValue(item.NCM);
+    this.itemForm.controls.CSTE.setValue(item.CSTE);
+    this.itemForm.controls.CSTS.setValue(item.CSTS);
+    this.itemForm.controls.CFOPE.setValue(item.CFOPE);
+    this.itemForm.controls.CFOPS.setValue(item.CFOPS);
+    this.itemForm.controls.preco_compra.setValue(item.preco_compra);
+    this.itemForm.controls.preco_venda.setValue(item.preco_venda);
   }
 
   createUpdateItem(): void {
@@ -82,14 +90,46 @@ export class ProdutosComponent implements OnInit {
     if (formValues.id) {
       this.crudService.updateItem('produtos', formValues, formValues.id).subscribe(response => {
         this.getItems();
+        this.toastService.addToast('Atualizado com sucesso');
+      }, err => {
+        this.toastService.addToast(err['message'], 'darkred');
       });
     } else {
+      console.log( )
       this.crudService.createItem('produtos', formValues).subscribe(response => {
-        this.getItems();
+        this.toastService.addToast('Cadastrado com sucesso');
+      }, err => {
+        console.log(err);
+        this.toastService.addToast(err['message'], 'darkred');
       });
     }
 
     this.loadForm();
+  }
+
+  showModal(title: string, items: any): void {
+    const formValues = this.itemForm.value;
+
+    this.yesNoMessage = {
+      title,
+      mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
+      items: [title === 'Deletar' ? items.descricao : formValues.descricao],
+      fontAwesomeClass: 'fa-ban',
+      action: {
+        onClickYes: () => {
+          if (title === 'Salvar'){
+            this.createUpdateItem();
+          } else if (title === 'Deletar'){
+            this.deleteItem(items.id);
+          } else if (title === 'Cancelar edição') {
+            this.showForm = false;
+            this.loadForm();
+          }
+        },
+        onClickNo: () => { }
+      }
+    };
+    this.showYesNoMessage = true;
   }
 
 }
