@@ -22,6 +22,7 @@
     "bootstrap": "^4.5.3",
     "font-awesome": "^4.7.0",
     "ngx-bootstrap": "^6.1.0",
+    "ngx-mask": "^10.0.4",
     "ngx-snackbar": "^2.0.1",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",

@@ -103,11 +103,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
           if (title === 'Salvar'){
             this.createUpdateItem();
           } else if (title === 'Deletar'){
-            if (items.id){
-              this.deleteItem(items.id);
-            } else {
-              this.deleteItem(items);
-            }
+            (items.id) ? this.deleteItem(items.id) : this.deleteItem(items); 
           } else if (title === 'Cancelar edição') {
             this.showForm = false;
             this.loadForm();
