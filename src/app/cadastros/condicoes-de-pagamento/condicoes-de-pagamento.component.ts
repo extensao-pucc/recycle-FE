@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
+
 @Component({
   selector: 'app-condicoes-de-pagamento',
   templateUrl: './condicoes-de-pagamento.component.html',
@@ -36,7 +37,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      descricao: ['', Validators.required]
+      descricao: ['', Validators.required],
     });
   }
 
@@ -67,12 +68,11 @@ export class CondicoesDePagamentoComponent implements OnInit {
     this.showForm = false;
     const formValues = this.itemForm.value;
 
-    if(this.validateForm()){
+    if (this.validateForm()){
       if (formValues.id) {
         this.crudService.updateItem('condicoesDePagamento', formValues, formValues.id).subscribe(response => {
           this.getItems();
           this.toastService.addToast('Atualizado com sucesso');
-  
         }, err => {
           this.toastService.addToast(err['message'], 'darkred');
         });
@@ -85,8 +85,6 @@ export class CondicoesDePagamentoComponent implements OnInit {
         });
       }
     }
-    
-
 
     this.loadForm();
   }
@@ -96,7 +94,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
 
     this.yesNoMessage = {
       title,
-      mainText: 'Tem certeza que deseja ' + title.toLowerCase() + ' o item',
+      mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
       items: [title === 'Deletar' ? items.descricao : formValues.descricao],
       fontAwesomeClass: 'fa-ban',
       action: {
@@ -105,7 +103,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
             this.createUpdateItem();
           } else if (title === 'Deletar'){
             this.deleteItem(items.id);
-          } else if (title === 'Cancelar') {
+          } else if (title === 'Cancelar edição') {
             this.showForm = false;
             this.loadForm();
           }

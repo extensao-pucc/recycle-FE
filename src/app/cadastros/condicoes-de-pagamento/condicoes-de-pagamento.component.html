@@ -1,7 +1,7 @@
 <div class="d-flex background">
     <div class="center">
       <h2 class="d-flex justify-content-between">Condições de pagamento    
-        <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"> <i class="fa fa-sign-in"></i>  Cadastrar</button>
+        <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"><i class="fa fa-sign-in"></i>Cadastrar</button>
     </h2>
 
         <!-- Tabela -->
@@ -12,6 +12,12 @@
                 <th scope="col">Descrição</th>
                 <th scope="col">Opções</th>
               </tr>
+
+              <tr>
+                <td><input class="form-control" type="search" name='searchID' placeholder="ID"></td>               
+                <td><input class="form-control" type="search" name='searchCNPJ_CPF' placeholder="Descricao"></td>
+              </tr>
+
             </thead>
             <tbody>
               <tr *ngFor="let item of tempItemsList">
@@ -23,7 +29,7 @@
                 </td>
               </tr>
             </tbody>
-          </table>
+        </table>
         <!-- ========== -->
 
         <!-- Formulario -->
@@ -37,15 +43,23 @@
             <hr>
   
             <div>
-              <!-- <button class="btn btn-danger ml-1 mt-3" (click)="showModal('Deletar', '')"><i class="fa fa-trash"></i>Remover</button> -->
-              <button class="btn btn-warning ml-1 mt-3" (click)="showModal('Cancelar', '')"><i class="fa fa-window-close"></i>Cancelar</button>
-              <button class="btn btn-success ml-1 mt-3" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
+              <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
+              <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
+              <!-- <button class="btn btn-danger ml-1 mt-3 pull-right" (click)="showModal('Deletar', '')"><i class="fa fa-trash"></i>Remover</button> -->
             </div>
           </div>
+          <p>Form Status: {{ itemForm.status }}</p>
         </form>
         <!-- ========== -->
 
+        <!-- Lista sem dados -->
+        <div *ngIf="!showForm && (tempItemsList).length == 0"  class="alert alert-info " role="alert">
+          <h4 class="alert-heading ">Opa !</h4>
+          <p>Nenhum resultado foi encontrado.</p>
+        </div>
+        <!-- =============== -->
     </div>
+
 </div>  
 
 <app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>
