@@ -19,7 +19,7 @@
                 <td>{{ item?.descricao }}</td>
                 <td>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
-                    <button type="button" class="btn btn-danger" (click)="deleteItem(item.id)"><i class="fa fa-trash"></i>Remover</button>
+                    <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
                 </td>
               </tr>
             </tbody>
@@ -27,22 +27,22 @@
         <!-- ========== -->
 
         <!-- Formulario -->
-        <div class="row align-items-start">
-          <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
-                
-            <input formControlName="id" hidden="true">
-            <label>Descrição: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="descricao">
-  
-          </form>
-        </div>
-        <div class="row align-items-end">
-          <hr>
+        <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
+              
+          <input formControlName="id" hidden="true">
+          <label>Descrição: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="descricao">
 
-          <div>
-            <button class="btn btn-success ml-1 mt-3 pull-right" (click)="createUpdateItem()"><i class="fa fa-save"></i>Salvar</button>
+          <div class="row align-items-end">
+            <hr>
+  
+            <div>
+              <!-- <button class="btn btn-danger ml-1 mt-3" (click)="showModal('Deletar', '')"><i class="fa fa-trash"></i>Remover</button> -->
+              <button class="btn btn-warning ml-1 mt-3" (click)="showModal('Cancelar', '')"><i class="fa fa-window-close"></i>Cancelar</button>
+              <button class="btn btn-success ml-1 mt-3" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
+            </div>
           </div>
-        </div>
+        </form>
         <!-- ========== -->
 
     </div>

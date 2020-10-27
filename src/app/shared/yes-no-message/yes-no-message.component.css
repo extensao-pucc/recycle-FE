@@ -11,3 +11,7 @@
     max-height: 350px;
     overflow: auto;
 }
+
+ul {
+    list-style-type: none;
+}
