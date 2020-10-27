@@ -50,6 +50,8 @@ export class QualidadesComponent implements OnInit {
     }, err => {
       this.toastService.addToast(err['message'], 'darkred');
     });
+
+    this.showForm = false;
   }
 
   updateItem(item: any): void {
@@ -95,7 +97,11 @@ export class QualidadesComponent implements OnInit {
           if (title === 'Salvar'){
             this.createUpdateItem();
           } else if (title === 'Deletar'){
-            this.deleteItem(items.id);
+            if (items.id){
+              this.deleteItem(items.id);
+            } else {
+              this.deleteItem(items);
+            }
           } else if (title === 'Cancelar edição') {
             this.showForm = false;
             this.loadForm();
