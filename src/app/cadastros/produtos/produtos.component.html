@@ -1,7 +1,7 @@
 <div class="d-flex background">
     <div class="center">
       <h2 class="d-flex justify-content-between">Produtos    
-          <button class="{{showForm == true && 'btn btn-warning ' || 'btn btn-success'}}" (click)="showForm = !showForm"> <i class="fa fa-sign-in"></i>  Cadastrar</button>
+          <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"><i class="fa fa-sign-in"></i>Cadastrar</button>
       </h2>
 
         <!-- Tabela -->
@@ -43,7 +43,7 @@
                 <td>{{ item?.preco_venda }}</td>
                 <td>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
-                    <button type="button" class="btn btn-danger" (click)="deleteItem(item.id)"><i class="fa fa-trash"></i>Remover</button>
+                    <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
                 </td>
               </tr>
             </tbody>
@@ -69,9 +69,6 @@
           <label>Qualidade: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="qualidade">
 
-          <label>Complemento: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="complemento">
-
           <label>Unidade de medida: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="unidade_de_medida">
 
@@ -96,16 +93,27 @@
           <label>Preço de venda: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="preco_venda">
         
-          <button class="btn btn-success ml-1 mt-3"  (click)="createUpdateItem()"><i class="fa fa-save"></i>Salvar</button>
-          
-          <!-- <p>Form Status: {{ }}</p> -->
-          <p>Form Status: {{ itemForm.status }}</p>
-          
+          <div class="row align-items-end">
+            <hr>
+  
+            <div>
+              <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
+              <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
+              <!-- <button class="btn btn-danger ml-1 mt-3 pull-right" (click)="showModal('Deletar', '')"><i class="fa fa-trash"></i>Remover</button> -->
+            </div>
+          </div>
+          <p>Form Status: {{ itemForm.status }}</p>       
         </form>
         <!-- ========== -->
-        <p class="help-block">
-          {{ itemForm.error }}
-        </p>
+        
+        <!-- Lista sem dados -->
+        <div *ngIf="!showForm && (tempItemsList).length == 0"  class="alert alert-info " role="alert">
+          <h4 class="alert-heading ">Opa !</h4>
+          <p>Nenhum resultado foi encontrado.</p>
+        </div>
+        <!-- =============== -->
 
     </div>
 </div>  
+
+<app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>
