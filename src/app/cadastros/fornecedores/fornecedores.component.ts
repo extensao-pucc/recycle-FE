@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
+import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
+import { ToastService } from 'src/app/shared/toast/toast.service';
 
 @Component({
   selector: 'app-fornecedores',
@@ -13,9 +15,12 @@ export class FornecedoresComponent implements OnInit {
   public itemsList: any;
   public itemForm: any;
   public showForm = false;
+  public yesNoMessage: YesNoMessage = new YesNoMessage();
+  public showYesNoMessage: boolean;
 
   constructor(
     private crudService: CrudService,
+    private toastService: ToastService,
     private formBuilder: FormBuilder
   ) { }
 
@@ -52,6 +57,9 @@ export class FornecedoresComponent implements OnInit {
   deleteItem(id): void {
     this.crudService.deleteItem('fornecedores', id).subscribe(response => {
       this.getItems();
+      this.toastService.addToast('Deletado com sucesso');
+    }, err => {
+      this.toastService.addToast(err['message'], 'darkred');
     });
   }
 

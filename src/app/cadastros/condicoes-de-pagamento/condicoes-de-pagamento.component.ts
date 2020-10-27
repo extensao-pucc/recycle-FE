@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
+
 @Component({
   selector: 'app-condicoes-de-pagamento',
   templateUrl: './condicoes-de-pagamento.component.html',
@@ -28,10 +29,15 @@ export class CondicoesDePagamentoComponent implements OnInit {
     this.loadForm();
   }
 
+  validateForm(): boolean {
+    const formValues = this.itemForm.value;
+    return true;
+  }
+
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      descricao: ['', Validators.required]
+      descricao: ['', Validators.required],
     });
   }
 
@@ -45,6 +51,9 @@ export class CondicoesDePagamentoComponent implements OnInit {
   deleteItem(id): void {
     this.crudService.deleteItem('condicoesDePagamento', id).subscribe(response => {
       this.getItems();
+      this.toastService.addToast('Deletado com sucesso');
+    }, err => {
+      this.toastService.addToast(err['message'], 'darkred');
     });
   }
 
@@ -59,39 +68,49 @@ export class CondicoesDePagamentoComponent implements OnInit {
     this.showForm = false;
     const formValues = this.itemForm.value;
 
-    if (formValues.id) {
-      this.crudService.updateItem('condicoesDePagamento', formValues, formValues.id).subscribe(response => {
-        this.getItems();
-      });
-    } else {
-      this.crudService.createItem('condicoesDePagamento', formValues).subscribe(response => {
-        this.getItems();
-      });
+    if (this.validateForm()){
+      if (formValues.id) {
+        this.crudService.updateItem('condicoesDePagamento', formValues, formValues.id).subscribe(response => {
+          this.getItems();
+          this.toastService.addToast('Atualizado com sucesso');
+        }, err => {
+          this.toastService.addToast(err['message'], 'darkred');
+        });
+      } else {
+        this.crudService.createItem('condicoesDePagamento', formValues).subscribe(response => {
+          this.getItems();
+          this.toastService.addToast('Cadastrado com sucesso');
+        }, err => {
+          this.toastService.addToast(err['message'], 'darkred');
+        });
+      }
     }
 
     this.loadForm();
   }
 
-  test(): void {
+  showModal(title: string, items: any): void {
+    const formValues = this.itemForm.value;
+
     this.yesNoMessage = {
-      title: `teste titulo`,
-      mainText: 'teste body',
-      items: [`bla bla bla`],
+      title,
+      mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
+      items: [title === 'Deletar' ? items.descricao : formValues.descricao],
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {
-          console.log('funfoooo')
+          if (title === 'Salvar'){
+            this.createUpdateItem();
+          } else if (title === 'Deletar'){
+            this.deleteItem(items.id);
+          } else if (title === 'Cancelar edição') {
+            this.showForm = false;
+            this.loadForm();
+          }
         },
-        onClickNo: () => {
-          console.log('tchaaalll')
-        }
+        onClickNo: () => { }
       }
     };
     this.showYesNoMessage = true;
   }
-
-  test2(): void {
-    this.toastService.addToast("cadu monstrao", "darkred");
-  }
-
 }
