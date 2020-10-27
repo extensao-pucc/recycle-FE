@@ -42,10 +42,10 @@
           <div class="row align-items-end">
             <hr>
   
-            <div>
-              <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
-              <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
-              <!-- <button class="btn btn-danger ml-1 mt-3 pull-right" (click)="showModal('Deletar', '')"><i class="fa fa-trash"></i>Remover</button> -->
+            <div class="mt-3">
+              <button class="btn btn-success ml-1 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
+              <button class="btn btn-warning ml-1 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
+              <!-- <button class="btn btn-danger ml-1 pull-right" (click)="showModal('Deletar', '')"><i class="fa fa-trash"></i>Remover</button> -->
             </div>
           </div>
           <p>Form Status: {{ itemForm.status }}</p>
@@ -53,7 +53,7 @@
         <!-- ========== -->
 
         <!-- Lista sem dados -->
-        <div *ngIf="!showForm && (tempItemsList).length == 0"  class="alert alert-info " role="alert">
+        <div *ngIf="!showForm && !tempItemsList?.length"  class="alert alert-info " role="alert">
           <h4 class="alert-heading ">Opa !</h4>
           <p>Nenhum resultado foi encontrado.</p>
         </div>

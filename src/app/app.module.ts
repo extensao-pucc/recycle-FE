@@ -28,6 +28,7 @@ import { SociosComponent } from './cadastros/socios/socios.component';
 import { TransportadorasComponent } from './cadastros/transportadoras/transportadoras.component';
 import { UnidadesDeMedidaComponent } from './cadastros/unidades-de-medida/unidades-de-medida.component';
 import { YesNoMessageComponent } from './shared/yes-no-message/yes-no-message.component';
+import { TriagemComponent } from './producao/triagem/triagem.component';
 
 // providers
 import { AuthGuard } from './guards/auth.guard';
@@ -49,7 +50,8 @@ import { AuthGuard } from './guards/auth.guard';
     SociosComponent,
     TransportadorasComponent,
     UnidadesDeMedidaComponent,
-    YesNoMessageComponent
+    YesNoMessageComponent,
+    TriagemComponent
   ],
   imports: [
     BrowserModule,

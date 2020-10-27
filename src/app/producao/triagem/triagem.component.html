@@ -1,0 +1,86 @@
+<div class="d-flex background">
+  <div class="center">
+    <h3>Triagem</h3>
+
+    <!-- form cabeçalho -->
+    <form id="form" method="POST">
+
+        <div class="form-row">
+            <div class="form-group col-md-5">
+                <label for="lote">Lote</label>
+                <input class="form-control" type="text" name="lote">
+            </div>
+
+            <div class="form-group col-md-3">
+                <label for="data">Data</label>
+                <input class="form-control" type="date" name="data">
+            </div>  
+
+            <div class="form-group col-md-2">
+                <label for="inicio">Inicio</label>
+                <input class="form-control" type="time" name="inicio">
+            </div>  
+
+            <div class="form-group col-md-2">
+                <label for="time">Termino</label>
+                <input class="form-control" type="time" name="time">
+            </div>
+        </div>
+
+        <div class="form-row">                                                  
+            <div class="form-group col-md-7">
+                <label for="nome">Nome</label>
+                <input class="form-control" type="text" name="nome"> 
+            </div>
+
+          <div class="form-group col-md-5">
+                <label for="situacao">Situação</label>
+                <input class="form-control" type="text" name="situacao">
+            </div>
+        </div>
+        
+        <hr>
+        
+        <div class="row d-flex justify-content-around">
+            <button type="button" class="btn btn-primary btn-lg">Iniciar Produção</button>
+            <button type="button" class="btn btn-danger btn-lg">Finalizar Produção</button>
+            <button type="button" class="btn btn-warning btn-lg">Pausar Produção</button>
+            <button type="button" class="btn btn-success btn-lg">Imprimir Produção</button>
+        </div>
+    </form>
+    <!-- ============== -->
+
+    <table class="table table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">First</th>
+            <th scope="col">Last</th>
+            <th scope="col">Handle</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>@mdo</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>@fat</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td colspan="2">Larry the Bird</td>
+            <td>@twitter</td>
+          </tr>
+        </tbody>
+    </table>
+
+  </div>
+</div>
+
+<app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>

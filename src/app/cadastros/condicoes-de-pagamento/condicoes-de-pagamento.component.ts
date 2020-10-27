@@ -37,7 +37,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      descricao: ['', Validators.required],
+      descricao: [null, Validators.required],
     });
   }
 
