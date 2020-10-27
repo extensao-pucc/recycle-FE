@@ -53,7 +53,7 @@
               
           <input formControlName="id" hidden="true">
           <label>CNPJ/CPF: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="CNPJ_CPF">
+          <input class="form-control" mask="000.000.000-00||00.000.000/0000-00" type="text" maxlength="100" formControlName="CNPJ_CPF">
 
           <label>Razao social/Nome: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="razao_social_nome">
@@ -74,7 +74,7 @@
           <input class="form-control" type="text" maxlength="100" formControlName="bairro">
 
           <label>CEP: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="CEP">
+          <input class="form-control" mask="00000-000" type="text" maxlength="100" formControlName="CEP" placeholder="Ex: 99999-999">
 
           <label>UF: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="UF">
@@ -83,10 +83,10 @@
           <input class="form-control" type="text" maxlength="100" formControlName="cidade">
 
           <label>Telefone: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="telefone">
+          <input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="text" maxlength="100"  formControlName="telefone" placeholder="Ex: (19) 9999-9999">
 
           <label>Email: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="email">
+          <input class="form-control" type="text" maxlength="100" formControlName="email" placeholder="Ex: exemplo@email.com">
                   
           <div class="row align-items-end">
             <hr>
@@ -94,7 +94,7 @@
             <div>
               <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
               <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
-              <!-- <button class="btn btn-danger ml-1 mt-3 pull-right" (click)="showModal('Deletar', '')"><i class="fa fa-trash"></i>Remover</button> -->
+              <button class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value" (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
             </div>
           </div>
 
@@ -103,7 +103,7 @@
         <!-- ========== -->
 
         <!-- Lista sem dados -->
-        <div *ngIf="!showForm && (tempItemsList).length == 0"  class="alert alert-info " role="alert">
+        <div *ngIf="!showForm && !tempItemsList?.length"  class="alert alert-info " role="alert">
           <h4 class="alert-heading ">Opa !</h4>
           <p>Nenhum resultado foi encontrado.</p>
         </div>

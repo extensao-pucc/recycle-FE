@@ -51,13 +51,15 @@ export class MotivosDeParadaComponent implements OnInit {
     }, err => {
       this.toastService.addToast(err['message'], 'darkred');
     });
+
+    this.showForm = false;
   }
 
   updateItem(item: any): void {
     this.showForm = true;
 
     this.itemForm.controls.id.setValue(item.id);
-    this.itemForm.controls.descricao.setValue(item.motivo);
+    this.itemForm.controls.motivo.setValue(item.motivo);
   }
 
   createUpdateItem(): void {
@@ -96,7 +98,7 @@ export class MotivosDeParadaComponent implements OnInit {
           if (title === 'Salvar'){
             this.createUpdateItem();
           } else if (title === 'Deletar'){
-            this.deleteItem(items.id);
+            (items.id) ? this.deleteItem(items.id) : this.deleteItem(items); 
           } else if (title === 'Cancelar edição') {
             this.showForm = false;
             this.loadForm();
