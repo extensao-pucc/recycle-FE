@@ -11,7 +11,7 @@ export class HomeComponent implements OnInit {
   constructor(private route: ActivatedRoute) { }
 
   ngOnInit(): void {
-    this.route.params.subscribe(res => console.log(res.id));
+    // this.route.params.subscribe(res => console.log(res.id));
   }
 
 }
