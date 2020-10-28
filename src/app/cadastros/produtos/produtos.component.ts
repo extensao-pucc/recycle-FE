@@ -97,7 +97,6 @@ export class ProdutosComponent implements OnInit {
         this.toastService.addToast(err['message'], 'darkred');
       });
     } else {
-      console.log( )
       this.crudService.createItem('produtos', formValues).subscribe(response => {
         this.toastService.addToast('Cadastrado com sucesso');
       }, err => {

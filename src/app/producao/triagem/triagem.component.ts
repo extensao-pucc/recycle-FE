@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { CrudService } from '../../cadastros/crud.service';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-triagem',
@@ -13,44 +14,93 @@ export class TriagemComponent implements OnInit {
   public showYesNoMessage: boolean;
   public selectedSocio: any;
   public socios: any;
+  public headForm: any;
 
   constructor(
     private toastService: ToastService,
-    private crudService: CrudService
-  ) {
+    private crudService: CrudService,
+    private formBuilder: FormBuilder
+  ) {  }
+
+  ngOnInit(): void {
+    this.getItems();
+    this.loadForm();
+  }
+
+  loadForm(): void {
+    this.headForm = this.formBuilder.group({
+      lote: [null],
+      data: [null],
+      inicio: [null],
+      termino: [null],
+      socio: [null],
+      situacao: [null],
+    });
+  }
+
+  getItems(): void {
     this.crudService.getItems('socios').subscribe(response => {
       this.socios = response;
     });
   }
 
-  ngOnInit(): void {
-  }
-
   startProduction(): void {
-    
-    const currentDate = new Date();
-    console.log(currentDate)
-    console.log('mes', currentDate.getMonth()) //+ 1
-    console.log('date', currentDate.getDate())
-    console.log('fullYear', currentDate.getFullYear())
-    console.log('hours', currentDate.getHours())
-    console.log('minutes', currentDate.getMinutes())
-    console.log('seconds', currentDate.getSeconds())
+    if (this.headForm.get('socio').value) {
+      this.headForm.controls.data.setValue(this.currentDate());
+      this.headForm.controls.inicio.setValue(this.currentTime());
+      this.headForm.controls.situacao.setValue('Iniciada');
+    } else {
+      this.toastService.addToast('Selecione um sócio responsável para iniciar', 'darkred');
+    }
   }
 
-  showModal(title: string, items: any): void {
+  pauseProdiction(): void {
+    
+  }
+
+  stopProduction(): void {
+
+  }
+
+  showModal(title: string): void {
     this.yesNoMessage = {
       title,
-      mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
+      mainText: 'Tem certeza que deseja ' + title.toLowerCase() + ' a prdução?',
       items: ['Deletar' ],
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {
-          
+          if (title === 'Iniciar') {
+            this.startProduction();
+          } else if (title === 'Pausar') {
+            this.toastService.addToast('Desculpa, ainda não temos essa funcionalidade', 'darkred');
+          } else if (title === 'Finalizar') {
+            this.toastService.addToast('Desculpa, ainda não temos essa funcionalidade', 'darkred');
+          } else {
+            this.toastService.addToast('Desculpa, ainda não temos essa funcionalidade', 'darkred');
+          }
         },
         onClickNo: () => { }
       }
     };
-    this.showYesNoMessage;
+    this.showYesNoMessage = true;
+  }
+
+  currentDate(): string {
+    const currentDate = new Date();
+    const day = currentDate.getDate();
+    const month = currentDate.getMonth() + 1;
+    const year = currentDate.getFullYear();
+    return month + '/' + day + '/' + year;
+  }
+
+  currentTime(): string {
+    const currentDate = new Date();
+    const hour = '' + currentDate.getHours();
+    const minute = '' + currentDate.getMinutes();
+    const second = '' + currentDate.getSeconds();
+    return (hour.length === 1 ? '0' + hour : hour) +
+    ':' + (minute.length === 1 ? '0' + minute : minute) +
+    ':' + (second.length === 1 ? '0' + second : second);
   }
 }
