@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
-import { Observable } from 'rxjs';
+import { FormValidatorService } from '../../shared/formValidator/form-validator.service'
 
 @Component({
   selector: 'app-condicoes-de-pagamento',
@@ -23,7 +23,8 @@ export class CondicoesDePagamentoComponent implements OnInit {
   constructor(
     private crudService: CrudService,
     private toastService: ToastService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private formValidatorService: FormValidatorService
   ) { }
 
   ngOnInit(): void {
@@ -40,7 +41,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      descricao: [null, Validators.required],
+      descricao:  ['', [this.formValidatorService.emailDomainValidator]],
     });
   }
 

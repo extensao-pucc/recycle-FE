@@ -33,3 +33,7 @@ body {
 app-root {
     min-width: 100%;
 }
+
+.error-msg {
+    color: rgb(255, 131, 109);
+}

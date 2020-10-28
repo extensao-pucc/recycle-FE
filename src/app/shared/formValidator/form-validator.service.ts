@@ -9,22 +9,11 @@ export class FormValidatorService {
   constructor() { }
 
   emailDomainValidator(control: FormControl) {
-    let email = control.value;
-    if (email && email.indexOf("@") != -1) {
-      let [_, domain] = email.split("@");
-      if (domain !== "codecraft.tv") {
-        return {
-          emailDomain: {
-            parsedDomain: domain
-          }
-        }
-      }
+    const msgErro = 'Este campo ontem A';
+    let str = control.value;
+    if (str && str.includes('a')) {
+      return {msgErro};
     }
     return null;
-  }
-
-  isAlphanimeric(control: FormControl): boolean {
-    let input = control;
-    return true;
   }
 }
