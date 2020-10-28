@@ -30,10 +30,10 @@ export class ProdutosComponent implements OnInit {
     private toastService: ToastService,
     private formBuilder: FormBuilder
   ) {
+    this.getItems();
   }
 
   ngOnInit(): void {
-    this.getItems();
     this.loadForm();
   }
 
@@ -57,18 +57,16 @@ export class ProdutosComponent implements OnInit {
   }
 
   getItems(): void {
-    this.crudService.getItems('produtos').subscribe(response => {
-      this.itemsList = response;
-      this.tempItemsList = _.clone(this.itemsList);
-    });
-
     this.crudService.getItems('familias').subscribe(response => { this.familias = response; });
     this.crudService.getItems('fornecedores').subscribe(response => { this.fornecedores = response; });
     this.crudService.getItems('qualidades').subscribe(response => { this.qualidades = response; });
     this.crudService.getItems('unidadesDeMedida').subscribe(response => { this.unidadesDeMedida = response; });
     this.crudService.getItems('naturezaDasOperacoes').subscribe(response => { this.naturezaDasOperacoes = response; });
 
-    console.log(this.naturezaDasOperacoes);
+    this.crudService.getItems('produtos').subscribe(response => {
+      this.itemsList = response;
+      this.tempItemsList = _.clone(this.itemsList);
+    });
   }
 
   deleteItem(id): void {

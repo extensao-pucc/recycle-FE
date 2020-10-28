@@ -7,14 +7,14 @@
 
 .center {
     overflow: auto;
-    overflow: hidden;
+    /* overflow: hidden; */
     margin: auto;
     padding-top: 30px;
     /* text-align: center; */
     background-color: white;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 90%;
-    height: 85%;
+    width: 97%;
+    height: 94%;
     padding: 60px;
 }
 
@@ -30,6 +30,3 @@ th,td {
     white-space: nowrap;
 }
 
-tbody {
-    overflow: auto;
-}
