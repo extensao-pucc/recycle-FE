@@ -10,21 +10,21 @@
               <tr>
                 <th scope="col"></th> <!-- Foto do usuario -->
                 <th scope="col">ID</th>
-                <th scope="col">Matricula</th>
+                <th scope="col">Matrícula</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Data de nascimento</th>
                 <th scope="col">RG</th>
-                <th scope="col">data de emissao</th>
-                <th scope="col">local de emissao</th>
-                <th scope="col">orgao expedidor</th>
+                <th scope="col">Data de emissão</th>
+                <th scope="col">Local de emissão</th>
+                <th scope="col">Orgão expedidor</th>
                 <th scope="col">CPF</th>
-                <th scope="col">titulo de eleitor</th>
-                <th scope="col">PIS_PASEP</th>
+                <th scope="col">Título de eleitor</th>
+                <th scope="col">PIS/PASEP</th>
                 <th scope="col">NIT</th>
                 <th scope="col">Nome da Mãe</th>
                 <th scope="col">Nome do Pai</th>
-                <th scope="col">Endereco</th>
-                <th scope="col">Numero</th>
+                <th scope="col">Endereço</th>
+                <th scope="col">Número</th>
                 <th scope="col">Complemento</th>
                 <th scope="col">UF</th>
                 <th scope="col">Cidade</th>
@@ -79,7 +79,7 @@
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
               
             <input formControlName="id" hidden="true">
-            <label>Matricula: </label>
+            <label>Matrícula: </label>
             <input class="form-control" type="text" maxlength="100" formControlName="matricula">
   
             <label>Nome: </label>
@@ -103,7 +103,7 @@
             <label>CPF: </label>
             <input class="form-control" mask="000.000.000-00" type="text" formControlName="CPF" placeholder="EX: 999.999.999-99">
 
-            <label>Titulo de eleitor: </label>
+            <label>Título de eleitor: </label>
             <input class="form-control" type="text" maxlength="100" formControlName="titulo_de_Eleitor">
             
             <label>PIS/PASEP: </label>
@@ -121,7 +121,7 @@
             <label>Endereço: </label>
             <input class="form-control" type="text" maxlength="100" formControlName="endereco">
 
-            <label>Numero: </label>
+            <label>Número: </label>
             <input class="form-control" type="text" maxlength="100" formControlName="numero">
             
             <label>Complemento: </label>

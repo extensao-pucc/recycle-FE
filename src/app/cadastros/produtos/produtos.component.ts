@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 
+
 @Component({
   selector: 'app-produtos',
   templateUrl: './produtos.component.html',
@@ -18,11 +19,15 @@ export class ProdutosComponent implements OnInit {
   public yesNoMessage: YesNoMessage = new YesNoMessage();
   public showYesNoMessage: boolean;
 
+  public selectedQualidade: any;
+  public qualidades: any;
+
   constructor(
     private crudService: CrudService,
     private toastService: ToastService,
     private formBuilder: FormBuilder
-  ) { }
+  ) {
+  }
 
   ngOnInit(): void {
     this.getItems();

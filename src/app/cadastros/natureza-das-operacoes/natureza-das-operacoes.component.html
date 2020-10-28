@@ -9,7 +9,7 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Codigo</th>
+                <th scope="col">Código</th>
                 <th scope="col">Descrição</th>
                 <th scope="col">Tipo</th>
                 <th scope="col">Opções</th>
@@ -37,7 +37,7 @@
               
           <input formControlName="id" hidden="true">
           
-          <label>Codigo: </label>
+          <label>Código: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="codigo">
           
           <label>Descrição: </label>
@@ -47,7 +47,8 @@
           <input class="form-control" type="text" maxlength="100" formControlName="tipo">
         
           <div class="row align-items-end">
-  
+            <hr>
+            
             <div>
               <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
               <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>

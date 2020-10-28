@@ -27,15 +27,14 @@ export class TriagemComponent implements OnInit {
   }
 
   startProduction(): void {
-    
     const currentDate = new Date();
-    console.log(currentDate)
-    console.log('mes', currentDate.getMonth()) //+ 1
-    console.log('date', currentDate.getDate())
-    console.log('fullYear', currentDate.getFullYear())
-    console.log('hours', currentDate.getHours())
-    console.log('minutes', currentDate.getMinutes())
-    console.log('seconds', currentDate.getSeconds())
+    console.log(currentDate);
+    console.log('mes', currentDate.getMonth()); // +1
+    console.log('date', currentDate.getDate());
+    console.log('fullYear', currentDate.getFullYear());
+    console.log('hours', currentDate.getHours());
+    console.log('minutes', currentDate.getMinutes());
+    console.log('seconds', currentDate.getSeconds());
   }
 
   showModal(title: string, items: any): void {
@@ -46,7 +45,6 @@ export class TriagemComponent implements OnInit {
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {
-          
         },
         onClickNo: () => { }
       }

@@ -11,7 +11,7 @@
                 <th scope="col">ID</th>
                 <th scope="col">Numero</th>
                 <th scope="col">Descrição</th>
-                <th scope="col">Detalhes tecnicos</th>
+                <th scope="col">Detalhes técnicos</th>
                 <th scope="col">Opções</th>
               </tr>
             </thead>
@@ -36,13 +36,13 @@
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
               
           <input formControlName="id" hidden="true">          
-          <label>Numero: </label>
+          <label>Número: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="numero">
           
           <label>Descrição: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="descricao">
           
-          <label>Detalhes Tecnicos: </label>
+          <label>Detalhes Técnicos: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="detalhes_tecnicos">
         
           <div class="row align-items-end">
