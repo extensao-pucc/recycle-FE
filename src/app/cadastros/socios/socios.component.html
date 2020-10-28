@@ -74,6 +74,8 @@
         <!-- ========== -->
 
         <!-- Formulario -->
+        <hr>
+
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
               
             <input formControlName="id" hidden="true">
@@ -87,7 +89,7 @@
             <input class="form-control" type="date" maxlength="100" formControlName="data_de_nascimento">
   
             <label>RG: </label>
-            <input class="form-control" mask="00.000.000-0" type="text" maxlength="100" formControlName="RG" placeholder="EX: 99.999.999-9">
+            <input class="form-control" mask="00.000.000-0" type="text" formControlName="RG" placeholder="EX: 99.999.999-9">
   
             <label>Data emissão: </label>
             <input class="form-control" type="date" maxlength="100" formControlName="data_emissao">
@@ -99,12 +101,12 @@
             <input class="form-control" type="text" maxlength="100" formControlName="orgao_expedidor">
   
             <label>CPF: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="CPF">
+            <input class="form-control" mask="000.000.000-00" type="text" formControlName="CPF" placeholder="EX: 999.999.999-99">
 
             <label>Titulo de eleitor: </label>
             <input class="form-control" type="text" maxlength="100" formControlName="titulo_de_Eleitor">
             
-            <label>PIS_PASEP: </label>
+            <label>PIS/PASEP: </label>
             <input class="form-control" type="text" maxlength="100" formControlName="PIS_PASEP">
 
             <label>NIT: </label>
@@ -132,10 +134,10 @@
             <input class="form-control" type="text" maxlength="100" formControlName="cidade">
   
             <label>Telefone: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="telefone">
+            <input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="text" formControlName="telefone" placeholder="Ex: (19) 9999-9999">
   
             <label>Email: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="email">
+            <input class="form-control" type="email" maxlength="100" formControlName="email" placeholder="Ex: exemplo@email.com">
   
             <label>Data de admissão: </label>
             <input class="form-control" type="date" maxlength="100" formControlName="data_de_admissao">

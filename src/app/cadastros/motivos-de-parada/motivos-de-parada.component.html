@@ -27,11 +27,13 @@
         <!-- ========== -->
 
         <!-- Formulario -->
+        <hr>
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
               
           <input formControlName="id" hidden="true">
           <label>Motivo: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="motivo">
+          <hr>
         
           <div class="row align-items-end">
             <hr>

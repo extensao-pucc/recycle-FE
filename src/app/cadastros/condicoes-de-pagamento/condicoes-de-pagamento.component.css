@@ -17,8 +17,8 @@
     padding: 60px;
 }
 
-div table {
-    margin-top: 30px;
+div table, form {
+    margin-top: 40px;
 }
 
 i {

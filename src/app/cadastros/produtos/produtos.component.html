@@ -51,6 +51,8 @@
         <!-- ========== -->
 
         <!-- Formulario -->
+        <hr>
+
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
               
           <input formControlName="id" hidden="true">
@@ -73,7 +75,7 @@
           <input class="form-control" type="text" maxlength="100" formControlName="unidade_de_medida">
 
           <label>NCM: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="NCM">
+          <input class="form-control" mask="0000.00.00" type="text" formControlName="NCM" placeholder="EX: 0000.00.00">
 
           <label>CSTE: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="CSTE">
@@ -88,10 +90,10 @@
           <input class="form-control" type="text" maxlength="100" formControlName="CFOPS">
           
           <label>Preço de compra: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="preco_compra">
+          <input class="form-control" prefix="R$ " mask="separator.2" thousandSeparator="." type="text" maxlength="15" formControlName="preco_compra">
           
           <label>Preço de venda: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="preco_venda">
+          <input class="form-control" prefix="R$ " mask="separator.2" thousandSeparator="." type="text" maxlength="15" formControlName="preco_venda">
         
           <div class="row align-items-end">
             <hr>

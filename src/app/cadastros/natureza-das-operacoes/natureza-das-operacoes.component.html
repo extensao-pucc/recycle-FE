@@ -31,6 +31,8 @@
         <!-- ========== -->
 
         <!-- Formulario -->
+        <hr>
+
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
               
           <input formControlName="id" hidden="true">
@@ -45,7 +47,6 @@
           <input class="form-control" type="text" maxlength="100" formControlName="tipo">
         
           <div class="row align-items-end">
-            <hr>
   
             <div>
               <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>

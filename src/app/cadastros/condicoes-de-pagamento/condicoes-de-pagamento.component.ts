@@ -4,12 +4,14 @@ import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-condicoes-de-pagamento',
   templateUrl: './condicoes-de-pagamento.component.html',
   styleUrls: ['./condicoes-de-pagamento.component.css']
 })
+
 export class CondicoesDePagamentoComponent implements OnInit {
   public tempItemsList: any;
   public itemsList: any;
@@ -28,6 +30,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
     this.getItems();
     this.loadForm();
   }
+
 
   validateForm(): boolean {
     const formValues = this.itemForm.value;
@@ -103,7 +106,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
           if (title === 'Salvar'){
             this.createUpdateItem();
           } else if (title === 'Deletar'){
-            (items.id) ? this.deleteItem(items.id) : this.deleteItem(items); 
+            (items.id) ? this.deleteItem(items.id) : this.deleteItem(items);
           } else if (title === 'Cancelar edição') {
             this.showForm = false;
             this.loadForm();
