@@ -30,15 +30,15 @@
                 <td>{{ item?.id }}</td>
                 <td>{{ item?.codigo }}</td>
                 <td>{{ item?.descricao }}</td>
-                <td>{{ item?.familia }}</td>
-                <td>{{ item?.fornecedor }}</td>
-                <td>{{ item?.qualidade }}</td>
-                <td>{{ item?.unidade_de_medida }}</td>
+                <td>{{ item?.familia.nome }}</td>
+                <td>{{ item?.fornecedor.razao_social_nome }}</td>
+                <td>{{ item?.qualidade.nome }}</td>
+                <td>{{ item?.unidade_de_medida.codigo }}</td>
                 <td>{{ item?.NCM }}</td>
                 <td>{{ item?.CSTE }}</td>
                 <td>{{ item?.CSTS }}</td>
-                <td>{{ item?.CFOPE }}</td>
-                <td>{{ item?.CFOPS }}</td>
+                <td>{{ item?.CFOPE.descricao }}</td>
+                <td>{{ item?.CFOPS.descricao }}</td>
                 <td>{{ item?.preco_compra }}</td>
                 <td>{{ item?.preco_venda }}</td>
                 <td>

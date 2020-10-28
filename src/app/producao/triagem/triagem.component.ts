@@ -15,6 +15,7 @@ export class TriagemComponent implements OnInit {
   public showYesNoMessage: boolean;
   public selectedSocio: any;
   public socios: any;
+  public fornecedores: any;
   public headForm: any;
 
   constructor(
@@ -35,23 +36,24 @@ export class TriagemComponent implements OnInit {
       inicio: [null],
       termino: [null],
       socio: [null],
+      fornecedor: [null],
       situacao: [null],
     });
   }
 
   getItems(): void {
-    this.crudService.getItems('socios').subscribe(response => {
-      this.socios = response;
-    });
+    this.crudService.getItems('socios').subscribe(response => this.socios = response);
+    this.crudService.getItems('fornecedores').subscribe(response => this.fornecedores = response);
   }
 
   startProduction(): void {
-    if (this.headForm.get('socio').value) {
+    if (this.headForm.get('socio').value && this.headForm.get('fornecedor').value) {
+      this.headForm.controls.lote.setValue('001');
       this.headForm.controls.data.setValue(this.currentDate());
       this.headForm.controls.inicio.setValue(this.currentTime());
       this.headForm.controls.situacao.setValue('Iniciada');
     } else {
-      this.toastService.addToast('Selecione um sócio responsável para iniciar', 'darkred');
+      this.toastService.addToast('Selecione um sócio responsável e um fornecedor para iniciar', 'darkred');
     }
   }
 
