@@ -81,27 +81,33 @@
 
             <div class="form-group col-md-3">
               <label>Unidade de medida: </label>
-              <input class="form-control" type="text" maxlength="100" formControlName="unidade_de_medida">
+              <ng-select formControlName="unidade_de_medida" name="unidade_de_medida">
+                <ng-option *ngFor="let unidade_de_medida of unidadesDeMedida" [value]="unidade_de_medida">{{unidade_de_medida.sigla}} - {{unidade_de_medida.descricao}}</ng-option>
+              </ng-select>
+              
             </div>
           </div>
           
           <div class="form-row">
             <div class="form-group col-md-3">
               <label>Família: </label>
-              <input class="form-control" type="text" maxlength="100" formControlName="familia">
+              <ng-select formControlName="familia" name="familia">
+                <ng-option *ngFor="let familia of familias" [value]="familias">{{familia.nome}}</ng-option>
+              </ng-select>
             </div>
 
             <div class="form-group col-md-5">
               <label>Fornecedor: </label>
-              <input class="form-control" type="text" maxlength="100" formControlName="fornecedor">
+              <ng-select formControlName="fornecedor" name="fornecedor">
+                <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedores">{{ fornecedor.razao_social_nome }} - {{fornecedor.CNPJ_CPF}}</ng-option>
+              </ng-select>
             </div>  
 
             <div class="form-group col-md-3">
               <label>Qualidade: </label>
-              <input class="form-control" type="text" maxlength="100" formControlName="qualidade">
-              <!-- <ng-select [(ngModel)]="selectedQualidade" name="qualidade">
-                <ng-option *ngFor="let qualidade of qualidades" [value]="qualidade.id">{{qualidade.nome}}</ng-option>
-              </ng-select> -->
+              <ng-select formControlName="qualidade" name="qualidade">
+                <ng-option *ngFor="let qualidade of qualidades" [value]="qualidades">{{qualidade.nome}}</ng-option>
+              </ng-select>
             </div>  
           </div>  
 
@@ -121,14 +127,18 @@
               <input class="form-control" type="text" maxlength="10" formControlName="CSTS" placeholder="EX: 000">
             </div>
 
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-3">
               <label>CFOPE: <i class="fa fa-question-circle" tooltip="Código Fiscal de Operações e Prestações (Entrada)"></i></label>
-              <input class="form-control" type="text" maxlength="10" formControlName="CFOPE" placeholder="EX: 0000">
+              <ng-select formControlName="CFOPE" name="CFOPE">
+                <ng-option *ngFor="let CFOPE of naturezaDasOperacoes" [value]="naturezaDasOperacoes">{{ CFOPE.codigo }} - {{ CFOPE.descricao }}</ng-option>
+              </ng-select>
             </div>
 
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-3">
               <label>CFOPS: <i class="fa fa-question-circle" tooltip="Código Fiscal de Operações e Prestações (Saida)"></i></label>
-              <input class="form-control" type="text" maxlength="10" formControlName="CFOPS" placeholder="EX: 0000">
+              <ng-select formControlName="CFOPS" name="CFOPS">
+                <ng-option *ngFor="let CFOPS of naturezaDasOperacoes" [value]="naturezaDasOperacoes">{{ CFOPS.codigo }} - {{ CFOPS.descricao }}</ng-option>
+              </ng-select>
             </div>
           </div> 
         
