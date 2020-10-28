@@ -14,12 +14,12 @@
               </tr>
 
               <tr>
-                <td><input class="form-control" type="search" name='searchID' placeholder="ID"></td>               
+                <td><input class="form-control" type="search" placeholder="ID" name="searchID"></td>               
                 <td><input class="form-control" type="search" name='searchCNPJ_CPF' placeholder="Descricao"></td>
               </tr>
 
             </thead>
-            <tbody>
+            <tbody>              
               <tr *ngFor="let item of tempItemsList">
                 <td>{{ item?.id }}</td>
                 <td>{{ item?.descricao }}</td>
@@ -33,12 +33,14 @@
         <!-- ========== -->
 
         <!-- Formulario -->
+        <hr>
+
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
               
           <input formControlName="id" hidden="true">
           <label>Descrição: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="descricao">
-
+          
           <div class="row align-items-end">
             <hr>
   

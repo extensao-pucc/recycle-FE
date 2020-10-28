@@ -9,9 +9,9 @@
             <thead class="thead-dark">
               <tr>
                 <th scope="col">ID</th>
-                <th scope="col">Codigo</th>
-                <th scope="col">Descricao</th>
-                <th scope="col">Familia</th>
+                <th scope="col">Código</th>
+                <th scope="col">Descrição</th>
+                <th scope="col">Família</th>
                 <th scope="col">Fornecedor</th>
                 <th scope="col">Qualidade</th>
                 <th scope="col">Unidade de medida</th>
@@ -20,8 +20,8 @@
                 <th scope="col">CSTS</th>
                 <th scope="col">CFOPE</th>
                 <th scope="col">CFOPS</th>
-                <th scope="col">Preco de compra</th>
-                <th scope="col">preco de venda</th>
+                <th scope="col">Preço de compra</th>
+                <th scope="col">preço de venda</th>
                 <th scope="col">Opções</th>
               </tr>
             </thead>
@@ -30,15 +30,15 @@
                 <td>{{ item?.id }}</td>
                 <td>{{ item?.codigo }}</td>
                 <td>{{ item?.descricao }}</td>
-                <td>{{ item?.familia.nome }}</td>
-                <td>{{ item?.fornecedor.razao_social_nome }}</td>
-                <td>{{ item?.qualidade.nome }}</td>
-                <td>{{ item?.unidade_de_medida.descricao }}</td>
+                <td>{{ item?.familia }}</td>
+                <td>{{ item?.fornecedor }}</td>
+                <td>{{ item?.qualidade }}</td>
+                <td>{{ item?.unidade_de_medida }}</td>
                 <td>{{ item?.NCM }}</td>
                 <td>{{ item?.CSTE }}</td>
                 <td>{{ item?.CSTS }}</td>
-                <td>{{ item?.CFOPE.codigo }}</td>
-                <td>{{ item?.CFOPS.codigo }}</td>
+                <td>{{ item?.CFOPE }}</td>
+                <td>{{ item?.CFOPS }}</td>
                 <td>{{ item?.preco_compra }}</td>
                 <td>{{ item?.preco_venda }}</td>
                 <td>
@@ -51,47 +51,86 @@
         <!-- ========== -->
 
         <!-- Formulario -->
+        <hr>
+
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
-              
           <input formControlName="id" hidden="true">
-          <label>Codigo: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="codigo">
 
-          <label>Descrição: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="descricao">
+          <div class="form-row">
+            <div class="form-group col-md-2">  
+              <label>Código: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="codigo">
+            </div>
 
-          <label>Familia: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="familia">
-
-          <label>Fornecedor: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="fornecedor">
-
-          <label>Qualidade: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="qualidade">
-
-          <label>Unidade de medida: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="unidade_de_medida">
-
-          <label>NCM: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="NCM">
-
-          <label>CSTE: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="CSTE">
-
-          <label>CSTS: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="CSTS">
-
-          <label>CFOPE: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="CFOPE">
-
-          <label>CFOPS: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="CFOPS">
+            <div class="form-group col-md-10">
+              <label>Descrição: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="descricao">
+            </div>
+          </div>
           
-          <label>Preço de compra: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="preco_compra">
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label>Preço de compra: </label>
+              <input class="form-control" prefix="R$ " mask="separator.2" thousandSeparator="." type="text" maxlength="15" formControlName="preco_compra">
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label>Preço de venda: </label>
+              <input class="form-control" prefix="R$ " mask="separator.2" thousandSeparator="." type="text" maxlength="15" formControlName="preco_venda">
+            </div>
+
+            <div class="form-group col-md-3">
+              <label>Unidade de medida: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="unidade_de_medida">
+            </div>
+          </div>
           
-          <label>Preço de venda: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="preco_venda">
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label>Família: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="familia">
+            </div>
+
+            <div class="form-group col-md-5">
+              <label>Fornecedor: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="fornecedor">
+            </div>  
+
+            <div class="form-group col-md-3">
+              <label>Qualidade: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="qualidade">
+              <!-- <ng-select [(ngModel)]="selectedQualidade" name="qualidade">
+                <ng-option *ngFor="let qualidade of qualidades" [value]="qualidade.id">{{qualidade.nome}}</ng-option>
+              </ng-select> -->
+            </div>  
+          </div>  
+
+          <div class="form-row">
+            <div class="form-group col-md-2">
+              <label>NCM: <i class="fa fa-question-circle" tooltip="Nomenclatura Comum do Mercosul"></i></label>
+              <input class="form-control" mask="0000.00.00" type="text" formControlName="NCM" placeholder="EX: 0000.00.00">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label>CSTE: <i class="fa fa-question-circle" tooltip="Código de Situação Tributária (Entrada)"></i></label>
+              <input class="form-control" type="text" maxlength="10" formControlName="CSTE" placeholder="EX: 000">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label>CSTS: <i class="fa fa-question-circle" tooltip="Código de Situação Tributária (Saida)"></i></label>
+              <input class="form-control" type="text" maxlength="10" formControlName="CSTS" placeholder="EX: 000">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label>CFOPE: <i class="fa fa-question-circle" tooltip="Código Fiscal de Operações e Prestações (Entrada)"></i></label>
+              <input class="form-control" type="text" maxlength="10" formControlName="CFOPE" placeholder="EX: 0000">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label>CFOPS: <i class="fa fa-question-circle" tooltip="Código Fiscal de Operações e Prestações (Saida)"></i></label>
+              <input class="form-control" type="text" maxlength="10" formControlName="CFOPS" placeholder="EX: 0000">
+            </div>
+          </div> 
         
           <div class="row align-items-end">
             <hr>

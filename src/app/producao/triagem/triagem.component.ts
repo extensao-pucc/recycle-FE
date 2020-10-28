@@ -54,10 +54,6 @@ export class TriagemComponent implements OnInit {
     }
   }
 
-  pauseProdiction(): void {
-    
-  }
-
   stopProduction(): void {
 
   }
