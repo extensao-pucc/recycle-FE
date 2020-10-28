@@ -51,6 +51,8 @@ export class UnidadesDeMedidaComponent implements OnInit {
     }, err => {
       this.toastService.addToast(err['message'], 'darkred');
     });
+
+    this.showForm = false;
   }
 
   updateItem(item: any): void {
@@ -97,7 +99,7 @@ export class UnidadesDeMedidaComponent implements OnInit {
           if (title === 'Salvar'){
             this.createUpdateItem();
           } else if (title === 'Deletar'){
-            this.deleteItem(items.id);
+            (items.id) ? this.deleteItem(items.id) : this.deleteItem(items); 
           } else if (title === 'Cancelar edição') {
             this.showForm = false;
             this.loadForm();

@@ -8,41 +8,43 @@
         <div class="form-row">
             <div class="form-group col-md-5">
                 <label for="lote">Lote</label>
-                <input class="form-control" type="text" name="lote">
+                <input class="form-control" type="text" name="lote" disabled>
             </div>
 
             <div class="form-group col-md-3">
                 <label for="data">Data</label>
-                <input class="form-control" type="date" name="data">
+                <input class="form-control" type="date" name="data" disabled>
             </div>  
 
             <div class="form-group col-md-2">
                 <label for="inicio">Inicio</label>
-                <input class="form-control" type="time" name="inicio">
+                <input class="form-control" type="time" name="inicio" disabled>
             </div>  
 
             <div class="form-group col-md-2">
                 <label for="time">Termino</label>
-                <input class="form-control" type="time" name="time">
+                <input class="form-control" type="time" name="time" disabled>
             </div>
         </div>
 
         <div class="form-row">                                                  
             <div class="form-group col-md-7">
                 <label for="nome">Nome</label>
-                <input class="form-control" type="text" name="nome"> 
+                <ng-select [(ngModel)]="selectedSocio" name="socio">
+                  <ng-option *ngFor="let socio of socios" [value]="socio.id">{{socio.nome}}</ng-option>
+                </ng-select>
             </div>
 
           <div class="form-group col-md-5">
                 <label for="situacao">Situação</label>
-                <input class="form-control" type="text" name="situacao">
+                <input class="form-control" type="text" name="situacao" disabled>
             </div>
         </div>
         
         <hr>
         
         <div class="row d-flex justify-content-around">
-            <button type="button" class="btn btn-primary btn-lg">Iniciar Produção</button>
+            <button type="button" class="btn btn-primary btn-lg" (click)="startProduction()">Iniciar Produção</button>
             <button type="button" class="btn btn-danger btn-lg">Finalizar Produção</button>
             <button type="button" class="btn btn-warning btn-lg">Pausar Produção</button>
             <button type="button" class="btn btn-success btn-lg">Imprimir Produção</button>
@@ -79,6 +81,8 @@
           </tr>
         </tbody>
     </table>
+
+
 
   </div>
 </div>

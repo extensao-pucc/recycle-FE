@@ -6,7 +6,7 @@
 }
 
 .center {
-    /* overflow: auto; */
+    overflow: auto;
     overflow: hidden;
     margin: auto;
     padding-top: 30px;

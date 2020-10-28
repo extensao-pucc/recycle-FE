@@ -62,6 +62,8 @@ export class ProdutosComponent implements OnInit {
     }, err => {
       this.toastService.addToast(err['message'], 'darkred');
     });
+
+    this.showForm = false;
   }
 
   updateItem(item: any): void {
@@ -70,7 +72,7 @@ export class ProdutosComponent implements OnInit {
     this.itemForm.controls.id.setValue(item.id);
     this.itemForm.controls.codigo.setValue(item.codigo);
     this.itemForm.controls.descricao.setValue(item.descricao);
-    this.itemForm.controls.familia.setValue(item.familia.id);
+    this.itemForm.controls.familia.setValue(item.familia);
     this.itemForm.controls.fornecedor.setValue(item.fornecedor);
     this.itemForm.controls.qualidade.setValue(item.qualidade);
     this.itemForm.controls.unidade_de_medida.setValue(item.unidade_de_medida);
@@ -120,7 +122,7 @@ export class ProdutosComponent implements OnInit {
           if (title === 'Salvar'){
             this.createUpdateItem();
           } else if (title === 'Deletar'){
-            this.deleteItem(items.id);
+            (items.id) ? this.deleteItem(items.id) : this.deleteItem(items); 
           } else if (title === 'Cancelar edição') {
             this.showForm = false;
             this.loadForm();

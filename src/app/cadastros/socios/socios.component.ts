@@ -79,6 +79,8 @@ export class SociosComponent implements OnInit {
     }, err => {
       this.toastService.addToast(err['message'], 'darkred');
     });
+
+    this.showForm = false;
   }
 
   updateItem(item: any): void {
@@ -108,7 +110,7 @@ export class SociosComponent implements OnInit {
     this.itemForm.controls.data_de_admissao.setValue(item.data_de_admissao);
     this.itemForm.controls.data_de_demissao.setValue(item.data_de_demissao);
     this.itemForm.controls.situacao.setValue(item.situacao);
-    this.itemForm.controls.foto.setValue(item.foto);
+    // this.itemForm.controls.foto.setValue(item.foto);
     this.itemForm.controls.perfil.setValue(item.perfil);
   }
 
@@ -152,7 +154,7 @@ export class SociosComponent implements OnInit {
           if (title === 'Salvar'){
             this.createUpdateItem();
           } else if (title === 'Deletar'){
-            this.deleteItem(items.id);
+            (items.id) ? this.deleteItem(items.id) : this.deleteItem(items); 
           } else if (title === 'Cancelar edição') {
             this.showForm = false;
             this.loadForm();

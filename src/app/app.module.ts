@@ -9,6 +9,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { SnackbarModule } from 'ngx-snackbar';
+import { NgxMaskModule } from 'ngx-mask';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 // components
 import { AppRoutingModule } from './app-routing.module';
@@ -62,8 +64,10 @@ import { AuthGuard } from './guards/auth.guard';
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     SnackbarModule.forRoot(),
+    NgxMaskModule.forRoot(),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgSelectModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

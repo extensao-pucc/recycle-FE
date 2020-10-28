@@ -42,10 +42,10 @@
           <div class="row align-items-end">
             <hr>
   
-            <div class="mt-3">
-              <button class="btn btn-success ml-1 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
-              <button class="btn btn-warning ml-1 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
-              <!-- <button class="btn btn-danger ml-1 pull-right" (click)="showModal('Deletar', '')"><i class="fa fa-trash"></i>Remover</button> -->
+            <div>
+              <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
+              <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
+              <button  class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value" (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
             </div>
           </div>
           <p>Form Status: {{ itemForm.status }}</p>
