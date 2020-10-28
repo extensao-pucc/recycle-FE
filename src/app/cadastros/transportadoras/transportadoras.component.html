@@ -13,7 +13,7 @@
                 <th scope="col">Razão social/Nome</th>
                 <th scope="col">IE</th>
                 <th scope="col">Endereço</th>
-                <th scope="col">Numero</th>
+                <th scope="col">Número</th>
                 <th scope="col">Complemento</th>
                 <th scope="col">Bairro</th>
                 <th scope="col">CEP</th>
@@ -49,44 +49,77 @@
         <!-- ========== -->
 
         <!-- Formulario -->
+        <hr>
+
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
               
-          <input formControlName="id" hidden="true">
-          <label>CNPJ/CPF: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="CNPJ_CPF">
+          <div class="form-row">
+            <div class="form-group col-md-8">  
+              <label>Razão social/Nome: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="razao_social_nome">
+            </div>
+            
+            <div class="form-group col-md-4">
+              <input formControlName="id" hidden="true">
+              <label>CNPJ/CPF: </label>
+              <input class="form-control" mask="000.000.000-00||00.000.000/0000-00" type="text" formControlName="CNPJ_CPF">
+            </div>
+          </div>
+          
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label>Telefone: </label>
+              <input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="text" formControlName="telefone" placeholder="Ex: (19) 9999-9999">
+            </div>
+            
+            <div class="form-group col-md-5">
+              <label>Email: </label>
+              <input class="form-control" type="email" maxlength="100" formControlName="email" placeholder="Ex: exemplo@email.com">
+            </div>
+            <div class="form-group col-md-3">
+              <label>IE: <i class="fa fa-question-circle" tooltip="Inscrição Estadual"></i></label>
+              <input class="form-control" type="text" maxlength="100" formControlName="IE">
+            </div>
+          </div>
 
-          <label>Razao social/Nome: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="razao_social_nome">
+          <div class="form-row">
+            <div class="form-group col-md-5">
+              <label>Endereço: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="endereco">
+            </div>
+            
+            <div class="form-group col-md-2">
+              <label>Número: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="numero">
+            </div>
 
-          <label>IE: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="IE">
+            <div class="form-group col-md-5">
+              <label>Complemento: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="complemento">
+            </div>
+          </div>
 
-          <label>Endereço: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="endereco">
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label>Bairro: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="bairro">
+            </div>
 
-          <label>Numero: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="numero">
+            <div class="form-group col-md-3">
+              <label>UF: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="UF">
+            </div>
 
-          <label>Complemento: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="complemento">
-
-          <label>Bairro: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="bairro">
-
-          <label>CEP: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="CEP">
-
-          <label>UF: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="UF">
-
-          <label>Cidade: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="cidade">
-
-          <label>Telefone: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="telefone">
-
-          <label>Email: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="email">
+            <div class="form-group col-md-3">
+              <label>Cidade: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="cidade">
+            </div>
+            
+            <div class="form-group col-md-3">
+              <label>CEP: </label>
+              <input class="form-control" mask="00000-000" type="text" formControlName="CEP" placeholder="Ex: 99999-999">
+            </div>
+          </div>
         
           <div class="row align-items-end">
             <hr>

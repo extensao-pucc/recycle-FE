@@ -98,7 +98,7 @@ export class MotivosDeParadaComponent implements OnInit {
           if (title === 'Salvar'){
             this.createUpdateItem();
           } else if (title === 'Deletar'){
-            (items.id) ? this.deleteItem(items.id) : this.deleteItem(items); 
+            (items.id) ? this.deleteItem(items.id) : this.deleteItem(items);
           } else if (title === 'Cancelar edição') {
             this.showForm = false;
             this.loadForm();

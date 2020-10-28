@@ -10,21 +10,21 @@
               <tr>
                 <th scope="col"></th> <!-- Foto do usuario -->
                 <th scope="col">ID</th>
-                <th scope="col">Matricula</th>
+                <th scope="col">Matrícula</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Data de nascimento</th>
                 <th scope="col">RG</th>
-                <th scope="col">data de emissao</th>
-                <th scope="col">local de emissao</th>
-                <th scope="col">orgao expedidor</th>
+                <th scope="col">Data de emissão</th>
+                <th scope="col">Local de emissão</th>
+                <th scope="col">Orgão expedidor</th>
                 <th scope="col">CPF</th>
-                <th scope="col">titulo de eleitor</th>
-                <th scope="col">PIS_PASEP</th>
+                <th scope="col">Título de eleitor</th>
+                <th scope="col">PIS/PASEP</th>
                 <th scope="col">NIT</th>
                 <th scope="col">Nome da Mãe</th>
                 <th scope="col">Nome do Pai</th>
-                <th scope="col">Endereco</th>
-                <th scope="col">Numero</th>
+                <th scope="col">Endereço</th>
+                <th scope="col">Número</th>
                 <th scope="col">Complemento</th>
                 <th scope="col">UF</th>
                 <th scope="col">Cidade</th>
@@ -74,84 +74,155 @@
         <!-- ========== -->
 
         <!-- Formulario -->
+        <hr>
+
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
-              
-            <input formControlName="id" hidden="true">
-            <label>Matricula: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="matricula">
-  
-            <label>Nome: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="nome">
-  
-            <label>Data de nascimento: </label>
-            <input class="form-control" type="date" maxlength="100" formControlName="data_de_nascimento">
-  
-            <label>RG: </label>
-            <input class="form-control" mask="00.000.000-0" type="text" maxlength="100" formControlName="RG" placeholder="EX: 99.999.999-9">
-  
-            <label>Data emissão: </label>
-            <input class="form-control" type="date" maxlength="100" formControlName="data_emissao">
-  
-            <label>Local emissao: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="local_emissao">
-  
-            <label>Orgao expedidor: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="orgao_expedidor">
-  
-            <label>CPF: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="CPF">
+          <input formControlName="id" hidden="true">
+          
+          <div class="form-row">
+            <div class="form-group col-md-2">
+              <label>Matrícula: </label>
+              <input class="form-control" type="text" maxlength="10" formControlName="matricula">
+            </div>
 
-            <label>Titulo de eleitor: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="titulo_de_Eleitor">
+            <div class="form-group col-md-6">
+              <label>Nome: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="nome">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label>Data de nascimento: </label>
+              <input class="form-control" type="date" maxlength="15" formControlName="data_de_nascimento">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label>Situação: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="situacao">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-5">
+              <label>Email: </label>
+              <input class="form-control" type="email" maxlength="100" formControlName="email" placeholder="Ex: exemplo@email.com">
+            </div>
+
+            <div class="form-group col-md-3">
+              <label>Telefone: </label>
+              <input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="text" formControlName="telefone" placeholder="Ex: (19) 9999-9999">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label>Data de admissão: </label>
+              <input class="form-control" type="date" maxlength="100" formControlName="data_de_admissao">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label>data de demissão: </label>
+              <input class="form-control" type="date" maxlength="100" formControlName="data_de_demissao">
+            </div>
+          </div>
+   
+          <div class="form-row">
+            <div class="form-group col-md-2">
+              <label>CPF: </label>
+              <input class="form-control" mask="000.000.000-00" type="text" formControlName="CPF" placeholder="EX: 999.999.999-99">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label>RG: </label>
+              <input class="form-control" mask="00.000.000-0" type="text" formControlName="RG" placeholder="EX: 99.999.999-9">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label>Data emissão: </label>
+              <input class="form-control" type="date" maxlength="100" formControlName="data_emissao">
+            </div>
             
-            <label>PIS_PASEP: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="PIS_PASEP">
+            <div class="form-group col-md-3">
+              <label>Local emissao: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="local_emissao">
+            </div>
 
-            <label>NIT: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="NIT">
+            <div class="form-group col-md-2">
+              <label>Orgao expedidor: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="orgao_expedidor">
+            </div>
 
-            <label>Nome da mãe: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="nome_da_Mae">
+          </div>
 
-            <label>Nome do pai: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="nome_do_Pai">
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label>Título de eleitor: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="titulo_de_Eleitor">
+            </div>
 
-            <label>Endereço: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="endereco">
+            <div class="form-group col-md-3">
+              <label>PIS/PASEP: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="PIS_PASEP">
+            </div>
 
-            <label>Numero: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="numero">
-            
-            <label>Complemento: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="complemento">
+            <div class="form-group col-md-3">
+              <label>NIT: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="NIT">
+            </div>
+          </div>
+
   
-            <label>UF: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="UF">
+          <div class="form-row">
+            <div class="form-group col-md-6">
+              <label>Nome da mãe: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="nome_da_Mae">
+            </div>
+
+            <div class="form-group col-md-6">
+              <label>Nome do pai: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="nome_do_Pai">
+            </div>
+          </div>
   
-            <label>Cidade: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="cidade">
-  
-            <label>Telefone: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="telefone">
-  
-            <label>Email: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="email">
-  
-            <label>Data de admissão: </label>
-            <input class="form-control" type="date" maxlength="100" formControlName="data_de_admissao">
-  
-            <label>data de demissão: </label>
-            <input class="form-control" type="date" maxlength="100" formControlName="data_de_demissao">
-  
-            <label>Situação: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="situacao">
-           
-            <label>Perfil: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="perfil">
-            
-            <label>Foto: </label>
-            <input class="form-control" type="file" accept="image/*" formControlName="foto">
-            
+
+          <div class="form-row">
+            <div class="form-group col-md-5">
+              <label>Endereço: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="endereco">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label>Número: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="numero">
+            </div>
+
+            <div class="form-group col-md-5">
+              <label>Complemento: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="complemento">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-5">
+              <label>Cidade: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="cidade">
+            </div>
+
+            <div class="form-group col-md-2">
+              <label>UF: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="UF">
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group col-md-3">
+              <label>Perfil: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="perfil">
+            </div>
+
+            <div class="form-group col-md-8">
+              <label>Foto: </label>
+              <input class="form-control" type="file" accept="image/*" formControlName="foto">
+            </div>
+          </div>
+
           <div class="row align-items-end">
             <hr>
   
