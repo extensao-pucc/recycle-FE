@@ -19,8 +19,11 @@ export class ProdutosComponent implements OnInit {
   public yesNoMessage: YesNoMessage = new YesNoMessage();
   public showYesNoMessage: boolean;
 
-  public selectedQualidade: any;
+  public familias: any;
+  public fornecedores: any;
   public qualidades: any;
+  public unidadesDeMedida: any;
+  public naturezaDasOperacoes: any;
 
   constructor(
     private crudService: CrudService,
@@ -58,6 +61,14 @@ export class ProdutosComponent implements OnInit {
       this.itemsList = response;
       this.tempItemsList = _.clone(this.itemsList);
     });
+
+    this.crudService.getItems('familias').subscribe(response => { this.familias = response; });
+    this.crudService.getItems('fornecedores').subscribe(response => { this.fornecedores = response; });
+    this.crudService.getItems('qualidades').subscribe(response => { this.qualidades = response; });
+    this.crudService.getItems('unidadesDeMedida').subscribe(response => { this.unidadesDeMedida = response; });
+    this.crudService.getItems('naturezaDasOperacoes').subscribe(response => { this.naturezaDasOperacoes = response; });
+
+    console.log(this.naturezaDasOperacoes);
   }
 
   deleteItem(id): void {
