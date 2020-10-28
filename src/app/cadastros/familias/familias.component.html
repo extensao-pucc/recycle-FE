@@ -34,6 +34,10 @@
           <input formControlName="id" hidden="true">
           <label>Nome: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="nome">
+          <p class="error-msg" *ngIf="itemForm.controls.nome.errors">
+            <i class="fa fa-times"></i>
+            {{ itemForm.controls.nome.errors.msgErro }}
+          </p>
         
           <div class="row align-items-end">
             <hr>
@@ -45,7 +49,7 @@
             </div>
           </div>
           
-          <p>Form Status: {{ itemForm.status }}</p>
+          
           
         </form>
         <!-- ========== -->

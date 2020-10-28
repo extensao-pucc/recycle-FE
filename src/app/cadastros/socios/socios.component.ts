@@ -4,6 +4,7 @@ import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
+import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 
 @Component({
   selector: 'app-socios',
@@ -21,7 +22,8 @@ export class SociosComponent implements OnInit {
   constructor(
     private crudService: CrudService,
     private toastService: ToastService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private formValidatorService: FormValidatorService
   ) { }
 
   ngOnInit(): void {
@@ -37,31 +39,31 @@ export class SociosComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      matricula: ['', Validators.required],
-      nome: ['', Validators.required],
-      data_de_nascimento: ['', Validators.required],
-      RG: ['', Validators.required],
-      data_emissao: ['', Validators.required],
-      local_emissao: ['', Validators.required],
-      orgao_expedidor: ['', Validators.required],
-      CPF: ['', Validators.required],
-      titulo_de_Eleitor: ['', Validators.required],
-      PIS_PASEP: ['', Validators.required],
-      NIT: ['', Validators.required],
-      nome_da_Mae: ['', Validators.required],
+      matricula: ['', [this.formValidatorService.isEmpty]],
+      nome: ['', [this.formValidatorService.isEmpty]],
+      data_de_nascimento: ['', [this.formValidatorService.isEmpty]],
+      RG: ['', [this.formValidatorService.isEmpty]],
+      data_emissao: ['', [this.formValidatorService.isEmpty]],
+      local_emissao: ['', [this.formValidatorService.isEmpty]],
+      orgao_expedidor: ['', [this.formValidatorService.isEmpty]],
+      CPF: ['', [this.formValidatorService.isEmpty]],
+      titulo_de_Eleitor: ['', [this.formValidatorService.isEmpty]],
+      PIS_PASEP: ['', [this.formValidatorService.isEmpty]],
+      NIT: ['', [this.formValidatorService.isEmpty]],
+      nome_da_Mae: ['', [this.formValidatorService.isEmpty]],
       nome_do_Pai: [''],
-      endereco: ['', Validators.required],
-      numero: ['', Validators.required],
+      endereco: ['', [this.formValidatorService.isEmpty]],
+      numero: ['', [this.formValidatorService.isEmpty]],
       complemento: [''],
-      UF: ['', Validators.required],
-      cidade: ['', Validators.required],
-      telefone: ['', Validators.required],
-      email: ['', Validators.required],
-      data_de_admissao: ['', Validators.required],
-      data_de_demissao: ['', Validators.required],
-      situacao: ['', Validators.required],
+      UF: ['', [this.formValidatorService.isEmpty]],
+      cidade: ['', [this.formValidatorService.isEmpty]],
+      telefone: ['', [this.formValidatorService.isEmpty]],
+      email: ['', [this.formValidatorService.isEmpty]],
+      data_de_admissao: ['', [this.formValidatorService.isEmpty]],
+      data_de_demissao: ['', [this.formValidatorService.isEmpty]],
+      situacao: ['', [this.formValidatorService.isEmpty]],
       foto: [''],
-      perfil: ['', Validators.required]
+      perfil: ['', [this.formValidatorService.isEmpty]]
     });
   }
 
@@ -115,30 +117,33 @@ export class SociosComponent implements OnInit {
   }
 
   createUpdateItem(): void {
-    this.showForm = false;
     const formValues = this.itemForm.value;
 
-    if(this.validateForm()){
-      if (formValues.id) {
-        this.crudService.updateItem('socios', formValues, formValues.id).subscribe(response => {
-          this.getItems();
-          this.toastService.addToast('Atualizado com sucesso');
+    if (this.itemForm.status === 'VALID'){
+      if (this.validateForm()){
+        if (formValues.id) {
+          this.crudService.updateItem('socios', formValues, formValues.id).subscribe(response => {
+            this.getItems();
+            this.toastService.addToast('Atualizado com sucesso');
 
-        }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
-        });
-      } else {
-        this.crudService.createItem('socios', formValues).subscribe(response => {
-          this.getItems();
-          this.toastService.addToast('Cadastrado com sucesso');
-        }, err => {
-          console.log(err);
-          this.toastService.addToast(err['message'], 'darkred');
-        });
+          }, err => {
+            this.toastService.addToast(err['message'], 'darkred');
+          });
+        } else {
+          this.crudService.createItem('socios', formValues).subscribe(response => {
+            this.getItems();
+            this.toastService.addToast('Cadastrado com sucesso');
+          }, err => {
+            console.log(err);
+            this.toastService.addToast(err['message'], 'darkred');
+          });
+        }
       }
+      this.showForm = false;
+      this.loadForm();
+    } else {
+      this.toastService.addToast('Corrija os erros para continuar', 'darkred');
     }
-
-    this.loadForm();
   }
 
   showModal(title: string, items: any): void {
