@@ -60,11 +60,17 @@
             <div class="form-group col-md-2">  
               <label>Código: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="codigo">
+              <p class="error-msg" *ngIf="itemForm.controls.codigo.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.codigo.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-10">
               <label>Descrição: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="descricao">
+              <p class="error-msg" *ngIf="itemForm.controls.descricao.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.descricao.errors.msgErro }}
+              </p>
             </div>
           </div>
           
@@ -72,11 +78,17 @@
             <div class="form-group col-md-3">
               <label>Preço de compra: </label>
               <input class="form-control" prefix="R$ " mask="separator.2" thousandSeparator="." type="text" maxlength="15" formControlName="preco_compra">
+              <p class="error-msg" *ngIf="itemForm.controls.preco_compra.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.preco_compra.errors.msgErro }}
+              </p>
             </div>
             
             <div class="form-group col-md-3">
               <label>Preço de venda: </label>
               <input class="form-control" prefix="R$ " mask="separator.2" thousandSeparator="." type="text" maxlength="15" formControlName="preco_venda">
+              <p class="error-msg" *ngIf="itemForm.controls.preco_venda.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.preco_venda.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-3">
@@ -84,7 +96,9 @@
               <ng-select formControlName="unidade_de_medida" name="unidade_de_medida">
                 <ng-option *ngFor="let unidade_de_medida of unidadesDeMedida" [value]="unidade_de_medida">{{unidade_de_medida.sigla}} - {{unidade_de_medida.descricao}}</ng-option>
               </ng-select>
-              
+              <p class="error-msg" *ngIf="itemForm.controls.unidade_de_medida.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.unidade_de_medida.errors.msgErro }}
+              </p>             
             </div>
           </div>
           
@@ -94,6 +108,9 @@
               <ng-select formControlName="familia" name="familia">
                 <ng-option *ngFor="let familia of familias" [value]="familias">{{familia.nome}}</ng-option>
               </ng-select>
+              <p class="error-msg" *ngIf="itemForm.controls.familia.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.familia.errors.msgErro }}
+              </p> 
             </div>
 
             <div class="form-group col-md-5">
@@ -101,6 +118,9 @@
               <ng-select formControlName="fornecedor" name="fornecedor">
                 <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedores">{{ fornecedor.razao_social_nome }} - {{fornecedor.CNPJ_CPF}}</ng-option>
               </ng-select>
+              <p class="error-msg" *ngIf="itemForm.controls.fornecedor.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.fornecedor.errors.msgErro }}
+              </p> 
             </div>  
 
             <div class="form-group col-md-3">
@@ -108,6 +128,9 @@
               <ng-select formControlName="qualidade" name="qualidade">
                 <ng-option *ngFor="let qualidade of qualidades" [value]="qualidades">{{qualidade.nome}}</ng-option>
               </ng-select>
+              <p class="error-msg" *ngIf="itemForm.controls.qualidade.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.qualidade.errors.msgErro }}
+              </p> 
             </div>  
           </div>  
 
@@ -115,16 +138,25 @@
             <div class="form-group col-md-2">
               <label>NCM: <i class="fa fa-question-circle" tooltip="Nomenclatura Comum do Mercosul"></i></label>
               <input class="form-control" mask="0000.00.00" type="text" formControlName="NCM" placeholder="EX: 0000.00.00">
+              <p class="error-msg" *ngIf="itemForm.controls.NCM.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.NCM.errors.msgErro }}
+              </p> 
             </div>
 
             <div class="form-group col-md-2">
               <label>CSTE: <i class="fa fa-question-circle" tooltip="Código de Situação Tributária (Entrada)"></i></label>
               <input class="form-control" type="text" maxlength="10" formControlName="CSTE" placeholder="EX: 000">
+              <p class="error-msg" *ngIf="itemForm.controls.CSTE.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.CSTE.errors.msgErro }}
+              </p> 
             </div>
 
             <div class="form-group col-md-2">
               <label>CSTS: <i class="fa fa-question-circle" tooltip="Código de Situação Tributária (Saida)"></i></label>
               <input class="form-control" type="text" maxlength="10" formControlName="CSTS" placeholder="EX: 000">
+              <p class="error-msg" *ngIf="itemForm.controls.CSTS.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.CSTS.errors.msgErro }}
+              </p> 
             </div>
 
             <div class="form-group col-md-3">
@@ -132,6 +164,9 @@
               <ng-select formControlName="CFOPE" name="CFOPE">
                 <ng-option *ngFor="let CFOPE of naturezaDasOperacoes" [value]="naturezaDasOperacoes">{{ CFOPE.codigo }} - {{ CFOPE.descricao }}</ng-option>
               </ng-select>
+              <p class="error-msg" *ngIf="itemForm.controls.CFOPE.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.CFOPE.errors.msgErro }}
+              </p> 
             </div>
 
             <div class="form-group col-md-3">
@@ -139,6 +174,9 @@
               <ng-select formControlName="CFOPS" name="CFOPS">
                 <ng-option *ngFor="let CFOPS of naturezaDasOperacoes" [value]="naturezaDasOperacoes">{{ CFOPS.codigo }} - {{ CFOPS.descricao }}</ng-option>
               </ng-select>
+              <p class="error-msg" *ngIf="itemForm.controls.CFOPS.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.CFOPS.errors.msgErro }}
+              </p> 
             </div>
           </div> 
         
@@ -151,7 +189,7 @@
               <button class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value" (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
             </div>
           </div>
-          <p>Form Status: {{ itemForm.status }}</p>       
+                 
         </form>
         <!-- ========== -->
         

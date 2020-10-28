@@ -33,6 +33,9 @@
           <input formControlName="id" hidden="true">
           <label>Motivo: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="motivo">
+          <p class="error-msg" *ngIf="itemForm.controls.motivo.errors">
+            <i class="fa fa-times"></i> {{ itemForm.controls.motivo.errors.msgErro }}
+          </p>
         
           <div class="row align-items-end">
             <hr>
@@ -43,7 +46,7 @@
               <button class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value" (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
             </div>
           </div>          
-          <p>Form Status: {{ itemForm.status }}</p>          
+                    
         </form>
         <!-- ========== -->
         

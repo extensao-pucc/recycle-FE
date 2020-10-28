@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
+import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 import { CrudService } from '../../cadastros/crud.service';
 import { FormBuilder, Validators } from '@angular/forms';
 

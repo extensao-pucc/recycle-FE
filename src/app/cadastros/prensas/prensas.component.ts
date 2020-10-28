@@ -4,6 +4,7 @@ import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
+import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 
 @Component({
   selector: 'app-prensas',
@@ -21,7 +22,8 @@ export class PrensasComponent implements OnInit {
   constructor(
     private crudService: CrudService,
     private toastService: ToastService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private formValidatorService: FormValidatorService
   ) { }
 
   ngOnInit(): void {
@@ -32,9 +34,9 @@ export class PrensasComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      numero: ['', Validators.required],
-      descricao: ['', Validators.required],
-      detalhes_tecnicos: ['', Validators.required]
+      numero: ['', [this.formValidatorService.isEmpty]],
+      descricao: ['', [this.formValidatorService.isEmpty]],
+      detalhes_tecnicos: ['', [this.formValidatorService.isEmpty]]
     });
   }
 
@@ -66,26 +68,29 @@ export class PrensasComponent implements OnInit {
   }
 
   createUpdateItem(): void {
-    this.showForm = false;
     const formValues = this.itemForm.value;
 
-    if (formValues.id) {
-      this.crudService.updateItem('prensas', formValues, formValues.id).subscribe(response => {
-        this.getItems();
-        this.toastService.addToast('Atualizado com sucesso');
-      }, err => {
-        this.toastService.addToast(err['message'], 'darkred');
-      });
+    if (this.itemForm.status === 'VALID'){
+      if (formValues.id) {
+        this.crudService.updateItem('prensas', formValues, formValues.id).subscribe(response => {
+          this.getItems();
+          this.toastService.addToast('Atualizado com sucesso');
+        }, err => {
+          this.toastService.addToast(err['message'], 'darkred');
+        });
+      } else {
+        this.crudService.createItem('prensas', formValues).subscribe(response => {
+          this.getItems();
+          this.toastService.addToast('Cadastrado com sucesso');
+        }, err => {
+          this.toastService.addToast(err['message'], 'darkred');
+        });
+      }
+      this.showForm = false;
+      this.loadForm();
     } else {
-      this.crudService.createItem('prensas', formValues).subscribe(response => {
-        this.getItems();
-        this.toastService.addToast('Cadastrado com sucesso');
-      }, err => {
-        this.toastService.addToast(err['message'], 'darkred');
-      });
+      this.toastService.addToast('Corrija os erros para continuar', 'darkred');
     }
-
-    this.loadForm();
   }
 
   showModal(title: string, items: any): void {
