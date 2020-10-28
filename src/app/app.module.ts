@@ -9,7 +9,8 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { SnackbarModule } from 'ngx-snackbar';
-import { NgxMaskModule, IConfig } from 'ngx-mask';
+import { NgxMaskModule } from 'ngx-mask';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 // components
 import { AppRoutingModule } from './app-routing.module';
@@ -29,6 +30,7 @@ import { SociosComponent } from './cadastros/socios/socios.component';
 import { TransportadorasComponent } from './cadastros/transportadoras/transportadoras.component';
 import { UnidadesDeMedidaComponent } from './cadastros/unidades-de-medida/unidades-de-medida.component';
 import { YesNoMessageComponent } from './shared/yes-no-message/yes-no-message.component';
+import { TriagemComponent } from './producao/triagem/triagem.component';
 
 // providers
 import { AuthGuard } from './guards/auth.guard';
@@ -50,7 +52,8 @@ import { AuthGuard } from './guards/auth.guard';
     SociosComponent,
     TransportadorasComponent,
     UnidadesDeMedidaComponent,
-    YesNoMessageComponent
+    YesNoMessageComponent,
+    TriagemComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +66,8 @@ import { AuthGuard } from './guards/auth.guard';
     SnackbarModule.forRoot(),
     NgxMaskModule.forRoot(),
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgSelectModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]
