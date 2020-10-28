@@ -4,6 +4,7 @@ import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
+import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 
 
 @Component({
@@ -28,7 +29,8 @@ export class ProdutosComponent implements OnInit {
   constructor(
     private crudService: CrudService,
     private toastService: ToastService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private formValidatorService: FormValidatorService
   ) {
     this.getItems();
   }
@@ -40,19 +42,19 @@ export class ProdutosComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      codigo: ['', Validators.required],
-      descricao: ['', Validators.required],
-      familia: ['', Validators.required],
-      fornecedor: ['', Validators.required],
-      qualidade: ['', Validators.required],
-      unidade_de_medida: [''],
-      NCM: ['', Validators.required],
-      CSTE: ['', Validators.required],
-      CSTS: ['', Validators.required],
-      CFOPE: ['', Validators.required],
-      CFOPS: ['', Validators.required],
-      preco_compra: ['', Validators.required],
-      preco_venda: ['', Validators.required]
+      codigo: ['', [this.formValidatorService.isEmpty]],
+      descricao: ['', [this.formValidatorService.isEmpty]],
+      familia: ['', [this.formValidatorService.isEmpty]],
+      fornecedor: ['', [this.formValidatorService.isEmpty]],
+      qualidade: ['', [this.formValidatorService.isEmpty]],
+      unidade_de_medida: ['', [this.formValidatorService.isEmpty]],
+      NCM: ['', [this.formValidatorService.isEmpty]],
+      CSTE: ['', [this.formValidatorService.isEmpty]],
+      CSTS: ['', [this.formValidatorService.isEmpty]],
+      CFOPE: ['', [this.formValidatorService.isEmpty]],
+      CFOPS: ['', [this.formValidatorService.isEmpty]],
+      preco_compra: ['', [this.formValidatorService.isEmpty]],
+      preco_venda: ['', [this.formValidatorService.isEmpty]]
     });
   }
 
@@ -100,26 +102,29 @@ export class ProdutosComponent implements OnInit {
   }
 
   createUpdateItem(): void {
-    this.showForm = false;
     const formValues = this.itemForm.value;
 
-    if (formValues.id) {
-      this.crudService.updateItem('produtos', formValues, formValues.id).subscribe(response => {
-        this.getItems();
-        this.toastService.addToast('Atualizado com sucesso');
-      }, err => {
-        this.toastService.addToast(err['message'], 'darkred');
-      });
+    if (this.itemForm.status === 'VALID'){
+      if (formValues.id) {
+        this.crudService.updateItem('produtos', formValues, formValues.id).subscribe(response => {
+          this.getItems();
+          this.toastService.addToast('Atualizado com sucesso');
+        }, err => {
+          this.toastService.addToast(err['message'], 'darkred');
+        });
+      } else {
+        this.crudService.createItem('produtos', formValues).subscribe(response => {
+          this.toastService.addToast('Cadastrado com sucesso');
+        }, err => {
+          console.log(err);
+          this.toastService.addToast(err['message'], 'darkred');
+        });
+      }
+      this.showForm = false;
+      this.loadForm();
     } else {
-      this.crudService.createItem('produtos', formValues).subscribe(response => {
-        this.toastService.addToast('Cadastrado com sucesso');
-      }, err => {
-        console.log(err);
-        this.toastService.addToast(err['message'], 'darkred');
-      });
+      this.toastService.addToast('Corrija os erros para continuar', 'darkred');
     }
-
-    this.loadForm();
   }
 
   showModal(title: string, items: any): void {

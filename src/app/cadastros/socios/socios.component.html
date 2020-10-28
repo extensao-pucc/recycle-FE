@@ -83,21 +83,33 @@
             <div class="form-group col-md-2">
               <label>Matrícula: </label>
               <input class="form-control" type="text" maxlength="10" formControlName="matricula">
+              <p class="error-msg" *ngIf="itemForm.controls.matricula.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.matricula.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-6">
               <label>Nome: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="nome">
+              <p class="error-msg" *ngIf="itemForm.controls.nome.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.nome.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-2">
               <label>Data de nascimento: </label>
               <input class="form-control" type="date" maxlength="15" formControlName="data_de_nascimento">
+              <p class="error-msg" *ngIf="itemForm.controls.data_de_nascimento.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.data_de_nascimento.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-2">
               <label>Situação: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="situacao">
+              <p class="error-msg" *ngIf="itemForm.controls.situacao.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.situacao.errors.msgErro }}
+              </p>
             </div>
           </div>
 
@@ -105,21 +117,33 @@
             <div class="form-group col-md-5">
               <label>Email: </label>
               <input class="form-control" type="email" maxlength="100" formControlName="email" placeholder="Ex: exemplo@email.com">
+              <p class="error-msg" *ngIf="itemForm.controls.email.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.email.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-3">
               <label>Telefone: </label>
               <input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="text" formControlName="telefone" placeholder="Ex: (19) 9999-9999">
+              <p class="error-msg" *ngIf="itemForm.controls.telefone.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.telefone.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-2">
               <label>Data de admissão: </label>
               <input class="form-control" type="date" maxlength="100" formControlName="data_de_admissao">
+              <p class="error-msg" *ngIf="itemForm.controls.data_de_admissao.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.data_de_admissao.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-2">
               <label>data de demissão: </label>
               <input class="form-control" type="date" maxlength="100" formControlName="data_de_demissao">
+              <p class="error-msg" *ngIf="itemForm.controls.data_de_demissao.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.data_de_demissao.errors.msgErro }}
+              </p>
             </div>
           </div>
    
@@ -127,26 +151,41 @@
             <div class="form-group col-md-2">
               <label>CPF: </label>
               <input class="form-control" mask="000.000.000-00" type="text" formControlName="CPF" placeholder="EX: 999.999.999-99">
+              <p class="error-msg" *ngIf="itemForm.controls.CPF.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.CPF.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-2">
               <label>RG: </label>
               <input class="form-control" mask="00.000.000-0" type="text" formControlName="RG" placeholder="EX: 99.999.999-9">
+              <p class="error-msg" *ngIf="itemForm.controls.RG.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.RG.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-2">
               <label>Data emissão: </label>
               <input class="form-control" type="date" maxlength="100" formControlName="data_emissao">
+              <p class="error-msg" *ngIf="itemForm.controls.data_emissao.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.data_emissao.errors.msgErro }}
+              </p>
             </div>
             
             <div class="form-group col-md-3">
               <label>Local emissao: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="local_emissao">
+              <p class="error-msg" *ngIf="itemForm.controls.local_emissao.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.local_emissao.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-2">
-              <label>Orgao expedidor: </label>
+              <label>Orgão expedidor: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="orgao_expedidor">
+              <p class="error-msg" *ngIf="itemForm.controls.orgao_expedidor.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.orgao_expedidor.errors.msgErro }}
+              </p>
             </div>
 
           </div>
@@ -155,16 +194,25 @@
             <div class="form-group col-md-3">
               <label>Título de eleitor: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="titulo_de_Eleitor">
+              <p class="error-msg" *ngIf="itemForm.controls.titulo_de_Eleitor.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.titulo_de_Eleitor.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-3">
-              <label>PIS/PASEP: </label>
+              <label>PIS/PASEP: <i class="fa fa-question-circle" tooltip="Programa de Integração Social e o Programa de Formação do Patrimônio do Servidor Público"></i> </label>
               <input class="form-control" type="text" maxlength="100" formControlName="PIS_PASEP">
+              <p class="error-msg" *ngIf="itemForm.controls.PIS_PASEP.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.PIS_PASEP.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-3">
-              <label>NIT: </label>
+              <label>NIT: <i class="fa fa-question-circle" tooltip="Número de Identificação do Trabalhador"></i> </label>
               <input class="form-control" type="text" maxlength="100" formControlName="NIT">
+              <p class="error-msg" *ngIf="itemForm.controls.NIT.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.NIT.errors.msgErro }}
+              </p>
             </div>
           </div>
 
@@ -173,11 +221,17 @@
             <div class="form-group col-md-6">
               <label>Nome da mãe: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="nome_da_Mae">
+              <p class="error-msg" *ngIf="itemForm.controls.nome_da_Mae.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.nome_da_Mae.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-6">
               <label>Nome do pai: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="nome_do_Pai">
+              <p class="error-msg" *ngIf="itemForm.controls.nome_do_Pai.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.nome_do_Pai.errors.msgErro }}
+              </p>
             </div>
           </div>
   
@@ -186,16 +240,25 @@
             <div class="form-group col-md-5">
               <label>Endereço: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="endereco">
+              <p class="error-msg" *ngIf="itemForm.controls.endereco.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.endereco.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-2">
               <label>Número: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="numero">
+              <p class="error-msg" *ngIf="itemForm.controls.numero.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.numero.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-5">
               <label>Complemento: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="complemento">
+              <p class="error-msg" *ngIf="itemForm.controls.complemento.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.complemento.errors.msgErro }}
+              </p>
             </div>
           </div>
 
@@ -203,11 +266,17 @@
             <div class="form-group col-md-5">
               <label>Cidade: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="cidade">
+              <p class="error-msg" *ngIf="itemForm.controls.cidade.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.cidade.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-2">
               <label>UF: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="UF">
+              <p class="error-msg" *ngIf="itemForm.controls.UF.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.UF.errors.msgErro }}
+              </p>
             </div>
           </div>
 
@@ -215,6 +284,9 @@
             <div class="form-group col-md-3">
               <label>Perfil: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="perfil">
+              <p class="error-msg" *ngIf="itemForm.controls.perfil.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.perfil.errors.msgErro }}
+              </p>
             </div>
 
             <div class="form-group col-md-8">
@@ -232,7 +304,7 @@
               <button class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value" (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
             </div>
           </div>
-          <p>Form Status: {{ itemForm.status }}</p>
+          
         </form>
         <!-- ========== -->
 

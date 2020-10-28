@@ -4,6 +4,7 @@ import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
+import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 
 @Component({
   selector: 'app-transportadoras',
@@ -21,7 +22,8 @@ export class TransportadorasComponent implements OnInit {
   constructor(
     private crudService: CrudService,
     private toastService: ToastService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private formValidatorService: FormValidatorService
   ) { }
 
   ngOnInit(): void {
@@ -32,18 +34,18 @@ export class TransportadorasComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      CNPJ_CPF: ['', Validators.required],
-      razao_social_nome: ['', Validators.required],
-      IE: ['', Validators.required],
-      endereco: ['', Validators.required],
-      numero: ['', Validators.required],
+      CNPJ_CPF: ['', [this.formValidatorService.isEmpty]],
+      razao_social_nome: ['', [this.formValidatorService.isEmpty]],
+      IE: ['', [this.formValidatorService.isEmpty]],
+      endereco: ['', [this.formValidatorService.isEmpty]],
+      numero: ['', [this.formValidatorService.isEmpty]],
       complemento: [''],
-      bairro: ['', Validators.required],
-      CEP: ['', Validators.required],
-      UF: ['', Validators.required],
-      cidade: ['', Validators.required],
-      telefone: ['', Validators.required],
-      email: ['', Validators.required]
+      bairro: ['', [this.formValidatorService.isEmpty]],
+      CEP: ['', [this.formValidatorService.isEmpty]],
+      UF: ['', [this.formValidatorService.isEmpty]],
+      cidade: ['', [this.formValidatorService.isEmpty]],
+      telefone: ['', [this.formValidatorService.isEmpty]],
+      email: ['', [this.formValidatorService.isEmpty]]
     });
   }
 
@@ -84,26 +86,29 @@ export class TransportadorasComponent implements OnInit {
   }
 
   createUpdateItem(): void {
-    this.showForm = false;
     const formValues = this.itemForm.value;
 
-    if (formValues.id) {
-      this.crudService.updateItem('transportadoras', formValues, formValues.id).subscribe(response => {
-        this.getItems();
-        this.toastService.addToast('Atualizado com sucesso');
-      }, err => {
-        this.toastService.addToast(err['message'], 'darkred');
-      });
+    if (this.itemForm.status === 'VALID'){
+      if (formValues.id) {
+        this.crudService.updateItem('transportadoras', formValues, formValues.id).subscribe(response => {
+          this.getItems();
+          this.toastService.addToast('Atualizado com sucesso');
+        }, err => {
+          this.toastService.addToast(err['message'], 'darkred');
+        });
+      } else {
+        this.crudService.createItem('transportadoras', formValues).subscribe(response => {
+          this.getItems();
+          this.toastService.addToast('Cadastrado com sucesso');
+        }, err => {
+          this.toastService.addToast(err['message'], 'darkred');
+        });
+      }
+      this.showForm = false;
+      this.loadForm();
     } else {
-      this.crudService.createItem('transportadoras', formValues).subscribe(response => {
-        this.getItems();
-        this.toastService.addToast('Cadastrado com sucesso');
-      }, err => {
-        this.toastService.addToast(err['message'], 'darkred');
-      });
+      this.toastService.addToast('Corrija os erros para continuar', 'darkred');
     }
-
-    this.loadForm();
   }
 
   showModal(title: string, items: any): void {

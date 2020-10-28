@@ -4,7 +4,7 @@ import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
-import { FormValidatorService } from '../../shared/formValidator/form-validator.service'
+import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 
 @Component({
   selector: 'app-condicoes-de-pagamento',
@@ -32,16 +32,10 @@ export class CondicoesDePagamentoComponent implements OnInit {
     this.loadForm();
   }
 
-
-  validateForm(): boolean {
-    const formValues = this.itemForm.value;
-    return true;
-  }
-
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      descricao:  ['', [this.formValidatorService.emailDomainValidator]],
+      descricao:  ['', [this.formValidatorService.isEmpty]],
     });
   }
 
@@ -70,10 +64,9 @@ export class CondicoesDePagamentoComponent implements OnInit {
   }
 
   createUpdateItem(): void {
-    this.showForm = false;
     const formValues = this.itemForm.value;
 
-    if (this.validateForm()){
+    if (this.itemForm.status === 'VALID'){
       if (formValues.id) {
         this.crudService.updateItem('condicoesDePagamento', formValues, formValues.id).subscribe(response => {
           this.getItems();
@@ -89,10 +82,13 @@ export class CondicoesDePagamentoComponent implements OnInit {
           this.toastService.addToast(err['message'], 'darkred');
         });
       }
+      this.showForm = false;
+      this.loadForm();
+    } else {
+      this.toastService.addToast('Corrija os erros para continuar', 'darkred');
     }
-
-    this.loadForm();
   }
+
 
   showModal(title: string, items: any): void {
     const formValues = this.itemForm.value;

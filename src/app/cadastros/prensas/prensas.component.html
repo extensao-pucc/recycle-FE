@@ -38,12 +38,21 @@
           <input formControlName="id" hidden="true">          
           <label>Número: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="numero">
+          <p class="error-msg" *ngIf="itemForm.controls.numero.errors">
+            <i class="fa fa-times"></i> {{ itemForm.controls.numero.errors.msgErro }}
+          </p>
           
           <label>Descrição: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="descricao">
+          <p class="error-msg" *ngIf="itemForm.controls.descricao.errors">
+            <i class="fa fa-times"></i> {{ itemForm.controls.descricao.errors.msgErro }}
+          </p>
           
           <label>Detalhes Técnicos: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="detalhes_tecnicos">
+          <p class="error-msg" *ngIf="itemForm.controls.detalhes_tecnicos.errors">
+            <i class="fa fa-times"></i> {{ itemForm.controls.detalhes_tecnicos.errors.msgErro }}
+          </p>
         
           <div class="row align-items-end">
             <hr>
@@ -55,7 +64,7 @@
             </div>
           </div>
 
-          <p>Form Status: {{ itemForm.status }}</p>
+          
           
         </form>
         <!-- ========== -->
