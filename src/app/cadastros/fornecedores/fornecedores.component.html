@@ -134,7 +134,9 @@
 
             <div class="form-group col-md-3">
               <label>UF: </label>
-              <input class="form-control" type="text" maxlength="100" formControlName="UF">
+              <ng-select formControlName="UF"  name="UF">
+                <ng-option *ngFor="let state of states" [value]="state.uf">{{state.state}}</ng-option>
+              </ng-select>
               <p class="error-msg" *ngIf="itemForm.controls.UF.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.UF.errors.msgErro }}
               </p>
