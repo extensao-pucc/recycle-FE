@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
+import { SharedVariableService } from '../../shared/shared-variable.service';
 
 @Component({
   selector: 'app-transportadoras',
@@ -19,12 +20,18 @@ export class TransportadorasComponent implements OnInit {
   public yesNoMessage: YesNoMessage = new YesNoMessage();
   public showYesNoMessage: boolean;
 
+  public states: any;
+
+
   constructor(
     private crudService: CrudService,
     private toastService: ToastService,
     private formBuilder: FormBuilder,
-    private formValidatorService: FormValidatorService
-  ) { }
+    private formValidatorService: FormValidatorService,
+    private sharedVariableService: SharedVariableService
+  ) {
+    this.states = this.sharedVariableService.getStates();
+  }
 
   ngOnInit(): void {
     this.getItems();

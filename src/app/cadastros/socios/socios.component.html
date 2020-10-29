@@ -106,7 +106,9 @@
 
             <div class="form-group col-md-2">
               <label>Situação: </label>
-              <input class="form-control" type="text" maxlength="100" formControlName="situacao">
+              <ng-select formControlName="situacao"  name="situacao">
+                <ng-option *ngFor="let stat of status" [value]="stat.status">{{stat.status}}</ng-option>
+              </ng-select>
               <p class="error-msg" *ngIf="itemForm.controls.situacao.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.situacao.errors.msgErro }}
               </p>
@@ -273,7 +275,9 @@
 
             <div class="form-group col-md-2">
               <label>UF: </label>
-              <input class="form-control" type="text" maxlength="100" formControlName="UF">
+              <ng-select formControlName="UF"  name="UF">
+                <ng-option *ngFor="let state of states" [value]="state.uf">{{state.state}}</ng-option>
+              </ng-select>
               <p class="error-msg" *ngIf="itemForm.controls.UF.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.UF.errors.msgErro }}
               </p>
@@ -283,7 +287,9 @@
           <div class="form-row">
             <div class="form-group col-md-3">
               <label>Perfil: </label>
-              <input class="form-control" type="text" maxlength="100" formControlName="perfil">
+              <ng-select formControlName="perfil"  name="perfil">
+                <ng-option *ngFor="let profile of profiles " [value]="profile.profile">{{profile.profile}}</ng-option>
+              </ng-select>
               <p class="error-msg" *ngIf="itemForm.controls.perfil.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.perfil.errors.msgErro }}
               </p>
