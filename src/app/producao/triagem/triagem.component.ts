@@ -65,7 +65,7 @@ export class TriagemComponent implements OnInit {
     this.yesNoMessage = {
       title,
       mainText: 'Tem certeza que deseja ' + title.toLowerCase() + ' a prdução?',
-      items: ['Deletar' ],
+      items: ['Após a confirmação a produção vai se ' + title.toLowerCase() ],
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {

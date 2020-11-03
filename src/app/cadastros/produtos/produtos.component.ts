@@ -83,22 +83,21 @@ export class ProdutosComponent implements OnInit {
   }
 
   updateItem(item: any): void {
-    this.showForm = true;
-
     this.itemForm.controls.id.setValue(item.id);
     this.itemForm.controls.codigo.setValue(item.codigo);
     this.itemForm.controls.descricao.setValue(item.descricao);
-    this.itemForm.controls.familia.setValue(item.familia);
-    this.itemForm.controls.fornecedor.setValue(item.fornecedor);
-    this.itemForm.controls.qualidade.setValue(item.qualidade);
-    this.itemForm.controls.unidade_de_medida.setValue(item.unidade_de_medida);
+    this.itemForm.controls.familia.setValue(item.familia.id);
+    this.itemForm.controls.fornecedor.setValue(item.fornecedor.id);
+    this.itemForm.controls.qualidade.setValue(item.qualidade.id);
+    this.itemForm.controls.unidade_de_medida.setValue(item.unidade_de_medida.id);
     this.itemForm.controls.NCM.setValue(item.NCM);
     this.itemForm.controls.CSTE.setValue(item.CSTE);
     this.itemForm.controls.CSTS.setValue(item.CSTS);
-    this.itemForm.controls.CFOPE.setValue(item.CFOPE);
-    this.itemForm.controls.CFOPS.setValue(item.CFOPS);
+    this.itemForm.controls.CFOPE.setValue(item.CFOPE.id);
+    this.itemForm.controls.CFOPS.setValue(item.CFOPS.id);
     this.itemForm.controls.preco_compra.setValue(item.preco_compra);
     this.itemForm.controls.preco_venda.setValue(item.preco_venda);
+    this.showForm = true;
   }
 
   createUpdateItem(): void {
@@ -114,9 +113,9 @@ export class ProdutosComponent implements OnInit {
         });
       } else {
         this.crudService.createItem('produtos', formValues).subscribe(response => {
+          this.getItems();
           this.toastService.addToast('Cadastrado com sucesso');
         }, err => {
-          console.log(err);
           this.toastService.addToast(err['message'], 'darkred');
         });
       }
