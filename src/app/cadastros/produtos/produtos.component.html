@@ -93,8 +93,8 @@
 
             <div class="form-group col-md-3">
               <label>Unidade de medida: </label>
-              <ng-select formControlName="unidade_de_medida" name="unidade_de_medida">
-                <ng-option *ngFor="let unidade_de_medida of unidadesDeMedida" [value]="unidade_de_medida">{{unidade_de_medida.sigla}} - {{unidade_de_medida.descricao}}</ng-option>
+              <ng-select *ngIf="unidadesDeMedida" formControlName="unidade_de_medida" name="unidade_de_medida">
+                <ng-option *ngFor="let unidade_de_medida of unidadesDeMedida" [value]="unidade_de_medida?.id">{{unidade_de_medida.sigla}} - {{unidade_de_medida.descricao}}</ng-option>
               </ng-select>
               <p class="error-msg" *ngIf="itemForm.controls.unidade_de_medida.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.unidade_de_medida.errors.msgErro }}
@@ -105,8 +105,8 @@
           <div class="form-row">
             <div class="form-group col-md-3">
               <label>Família: </label>
-              <ng-select formControlName="familia" name="familia">
-                <ng-option *ngFor="let familia of familias" [value]="familias">{{familia.nome}}</ng-option>
+              <ng-select *ngIf="familias" formControlName="familia" name="familia">
+                <ng-option *ngFor="let familia of familias" [value]="familia?.id">{{familia.nome}}</ng-option>
               </ng-select>
               <p class="error-msg" *ngIf="itemForm.controls.familia.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.familia.errors.msgErro }}
@@ -115,8 +115,8 @@
 
             <div class="form-group col-md-5">
               <label>Fornecedor: </label>
-              <ng-select formControlName="fornecedor" name="fornecedor">
-                <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedores">{{ fornecedor.razao_social_nome }} - {{fornecedor.CNPJ_CPF}}</ng-option>
+              <ng-select *ngIf="fornecedores" formControlName="fornecedor" name="fornecedor">
+                <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor?.id">{{ fornecedor.razao_social_nome }} - {{fornecedor.CNPJ_CPF}}</ng-option>
               </ng-select>
               <p class="error-msg" *ngIf="itemForm.controls.fornecedor.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.fornecedor.errors.msgErro }}
@@ -125,8 +125,8 @@
 
             <div class="form-group col-md-3">
               <label>Qualidade: </label>
-              <ng-select formControlName="qualidade" name="qualidade">
-                <ng-option *ngFor="let qualidade of qualidades" [value]="qualidades">{{qualidade.nome}}</ng-option>
+              <ng-select *ngIf="qualidades" formControlName="qualidade" name="qualidade">
+                <ng-option *ngFor="let qualidade of qualidades" [value]="qualidade?.id">{{qualidade.nome}}</ng-option>
               </ng-select>
               <p class="error-msg" *ngIf="itemForm.controls.qualidade.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.qualidade.errors.msgErro }}
@@ -161,8 +161,8 @@
 
             <div class="form-group col-md-3">
               <label>CFOPE: <i class="fa fa-question-circle" tooltip="Código Fiscal de Operações e Prestações (Entrada)"></i></label>
-              <ng-select formControlName="CFOPE" name="CFOPE">
-                <ng-option *ngFor="let CFOPE of naturezaDasOperacoes" [value]="naturezaDasOperacoes">{{ CFOPE.codigo }} - {{ CFOPE.descricao }}</ng-option>
+              <ng-select *ngIf="naturezaDasOperacoes" formControlName="CFOPE" name="CFOPE">
+                <ng-option *ngFor="let CFOPE of naturezaDasOperacoes" [value]="CFOPE?.id">{{ CFOPE.codigo }} - {{ CFOPE.descricao }}</ng-option>
               </ng-select>
               <p class="error-msg" *ngIf="itemForm.controls.CFOPE.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.CFOPE.errors.msgErro }}
@@ -171,14 +171,14 @@
 
             <div class="form-group col-md-3">
               <label>CFOPS: <i class="fa fa-question-circle" tooltip="Código Fiscal de Operações e Prestações (Saida)"></i></label>
-              <ng-select formControlName="CFOPS" name="CFOPS">
-                <ng-option *ngFor="let CFOPS of naturezaDasOperacoes" [value]="naturezaDasOperacoes">{{ CFOPS.codigo }} - {{ CFOPS.descricao }}</ng-option>
+              <ng-select *ngIf="naturezaDasOperacoes" formControlName="CFOPS" name="CFOPS">
+                <ng-option *ngFor="let CFOPS of naturezaDasOperacoes" [value]="CFOPS?.id">{{ CFOPS.codigo }} - {{ CFOPS.descricao }}</ng-option>
               </ng-select>
               <p class="error-msg" *ngIf="itemForm.controls.CFOPS.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.CFOPS.errors.msgErro }}
               </p> 
             </div>
-          </div> 
+          </div>
         
           <div class="row align-items-end">
             <hr>
