@@ -5,7 +5,8 @@
       </h2>
 
         <!-- Tabela -->
-        <table class="table table-hover" *ngIf="!showForm">
+        <div class="table-list">
+          <table class="table table-hover" *ngIf="!showForm">
             <thead class="thead-dark">
               <tr>
                 <th scope="col">ID</th>
@@ -46,6 +47,7 @@
               </tr>
             </tbody>
           </table>
+        </div>
         <!-- ========== -->
 
         <!-- Formulario -->
@@ -164,6 +166,8 @@
   
             <div>
               <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
+              <!-- <input class="btn btn-info ml-1 mt-3 pull-right" type="reset" value="Limpar">
+              <button class="btn btn-info ml-1 mt-3 pull-right" (click)="loadForm()"> <i class="fa fa-sign-in"></i>Limpar</button> -->
               <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
               <button class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value" (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
             </div>

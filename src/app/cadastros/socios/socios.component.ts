@@ -130,24 +130,22 @@ export class SociosComponent implements OnInit {
     const formValues = this.itemForm.value;
 
     if (this.itemForm.status === 'VALID'){
-      if (this.validateForm()){
-        if (formValues.id) {
-          this.crudService.updateItem('socios', formValues, formValues.id).subscribe(response => {
-            this.getItems();
-            this.toastService.addToast('Atualizado com sucesso');
+      if (formValues.id) {
+        this.crudService.updateItem('socios', formValues, formValues.id).subscribe(response => {
+          this.getItems();
+          this.toastService.addToast('Atualizado com sucesso');
 
-          }, err => {
-            this.toastService.addToast(err['message'], 'darkred');
-          });
-        } else {
-          this.crudService.createItem('socios', formValues).subscribe(response => {
-            this.getItems();
-            this.toastService.addToast('Cadastrado com sucesso');
-          }, err => {
-            console.log(err);
-            this.toastService.addToast(err['message'], 'darkred');
-          });
-        }
+        }, err => {
+          this.toastService.addToast(err['message'], 'darkred');
+        });
+      } else {
+        this.crudService.createItem('socios', formValues).subscribe(response => {
+          this.getItems();
+          this.toastService.addToast('Cadastrado com sucesso');
+        }, err => {
+          console.log(err);
+          this.toastService.addToast(err['message'], 'darkred');
+        });
       }
       this.showForm = false;
       this.loadForm();

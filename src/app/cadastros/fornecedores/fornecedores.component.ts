@@ -45,18 +45,18 @@ export class FornecedoresComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      CNPJ_CPF: ['', [this.formValidatorService.isEmpty]],
+      CNPJ_CPF: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validCPF_CNPJ]],
       razao_social_nome: ['', [this.formValidatorService.isEmpty]],
-      IE: ['', [this.formValidatorService.isEmpty]],
+      IE: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       endereco: ['', [this.formValidatorService.isEmpty]],
-      numero: ['', [this.formValidatorService.isEmpty]],
+      numero: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       complemento: [''],
       bairro: ['', [this.formValidatorService.isEmpty]],
-      CEP: ['', [this.formValidatorService.isEmpty]],
+      CEP: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validCEP]],
       UF: ['', [this.formValidatorService.isEmpty]],
       cidade: ['', [this.formValidatorService.isEmpty]],
-      telefone: ['', [this.formValidatorService.isEmpty]],
-      email: ['', [this.formValidatorService.isEmpty]]
+      telefone: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validTelefone]],
+      email: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validEmail]]
     });
   }
 
