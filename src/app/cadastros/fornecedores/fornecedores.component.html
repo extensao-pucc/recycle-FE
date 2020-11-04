@@ -1,3 +1,4 @@
+
 <div class="d-flex background">
     <div class="center">
       <h2 class="d-flex justify-content-between">Fornecedores    
@@ -154,14 +155,11 @@
             
             <div class="form-group col-md-2">
               <label>CEP: </label>
-              <input class="form-control" mask="00000-000" type="text" formControlName="CEP" placeholder="Ex: 99999-999"/>
+              <!-- <input class="form-control" mask="00000-000" type="text" placeholder="Ex: 99999-999" formControlName="CEP"/> -->
+              <app-pesquisa-cep (retornaPesquisaCep)="populaDados($event)"></app-pesquisa-cep>
               <p class="error-msg" *ngIf="itemForm.controls.CEP.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.CEP.errors.msgErro }}
               </p>
-            </div>
-            <div class="form-group col-md-1">
-              <p></p>
-              <button type="button" class="btn btn-light"><i class="fa fa-search"></i></button>
             </div>
           </div>
                     

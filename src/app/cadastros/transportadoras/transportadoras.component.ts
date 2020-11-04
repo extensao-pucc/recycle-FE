@@ -142,4 +142,12 @@ export class TransportadorasComponent implements OnInit {
     };
     this.showYesNoMessage = true;
   }
+
+  populaDados(item: any): any {
+    this.itemForm.controls.endereco.setValue(item.logradouro);
+    this.itemForm.controls.bairro.setValue(item.bairro);
+    this.itemForm.controls.cidade.setValue(item.cidade);
+    this.itemForm.controls.UF.setValue(item.estado);
+    this.itemForm.controls.CEP.setValue(item.cep);
+  }
 }

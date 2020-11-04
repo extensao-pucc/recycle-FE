@@ -153,9 +153,10 @@
               </p>
             </div>
             
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
               <label>CEP: </label>
-              <input class="form-control" mask="00000-000" type="text" formControlName="CEP" placeholder="Ex: 99999-999">
+              <!-- <input class="form-control" mask="00000-000" type="text" placeholder="Ex: 99999-999" formControlName="CEP"/> -->
+              <app-pesquisa-cep (retornaPesquisaCep)="populaDados($event)"></app-pesquisa-cep>
               <p class="error-msg" *ngIf="itemForm.controls.CEP.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.CEP.errors.msgErro }}
               </p>

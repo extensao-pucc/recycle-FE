@@ -1,0 +1,12 @@
+
+<div class="form-row">
+    <div class="form-group col-md-10">
+        <input class="form-control" mask="00000-000" type="text" placeholder="Ex: 99999-999" [(ngModel)]="cep" (input)="onCepChange()"/>
+        <p *ngIf="naoEncontrado">CEP não encontrado!</p>
+    </div>
+    
+    <div class="form-group col-md-2">
+        <button (click)="consultarEndereco()" class="btn btn-light"><i class="fa fa-search"></i></button>
+    </div>
+</div>
+

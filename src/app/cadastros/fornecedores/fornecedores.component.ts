@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,  Output, EventEmitter } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
@@ -6,6 +6,7 @@ import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.compo
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
+import { PesquisaCepService } from '../../shared/pesquisa-cep/pesquisa-cep.service';
 
 @Component({
   selector: 'app-fornecedores',
@@ -13,6 +14,7 @@ import { SharedVariableService } from '../../shared/shared-variable.service';
   styleUrls: ['./fornecedores.component.css', '../../app.component.css']
 })
 export class FornecedoresComponent implements OnInit {
+
   public tempItemsList: any;
   public itemsList: any;
   public itemForm: any;
@@ -27,7 +29,7 @@ export class FornecedoresComponent implements OnInit {
     private toastService: ToastService,
     private formBuilder: FormBuilder,
     private formValidatorService: FormValidatorService,
-    private sharedVariableService: SharedVariableService
+    private sharedVariableService: SharedVariableService,
   ) {
     this.states = this.sharedVariableService.getStates();
   }
@@ -149,16 +151,11 @@ export class FornecedoresComponent implements OnInit {
     this.showYesNoMessage = true;
   }
 
-  // consultarEndereco() {
-  //   this.pesquisaCepService.pesquisarCep(this.cep).subscribe(response => {
-  //     this.retornaPesquisaCep.emit(response);
-  //     this.cep = '';
-  //   }, error => {
-  //     this.naoEncontrado = true;
-  //   });
-  // }
-
-  // onCepChange() {
-  //   this.naoEncontrado = false;
-  // }
+  populaDados(item: any): any {
+    this.itemForm.controls.endereco.setValue(item.logradouro);
+    this.itemForm.controls.bairro.setValue(item.bairro);
+    this.itemForm.controls.cidade.setValue(item.cidade);
+    this.itemForm.controls.UF.setValue(item.estado);
+    this.itemForm.controls.CEP.setValue(item.cep);
+  }
 }
