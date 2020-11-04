@@ -10,7 +10,7 @@ import { SharedVariableService } from '../../shared/shared-variable.service';
 @Component({
   selector: 'app-socios',
   templateUrl: './socios.component.html',
-  styleUrls: ['./socios.component.css']
+  styleUrls: ['./socios.component.css', '../../app.component.css']
 })
 export class SociosComponent implements OnInit {
   public tempItemsList: any;
@@ -52,7 +52,7 @@ export class SociosComponent implements OnInit {
       matricula: ['', [this.formValidatorService.isEmpty]],
       nome: ['', [this.formValidatorService.isEmpty]],
       data_de_nascimento: ['', [this.formValidatorService.isEmpty]],
-      RG: ['', [this.formValidatorService.isEmpty]],
+      RG: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validRG]],
       data_emissao: ['', [this.formValidatorService.isEmpty]],
       local_emissao: ['', [this.formValidatorService.isEmpty]],
       orgao_expedidor: ['', [this.formValidatorService.isEmpty]],

@@ -1,29 +1,4 @@
-.background {
-    height: 100%;
-    width: 100%;
-    padding-top: 65px;
-    background-color: #e8e7e7;
-}
-
-.center {
-    overflow: auto;
-    margin: auto;
-    padding-top: 30px;
-    /* text-align: center; */
-    background-color: white;
-    box-shadow: 0 4px 8px 0 rgb(175 165 165 / 19%), 0 6px 20px 0 rgb(175 165 165 / 19%);
-    width: 90%;
-    height: 85%;
-    padding: 60px;
-}
-
-div table, form {
-    margin-top: 40px;
-}
-
-i {
-    margin-right: 5px;
-}
+/* Tabela =============================== */
 
 th,td {
     white-space: nowrap;
@@ -33,6 +8,37 @@ th,td {
     overflow-x:auto;
     margin-left: auto;
     margin-right: auto;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+    /* padding: 15px;
+    width:20%; */
+}
+
+/* thead, tbody{
+    display: block;  
+}
+
+tbody{
+    overflow-y: scroll;
+    min-height: 410px;
+    max-height: 410px;
+} */
+
+
+
+/* Status do Sócio ====================== */
+.table-row--red {
+    background-color: #f7000029;
+    border-radius: 20px;
+    padding: 8px
+}
+
+.table-row--green {
+    background-color:  #ecfaeb;
+    border-radius: 20px;
+    padding: 10px
 }
 
 .status:before{
@@ -46,17 +52,40 @@ th,td {
 }
 
 .status--red:before{
-    background-color: #e36767;
+    background-color: #dc3545;
 }
   
 .status--red{
-    color: #e36767;
+    color:#dc3545;
 }
   
 
 .status--green:before{
-    background-color: #6cdb56;
+    background-color: #37c93a;
 }
 .status--green{
-    color: #6cdb56;
+    color: #37c93a;
+}
+
+/* Circulos coloridos ================= */
+.circle {
+border-radius: 50%;
+width: 200px;
+height: 200px;
+}
+
+.circle .blue {
+background-color: #00c0f1;
+}
+
+.circle .green {
+background-color: #add036;
+}
+
+.circle .red {
+background-color: #ec2426;
+}
+
+.circle .yellow {
+background-color: #ffc116;
 }

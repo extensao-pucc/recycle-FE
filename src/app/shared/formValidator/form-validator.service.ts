@@ -92,6 +92,18 @@ export class FormValidatorService {
     return null;
   }
 
+  validRG(control: FormControl): any{
+    const msgErro = 'RG inválido';
+    let field = control.value;
+
+    let er = new RegExp(/^[0-9]{9}$/);
+
+    if (field &&  !er.test(field) ) {
+      return {msgErro};
+    }
+    return null;
+  }
+
   validCPF_CNPJ(control: FormControl): any{
     let numeros, digitos, soma, i, resultado, digitos_iguais;
     let field = control.value;

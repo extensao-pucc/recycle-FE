@@ -57,4 +57,9 @@ export class SharedVariableService {
     ];
     return profile;
   }
+
+  // getRandomColor(): any {
+  //   let colours = ['#00c0f1', '#add036', '#ec2426', '#ffc116'];
+  //   return colours[Math.floor(Math.random() * 4)];
+  // }
 }

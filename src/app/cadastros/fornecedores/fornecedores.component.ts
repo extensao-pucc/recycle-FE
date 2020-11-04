@@ -10,7 +10,7 @@ import { SharedVariableService } from '../../shared/shared-variable.service';
 @Component({
   selector: 'app-fornecedores',
   templateUrl: './fornecedores.component.html',
-  styleUrls: ['./fornecedores.component.css']
+  styleUrls: ['./fornecedores.component.css', '../../app.component.css']
 })
 export class FornecedoresComponent implements OnInit {
   public tempItemsList: any;
@@ -148,4 +148,17 @@ export class FornecedoresComponent implements OnInit {
     };
     this.showYesNoMessage = true;
   }
+
+  // consultarEndereco() {
+  //   this.pesquisaCepService.pesquisarCep(this.cep).subscribe(response => {
+  //     this.retornaPesquisaCep.emit(response);
+  //     this.cep = '';
+  //   }, error => {
+  //     this.naoEncontrado = true;
+  //   });
+  // }
+
+  // onCepChange() {
+  //   this.naoEncontrado = false;
+  // }
 }

@@ -4,7 +4,7 @@
 }
 
 .yesNoButton{
-    width: 75px;
+    width: 90px;
 }
 
 .yes-no-body {
@@ -14,4 +14,8 @@
 
 ul {
     list-style-type: none;
+}
+
+i {
+    margin-right: 10px;
 }

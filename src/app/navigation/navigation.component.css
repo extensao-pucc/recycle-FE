@@ -3,7 +3,7 @@
     width: 100%;
     padding: 6px;
     position: fixed;
-    box-shadow: 0 4px 8px 0 rgb(175 165 165 / 19%), 0 6px 20px 0 rgb(175 165 165 / 19%);
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 19%), 0 6px 20px 0 rgb(0 0 0 / 19%);
     z-index: 1;
 }
 

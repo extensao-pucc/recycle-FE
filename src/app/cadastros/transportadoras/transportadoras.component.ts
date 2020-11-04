@@ -10,7 +10,7 @@ import { SharedVariableService } from '../../shared/shared-variable.service';
 @Component({
   selector: 'app-transportadoras',
   templateUrl: './transportadoras.component.html',
-  styleUrls: ['./transportadoras.component.css']
+  styleUrls: ['./transportadoras.component.css', '../../app.component.css']
 })
 export class TransportadorasComponent implements OnInit {
   public tempItemsList: any;

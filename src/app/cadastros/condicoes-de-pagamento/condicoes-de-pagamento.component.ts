@@ -9,7 +9,7 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
 @Component({
   selector: 'app-condicoes-de-pagamento',
   templateUrl: './condicoes-de-pagamento.component.html',
-  styleUrls: ['./condicoes-de-pagamento.component.css']
+  styleUrls: ['./condicoes-de-pagamento.component.css', '../../app.component.css']
 })
 
 export class CondicoesDePagamentoComponent implements OnInit {

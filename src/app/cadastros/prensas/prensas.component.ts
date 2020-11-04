@@ -9,7 +9,7 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
 @Component({
   selector: 'app-prensas',
   templateUrl: './prensas.component.html',
-  styleUrls: ['./prensas.component.css']
+  styleUrls: ['./prensas.component.css', '../../app.component.css']
 })
 export class PrensasComponent implements OnInit {
   public tempItemsList: any;

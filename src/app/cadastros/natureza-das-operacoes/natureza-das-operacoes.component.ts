@@ -9,7 +9,7 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
 @Component({
   selector: 'app-natureza-das-operacoes',
   templateUrl: './natureza-das-operacoes.component.html',
-  styleUrls: ['./natureza-das-operacoes.component.css']
+  styleUrls: ['./natureza-das-operacoes.component.css', '../../app.component.css']
 })
 export class NaturezaDasOperacoesComponent implements OnInit {
   public tempItemsList: any;
