@@ -10,7 +10,7 @@ import { SharedVariableService } from '../../shared/shared-variable.service';
 @Component({
   selector: 'app-transportadoras',
   templateUrl: './transportadoras.component.html',
-  styleUrls: ['./transportadoras.component.css']
+  styleUrls: ['./transportadoras.component.css', '../../app.component.css']
 })
 export class TransportadorasComponent implements OnInit {
   public tempItemsList: any;
@@ -41,18 +41,18 @@ export class TransportadorasComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      CNPJ_CPF: ['', [this.formValidatorService.isEmpty]],
+      CNPJ_CPF: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validCPF_CNPJ]],
       razao_social_nome: ['', [this.formValidatorService.isEmpty]],
-      IE: ['', [this.formValidatorService.isEmpty]],
+      IE: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       endereco: ['', [this.formValidatorService.isEmpty]],
-      numero: ['', [this.formValidatorService.isEmpty]],
+      numero: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       complemento: [''],
       bairro: ['', [this.formValidatorService.isEmpty]],
-      CEP: ['', [this.formValidatorService.isEmpty]],
+      CEP: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validCEP]],
       UF: ['', [this.formValidatorService.isEmpty]],
       cidade: ['', [this.formValidatorService.isEmpty]],
-      telefone: ['', [this.formValidatorService.isEmpty]],
-      email: ['', [this.formValidatorService.isEmpty]]
+      telefone: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validTelefone]],
+      email: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validEmail]]
     });
   }
 
@@ -141,5 +141,13 @@ export class TransportadorasComponent implements OnInit {
       }
     };
     this.showYesNoMessage = true;
+  }
+
+  populaDados(item: any): any {
+    this.itemForm.controls.endereco.setValue(item.logradouro);
+    this.itemForm.controls.bairro.setValue(item.bairro);
+    this.itemForm.controls.cidade.setValue(item.cidade);
+    this.itemForm.controls.UF.setValue(item.estado);
+    this.itemForm.controls.CEP.setValue(item.cep);
   }
 }

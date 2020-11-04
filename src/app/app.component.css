@@ -1,3 +1,40 @@
+.background {
+    height: 100%;
+    width: 100%;
+    padding-top: 65px;
+    /* background-color: #e8e7e7; */
+    background-color: #f2f7fa;
+}
+
+.center {
+    overflow: auto;
+    margin: auto;
+    padding-top: 30px;
+    background-color: white;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 19%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+    width: 90%;
+    height: 85%;
+
+    padding: 60px;
+}
+
+div table, form {
+    margin-top: 25px;
+}
+
+i {
+    margin-right: 10px;
+}
+
+th,td {
+    white-space: nowrap;
+}
+
+.table th, .table td {
+    vertical-align: middle;
+
+}
+
 .app-wrapper {
     height: 100%;
     min-width: 100%;

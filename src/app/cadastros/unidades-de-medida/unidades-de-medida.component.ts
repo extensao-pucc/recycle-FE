@@ -9,7 +9,7 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
 @Component({
   selector: 'app-unidades-de-medida',
   templateUrl: './unidades-de-medida.component.html',
-  styleUrls: ['./unidades-de-medida.component.css']
+  styleUrls: ['./unidades-de-medida.component.css', '../../app.component.css']
 })
 export class UnidadesDeMedidaComponent implements OnInit {
   public tempItemsList: any;

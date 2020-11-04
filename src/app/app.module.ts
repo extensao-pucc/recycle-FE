@@ -34,6 +34,7 @@ import { TriagemComponent } from './producao/triagem/triagem.component';
 
 // providers
 import { AuthGuard } from './guards/auth.guard';
+import { PesquisaCepComponent } from './shared/pesquisa-cep/pesquisa-cep.component';
 
 @NgModule({
   declarations: [
@@ -53,7 +54,8 @@ import { AuthGuard } from './guards/auth.guard';
     TransportadorasComponent,
     UnidadesDeMedidaComponent,
     YesNoMessageComponent,
-    TriagemComponent
+    TriagemComponent,
+    PesquisaCepComponent
   ],
   imports: [
     BrowserModule,

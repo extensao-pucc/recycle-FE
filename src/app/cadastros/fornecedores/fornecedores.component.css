@@ -1,29 +1,4 @@
-.background {
-    height: 100%;
-    width: 100%;
-    padding-top: 65px;
-    background-color: #e8e7e7;
-}
-
-.center {
-    overflow: auto;
-    margin: auto;
-    padding-top: 30px;
-    background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    width: 90%;
-    height: 85%;
-    padding: 60px;
-}
-
-div table, form {
-    margin-top: 25px;
-}
-
-i {
-    margin-right: 5px;
-}
-
+/* Tabela ============================ */
 th,td {
     white-space: nowrap;
 }
@@ -34,8 +9,18 @@ th,td {
     margin-right: auto;
 }
 
-/* .table-list tbody{
-    overflow-y:auto;
-    height: 80%;
+.table th, .table td {
+    vertical-align: middle; 
+    /* padding: 15px;
+    width:20%; */
+}
+/* 
+thead, tbody{
+    display: block;  
+}
+  
+tbody{
+    overflow-y: scroll;
+    min-height: 410px;
+    max-height: 410px;
 } */
-
