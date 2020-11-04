@@ -297,7 +297,7 @@
 
             <div class="form-group col-md-8">
               <label>Foto: </label>
-              <input class="form-control" type="file" accept="image/*" formControlName="foto">
+              <input class="form-control" type="file" name="foto" (change)="onChange($event)" accept="image/*" >
             </div>
           </div>
 

@@ -6,6 +6,7 @@ import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.compo
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-socios',
@@ -23,6 +24,8 @@ export class SociosComponent implements OnInit {
   public states: any;
   public profiles: any;
   public status: any;
+
+  public selectedFile: File;
 
   constructor(
     private crudService: CrudService,
@@ -126,6 +129,15 @@ export class SociosComponent implements OnInit {
     this.itemForm.controls.perfil.setValue(item.perfil);
   }
 
+  onChange(event) {
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      console.log(file)
+      this.itemForm.controls.foto.setValue(file);
+      // this.itemForm.get('foto').setValue(file);
+    }
+  }
+
   createUpdateItem(): void {
     const formValues = this.itemForm.value;
 
@@ -139,16 +151,50 @@ export class SociosComponent implements OnInit {
           this.toastService.addToast(err['message'], 'darkred');
         });
       } else {
-        this.crudService.createItem('socios', formValues).subscribe(response => {
-          this.getItems();
+        const formData = new FormData();
+        formData.append('id', this.itemForm.get('id').value);
+        formData.append('matricula', this.itemForm.get('matricula').value);
+        formData.append('local_emissao', this.itemForm.get('local_emissao').value);
+        formData.append('nome', this.itemForm.get('nome').value);
+        formData.append('data_de_nascimento', this.itemForm.get('data_de_nascimento').value);
+        formData.append('RG', this.itemForm.get('RG').value);
+        formData.append('data_emissao', this.itemForm.get('data_emissao').value);
+        formData.append('local_emissao', this.itemForm.get('local_emissao').value);
+        formData.append('orgao_expedidor', this.itemForm.get('orgao_expedidor').value);
+        formData.append('CPF', this.itemForm.get('CPF').value);
+        formData.append('titulo_de_Eleitor', this.itemForm.get('titulo_de_Eleitor').value);
+        formData.append('PIS_PASEP', this.itemForm.get('PIS_PASEP').value);
+        formData.append('NIT', this.itemForm.get('NIT').value);
+        formData.append('nome_da_Mae', this.itemForm.get('nome_da_Mae').value);
+        formData.append('nome_do_Pai', this.itemForm.get('nome_do_Pai').value);
+        formData.append('endereco', this.itemForm.get('endereco').value);
+        formData.append('numero', this.itemForm.get('numero').value);
+        formData.append('complemento', this.itemForm.get('complemento').value);
+        formData.append('UF', this.itemForm.get('UF').value);
+        formData.append('cidade', this.itemForm.get('cidade').value);
+        formData.append('telefone', this.itemForm.get('telefone').value);
+        formData.append('email', this.itemForm.get('email').value);
+        formData.append('data_de_admissao', this.itemForm.get('data_de_admissao').value);
+        formData.append('data_de_demissao', this.itemForm.get('data_de_demissao').value);
+        formData.append('situacao', this.itemForm.get('situacao').value);
+        formData.append('foto', this.itemForm.get('foto').value);
+        formData.append('perfil', this.itemForm.get('perfil').value);
+
+        console.log('formData')
+        console.log(formData)
+        this.crudService.createItem('socios', formData).subscribe(response => {
+          console.log(response);
+          // console.log(`${environment.apiUrl}${response.file}`);
+
+          // this.getItems();
           this.toastService.addToast('Cadastrado com sucesso');
         }, err => {
           console.log(err);
           this.toastService.addToast(err['message'], 'darkred');
         });
       }
-      this.showForm = false;
-      this.loadForm();
+      // this.showForm = false;
+      // this.loadForm();
     } else {
       this.toastService.addToast('Corrija os erros para continuar', 'darkred');
     }
