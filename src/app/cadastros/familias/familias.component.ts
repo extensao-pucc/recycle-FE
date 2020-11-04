@@ -10,7 +10,7 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
 @Component({
   selector: 'app-familias',
   templateUrl: './familias.component.html',
-  styleUrls: ['./familias.component.css']
+  styleUrls: ['./familias.component.css', '../../app.component.css']
 })
 export class FamiliasComponent implements OnInit {
   public tempItemsList: any;

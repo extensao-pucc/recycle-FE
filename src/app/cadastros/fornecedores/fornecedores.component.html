@@ -1,7 +1,8 @@
+
 <div class="d-flex background">
     <div class="center">
       <h2 class="d-flex justify-content-between">Fornecedores    
-          <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"> <i class="fa fa-sign-in"></i>  Cadastrar</button>
+          <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"><i class="fa fa-plus"></i>Cadastrar</button>
       </h2>
 
         <!-- Tabela -->
@@ -152,9 +153,10 @@
               </p>
             </div>
             
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-2">
               <label>CEP: </label>
-              <input class="form-control" mask="00000-000" type="text" formControlName="CEP" placeholder="Ex: 99999-999">
+              <!-- <input class="form-control" mask="00000-000" type="text" placeholder="Ex: 99999-999" formControlName="CEP"/> -->
+              <app-pesquisa-cep (retornaPesquisaCep)="populaDados($event)"></app-pesquisa-cep>
               <p class="error-msg" *ngIf="itemForm.controls.CEP.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.CEP.errors.msgErro }}
               </p>
@@ -166,8 +168,8 @@
   
             <div>
               <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
-              <!-- <input class="btn btn-info ml-1 mt-3 pull-right" type="reset" value="Limpar">
-              <button class="btn btn-info ml-1 mt-3 pull-right" (click)="loadForm()"> <i class="fa fa-sign-in"></i>Limpar</button> -->
+              <!-- <input class="btn btn-info ml-1 mt-3 pull-right" type="reset" value="Limpar"> -->
+              <!-- <button class="btn btn-info ml-1 mt-3 pull-right" (click)="loadForm()"><i class="fa fa-shower"></i>Limpar</button> -->
               <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
               <button class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value" (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
             </div>

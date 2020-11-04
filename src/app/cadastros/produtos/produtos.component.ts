@@ -10,7 +10,7 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
 @Component({
   selector: 'app-produtos',
   templateUrl: './produtos.component.html',
-  styleUrls: ['./produtos.component.css']
+  styleUrls: ['./produtos.component.css', '../../app.component.css']
 })
 export class ProdutosComponent implements OnInit {
   public tempItemsList: any;
@@ -42,15 +42,15 @@ export class ProdutosComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      codigo: ['', [this.formValidatorService.isEmpty]],
+      codigo: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       descricao: ['', [this.formValidatorService.isEmpty]],
       familia: ['', [this.formValidatorService.isEmpty]],
       fornecedor: ['', [this.formValidatorService.isEmpty]],
       qualidade: ['', [this.formValidatorService.isEmpty]],
       unidade_de_medida: ['', [this.formValidatorService.isEmpty]],
-      NCM: ['', [this.formValidatorService.isEmpty]],
-      CSTE: ['', [this.formValidatorService.isEmpty]],
-      CSTS: ['', [this.formValidatorService.isEmpty]],
+      NCM: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validNCM]],
+      CSTE: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
+      CSTS: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       CFOPE: ['', [this.formValidatorService.isEmpty]],
       CFOPS: ['', [this.formValidatorService.isEmpty]],
       preco_compra: ['', [this.formValidatorService.isEmpty]],

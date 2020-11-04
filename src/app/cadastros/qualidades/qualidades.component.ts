@@ -9,7 +9,7 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
 @Component({
   selector: 'app-qualidades',
   templateUrl: './qualidades.component.html',
-  styleUrls: ['./qualidades.component.css']
+  styleUrls: ['./qualidades.component.css', '../../app.component.css']
 })
 export class QualidadesComponent implements OnInit {
   public tempItemsList: any;

@@ -9,7 +9,7 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
 @Component({
   selector: 'app-prensas',
   templateUrl: './prensas.component.html',
-  styleUrls: ['./prensas.component.css']
+  styleUrls: ['./prensas.component.css', '../../app.component.css']
 })
 export class PrensasComponent implements OnInit {
   public tempItemsList: any;
@@ -34,7 +34,7 @@ export class PrensasComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      numero: ['', [this.formValidatorService.isEmpty]],
+      numero: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       descricao: ['', [this.formValidatorService.isEmpty]],
       detalhes_tecnicos: ['', [this.formValidatorService.isEmpty]]
     });

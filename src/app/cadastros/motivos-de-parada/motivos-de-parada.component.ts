@@ -10,7 +10,7 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
 @Component({
   selector: 'app-motivos-de-parada',
   templateUrl: './motivos-de-parada.component.html',
-  styleUrls: ['./motivos-de-parada.component.css']
+  styleUrls: ['./motivos-de-parada.component.css', '../../app.component.css']
 })
 export class MotivosDeParadaComponent implements OnInit {
   public tempItemsList: any;
