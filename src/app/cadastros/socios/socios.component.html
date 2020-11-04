@@ -5,9 +5,11 @@
     </h2>
 
         <!-- Tabela -->
-        <table class="table table-hover" *ngIf="!showForm">
+        <div class="table-list">
+          <table class="table table-hover" *ngIf="!showForm">
             <thead class="thead-dark">
               <tr>
+                <th scope="col"></th> <!-- Situação do usuario-->
                 <th scope="col"></th> <!-- Foto do usuario -->
                 <th scope="col">ID</th>
                 <th scope="col">Matrícula</th>
@@ -32,38 +34,42 @@
                 <th scope="col">Email</th>
                 <th scope="col">Data de admissão</th>
                 <th scope="col">Data de demissão</th>
-                <th scope="col">Situação</th>
                 <th scope="col">Opções</th>
               </tr>
             </thead>
             <tbody>
               <tr *ngFor="let item of tempItemsList">
-                  <tr *ngFor="let item of tempItemsList">
-                    <td></td>
-                    <td>{{ item?.id }}</td>
-                    <td>{{ item?.matricula }}</td>
-                    <td>{{ item?.nome }}</td>
-                    <td>{{ item?.data_de_nascimento }}</td>
-                    <td>{{ item?.RG }}</td>
-                    <td>{{ item?.data_emissao }}</td>
-                    <td>{{ item?.local_emissao }}</td>
-                    <td>{{ item?.orgao_expedidor }}</td>
-                    <td>{{ item?.CPF }}</td>
-                    <td>{{ item?.titulo_de_Eleitor }}</td>
-                    <td>{{ item?.PIS_PASEP }}</td>
-                    <td>{{ item?.NIT }}</td>
-                    <td>{{ item?.nome_da_Mae }}</td>
-                    <td>{{ item?.nome_do_Pai }}</td>
-                    <td>{{ item?.endereco }}</td>
-                    <td>{{ item?.numero }}</td>
-                    <td>{{ item?.complemento }}</td>
-                    <td>{{ item?.UF }}</td>
-                    <td>{{ item?.cidade }}</td>
-                    <td>{{ item?.telefone }}</td>
-                    <td>{{ item?.email }}</td>
-                    <td>{{ item?.data_de_admissao }}</td>
-                    <td>{{ item?.data_de_demissao }}</td>
-                    <td>{{ item?.situacao }}</td>
+                <tr *ngFor="let item of tempItemsList">
+                  <td>
+                    <b *ngIf="item?.situacao == 'Ativo'" class="status status--green status">{{ item?.situacao }}</b>
+                    <b *ngIf="item?.situacao == 'Inativo'" class="status status--red status">{{ item?.situacao }}</b>
+                  </td>
+                  <td>
+                    <img src="../../../assets/img/perfil_sem_foto.png" class="rounded-circle z-depth-0" height="40" width="40" alt="">
+                  </td>
+                  <td>{{ item?.id }}</td>
+                  <td>{{ item?.matricula }}</td>
+                  <td>{{ item?.nome }}</td>
+                  <td>{{ item?.data_de_nascimento }}</td>
+                  <td>{{ item?.RG }}</td>
+                  <td>{{ item?.data_emissao }}</td>
+                  <td>{{ item?.local_emissao }}</td>
+                  <td>{{ item?.orgao_expedidor }}</td>
+                  <td>{{ item?.CPF }}</td>
+                  <td>{{ item?.titulo_de_Eleitor }}</td>
+                  <td>{{ item?.PIS_PASEP }}</td>
+                  <td>{{ item?.NIT }}</td>
+                  <td>{{ item?.nome_da_Mae }}</td>
+                  <td>{{ item?.nome_do_Pai }}</td>
+                  <td>{{ item?.endereco }}</td>
+                  <td>{{ item?.numero }}</td>
+                  <td>{{ item?.complemento }}</td>
+                  <td>{{ item?.UF }}</td>
+                  <td>{{ item?.cidade }}</td>
+                  <td>{{ item?.telefone }}</td>
+                  <td>{{ item?.email }}</td>
+                  <td>{{ item?.data_de_admissao }}</td>
+                  <td>{{ item?.data_de_demissao }}</td>
                 <td>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
                     <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
@@ -71,6 +77,7 @@
               </tr>
             </tbody>
         </table>
+      </div>
         <!-- ========== -->
 
         <!-- Formulario -->

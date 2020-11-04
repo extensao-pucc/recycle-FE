@@ -10,7 +10,7 @@
     margin: auto;
     padding-top: 30px;
     background-color: white;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    box-shadow: 0 4px 8px 0 rgb(175 165 165 / 19%), 0 6px 20px 0 rgb(175 165 165 / 19%);
     width: 90%;
     height: 85%;
     padding: 60px;
@@ -26,4 +26,10 @@ i{
 
 th,td {
     white-space: nowrap;
+}
+
+.table-list {    
+    overflow-x:auto;
+    margin-left: auto;
+    margin-right: auto;
 }

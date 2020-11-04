@@ -70,7 +70,7 @@ export class SociosComponent implements OnInit {
       telefone: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validTelefone]],
       email: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validEmail]],
       data_de_admissao: ['', [this.formValidatorService.isEmpty]],
-      data_de_demissao: ['', [this.formValidatorService.isEmpty]],
+      data_de_demissao: [''],
       situacao: ['', [this.formValidatorService.isEmpty]],
       foto: [''],
       perfil: ['', [this.formValidatorService.isEmpty]]
