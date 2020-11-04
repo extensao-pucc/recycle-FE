@@ -43,6 +43,18 @@ export class FormValidatorService {
   //   }
   //   return null;
   // }
+  validNCM(control: FormControl): any {
+    const msgErro = 'NCM inválido';
+    let field = control.value;
+
+    let er = new RegExp(/^[0-9]{8}$/);
+
+    if (field &&  !er.test(field) ) {
+      return {msgErro};
+    }
+    return null;
+  }
+
 
   validTelefone(control: FormControl): any {
     const msgErro = 'Telefone inválido';
@@ -149,11 +161,25 @@ export class FormValidatorService {
 
     }
     // validação CNPJ
-    else if (field && field.length != 14) {
+    else if (field && field.length <= 14) {
       const msgErro = 'CNPJ inválido';
+
       if (field.length != 14) {
         return {msgErro};
       }
+
+      if (field == '00000000000000' ||
+      field == '11111111111111' ||
+      field == '22222222222222' ||
+      field == '33333333333333' ||
+      field == '44444444444444' ||
+      field == '55555555555555' ||
+      field == '66666666666666' ||
+      field == '77777777777777' ||
+      field == '88888888888888' ||
+      field == '99999999999999'){
+        return {msgErro};
+  }
 
       let tamanho = field.length - 2;
       numeros = field.substring(0, tamanho);

@@ -34,7 +34,7 @@ export class PrensasComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      numero: ['', [this.formValidatorService.isEmpty]],
+      numero: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       descricao: ['', [this.formValidatorService.isEmpty]],
       detalhes_tecnicos: ['', [this.formValidatorService.isEmpty]]
     });

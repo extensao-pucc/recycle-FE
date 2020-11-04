@@ -34,8 +34,16 @@ th,td {
     margin-right: auto;
 }
 
-/* .table-list tbody{
-    overflow-y:auto;
-    height: 80%;
-} */
+/* .table th, .table td {
+  padding: 15px;
+  width:20%;
+}
 
+thead, tbody{
+    display: block;  
+}
+  
+tbody{
+    overflow-y: scroll;
+    height: 400px;
+} */
