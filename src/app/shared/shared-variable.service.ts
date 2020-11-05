@@ -52,7 +52,7 @@ export class SharedVariableService {
   getTypes(): any[]{
     const types = [
       {type: 'Entrada'},
-      {type: 'Saída'}
+      {type: 'Saida'}
     ];
     return types;
   }

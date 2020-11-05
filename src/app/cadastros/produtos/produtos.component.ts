@@ -107,22 +107,36 @@ export class ProdutosComponent implements OnInit {
       if (formValues.id) {
         this.crudService.updateItem('produtos', formValues, formValues.id).subscribe(response => {
           this.getItems();
+          this.loadForm();
+
+          this.showForm = false;
           this.toastService.addToast('Atualizado com sucesso');
         }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.codigo){
+            this.itemForm.controls.codigo.errors = {'msgErro': 'Produto com esse código já existe'};
+            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
         });
       } else {
         this.crudService.createItem('produtos', formValues).subscribe(response => {
           this.getItems();
+          this.loadForm();
+
+          this.showForm = false;
           this.toastService.addToast('Cadastrado com sucesso');
         }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.codigo){
+            this.itemForm.controls.codigo.errors = {'msgErro': 'Produto com esse código já existe'};
+            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
         });
       }
-      this.showForm = false;
-      this.loadForm();
     } else {
-      this.toastService.addToast('Corrija os erros para continuar', 'darkred');
+      this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
     }
   }
 

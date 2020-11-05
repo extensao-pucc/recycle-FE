@@ -44,11 +44,6 @@ export class SociosComponent implements OnInit {
     this.loadForm();
   }
 
-  validateForm(): boolean {
-    const formValues = this.itemForm.value;
-    return true;
-  }
-
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
@@ -133,6 +128,8 @@ export class SociosComponent implements OnInit {
     this.imageInput = fileInput.target.files[0];
     const reader = new FileReader();
 
+    // reader.readAsDataURL(fileInput.target.files[0]);
+
     reader.onload = (e: any) => {
       this.imageInput = e.target.result;
     };
@@ -170,26 +167,40 @@ export class SociosComponent implements OnInit {
       formData.append('situacao', this.itemForm.get('situacao').value);
       formData.append('foto', this.imageInput);
       formData.append('perfil', this.itemForm.get('perfil').value);
+
       if (formValues.id) {
         this.crudService.updateItem('socios', formData, formValues.id).subscribe(response => {
           this.getItems();
-          this.toastService.addToast('Atualizado com sucesso');
+          this.loadForm();
 
+          this.showForm = false;
+          this.toastService.addToast('Atualizado com sucesso');
         }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.matricula){
+            this.itemForm.controls.matricula.errors = {'msgErro': 'Sócio com essa matrícula já existe'};
+            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
         });
       } else {
         this.crudService.createItem('socios', formData).subscribe(response => {
           this.getItems();
+          this.loadForm();
+
+          this.showForm = false;
           this.toastService.addToast('Cadastrado com sucesso');
         }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.matricula){
+            this.itemForm.controls.matricula.errors = {'msgErro': 'Sócio com essa matrícula já existe'};
+            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
         });
       }
-      this.showForm = false;
-      this.loadForm();
     } else {
-      this.toastService.addToast('Corrija os erros para continuar', 'darkred');
+      this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
     }
   }
 

@@ -103,26 +103,41 @@ export class FornecedoresComponent implements OnInit {
 
     if (this.itemForm.status === 'VALID'){
       if (this.validateForm()){
+
         if (formValues.id) {
           this.crudService.updateItem('fornecedores', formValues, formValues.id).subscribe(response => {
             this.getItems();
+            this.loadForm();
+
+            this.showForm = false;
             this.toastService.addToast('Atualizado com sucesso');
           }, err => {
+          if (err.error.CNPJ_CPF){
+            this.itemForm.controls.CNPJ_CPF.errors = {'msgErro': 'Fornecedor com essa CNPJ ou CPF já existe'};
+            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+          }else {
             this.toastService.addToast(err['message'], 'darkred');
+          }
           });
         } else {
           this.crudService.createItem('fornecedores', formValues).subscribe(response => {
             this.getItems();
+            this.loadForm();
+
+            this.showForm = false;
             this.toastService.addToast('Cadastrado com sucesso');
           }, err => {
-              this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.CNPJ_CPF){
+            this.itemForm.controls.CNPJ_CPF.errors = {'msgErro': 'Fornecedor com essa CNPJ ou CPF já existe'};
+            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
           });
         }
       }
-      this.showForm = false;
-      this.loadForm();
     } else {
-      this.toastService.addToast('Corrija os erros para continuar', 'darkred');
+      this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
     }
   }
 

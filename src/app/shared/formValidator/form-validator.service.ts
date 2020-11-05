@@ -29,20 +29,7 @@ export class FormValidatorService {
     }
     return null;
   }
-
-  // isUnique(control: FormControl): any {
-  //   const msgErro = 'Esse CPF/CNPJ já existe';
-  //   let field = control.value;
-
-  //   this.crudService.getItems('fornecedores').subscribe(response => {
-
-  //   });
-
-  //   if (field) {
-  //     return {msgErro};
-  //   }
-  //   return null;
-  // }
+  
   validNCM(control: FormControl): any {
     const msgErro = 'NCM inválido';
     let field = control.value;
