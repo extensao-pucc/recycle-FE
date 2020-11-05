@@ -50,9 +50,11 @@
           </p>
           
           <label>Tipo: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="tipo">
+          <ng-select formControlName="tipo"  name="tipo">
+            <ng-option *ngFor="let type of types" [value]="type.type">{{ type.type }}</ng-option>
+          </ng-select>
           <p class="error-msg" *ngIf="itemForm.controls.tipo.errors">
-            <i class="fa fa-times"></i> {{ itemForm.controls.descricao.tipo.msgErro }}
+            <i class="fa fa-times"></i> {{ itemForm.controls.tipo.errors.msgErro }}
           </p>
         
           <div class="row align-items-end">
