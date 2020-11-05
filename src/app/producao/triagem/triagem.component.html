@@ -3,8 +3,7 @@
     <h3>Triagem</h3>
 
     <!-- form cabeçalho -->
-    <form [formGroup]="headForm" *ngIf="headForm">
-
+      <form [formGroup]="headForm" *ngIf="headForm" class="cabecalho">
         <div class="form-row">
             <div class="form-group col-md-2">
                 <label for="lote">Lote</label>
@@ -48,16 +47,15 @@
             </div>
 
         </div>
-        
-        <hr>
-        
       </form>
-          <div class="row d-flex justify-content-around">
-              <button type="button" class="btn btn-primary btn-lg" (click)="showModal('Iniciar')"><i class="fa fa-play-circle"></i>Iniciar Produção</button>
-              <button type="button" class="btn btn-warning btn-lg" (click)="showModal('Pausar')" disabled="true"><i class="fa fa-pause-circle"></i>Pausar Produção</button>
-              <button type="button" class="btn btn-danger btn-lg" (click)="showModal('Finalizar')" disabled="true"><i class="fa fa-check-circle"></i>Finalizar Produção</button>
-              <button type="button" class="btn btn-success btn-lg" (click)="showModal('Imprimir')" disabled="true"><i class="fa fa-print"></i>Imprimir Produção</button>
-          </div>
+      
+
+      <div class="row d-flex justify-content-around btn-prod">
+          <button type="button" class="btn btn-primary btn-lg" (click)="showModal('Iniciar')" [disabled]="statusProd == 'Iniciada'"><i class="fa fa-play-circle"></i>Iniciar Produção</button>
+          <button type="button" class="btn btn-warning btn-lg" (click)="showModal('Pausar')" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-pause-circle"></i>Pausar Produção</button>
+          <button type="button" class="btn btn-danger btn-lg" (click)="showModal('Finalizar')" [disabled]="isStoped"><i class="fa fa-check-circle"></i>Finalizar Produção</button>
+          <button type="button" class="btn btn-success btn-lg" (click)="showModal('Imprimir')" [disabled]="isPrinted"><i class="fa fa-print"></i>Imprimir Produção</button>
+      </div>
     <!-- ============== -->
 
     <table class="table table-hover">
@@ -134,3 +132,32 @@
 </div>
 
 <app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>
+
+<ng-template #pauseScreen>
+  <div class="modal-header modal-header text-dark">
+      <h4 class="modal-title pull-left"> Palsar Produção</h4>
+      <button type="button" class="close pull-right" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+      <div class="row pause-screen-body">
+          <div class="col pt-2">
+              <p class="font-weight-bold">Selecione o motivo da pausa</p>
+              <div class="form-group col">
+                <ng-select [items]="motivosDeParada"
+                  [virtualScroll]="true"
+                  bindLabel="motivo"
+                  bindValue="id"
+                  placeholder="Motivo de parada"
+                  [(ngModel)]="selectedMotivo">
+                </ng-select>
+            </div>               
+          </div>
+      </div>
+      <div class="mt-3 text-center">
+          <button type="button" class="btn btn btn-danger mr-2 yesNoButton" id="btn-no" (click)="modalRef.hide()"><i class="fa fa-times-circle"></i>Cancelar</button>
+          <button type="button" class="btn btn btn-success mr-2 yesNoButton" id="btn-yes" (click)="pauseProduction()"><i class="fa fa-check-circle"></i>Salvar</button>
+      </div>
+  </div>
+</ng-template>
