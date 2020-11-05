@@ -6,7 +6,6 @@ import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.compo
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
-import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-socios',
@@ -26,6 +25,7 @@ export class SociosComponent implements OnInit {
   public status: any;
 
   public selectedFile: File;
+  public imageInput: any;
 
   constructor(
     private crudService: CrudService,
@@ -129,13 +129,13 @@ export class SociosComponent implements OnInit {
     this.itemForm.controls.perfil.setValue(item.perfil);
   }
 
-  onChange(event) {
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      console.log(file)
-      this.itemForm.controls.foto.setValue(file);
-      // this.itemForm.get('foto').setValue(file);
-    }
+  onChange(fileInput): void {
+    this.imageInput = fileInput.target.files[0];
+    const reader = new FileReader();
+
+    reader.onload = (e: any) => {
+      this.imageInput = e.target.result;
+    };
   }
 
   createUpdateItem(): void {
@@ -177,24 +177,17 @@ export class SociosComponent implements OnInit {
         formData.append('data_de_admissao', this.itemForm.get('data_de_admissao').value);
         formData.append('data_de_demissao', this.itemForm.get('data_de_demissao').value);
         formData.append('situacao', this.itemForm.get('situacao').value);
-        formData.append('foto', this.itemForm.get('foto').value);
+        formData.append('foto', this.imageInput);
         formData.append('perfil', this.itemForm.get('perfil').value);
 
-        console.log('formData')
-        console.log(formData)
         this.crudService.createItem('socios', formData).subscribe(response => {
-          console.log(response);
-          // console.log(`${environment.apiUrl}${response.file}`);
-
-          // this.getItems();
           this.toastService.addToast('Cadastrado com sucesso');
         }, err => {
-          console.log(err);
           this.toastService.addToast(err['message'], 'darkred');
         });
       }
-      // this.showForm = false;
-      // this.loadForm();
+      this.showForm = false;
+      this.loadForm();
     } else {
       this.toastService.addToast('Corrija os erros para continuar', 'darkred');
     }
