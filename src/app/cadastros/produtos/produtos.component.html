@@ -34,12 +34,12 @@
                 <td>{{ item?.familia.nome }}</td>
                 <td>{{ item?.fornecedor.razao_social_nome }}</td>
                 <td>{{ item?.qualidade.nome }}</td>
-                <td>{{ item?.unidade_de_medida.codigo }}</td>
+                <td>{{ item?.unidade_de_medida.sigla }}</td>
                 <td>{{ item?.NCM }}</td>
                 <td>{{ item?.CSTE }}</td>
                 <td>{{ item?.CSTS }}</td>
-                <td>{{ item?.CFOPE.descricao }}</td>
-                <td>{{ item?.CFOPS.descricao }}</td>
+                <td>{{ item?.CFOPE.codigo }}</td>
+                <td>{{ item?.CFOPS.codigo }}</td>
                 <td>{{ item?.preco_compra }}</td>
                 <td>{{ item?.preco_venda }}</td>
                 <td>
@@ -147,7 +147,7 @@
 
             <div class="form-group col-md-2">
               <label>CSTE: <i class="fa fa-question-circle" tooltip="Código de Situação Tributária (Entrada)"></i></label>
-              <input class="form-control" type="text" maxlength="10" formControlName="CSTE" placeholder="EX: 000">
+              <input class="form-control" type="text" maxlength="5" formControlName="CSTE" placeholder="EX: 000">
               <p class="error-msg" *ngIf="itemForm.controls.CSTE.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.CSTE.errors.msgErro }}
               </p> 
@@ -155,7 +155,7 @@
 
             <div class="form-group col-md-2">
               <label>CSTS: <i class="fa fa-question-circle" tooltip="Código de Situação Tributária (Saida)"></i></label>
-              <input class="form-control" type="text" maxlength="10" formControlName="CSTS" placeholder="EX: 000">
+              <input class="form-control" type="text" maxlength="5" formControlName="CSTS" placeholder="EX: 000">
               <p class="error-msg" *ngIf="itemForm.controls.CSTS.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.CSTS.errors.msgErro }}
               </p> 
