@@ -87,7 +87,7 @@ export class NaturezaDasOperacoesComponent implements OnInit {
         }, err => {
           if (err.error.codigo){
             this.itemForm.controls.codigo.errors = {'msgErro': 'Natureza das operações com esse código já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
@@ -102,14 +102,14 @@ export class NaturezaDasOperacoesComponent implements OnInit {
         }, err => {
           if (err.error.codigo){
             this.itemForm.controls.codigo.errors = {'msgErro': 'Natureza das operações com esse código já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
         });
       }
     } else {
-      this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+      this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
   }
 

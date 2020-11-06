@@ -57,7 +57,7 @@
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
           <div class="form-row">
             <div class="form-group col-md-8">  
-              <label>Razao social/Nome: </label>
+              <label>Razão social/Nome: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="razao_social_nome">
               <p class="error-msg" *ngIf="itemForm.controls.razao_social_nome.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.razao_social_nome.errors.msgErro }}
@@ -155,8 +155,7 @@
             
             <div class="form-group col-md-2">
               <label>CEP: </label>
-              <!-- <input class="form-control" mask="00000-000" type="text" placeholder="Ex: 99999-999" formControlName="CEP"/> -->
-              <app-pesquisa-cep (retornaPesquisaCep)="populaDados($event)"></app-pesquisa-cep>
+              <app-pesquisa-cep (retornaPesquisaCep)="populaDados($event)" valor="{{ itemForm.controls.CEP.value }}"></app-pesquisa-cep>
               <p class="error-msg" *ngIf="itemForm.controls.CEP.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.CEP.errors.msgErro }}
               </p>
@@ -168,8 +167,6 @@
   
             <div>
               <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
-              <!-- <input class="btn btn-info ml-1 mt-3 pull-right" type="reset" value="Limpar"> -->
-              <!-- <button class="btn btn-info ml-1 mt-3 pull-right" (click)="loadForm()"><i class="fa fa-shower"></i>Limpar</button> -->
               <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
               <button class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value" (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
             </div>

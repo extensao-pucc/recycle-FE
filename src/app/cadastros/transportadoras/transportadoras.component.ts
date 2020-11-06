@@ -106,7 +106,7 @@ export class TransportadorasComponent implements OnInit {
         }, err => {
           if (err.error.CNPJ_CPF){
             this.itemForm.controls.CNPJ_CPF.errors = {'msgErro': 'Transportadora com esse CNPJ ou CPF já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
@@ -121,14 +121,14 @@ export class TransportadorasComponent implements OnInit {
         }, err => {
           if (err.error.CNPJ_CPF){
             this.itemForm.controls.CNPJ_CPF.errors = {'msgErro': 'Transportadora com esse CNPJ ou CPF já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
         });
       }
     } else {
-      this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+      this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
   }
 
@@ -158,10 +158,12 @@ export class TransportadorasComponent implements OnInit {
   }
 
   populaDados(item: any): any {
-    this.itemForm.controls.endereco.setValue(item.logradouro);
-    this.itemForm.controls.bairro.setValue(item.bairro);
-    this.itemForm.controls.cidade.setValue(item.cidade);
-    this.itemForm.controls.UF.setValue(item.estado);
+    if (item.logradouro){
+      this.itemForm.controls.endereco.setValue(item.logradouro);
+      this.itemForm.controls.bairro.setValue(item.bairro);
+      this.itemForm.controls.cidade.setValue(item.cidade);
+      this.itemForm.controls.UF.setValue(item.estado);
+    }
     this.itemForm.controls.CEP.setValue(item.cep);
   }
 }

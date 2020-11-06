@@ -77,7 +77,7 @@ export class QualidadesComponent implements OnInit {
         }, err => {
           if (err.error.nome){
             this.itemForm.controls.nome.errors = {'msgErro': 'Qualidade com esse nome já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
@@ -92,14 +92,14 @@ export class QualidadesComponent implements OnInit {
         }, err => {
           if (err.error.nome){
             this.itemForm.controls.nome.errors = {'msgErro': 'Qualidade com esse nome já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
         });
       }
     } else {
-      this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+      this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
   }
 

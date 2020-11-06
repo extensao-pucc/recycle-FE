@@ -78,7 +78,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
         }, err => {
           if (err.error.descricao){
             this.itemForm.controls.descricao.errors = {'msgErro': 'Condição de pagamento com essa descrição já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
@@ -93,14 +93,14 @@ export class CondicoesDePagamentoComponent implements OnInit {
         }, err => {
           if (err.error.descricao){
             this.itemForm.controls.descricao.errors = {'msgErro': 'Condição de pagamento com essa descrição já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
         });
       }
     } else {
-      this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+      this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
   }
 

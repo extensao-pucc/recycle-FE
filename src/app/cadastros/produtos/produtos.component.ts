@@ -114,7 +114,7 @@ export class ProdutosComponent implements OnInit {
         }, err => {
           if (err.error.codigo){
             this.itemForm.controls.codigo.errors = {'msgErro': 'Produto com esse código já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
@@ -129,14 +129,14 @@ export class ProdutosComponent implements OnInit {
         }, err => {
           if (err.error.codigo){
             this.itemForm.controls.codigo.errors = {'msgErro': 'Produto com esse código já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
         });
       }
     } else {
-      this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+      this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
   }
 

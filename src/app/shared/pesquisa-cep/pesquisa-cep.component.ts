@@ -1,4 +1,4 @@
-import { Component, OnInit,  Output, EventEmitter } from '@angular/core';
+import { Component, OnInit,  Output, EventEmitter, Input } from '@angular/core';
 import { PesquisaCepService } from './pesquisa-cep.service';
 
 @Component({
@@ -8,29 +8,39 @@ import { PesquisaCepService } from './pesquisa-cep.service';
 })
 export class PesquisaCepComponent implements OnInit {
 
+  @Input() valor: string;
   @Output('retornaPesquisaCep') retornaPesquisaCep = new EventEmitter<any>();
 
   public cep: string;
   public naoEncontrado = false;
 
   constructor(
-    private pesquisaCepService: PesquisaCepService
+    private pesquisaCepService: PesquisaCepService,
   ) { }
 
   ngOnInit(): void {
+    this.cep = this.valor;
   }
 
   consultarEndereco(): any {
-    this.pesquisaCepService.pesquisarCep(this.cep).subscribe(response => {
-      this.retornaPesquisaCep.emit(response);
-    }, error => {
-      this.naoEncontrado = true;
-      this.retornaPesquisaCep.emit(this.cep);
-    });
+    
+    if (this.cep.length == 8){
+      this.pesquisaCepService.pesquisarCep(this.cep).subscribe(response => {
+        this.retornaPesquisaCep.emit(response);
+        console.log(response);
+      }, error => {
+        this.naoEncontrado = true;
+        error = {'cep': this.cep};
+        this.retornaPesquisaCep.emit(error);
+      });
+    } else {
+      this.retornaPesquisaCep.emit({'cep': this.cep})
+    }
   }
 
   onCepChange(): any {
     this.naoEncontrado = false;
+    this.consultarEndereco();
   }
 
 }

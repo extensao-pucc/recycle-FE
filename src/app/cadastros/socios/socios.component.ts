@@ -178,7 +178,7 @@ export class SociosComponent implements OnInit {
         }, err => {
           if (err.error.matricula){
             this.itemForm.controls.matricula.errors = {'msgErro': 'Sócio com essa matrícula já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
@@ -193,14 +193,14 @@ export class SociosComponent implements OnInit {
         }, err => {
           if (err.error.matricula){
             this.itemForm.controls.matricula.errors = {'msgErro': 'Sócio com essa matrícula já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
         });
       }
     } else {
-      this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+      this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
   }
 

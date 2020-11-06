@@ -56,7 +56,7 @@ export class FormValidatorService {
   }
 
   validCEP(control: FormControl): any{
-    const msgErro = 'CEP inválido';
+    const msgErro = 'CEP deve conter 8 numeros';
     let field = control.value;
 
     let er = new RegExp(/^[0-9]{8}$/);

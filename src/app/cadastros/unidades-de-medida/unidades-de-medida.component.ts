@@ -87,7 +87,7 @@ export class UnidadesDeMedidaComponent implements OnInit {
       this.showForm = false;
       this.loadForm();
     } else {
-      this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+      this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
   }
 

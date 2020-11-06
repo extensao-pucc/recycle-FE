@@ -78,7 +78,7 @@ export class MotivosDeParadaComponent implements OnInit {
         }, err => {
           if (err.error.motivo){
             this.itemForm.controls.motivo.errors = {'msgErro': 'Motivo de parada com esse motivo já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
@@ -93,14 +93,14 @@ export class MotivosDeParadaComponent implements OnInit {
         }, err => {
           if (err.error.motivo){
             this.itemForm.controls.motivo.errors = {'msgErro': 'Motivo de parada com esse motivo já existe'};
-            this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
           }else {
             this.toastService.addToast(err['message'], 'darkred');
           }
         });
       }
     } else {
-      this.toastService.addToast('Informação inválida, verifique para continuar', 'darkred');
+      this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
 
 
