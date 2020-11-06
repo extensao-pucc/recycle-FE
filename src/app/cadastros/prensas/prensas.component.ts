@@ -71,25 +71,40 @@ export class PrensasComponent implements OnInit {
     const formValues = this.itemForm.value;
 
     if (this.itemForm.status === 'VALID'){
+
       if (formValues.id) {
         this.crudService.updateItem('prensas', formValues, formValues.id).subscribe(response => {
           this.getItems();
+          this.loadForm();
+
+          this.showForm = false;
           this.toastService.addToast('Atualizado com sucesso');
         }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.numero){
+            this.itemForm.controls.numero.errors = {'msgErro': 'Prensa com esse numero já existe'};
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
         });
       } else {
         this.crudService.createItem('prensas', formValues).subscribe(response => {
-          this.getItems();
-          this.toastService.addToast('Cadastrado com sucesso');
+            this.getItems();
+            this.loadForm();
+
+            this.showForm = false;
+            this.toastService.addToast('Cadastrado com sucesso');
         }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.numero){
+            this.itemForm.controls.numero.errors = {'msgErro': 'Prensa com esse numero já existe'};
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
         });
       }
-      this.showForm = false;
-      this.loadForm();
     } else {
-      this.toastService.addToast('Corrija os erros para continuar', 'darkred');
+      this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
   }
 

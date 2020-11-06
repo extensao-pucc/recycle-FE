@@ -72,22 +72,36 @@ export class FamiliasComponent implements OnInit {
       if (formValues.id) {
         this.crudService.updateItem('familias', formValues, formValues.id).subscribe(response => {
           this.getItems();
+          this.loadForm();
+
+          this.showForm = false;
           this.toastService.addToast('Atualizado com sucesso');
         }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.nome){
+            this.itemForm.controls.nome.errors = {'msgErro': 'Família com esse nome já existe'};
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
         });
       } else {
         this.crudService.createItem('familias', formValues).subscribe(response => {
           this.getItems();
+          this.loadForm();
+
+          this.showForm = false;
           this.toastService.addToast('Cadastrado com sucesso');
-          }, err => {
+        }, err => {
+          if (err.error.nome){
+            this.itemForm.controls.nome.errors = {'msgErro': 'Família com esse nome já existe'};
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
+          }else {
             this.toastService.addToast(err['message'], 'darkred');
+          }
           });
         }
-      this.showForm = false;
-      this.loadForm();
     } else {
-      this.toastService.addToast('Corrija os erros para continuar', 'darkred');
+      this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
 
   }

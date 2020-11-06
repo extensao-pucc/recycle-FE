@@ -29,20 +29,7 @@ export class FormValidatorService {
     }
     return null;
   }
-
-  // isUnique(control: FormControl): any {
-  //   const msgErro = 'Esse CPF/CNPJ já existe';
-  //   let field = control.value;
-
-  //   this.crudService.getItems('fornecedores').subscribe(response => {
-
-  //   });
-
-  //   if (field) {
-  //     return {msgErro};
-  //   }
-  //   return null;
-  // }
+  
   validNCM(control: FormControl): any {
     const msgErro = 'NCM inválido';
     let field = control.value;
@@ -69,7 +56,7 @@ export class FormValidatorService {
   }
 
   validCEP(control: FormControl): any{
-    const msgErro = 'CEP inválido';
+    const msgErro = 'CEP deve conter 8 numeros';
     let field = control.value;
 
     let er = new RegExp(/^[0-9]{8}$/);

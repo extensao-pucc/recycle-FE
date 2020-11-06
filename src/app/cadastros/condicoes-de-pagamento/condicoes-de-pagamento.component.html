@@ -40,9 +40,6 @@
           <input formControlName="id" hidden="true">
           <label>Descrição: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="descricao">
-          <!-- <ul *ngIf="itemForm.controls.descricao.errors">
-            <li *ngFor="let erro of itemForm.controls.descricao.errors">{{ erro | json }}</li>
-          </ul> -->
           <p class="error-msg" *ngIf="itemForm.controls.descricao.errors">
             <i class="fa fa-times"></i> {{ itemForm.controls.descricao.errors.msgErro }}
           </p>

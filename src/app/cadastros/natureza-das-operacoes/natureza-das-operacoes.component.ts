@@ -5,6 +5,7 @@ import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
+import { SharedVariableService } from '../../shared/shared-variable.service';
 
 @Component({
   selector: 'app-natureza-das-operacoes',
@@ -19,12 +20,17 @@ export class NaturezaDasOperacoesComponent implements OnInit {
   public yesNoMessage: YesNoMessage = new YesNoMessage();
   public showYesNoMessage: boolean;
 
+  public types: any;
+
   constructor(
     private crudService: CrudService,
     private toastService: ToastService,
     private formBuilder: FormBuilder,
-    private formValidatorService: FormValidatorService
-  ) { }
+    private formValidatorService: FormValidatorService,
+    private sharedVariableService: SharedVariableService
+  ) {
+    this.types = this.sharedVariableService.getTypes();
+  }
 
   ngOnInit(): void {
     this.getItems();
@@ -74,22 +80,36 @@ export class NaturezaDasOperacoesComponent implements OnInit {
       if (formValues.id) {
         this.crudService.updateItem('naturezaDasOperacoes', formValues, formValues.id).subscribe(response => {
           this.getItems();
+          this.loadForm();
+
+          this.showForm = false;
           this.toastService.addToast('Atualizado com sucesso');
         }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.codigo){
+            this.itemForm.controls.codigo.errors = {'msgErro': 'Natureza das operações com esse código já existe'};
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
         });
       } else {
         this.crudService.createItem('naturezaDasOperacoes', formValues).subscribe(response => {
           this.getItems();
+          this.loadForm();
+
+          this.showForm = false;
           this.toastService.addToast('Cadastrado com sucesso');
         }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.codigo){
+            this.itemForm.controls.codigo.errors = {'msgErro': 'Natureza das operações com esse código já existe'};
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
         });
       }
-      this.showForm = false;
-      this.loadForm();
     } else {
-      this.toastService.addToast('Corrija os erros para continuar', 'darkred');
+      this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
   }
 

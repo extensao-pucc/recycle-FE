@@ -41,13 +41,20 @@ export class SharedVariableService {
     return states;
   }
 
-
   getStatus(): any[]{
     const status = [
       {status: 'Ativo'},
       {status: 'Inativo'}
     ];
     return status;
+  }
+
+  getTypes(): any[]{
+    const types = [
+      {type: 'Entrada'},
+      {type: 'Saida'}
+    ];
+    return types;
   }
 
   getProfiles(): any[]{
