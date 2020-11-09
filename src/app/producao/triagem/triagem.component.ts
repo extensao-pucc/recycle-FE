@@ -2,8 +2,10 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { CrudService } from '../../cadastros/crud.service';
+import { SharedVariableService } from '../../shared/shared-variable.service';
 import { FormBuilder } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
+import { from } from 'rxjs';
 
 @Component({
   selector: 'app-triagem',
@@ -15,33 +17,31 @@ export class TriagemComponent implements OnInit {
 
   public yesNoMessage: YesNoMessage = new YesNoMessage();
   public showYesNoMessage: boolean;
-  public selectedSocio: any;
+  public modalRef: any;
+
   public socios: any;
   public fornecedores: any;
   public motivosDeParada: any;
+
   public headForm: any;
-  public currentTriagem: number;
-  public lastTriagem: number;
-  public isStarted = false;
-  public isPaused = true;
-  public isStoped = true;
-  public isPrinted = true;
-  public statusProd = '';
-  public modalRef: any;
+  public selectedSocio: any;
   public selectedMotivo: any;
+  public lastTriagem: number;
+  public statusProd = '';
+  public lotItems: any;
 
   constructor(
     private toastService: ToastService,
     private crudService: CrudService,
+    private sharedVariableService: SharedVariableService,
     private formBuilder: FormBuilder,
     private modalService: BsModalService
   ) {  }
 
   ngOnInit(): void {
-    var prodInfo = JSON.parse(localStorage.getItem('prodInfo'));
+    const prodInfo = JSON.parse(localStorage.getItem('prodInfo'));
     this.getItems();
     if (prodInfo) {
-      console.log(prodInfo)
       this.loadForm();
       this.headForm.controls.lote.setValue(prodInfo['currentLote']);
       this.headForm.controls.data.setValue(prodInfo['startDate']);
@@ -53,7 +53,7 @@ export class TriagemComponent implements OnInit {
     } else {
       this.loadForm();
       this.crudService.getItems('parametros').subscribe(response => {
-        this.lastTriagem = response[0].triagem;
+        this.lastTriagem =  Number(response[0].triagem);
       });
     }
   }
@@ -80,13 +80,13 @@ export class TriagemComponent implements OnInit {
     if (this.headForm.get('socio').value && this.headForm.get('fornecedor').value) {
       if (this.statusProd === '') {
         this.headForm.controls.lote.setValue(this.lastTriagem + 1);
-        this.headForm.controls.data.setValue(this.currentDate());
-        this.headForm.controls.inicio.setValue(this.currentTime());
+        this.headForm.controls.data.setValue(this.sharedVariableService.currentDate());
+        this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime());
         this.headForm.controls.situacao.setValue('Iniciada');
-        let prodInfo = {
+        const prodInfo = {
           currentLote: this.lastTriagem + 1,
-          startDate: this.currentDate(),
-          startTime: this.currentTime(),
+          startDate: this.sharedVariableService.currentDate(),
+          startTime: this.sharedVariableService.currentTime(),
           status: 'Iniciada',
           socio: this.headForm.get('socio').value,
           fornecedor: this.headForm.get('fornecedor').value
@@ -126,25 +126,5 @@ export class TriagemComponent implements OnInit {
       }
     };
     this.showYesNoMessage = true;
-  }
-
-  currentDate(): string {
-    const currentDate = new Date();
-    const day = '' + currentDate.getDate();
-    const month = '' + (currentDate.getMonth() + 1);
-    const year = '' + currentDate.getFullYear();
-    return (day.length === 1 ? '0' + day : day) +
-    '/' + (month.length === 1 ? '0' + month : month) +
-    '/' + (year.length === 1 ? '0' + year : year);
-  }
-
-  currentTime(): string {
-    const currentDate = new Date();
-    const hour = '' + currentDate.getHours();
-    const minute = '' + currentDate.getMinutes();
-    const second = '' + currentDate.getSeconds();
-    return (hour.length === 1 ? '0' + hour : hour) +
-    ':' + (minute.length === 1 ? '0' + minute : minute) +
-    ':' + (second.length === 1 ? '0' + second : second);
   }
 }
