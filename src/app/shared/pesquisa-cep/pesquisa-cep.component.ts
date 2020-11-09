@@ -27,7 +27,6 @@ export class PesquisaCepComponent implements OnInit {
     if (this.cep.length == 8){
       this.pesquisaCepService.pesquisarCep(this.cep).subscribe(response => {
         this.retornaPesquisaCep.emit(response);
-        console.log(response);
       }, error => {
         this.naoEncontrado = true;
         error = {'cep': this.cep};
