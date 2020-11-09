@@ -65,6 +65,26 @@ export class SharedVariableService {
     return profile;
   }
 
+  currentDate(): string {
+    const currentDate = new Date();
+    const day = '' + currentDate.getDate();
+    const month = '' + (currentDate.getMonth() + 1);
+    const year = '' + currentDate.getFullYear();
+    return (day.length === 1 ? '0' + day : day) +
+    '/' + (month.length === 1 ? '0' + month : month) +
+    '/' + (year.length === 1 ? '0' + year : year);
+  }
+
+  currentTime(): string {
+    const currentDate = new Date();
+    const hour = '' + currentDate.getHours();
+    const minute = '' + currentDate.getMinutes();
+    const second = '' + currentDate.getSeconds();
+    return (hour.length === 1 ? '0' + hour : hour) +
+    ':' + (minute.length === 1 ? '0' + minute : minute) +
+    ':' + (second.length === 1 ? '0' + second : second);
+  }
+
   // getRandomColor(): any {
   //   let colours = ['#00c0f1', '#add036', '#ec2426', '#ffc116'];
   //   return colours[Math.floor(Math.random() * 4)];
