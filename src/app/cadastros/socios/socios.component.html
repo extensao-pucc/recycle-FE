@@ -44,7 +44,7 @@
                   </td>
                   <td>
                     <img *ngIf="!item?.foto" src="../../../assets/img/perfil_sem_foto.png" class="rounded-circle z-depth-0" height="50" width="50" alt="">
-                    <img *ngIf="item?.foto" src="{{item?.foto}}" class="rounded-circle z-depth-0" height="50" width="50" alt="" >
+                    <img *ngIf="item?.foto" src="{{ item?.foto }}" class="rounded-circle z-depth-0" height="50" width="50" alt="" (click)="showImage(item?.foto)">
                   </td>
                   <td>{{ item?.id }}</td>
                   <td>{{ item?.matricula }}</td>
@@ -88,7 +88,7 @@
           <div class="form-row">
             <div class="form-group col-md-2">
               <label>Matrícula: </label>
-              <input class="form-control" type="text" maxlength="10" formControlName="matricula">
+              <input class="form-control" type="text" maxlength="9" formControlName="matricula">
               <p class="error-msg" *ngIf="itemForm.controls.matricula.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.matricula.errors.msgErro }}
               </p>
@@ -329,11 +329,8 @@
         </div>        
         <!-- =============== -->
 
-        
-        <!-- The Modal -->
-
-        <!-- ============= -->
     </div>
 </div>  
 
 <app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>
+<app-view-image [viewImage]="viewImage" *ngIf="showModalImage"></app-view-image>

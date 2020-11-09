@@ -1,0 +1,14 @@
+<ng-template #defaultViewImage>
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close pull-right" aria-label="Close" (click)="yesNo(false)">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <div class="largeartwork">
+                <img src="{{  viewImage?.image }}" alt="">
+            </div>
+        </div>
+    </div>
+</ng-template>

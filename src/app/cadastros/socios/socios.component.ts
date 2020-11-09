@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
+import { ViewImage } from 'src/app/shared/view-image/view-image.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
@@ -26,6 +27,9 @@ export class SociosComponent implements OnInit {
 
   public selectedFile: File;
   public imageInput: any;
+
+  public viewImage: ViewImage = new ViewImage();
+  public showModalImage: boolean;
 
   constructor(
     private crudService: CrudService,
@@ -227,5 +231,19 @@ export class SociosComponent implements OnInit {
       }
     };
     this.showYesNoMessage = true;
+  }
+
+  showImage(image: any): void{
+    this.showModalImage = true;
+
+    this.viewImage = {
+      image,
+      action: {
+        onClickYes: () => {
+          this.showYesNoMessage = true;
+        },
+        onClickNo: () => { }
+      }
+    };
   }
 }
