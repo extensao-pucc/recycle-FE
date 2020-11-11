@@ -48,8 +48,8 @@ export class TriagemComponent implements OnInit {
       this.headForm.controls.inicio.setValue(prodInfo['startTime']);
       this.headForm.controls.situacao.setValue(prodInfo['status']);
       this.statusProd = prodInfo['status'];
-      // this.headForm.controls.socio.setValue(prodInfo['socio']);
-      // this.headForm.controls.fornecedor.setValue(prodInfo['fornecedor']);
+      this.headForm.controls.socio.setValue(prodInfo.socio.nome);
+      this.headForm.controls.fornecedor.setValue(prodInfo.fornecedor.razao_social_nome);
     } else {
       this.loadForm();
       this.crudService.getItems('parametros').subscribe(response => {
