@@ -35,6 +35,7 @@ import { TriagemComponent } from './producao/triagem/triagem.component';
 // providers
 import { AuthGuard } from './guards/auth.guard';
 import { PesquisaCepComponent } from './shared/pesquisa-cep/pesquisa-cep.component';
+import { ViewImageComponent } from './shared/view-image/view-image.component';
 
 
 @NgModule({
@@ -56,7 +57,8 @@ import { PesquisaCepComponent } from './shared/pesquisa-cep/pesquisa-cep.compone
     UnidadesDeMedidaComponent,
     YesNoMessageComponent,
     TriagemComponent,
-    PesquisaCepComponent
+    PesquisaCepComponent,
+    ViewImageComponent
   ],
   imports: [
     BrowserModule,

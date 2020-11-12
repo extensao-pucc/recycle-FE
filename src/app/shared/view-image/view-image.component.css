@@ -1,0 +1,9 @@
+.largeartwork img {
+    width: 465px;
+    height: 400px;
+    overflow: auto;
+}
+
+.modal-body {
+    overflow: auto;
+}

@@ -3,6 +3,7 @@ import { FormBuilder, FormControl, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
+import { ViewImage } from 'src/app/shared/view-image/view-image.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
@@ -25,7 +26,11 @@ export class SociosComponent implements OnInit {
   public status: any;
 
   public selectedFile: File;
-  public imageInput: any;
+  public imageInput: any = undefined;
+  public imageInputView: any;
+
+  public viewImage: ViewImage = new ViewImage();
+  public showModalImage: boolean;
 
   constructor(
     private crudService: CrudService,
@@ -73,6 +78,7 @@ export class SociosComponent implements OnInit {
       foto: [''],
       perfil: ['', [this.formValidatorService.isEmpty]]
     });
+    this.imageInputView = '';
   }
 
   getItems(): void {
@@ -118,20 +124,33 @@ export class SociosComponent implements OnInit {
     this.itemForm.controls.telefone.setValue(item.telefone);
     this.itemForm.controls.email.setValue(item.email);
     this.itemForm.controls.data_de_admissao.setValue(item.data_de_admissao);
-    this.itemForm.controls.data_de_demissao.setValue(item.data_de_demissao);
+    if (item.data_de_demissao != null){
+      this.itemForm.controls.data_de_demissao.setValue(item.data_de_demissao);
+    }
     this.itemForm.controls.situacao.setValue(item.situacao);
     // this.itemForm.controls.foto.setValue(item.foto);
     this.itemForm.controls.perfil.setValue(item.perfil);
+
+    this.imageInputView = item.foto;
   }
 
   onChange(fileInput): void {
     this.imageInput = fileInput.target.files[0];
     const reader = new FileReader();
 
-    // reader.readAsDataURL(fileInput.target.files[0]);
-
+    // Transforma em file
     reader.onload = (e: any) => {
       this.imageInput = e.target.result;
+    };
+    
+    // Exibe imagem na tela dando um preview para o usuario
+    this.imageInputView = fileInput.target.files[0];
+    const readerImage = new FileReader();
+
+    readerImage.readAsDataURL(fileInput.target.files[0]);
+
+    readerImage.onload = (e: any) => {
+      this.imageInputView = e.target.result;
     };
   }
 
@@ -165,7 +184,12 @@ export class SociosComponent implements OnInit {
       formData.append('data_de_admissao', this.itemForm.get('data_de_admissao').value);
       formData.append('data_de_demissao', this.itemForm.get('data_de_demissao').value);
       formData.append('situacao', this.itemForm.get('situacao').value);
-      formData.append('foto', this.imageInput);
+      if (this.imageInput != undefined){
+        formData.append('foto', this.imageInput);
+        this.imageInput = undefined;
+      } else {
+          formData.append('foto', '');
+      }
       formData.append('perfil', this.itemForm.get('perfil').value);
 
       if (formValues.id) {
@@ -227,5 +251,28 @@ export class SociosComponent implements OnInit {
       }
     };
     this.showYesNoMessage = true;
+  }
+
+  showImage(image: any): void{
+    this.showModalImage = true;
+
+    this.viewImage = {
+      image,
+      action: {
+        onClickYes: () => {
+          this.showYesNoMessage = true;
+        },
+        onClickNo: () => { }
+      }
+    };
+  }
+
+    populaDados(item: any): any {
+    if (item.logradouro ||  item.estado){
+      this.itemForm.controls.endereco.setValue(item.logradouro);
+      this.itemForm.controls.cidade.setValue(item.cidade);
+      this.itemForm.controls.UF.setValue(item.estado);
+    }
+    // this.itemForm.controls.CEP.setValue(item.cep);
   }
 }
