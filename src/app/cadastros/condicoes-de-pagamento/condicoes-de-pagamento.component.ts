@@ -17,8 +17,16 @@ export class CondicoesDePagamentoComponent implements OnInit {
   public itemsList: any;
   public itemForm: any;
   public showForm = false;
+
+  // Modal de confirmação =========
   public yesNoMessage: YesNoMessage = new YesNoMessage();
   public showYesNoMessage: boolean;
+  // ==============================
+
+  // Busca personalizada ==========
+  public searchID: string;
+  public searchDescricao: string;
+  // ===============================
 
   constructor(
     private crudService: CrudService,
@@ -45,6 +53,20 @@ export class CondicoesDePagamentoComponent implements OnInit {
       this.tempItemsList = _.clone(this.itemsList);
     });
   }
+
+  // =========== Busca personalizada ====================================================
+  Search(campo: any, valor: any): any{
+    if (valor != ''){
+      this.tempItemsList = this.itemsList.filter(res => {
+        return res[campo].toString().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
+               valor.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
+              ));
+      });
+    } else if (valor == '') {
+      this.ngOnInit();
+    }
+  }
+  // ====================================================================================
 
   deleteItem(id): void {
     this.crudService.deleteItem('condicoesDePagamento', id).subscribe(response => {
@@ -105,6 +127,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
   }
 
 
+  // =========== Modal de confirmação ====================================================
   showModal(title: string, items: any): void {
     const formValues = this.itemForm.value;
 
@@ -129,4 +152,5 @@ export class CondicoesDePagamentoComponent implements OnInit {
     };
     this.showYesNoMessage = true;
   }
+  // =======================================================================================
 }

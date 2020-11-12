@@ -78,6 +78,7 @@ export class SociosComponent implements OnInit {
       foto: [''],
       perfil: ['', [this.formValidatorService.isEmpty]]
     });
+    this.imageInputView = '';
   }
 
   getItems(): void {
@@ -264,5 +265,14 @@ export class SociosComponent implements OnInit {
         onClickNo: () => { }
       }
     };
+  }
+
+    populaDados(item: any): any {
+    if (item.logradouro ||  item.estado){
+      this.itemForm.controls.endereco.setValue(item.logradouro);
+      this.itemForm.controls.cidade.setValue(item.cidade);
+      this.itemForm.controls.UF.setValue(item.estado);
+    }
+    // this.itemForm.controls.CEP.setValue(item.cep);
   }
 }

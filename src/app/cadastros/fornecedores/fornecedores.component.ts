@@ -160,7 +160,7 @@ export class FornecedoresComponent implements OnInit {
   }
 
   populaDados(item: any): any {
-    if (item.logradouro){
+    if (item.logradouro || item.bairro || item.estado){
       this.itemForm.controls.endereco.setValue(item.logradouro);
       this.itemForm.controls.bairro.setValue(item.bairro);
       this.itemForm.controls.cidade.setValue(item.cidade);

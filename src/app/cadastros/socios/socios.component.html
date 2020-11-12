@@ -288,10 +288,15 @@
                 <i class="fa fa-times"></i> {{ itemForm.controls.UF.errors.msgErro }}
               </p>
             </div>
+
+            <div class="form-group col-md-2">
+              <label>CEP: </label>
+              <app-pesquisa-cep (retornaPesquisaCep)="populaDados($event)" valor=""></app-pesquisa-cep>
+            </div>
           </div>
 
           <div class="form-row">
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-4">
               <label>Foto: </label>
               <input class="form-control" type="file" name="foto" (change)="onChange($event)" accept="image/*" >
             </div>
