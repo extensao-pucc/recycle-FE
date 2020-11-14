@@ -24,6 +24,7 @@ export class SociosComponent implements OnInit {
   public states: any;
   public profiles: any;
   public status: any;
+  public organs: any;
 
   public selectedFile: File;
   public imageInput: any = undefined;
@@ -42,6 +43,7 @@ export class SociosComponent implements OnInit {
     this.states = this.sharedVariableService.getStates();
     this.profiles = this.sharedVariableService.getProfiles();
     this.status = this.sharedVariableService.getStatus();
+    this.organs = this.sharedVariableService.getOrgans();
   }
 
   ngOnInit(): void {
