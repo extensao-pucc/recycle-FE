@@ -8,6 +8,39 @@ export class SharedVariableService {
 
   constructor() { }
 
+  getOrgans(): any[]{
+    const organs = [
+      {uf: 'AC', organ: 'SSP-AC'},
+      {uf: 'AL', organ: 'SSP/AL'},
+      {uf: 'AP', organ: 'SSP/AP'},
+      {uf: 'AM', organ: 'SSP/AM'},
+      {uf: 'BA', organ: 'SSP/BA'},
+      {uf: 'CE', organ: 'SSPDS/CE'},
+      {uf: 'DF', organ: 'SSP/DF'},
+      {uf: 'ES', organ: 'SESP/ES'},
+      {uf: 'GO', organ: 'SSP/GO'},
+      {uf: 'MA', organ: 'SSP/MA'},
+      {uf: 'MT', organ: 'SSP-MT'},
+      {uf: 'MS', organ: 'SSP/MS'},
+      {uf: 'MG', organ: 'SSP/MG'},
+      {uf: 'PA', organ: 'SSP/PA'},
+      {uf: 'PB', organ: 'SSP/PB'},
+      {uf: 'PR', organ: 'SSP/PR'},
+      {uf: 'PE', organ: 'SSP/PE'},
+      {uf: 'PI', organ: 'SSP/PI'},
+      {uf: 'RJ', organ: 'SSP/RJ'},
+      {uf: 'RN', organ: 'SESED/RN'},
+      {uf: 'RS', organ: 'SSP/RS'},
+      {uf: 'RO', organ: 'SESDEC/RO'},
+      {uf: 'RR', organ: 'SESP/RR'},
+      {uf: 'SC', organ: 'SSP/SC'},
+      {uf: 'SP', organ: 'SSP/SP'},
+      {uf: 'SE', organ: 'SSP/SE'},
+      {uf: 'TO', organ: 'SSP/TO'}
+    ];
+    return organs;
+  } 
+
   getStates(): any[]{
     const states = [
       {uf: 'AC', state: 'Acre'},
@@ -85,8 +118,4 @@ export class SharedVariableService {
     ':' + (second.length === 1 ? '0' + second : second);
   }
 
-  // getRandomColor(): any {
-  //   let colours = ['#00c0f1', '#add036', '#ec2426', '#ffc116'];
-  //   return colours[Math.floor(Math.random() * 4)];
-  // }
 }
