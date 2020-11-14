@@ -11,6 +11,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { SnackbarModule } from 'ngx-snackbar';
 import { NgxMaskModule } from 'ngx-mask';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { AvatarModule } from 'ngx-avatar';
 
 // components
 import { AppRoutingModule } from './app-routing.module';
@@ -72,7 +73,8 @@ import { ViewImageComponent } from './shared/view-image/view-image.component';
     NgxMaskModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
-    NgSelectModule
+    NgSelectModule,
+    AvatarModule
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]
