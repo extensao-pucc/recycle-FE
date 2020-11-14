@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ɵCompiler_compileModuleAndAllComponentsAsync__POST_R3__ } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
@@ -55,19 +55,36 @@ export class CondicoesDePagamentoComponent implements OnInit {
   }
 
   // =========== Busca personalizada ====================================================
-  Search(campo: any, valor: any): any{
-    if (valor != ''){
-      this.tempItemsList = this.itemsList.filter(res => {
-        return res[campo].toString().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
-               valor.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
-              ));
-      });
-    } else if (valor == '') {
+  SearchText(campo: any, valor: any): any{
+    this.tempItemsList = this.tempItemsList.filter(res => {
+      return res[campo].toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
+        valor.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
+      ));
+    });
+  }
+
+  SearchNumber(campo: any, valor: any): any{
+    this.tempItemsList = this.tempItemsList.filter(res => {
+      return res[campo].toString().match(valor);
+    });
+  }
+
+  Search(): any{
+    if (this.searchID != ''){
+      this.SearchNumber('id', this.searchID);
+    }
+
+    if (this.searchDescricao != ''){
+      this.SearchText('descricao', this.searchDescricao);
+    }
+    
+    if (this.searchID == '' && this.searchDescricao == '') {
       this.ngOnInit();
     }
   }
   // ====================================================================================
 
+  // =========== CRUD ===================================================================
   deleteItem(id): void {
     this.crudService.deleteItem('condicoesDePagamento', id).subscribe(response => {
       this.getItems();
@@ -125,9 +142,10 @@ export class CondicoesDePagamentoComponent implements OnInit {
       this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
   }
+  // ====================================================================================
 
 
-  // =========== Modal de confirmação ====================================================
+  // =========== Modal de confirmação ===================================================
   showModal(title: string, items: any): void {
     const formValues = this.itemForm.value;
 
@@ -152,5 +170,5 @@ export class CondicoesDePagamentoComponent implements OnInit {
     };
     this.showYesNoMessage = true;
   }
-  // =======================================================================================
+  // ====================================================================================
 }
