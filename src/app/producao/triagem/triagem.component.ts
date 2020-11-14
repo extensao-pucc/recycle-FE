@@ -14,21 +14,29 @@ import { from } from 'rxjs';
 })
 export class TriagemComponent implements OnInit {
   @ViewChild('pauseScreen', { static: true }) pauseScreen: ElementRef;
+  @ViewChild('loteItemScreen', { static: true }) loteItemScreen: ElementRef;
 
+  // screen
   public yesNoMessage: YesNoMessage = new YesNoMessage();
   public showYesNoMessage: boolean;
   public modalRef: any;
 
+  // selects
   public socios: any;
   public fornecedores: any;
   public motivosDeParada: any;
+  public produtos: any;
 
+  // forms
   public headForm: any;
+  public loteItemForm: any;
+
   public selectedSocio: any;
   public selectedMotivo: any;
   public lastTriagem: number;
   public statusProd = '';
-  public lotItems: any;
+  public lotItems = [];
+  public lotStops = [];
 
   constructor(
     private toastService: ToastService,
@@ -36,29 +44,32 @@ export class TriagemComponent implements OnInit {
     private sharedVariableService: SharedVariableService,
     private formBuilder: FormBuilder,
     private modalService: BsModalService
-  ) {  }
+  ) {}
 
   ngOnInit(): void {
-    const prodInfo = JSON.parse(localStorage.getItem('prodInfo'));
+    const prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
     this.getItems();
-    if (prodInfo) {
-      this.loadForm();
-      this.headForm.controls.lote.setValue(prodInfo['currentLote']);
-      this.headForm.controls.data.setValue(prodInfo['startDate']);
-      this.headForm.controls.inicio.setValue(prodInfo['startTime']);
-      this.headForm.controls.situacao.setValue(prodInfo['status']);
-      this.statusProd = prodInfo['status'];
-      this.headForm.controls.socio.setValue(prodInfo.socio.nome);
-      this.headForm.controls.fornecedor.setValue(prodInfo.fornecedor.razao_social_nome);
+    if (prodInfoHead) {
+      this.loadHeadForm();
+      this.headForm.controls.lote.setValue(prodInfoHead['currentLote']);
+      this.headForm.controls.data.setValue(prodInfoHead['startDate']);
+      this.headForm.controls.inicio.setValue(prodInfoHead['startTime']);
+      this.headForm.controls.situacao.setValue(prodInfoHead['status']);
+      this.statusProd = prodInfoHead['status'];
+      this.headForm.controls.socio.setValue(prodInfoHead.socio.nome);
+      this.headForm.get('socio').disable();
+      this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor.razao_social_nome);
+      this.headForm.get('fornecedor').disable();
     } else {
-      this.loadForm();
+      this.loadHeadForm();
       this.crudService.getItems('parametros').subscribe(response => {
         this.lastTriagem =  Number(response[0].triagem);
       });
     }
+    this.loadLoteItemForm();
   }
 
-  loadForm(): void {
+  loadHeadForm(): void {
     this.headForm = this.formBuilder.group({
       lote: [null],
       data: [null],
@@ -70,10 +81,24 @@ export class TriagemComponent implements OnInit {
     });
   }
 
+  loadLoteItemForm(): void {
+    this.loteItemForm = this.formBuilder.group({
+      numBag: [null],
+      product: [null],
+      qtn: [null],
+      socio: [null],
+      tempo: [null],
+      startTime: [null],
+      endTime: [null],
+      edit: true
+    });
+  }
+
   getItems(): void {
     this.crudService.getItems('socios').subscribe(response => this.socios = response);
     this.crudService.getItems('fornecedores').subscribe(response => this.fornecedores = response);
     this.crudService.getItems('motivosDeParada').subscribe(response => this.motivosDeParada = response);
+    this.crudService.getItems('produtos').subscribe(response => this.produtos = response);
   }
 
   startProduction(): void {
@@ -83,7 +108,7 @@ export class TriagemComponent implements OnInit {
         this.headForm.controls.data.setValue(this.sharedVariableService.currentDate());
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime());
         this.headForm.controls.situacao.setValue('Iniciada');
-        const prodInfo = {
+        const prodInfoHead = {
           currentLote: this.lastTriagem + 1,
           startDate: this.sharedVariableService.currentDate(),
           startTime: this.sharedVariableService.currentTime(),
@@ -91,7 +116,7 @@ export class TriagemComponent implements OnInit {
           socio: this.headForm.get('socio').value,
           fornecedor: this.headForm.get('fornecedor').value
         };
-        localStorage.setItem('prodInfo', JSON.stringify(prodInfo));
+        localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
         this.statusProd = 'Iniciada';
       }
     } else {
@@ -102,6 +127,32 @@ export class TriagemComponent implements OnInit {
   pauseProduction(): void {
     console.log('pausou')
     console.log(this.selectedMotivo)
+  }
+
+  addLoteItem(): void {
+    this.lotItems.push({
+      numBag: 3,
+      product: this.loteItemForm.get('product').value,
+      qtn: 0,
+      socio: this.loteItemForm.get('socio').value,
+      startTime: this.sharedVariableService.currentTime(),
+      endTime: '',
+      edit: true
+    });
+    localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
+    this.loadLoteItemForm();
+    this.modalRef.hide();
+  }
+
+  saveLoteItem(idx): void {
+    this.lotItems[idx].edit = false;
+    this.lotItems[idx].endTime = this.sharedVariableService.currentTime();
+    localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
+  }
+
+  showLoteItemModal(): void {
+    this.loadLoteItemForm();
+    this.modalRef = this.modalService.show(this.loteItemScreen);
   }
 
   showModal(title: string): void {
