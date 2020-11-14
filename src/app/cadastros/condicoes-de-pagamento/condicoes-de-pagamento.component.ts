@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ɵCompiler_compileModuleAndAllComponentsAsync__POST_R3__ } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
@@ -65,6 +65,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
   }
   // ====================================================================================
 
+  // =========== CRUD ===================================================================
   deleteItem(id): void {
     this.crudService.deleteItem('condicoesDePagamento', id).subscribe(response => {
       this.getItems();
@@ -122,9 +123,10 @@ export class CondicoesDePagamentoComponent implements OnInit {
       this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
   }
+  // ====================================================================================
 
 
-  // =========== Modal de confirmação ====================================================
+  // =========== Modal de confirmação ===================================================
   showModal(title: string, items: any): void {
     const formValues = this.itemForm.value;
 
@@ -149,5 +151,5 @@ export class CondicoesDePagamentoComponent implements OnInit {
     };
     this.showYesNoMessage = true;
   }
-  // =======================================================================================
+  // ====================================================================================
 }
