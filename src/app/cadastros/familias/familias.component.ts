@@ -47,6 +47,24 @@ export class FamiliasComponent implements OnInit {
     });
   }
 
+  // =========== Busca personalizada ====================================================
+  Search(campo: any, valor: any): any{
+    this.tempItemsList = _.clone(this.tempItemsList);
+
+    if (valor !== ''){
+      this.tempItemsList = this.itemsList.filter(res => {
+        return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
+               valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
+              ));
+      });
+    } else if (valor === '') {
+      this.ngOnInit();
+    }
+  }
+  // ====================================================================================
+
+  
+  // =========== CRUD ===================================================================
   deleteItem(id): void {
     this.crudService.deleteItem('familias', id).subscribe(response => {
       this.getItems();
@@ -105,7 +123,10 @@ export class FamiliasComponent implements OnInit {
     }
 
   }
+  // ====================================================================================
 
+
+  // =========== Modal de confirmação ===================================================
   showModal(title: string, items: any): void {
     const formValues = this.itemForm.value;
 
@@ -130,4 +151,5 @@ export class FamiliasComponent implements OnInit {
     };
     this.showYesNoMessage = true;
   }
+  // ====================================================================================
 }

@@ -24,6 +24,23 @@
                 <th scope="col">Email</th>
                 <th scope="col">Opções</th>
               </tr>
+
+              <tr>
+                <td><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
+                <td><input class="form-control" type="search" placeholder="CPF ou CNPJ" (input)="Search('CNPJ_CPF', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Razao social ou nome" (input)="Search('razao_social_nome', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Inscrição estadual" (input)="Search('IE', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Endereço" (input)="Search('endereco', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Complemento" (input)="Search('complemento', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Bairro" (input)="Search('bairro', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="CEP" (input)="Search('CEP', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="UF" (input)="Search('UF', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Cidade" (input)="Search('cidade', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Telefone" (input)="Search('telefone', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Email" (input)="Search('email', $event.target.value)"></td>
+              </tr>
+              
             </thead>
             <tbody>
               <tr *ngFor="let item of tempItemsList">
