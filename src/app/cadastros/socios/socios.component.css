@@ -36,28 +36,3 @@
 .status--green{
     color: #37c93a;
 }
-
-/* Circulos coloridos ================= */
-.circle {
-border-radius: 50%;
-width: 200px;
-height: 200px;
-}
-
-.circle .blue {
-background-color: #00c0f1;
-}
-
-.circle .green {
-background-color: #add036;
-}
-
-.circle .red {
-background-color: #ec2426;
-}
-
-.circle .yellow {
-background-color: #ffc116;
-}
-
-/* ======================= */

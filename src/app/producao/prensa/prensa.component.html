@@ -1,0 +1,130 @@
+<div class="d-flex background">
+    <div class="center">
+      <h3>Prensa</h3>
+  
+      <!-- form cabeçalho -->
+        <div class="d-flex justify-content-center cabecalho">
+            <form [formGroup]="headForm">
+                <div class="form-row">
+                    <div class="form-group col-md-2">
+                        <label for="lote">Prensa</label>
+                        <input class="form-control" formControlName="prensa" type="text" name="lote" [attr.disabled]="true">
+                    </div>
+                
+                    <div class="form-group col-md-2">
+                        <label for="lote">Lote</label>
+                        <input class="form-control" formControlName="lote" type="text" name="lote" [attr.disabled]="true">
+                    </div>
+                    
+                    <div class="form-group col-md-2">
+                        <label for="inicio">Inicio</label>
+                        <input class="form-control" formControlName="inicio" type="text" name="inicio" [attr.disabled]="true" placeholder="--:--:--">
+                    </div>  
+                    
+                    <div class="form-group col-md-2">
+                        <label for="time">Termino</label>
+                        <input class="form-control" formControlName="termino" type="text" name="termino" [attr.disabled]="true" placeholder="--:--:--">
+                    </div>
+
+                    <div class="form-group col-md-3">
+                        <label for="data">Data</label>
+                        <input class="form-control" formControlName="data" type="text" name="data" [attr.disabled]="true" placeholder="dd/mm/aaaa">
+                    </div>  
+                </div>
+        
+                <div class="form-row">                                                  
+                    <div class="form-group col-md-6">
+                        <label for="socio">Sócio Responsável</label>
+                        <ng-select formControlName="socio" name="socio">
+                            <ng-option *ngFor="let socio of socios" [value]="socio">
+                                    <ngx-avatar *ngIf="!socio.foto" name="{{ socio?.nome }}" initialsSize="2" size="35"></ngx-avatar>
+                                    <img *ngIf="socio.foto" src="{{socio.foto}}" class="rounded-circle z-depth-0" height="35" width="35" alt="">
+                                    {{socio.nome}}
+                                </ng-option>
+                        </ng-select>
+                    </div>
+    
+                    <div class="form-group col-md-5">
+                        <label for="situacao">Situação</label>
+                        <input class="form-control" formControlName="situacao" type="text" name="situacao" [attr.disabled]="true">
+                    </div>
+                </div>
+            </form>
+        </div>
+          
+          
+        <div class="row d-flex justify-content-around btn-prod">
+            <button type="button" class="btn btn-primary btn-lg"><i class="fa fa-play-circle"></i>Iniciar Produção</button>
+            <button type="button" class="btn btn-warning btn-lg"><i class="fa fa-pause-circle"></i>Pausar Produção</button>
+            <button type="button" class="btn btn-danger btn-lg" ><i class="fa fa-check-circle"></i>Finalizar Produção</button>
+            <button type="button" class="btn btn-success btn-lg"><i class="fa fa-print"></i>Imprimir Etiquetas</button>
+        </div>
+        <!-- ============== -->
+
+        <table class="table table-hover" ALIGN="center">
+            <thead class="thead-dark">
+                <tr>
+                <th scope="col">Materia prima</th>
+                <th scope="col">Peso</th>
+                <th scope="col"><button class="btn btn-success"><i class="fa fa-plus"></i>Adicionar</button></th>
+                </tr>
+            </thead>
+            <div class="table-list">
+                
+            </div>
+            <tbody>
+                <tr>
+                <td>Jornal</td>
+                <td>150 kg</td>
+                <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
+                </tr>
+                <tr>
+                <td>Revista</td>
+                <td>160 kg</td>
+                <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
+                </tr>
+                <tr>
+                <td>Vidro</td>
+                <td>80 kg</td>
+                <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
+                </tr>
+                <tr>
+                <td>Papelão Ondulado</td>
+                <td>40 gr</td>
+                <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
+                </tr>
+                <tr>
+                <td>PET Verde</td>
+                <td>40 gr</td>
+                <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
+                </tr>
+                <tr>
+                <td>PET Transparente</td>
+                <td>40 gr</td>
+                <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
+                </tr>
+            </tbody>
+        </table>
+    
+  
+        <table class="table table-hover" ALIGN="center">
+            <thead class="thead-dark">
+                <tr>
+                <th scope="col">Produto</th>
+                <th scope="col">Peso</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                <td>RSI</td>
+                <td>450 g.</td>
+                </tr>
+                
+                <tr>
+                <td>Não processado</td>
+                <td>20 kg.</td>
+                </tr>
+            </tbody>
+        </table>
+      </div>
+</div>
