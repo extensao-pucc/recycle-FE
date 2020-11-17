@@ -14,8 +14,8 @@
               </tr>
 
               <tr>
-                <td><input class="form-control" type="search" placeholder="ID" [(ngModel)]="searchID" (input)="Search()"></td>               
-                <td><input class="form-control" type="search" placeholder="Descricao" [(ngModel)]="searchDescricao" (input)="Search()"></td>
+                <td><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
+                <td><input class="form-control" type="search" placeholder="Descricão" (input)="Search('descricao', $event.target.value)"></td>
               </tr>
 
             </thead>

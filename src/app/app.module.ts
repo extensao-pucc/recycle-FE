@@ -37,8 +37,9 @@ import { TriagemComponent } from './producao/triagem/triagem.component';
 import { AuthGuard } from './guards/auth.guard';
 import { PesquisaCepComponent } from './shared/pesquisa-cep/pesquisa-cep.component';
 import { ViewImageComponent } from './shared/view-image/view-image.component';
+import { PrensaComponent } from './producao/prensa/prensa.component';
 
-
+const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
 @NgModule({
   declarations: [
     AppComponent,
@@ -59,7 +60,8 @@ import { ViewImageComponent } from './shared/view-image/view-image.component';
     YesNoMessageComponent,
     TriagemComponent,
     PesquisaCepComponent,
-    ViewImageComponent
+    ViewImageComponent,
+    PrensaComponent
   ],
   imports: [
     BrowserModule,
@@ -74,7 +76,9 @@ import { ViewImageComponent } from './shared/view-image/view-image.component';
     FormsModule,
     ReactiveFormsModule,
     NgSelectModule,
-    AvatarModule
+    AvatarModule.forRoot({
+      colors: avatarColors
+    })
   ],
   providers: [AuthGuard],
   bootstrap: [AppComponent]

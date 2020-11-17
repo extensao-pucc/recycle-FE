@@ -14,8 +14,8 @@
               </tr>
 
               <tr>
-                <td><input class="form-control" type="search" placeholder="ID"></td>               
-                <td><input class="form-control" type="search" placeholder="Nome"></td>
+                <td><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
+                <td><input class="form-control" type="search" placeholder="Nome" (input)="Search('nome', $event.target.value)"></td>
               </tr>
 
             </thead>

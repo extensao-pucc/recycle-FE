@@ -23,11 +23,6 @@ export class CondicoesDePagamentoComponent implements OnInit {
   public showYesNoMessage: boolean;
   // ==============================
 
-  // Busca personalizada ==========
-  public searchID: string;
-  public searchDescricao: string;
-  // ===============================
-
   constructor(
     private crudService: CrudService,
     private toastService: ToastService,
@@ -55,34 +50,21 @@ export class CondicoesDePagamentoComponent implements OnInit {
   }
 
   // =========== Busca personalizada ====================================================
-  SearchText(campo: any, valor: any): any{
-    this.tempItemsList = this.tempItemsList.filter(res => {
-      return res[campo].toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
-        valor.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
-      ));
-    });
-  }
+  Search(campo: any, valor: any): any{
+    // this.tempItemsList = _.clone(this.itemsList);
 
-  SearchNumber(campo: any, valor: any): any{
-    this.tempItemsList = this.tempItemsList.filter(res => {
-      return res[campo].toString().match(valor);
-    });
-  }
-
-  Search(): any{
-    if (this.searchID != ''){
-      this.SearchNumber('id', this.searchID);
-    }
-
-    if (this.searchDescricao != ''){
-      this.SearchText('descricao', this.searchDescricao);
-    }
-    
-    if (this.searchID == '' && this.searchDescricao == '') {
+    if (valor !== ''){
+      this.tempItemsList = this.tempItemsList.filter(res => {
+        return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
+               valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
+              ));
+      });
+    } else if (valor === '') {
       this.ngOnInit();
     }
   }
   // ====================================================================================
+
 
   // =========== CRUD ===================================================================
   deleteItem(id): void {
