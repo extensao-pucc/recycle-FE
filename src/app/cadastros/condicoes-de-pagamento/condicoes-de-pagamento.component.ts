@@ -51,10 +51,10 @@ export class CondicoesDePagamentoComponent implements OnInit {
 
   // =========== Busca personalizada ====================================================
   Search(campo: any, valor: any): any{
-    this.tempItemsList = _.clone(this.tempItemsList);
+    // this.tempItemsList = _.clone(this.itemsList);
 
     if (valor !== ''){
-      this.tempItemsList = this.itemsList.filter(res => {
+      this.tempItemsList = this.tempItemsList.filter(res => {
         return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
                valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
               ));
@@ -65,7 +65,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
   }
   // ====================================================================================
 
-  
+
   // =========== CRUD ===================================================================
   deleteItem(id): void {
     this.crudService.deleteItem('condicoesDePagamento', id).subscribe(response => {

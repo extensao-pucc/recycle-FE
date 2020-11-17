@@ -11,7 +11,7 @@
     padding: 10px
 }
 
-.status:before{
+.status:before {
     content: '';
     margin-bottom: 0;
     width: 9px;
@@ -21,11 +21,11 @@
     border-radius: 50%; 
 }
 
-.status--red:before{
+.status--red:before {
     background-color: #dc3545;
 }
   
-.status--red{
+.status--red {
     color:#dc3545;
 }
   
@@ -33,6 +33,12 @@
 .status--green:before{
     background-color: #37c93a;
 }
-.status--green{
+.status--green {
     color: #37c93a;
 }
+
+/* .foto-perfil {
+    display: block;
+    margin-left: auto;
+    margin-right: auto
+} */
