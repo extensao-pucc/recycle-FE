@@ -8,8 +8,6 @@
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.7.
 
 ## Installation
-**BEFORE YOU INSTALL:**  please read the  [prerequisites](https://github.com/angular/angular-cli/blob/master/packages/angular/cli/README.md#prerequisites)
-
 ### [](https://github.com/angular/angular-cli/blob/master/packages/angular/cli/README.md#install-globally)Install Globally
 ```shell
 npm install -g @angular/cli
