@@ -56,6 +56,8 @@ export class CondicoesDePagamentoComponent implements OnInit {
 
   // =========== Busca personalizada ====================================================
   SearchText(campo: any, valor: any): any{
+    console.log(campo)
+    console.log(valor)
     this.tempItemsList = this.tempItemsList.filter(res => {
       return res[campo].toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
         valor.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
@@ -70,15 +72,15 @@ export class CondicoesDePagamentoComponent implements OnInit {
   }
 
   Search(): any{
-    if (this.searchID != ''){
+    if (this.searchID !== ''){
       this.SearchNumber('id', this.searchID);
     }
 
-    if (this.searchDescricao != ''){
+    if (this.searchDescricao !== ''){
       this.SearchText('descricao', this.searchDescricao);
     }
-    
-    if (this.searchID == '' && this.searchDescricao == '') {
+
+    if (this.searchID === '' && this.searchDescricao === '') {
       this.ngOnInit();
     }
   }
