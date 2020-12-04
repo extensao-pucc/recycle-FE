@@ -14,6 +14,14 @@
                 <th scope="col">Tipo</th>
                 <th scope="col">Opções</th>
               </tr>
+
+              <tr>
+                <td><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
+                <td><input class="form-control" type="search" placeholder="Código" (input)="Search('codigo', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Descricao" (input)="Search('descricao', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Tipo" (input)="Search('tipo', $event.target.value)"></td>
+              </tr>
+
             </thead>
             <tbody>
               <tr *ngFor="let item of tempItemsList">

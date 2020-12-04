@@ -17,6 +17,7 @@ import { SociosComponent } from './cadastros/socios/socios.component';
 import { TransportadorasComponent } from './cadastros/transportadoras/transportadoras.component';
 import { UnidadesDeMedidaComponent } from './cadastros/unidades-de-medida/unidades-de-medida.component';
 import { TriagemComponent } from './producao/triagem/triagem.component';
+import { PrensaComponent } from './producao/prensa/prensa.component';
 
 const routes: Routes = [
   {
@@ -34,6 +35,7 @@ const routes: Routes = [
       { path: 'transportadoras', component: TransportadorasComponent, canActivate: [AuthGuard] },
       { path: 'unidadesDeMedida', component: UnidadesDeMedidaComponent, canActivate: [AuthGuard] },
       { path: 'triagem', component: TriagemComponent, canActivate: [AuthGuard] },
+      { path: 'prensa', component: PrensaComponent, canActivate: [AuthGuard] },
     ]
   },
   {
