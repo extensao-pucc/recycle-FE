@@ -109,8 +109,6 @@
         <!-- ========== -->
 
         <!-- Formulario -->
-        <hr>
-
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
           <input formControlName="id" hidden="true">
 
@@ -119,6 +117,7 @@
               <img [src]="imageInputView" *ngIf="imageInputView" style="height: 280px; width:290px" class="rounded-circle z-depth-0 foto-perfil">
             </div>
           </div>
+          <hr>
 
           <div class="form-row">
             <div class="form-group col-md-4">
