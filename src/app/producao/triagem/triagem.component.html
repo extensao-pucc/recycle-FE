@@ -61,46 +61,42 @@
     <table class="table table-hover">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">Num. Tambor</th>
-            <th scope="col">Produto</th>
-            <th scope="col">Quantidade</th>
-            <th scope="col">Sócio</th>
-            <th scope="col">Tempo</th>
-            <th scope="col"><button class="btn btn-success"><i class="fa fa-plus"></i>Adicionar</button></th>
+            <th>Num. Tambor</th>
+            <th>Produto</th>
+            <th>Quantidade</th>
+            <th>Sócio</th>
+            <th>Inicio</th>
+            <th>Fim</th>
+            <!-- <th>Status</th> -->
+            <th class="text-right">
+              <button class="btn btn-success" (click)="showLoteItemModal()" tooltip="Adicionar item ao lote">
+                <i class="fa fa-plus"></i>Adicionar</button>
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>1</td>
-            <td>Papelão</td>
-            <td>25kg</td>
-            <td>João</td>
-            <td>03:25:00</td>
-            <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td>Papelão</td>
-            <td><input class="form-control" type="text" name=""></td>
-            <td>João</td>
-            <td>--:--</td>
-            <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td>Garrafa de vidro</td>
-            <td>28kg</td>
-            <td>Maria</td>
-            <td>02:50:00</td>
-            <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td>Garrafa de plastico</td>
-            <td>30kg</td>
-            <td>Eduardo</td>
-            <td>02:45:00</td>
-            <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
+          <tr *ngFor="let item of lotItems;let idx=index;">
+            <td class="numBag" id="numBag-{{idx}}">
+              <span>{{ item.numBag }}</span>
+            </td>
+            <td class="product">
+              <span>{{ item.product.descricao }}</span>
+            </td>
+            <td class="qtn">
+              <span *ngIf="!item.edit">{{ item.qtn }}</span>
+              <input *ngIf="item?.edit" class="form-control" type="text" name="">
+            </td>
+            <td class="socio">
+              <span>{{ item.socio.nome }}</span>
+            </td>
+            <td class="time">{{ item.startTime }}</td>
+            <td class="time">{{ item.endTime }}</td>
+            <td class="options">
+              <button *ngIf="item?.edit" class="btn btn-success mr-2" tooltip="Encerrar pesagem e salvar" (click)="saveLoteItem(idx)">
+                <i class="fa fa-save"></i>Salvar
+              </button>
+              <button class="btn btn-danger" tooltip="Remover item do lote"><i class="fa fa-trash"></i>Remover</button>
+            </td>
           </tr>
         </tbody>
     </table>
@@ -123,11 +119,6 @@
           </tr>
         </tbody>
     </table>
-
-    
-
-
-
   </div>
 </div>
 
@@ -152,12 +143,45 @@
                   placeholder="Motivo de parada"
                   [(ngModel)]="selectedMotivo">
                 </ng-select>
-            </div>               
+            </div>
           </div>
       </div>
       <div class="mt-3 text-center">
           <button type="button" class="btn btn btn-danger mr-2 yesNoButton" id="btn-no" (click)="modalRef.hide()"><i class="fa fa-times-circle"></i>Cancelar</button>
           <button type="button" class="btn btn btn-success mr-2 yesNoButton" id="btn-yes" (click)="pauseProduction()"><i class="fa fa-check-circle"></i>Salvar</button>
+      </div>
+  </div>
+</ng-template>
+
+<ng-template #loteItemScreen>
+  <div class="modal-header modal-header text-dark">
+      <h4 class="modal-title pull-left"> Item do Lote</h4>
+      <button type="button" class="close pull-right" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+      <div class="row pause-screen-body">
+          <div class="col pt-2">
+              <p class="font-weight-bold">Selecione os seguintes campos para adicionar um item ao lote:</p>
+              <div class="form-group col">
+                <form [formGroup]="loteItemForm" *ngIf="loteItemForm">
+                  <p for="product">Produto:</p>
+                  <ng-select formControlName="product" name="product">
+                    <ng-option *ngFor="let produto of produtos" [value]="produto">{{produto.descricao}}</ng-option>
+                  </ng-select>
+
+                  <p for="fornecedor">Socio:</p>
+                  <ng-select formControlName="socio" name="socio">
+                    <ng-option *ngFor="let socio of socios" [value]="socio">{{socio.nome}}</ng-option>
+                  </ng-select>
+                </form>
+            </div>               
+          </div>
+      </div>
+      <div class="mt-3 text-center">
+          <button type="button" class="btn btn btn-danger mr-2 yesNoButton" id="btn-no" (click)="modalRef.hide()"><i class="fa fa-times-circle"></i>Cancelar</button>
+          <button type="button" class="btn btn btn-success mr-2 yesNoButton" id="btn-yes" (click)="addLoteItem()"><i class="fa fa-check-circle"></i>Salvar</button>
       </div>
   </div>
 </ng-template>

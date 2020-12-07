@@ -67,3 +67,19 @@ table {
 .pause-screen-body {
     max-height: 800px;
 }
+
+td.numBag {
+    width: 100px;
+}
+
+td.product {
+    width: 260px;
+}
+
+td.qtn {
+    width: 100px;
+}
+
+td.options {
+    text-align: right;
+}
