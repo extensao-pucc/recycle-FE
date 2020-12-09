@@ -34,13 +34,13 @@
                 <td><input class="form-control" type="search" placeholder="Fornecedor" (input)="Search('fornecedor.razao_social_nome', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Qualidade" (input)="Search('qualidade.nome', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Unidade de medida" (input)="Search('unidade_de_medida.sigla', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="NCM" (input)="Search('NCM', $event.target.value)"></td>
+                <td><input class="form-control" mask="0000.00.00" type="search" placeholder="NCM" (input)="Search('NCM', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="CSTE" (input)="Search('CSTE', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="CSTS" (input)="Search('CSTS', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="CFOPE" (input)="Search('CFOPE.codigo', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="CFOPS" (input)="Search('CFOPS.codigo', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Preço de compra" (input)="Search('preco_compra', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Preço de venda" (input)="Search('preco_venda', $event.target.value)"></td>
+                <td><input class="form-control" mask="separator.2" thousandSeparator="." type="search" placeholder="Preço compra" (input)="Search('preco_compra', $event.target.value)"></td>
+                <td><input class="form-control" mask="separator.2" thousandSeparator="." type="search" placeholder="Preço venda" (input)="Search('preco_venda', $event.target.value)"></td>
               </tr>
 
             </thead>
@@ -53,13 +53,13 @@
                 <td>{{ item?.fornecedor.razao_social_nome }}</td>
                 <td>{{ item?.qualidade.nome }}</td>
                 <td>{{ item?.unidade_de_medida.sigla }}</td>
-                <td>{{ item?.NCM }}</td>
+                <td>{{ item?.NCM | mask: '0000.00.00'}}</td>
                 <td>{{ item?.CSTE }}</td>
                 <td>{{ item?.CSTS }}</td>
                 <td>{{ item?.CFOPE.codigo }}</td>
                 <td>{{ item?.CFOPS.codigo }}</td>
-                <td>{{ item?.preco_compra }}</td>
-                <td>{{ item?.preco_venda }}</td>
+                <td>{{ item?.preco_compra | mask: 'separator.2'}}</td>
+                <td>{{ item?.preco_venda | mask: 'separator.2'}}</td>
                 <td>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
                     <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>

@@ -1,14 +1,30 @@
+.foto, .situacao {
+    min-width: 70px;
+}
+
+.image-profile {
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 10%), 0 6px 20px 0 rgb(0 0 0 / 12%);
+    margin-bottom: 20px;
+}
+
+h5 {
+    padding-top: 20px;
+}
+
+
 /* Status do Sócio ====================== */
 .table-row--red {
+    box-shadow: 0 2px 7px 0 rgb(0 0 0 / 20%);
     background-color: #f7000029;
     border-radius: 20px;
-    padding: 8px
+    padding: 10px 15px;
 }
 
 .table-row--green {
+    box-shadow: 0 2px 7px 0 rgb(0 0 0 / 20%);
     background-color:  #ecfaeb;
     border-radius: 20px;
-    padding: 10px
+    padding: 10px 20px;
 }
 
 .status:before {
@@ -42,3 +58,21 @@
     margin-left: auto;
     margin-right: auto
 } */
+
+
+/* Perfil Socio ========================================= */
+
+.profile-blue {
+    background-color: #4e67f1;
+    color: white;
+    border-radius: 20px;
+    padding: 1px 15px;
+}
+
+.profile-orange {
+    background-color:  #f1a54e;
+    color: white;
+    border-radius: 20px;
+    padding: 1px 15px;
+}
+

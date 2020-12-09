@@ -14,10 +14,14 @@ body {
     position: fixed;
 }
 
-/*Scrowbar =============================================================================== */
-::-webkit-scrollbar {
-    width: 12px;
+tr td {
+    min-width: 150px;
 }
+
+/*Scrowbar =============================================================================== */
+/* ::-webkit-scrollbar {
+    width: 12px;
+} */
   
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;

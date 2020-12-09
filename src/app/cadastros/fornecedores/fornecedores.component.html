@@ -28,17 +28,17 @@
 
               <tr>
                 <td><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
-                <td><input class="form-control" type="search" placeholder="CPF ou CNPJ" (input)="Search('CNPJ_CPF', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Razao social ou nome" (input)="Search('razao_social_nome', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Inscrição estadual" (input)="Search('IE', $event.target.value)"></td>
+                <td><input class="form-control" mask="000.000.000-00||00.000.000/0000-00" type="search" placeholder="CPF/CNPJ" (input)="Search('CNPJ_CPF', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Razao/Nome" (input)="Search('razao_social_nome', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Inscrição" (input)="Search('IE', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Endereço" (input)="Search('endereco', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Complemento" (input)="Search('complemento', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Bairro" (input)="Search('bairro', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="CEP" (input)="Search('CEP', $event.target.value)"></td>
+                <td><input class="form-control" mask="00000-000" type="search" placeholder="CEP" (input)="Search('CEP', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="UF" (input)="Search('UF', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Cidade" (input)="Search('cidade', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Telefone" (input)="Search('telefone', $event.target.value)"></td>
+                <td><input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="search" placeholder="Telefone" (input)="Search('telefone', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Email" (input)="Search('email', $event.target.value)"></td>
               </tr>
 
@@ -46,17 +46,17 @@
             <tbody>
               <tr *ngFor="let item of tempItemsList">
                 <td>{{ item?.id }}</td>
-                <td>{{ item?.CNPJ_CPF }}</td>
+                <td >{{ item?.CNPJ_CPF | mask: '000.000.000-00||00.000.000/0000-00'}}</td>
                 <td>{{ item?.razao_social_nome }}</td>
                 <td>{{ item?.IE }}</td>
                 <td>{{ item?.endereco }}</td>
                 <td>{{ item?.numero }}</td>
                 <td>{{ item?.complemento }}</td>
                 <td>{{ item?.bairro }}</td>
-                <td>{{ item?.CEP }}</td>
+                <td>{{ item?.CEP | mask: '00000-000'}}</td>
                 <td>{{ item?.UF }}</td>
                 <td>{{ item?.cidade }}</td>
-                <td>{{ item?.telefone }}</td>
+                <td>{{ item?.telefone | mask: '(00) 0000-0000||(00) 00000-0000'}}</td>
                 <td>{{ item?.email }}</td>
                 <td>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
@@ -117,9 +117,12 @@
             </div>
           </div>
 
+          <h5>Endereço</h5>
+          <hr>
+          
           <div class="form-row">
             <div class="form-group col-md-5">
-              <label>Endereço: </label>
+              <label>Logradouro: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="endereco">
               <p class="error-msg" *ngIf="itemForm.controls.endereco.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.endereco.errors.msgErro }}
