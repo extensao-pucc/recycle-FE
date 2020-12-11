@@ -12,21 +12,21 @@
                 <th scope="col">Motivo</th>
                 <th scope="col">Opções</th>
               </tr>
-
+            </thead>
+            <tbody>
               <tr>
                 <td><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
                 <td><input class="form-control" type="search" placeholder="Motivo" (input)="Search('motivo', $event.target.value)"></td>
+                <th></th>
               </tr>
 
-            </thead>
-            <tbody>
               <tr *ngFor="let item of tempItemsList">
                 <td>{{ item?.id }}</td>
                 <td>{{ item?.motivo }}</td>
-                <td>
+                <th>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
                     <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
-                </td>
+                </th>
               </tr>
             </tbody>
           </table>

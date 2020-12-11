@@ -25,7 +25,9 @@
                 <th scope="col">Email</th>
                 <th scope="col">Opções</th>
               </tr>
-
+            </thead>
+            <tbody>
+              
               <tr>
                 <td class="td-pequeno"><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
                 <td><input class="form-control" mask="CPF_CNPJ" type="search" placeholder="CPF/CNPJ" (input)="Search('CNPJ_CPF', $event.target.value)"></td>
@@ -40,10 +42,9 @@
                 <td><input class="form-control" type="search" placeholder="Cidade" (input)="Search('cidade', $event.target.value)"></td>
                 <td><input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="search" placeholder="Telefone" (input)="Search('telefone', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Email" (input)="Search('email', $event.target.value)"></td>
+                <th></th>
               </tr>
 
-            </thead>
-            <tbody>
               <tr *ngFor="let item of tempItemsList">
                 <td class="td-pequeno">{{ item?.id }}</td>
                 <td >{{ item?.CNPJ_CPF | mask: 'CPF_CNPJ'}}</td>
@@ -58,10 +59,10 @@
                 <td>{{ item?.cidade }}</td>
                 <td>{{ item?.telefone | mask: '(00) 0000-0000||(00) 00000-0000'}}</td>
                 <td>{{ item?.email }}</td>
-                <td>
+                <th>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
                     <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
-                </td>
+                </th>
               </tr>
             </tbody>
           </table>

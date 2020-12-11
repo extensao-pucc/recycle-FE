@@ -25,7 +25,8 @@
                 <th scope="col">preço de venda</th>
                 <th scope="col">Opções</th>
               </tr>
-
+            </thead>
+            <tbody>
               <tr>
                 <td class="td-pequeno"><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>         
                 <td class="td-pequeno"><input class="form-control" type="search" placeholder="Código" (input)="Search('codigo', $event.target.value)"></td>
@@ -41,10 +42,9 @@
                 <td class="td-pequeno"><input class="form-control" type="search" placeholder="CFOPS" (input)="Search('CFOPS.codigo', $event.target.value)"></td>
                 <td><input class="form-control" mask="separator.2" thousandSeparator="." type="search" placeholder="Preço compra" (input)="Search('preco_compra', $event.target.value)"></td>
                 <td><input class="form-control" mask="separator.2" thousandSeparator="." type="search" placeholder="Preço venda" (input)="Search('preco_venda', $event.target.value)"></td>
+                <th></th>
               </tr>
 
-            </thead>
-            <tbody>
               <tr *ngFor="let item of tempItemsList">
                 <td class="td-pequeno">{{ item?.id }}</td>
                 <td class="td-pequeno">{{ item?.codigo }}</td>
@@ -60,10 +60,10 @@
                 <td class="td-pequeno">{{ item?.CFOPS.codigo }}</td>
                 <td>R$ {{ item?.preco_compra | mask: 'separator.2'}}</td>
                 <td>R$ {{ item?.preco_venda | mask: 'separator.2'}}</td>
-                <td>
+                <th>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
                     <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
-                </td>
+                </th>
               </tr>
             </tbody>
           </table>

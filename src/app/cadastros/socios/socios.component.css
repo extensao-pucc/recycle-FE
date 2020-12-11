@@ -11,20 +11,6 @@ h5 {
     padding-top: 20px;
 }
 
-
-/* Fixa coluna de opções ================ */
-.bootgrid-wrapper {
-    width: 90%;
-    overflow-x: scroll;
-    overflow-y: visible;
-  }
-  
-  .fixed-column-right {
-    position: absolute;
-    width: 10%;
-    right: 0;
-  }
-
 /* Status do Sócio ====================== */
 .table-row--red {
     box-shadow: 0 2px 7px 0 rgb(0 0 0 / 20%);

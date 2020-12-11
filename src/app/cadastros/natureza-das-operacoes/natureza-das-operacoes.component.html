@@ -14,25 +14,25 @@
                 <th scope="col">Tipo</th>
                 <th scope="col">Opções</th>
               </tr>
-
+            </thead>
+            <tbody>
               <tr>
                 <td><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
                 <td><input class="form-control" type="search" placeholder="Código" (input)="Search('codigo', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Descricao" (input)="Search('descricao', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Tipo" (input)="Search('tipo', $event.target.value)"></td>
+                <th></th>
               </tr>
 
-            </thead>
-            <tbody>
               <tr *ngFor="let item of tempItemsList">
                 <td>{{ item?.id }}</td>
                 <td>{{ item?.codigo }}</td>
                 <td>{{ item?.descricao }}</td>
                 <td>{{ item?.tipo }}</td>
-                <td>
+                <th>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
                     <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
-                </td>
+                </th>
               </tr>
             </tbody>
           </table>

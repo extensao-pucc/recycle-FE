@@ -36,7 +36,8 @@
                 <th scope="col">Data de demissão</th>
                 <th scope="col">Opções</th>
               </tr>
-
+            </thead>
+            <tbody>
               <tr>
                 <td class="situacao"></td>
                 <td class="foto"></td>
@@ -63,10 +64,9 @@
                 <td><input class="form-control" maxlength="100" type="search" placeholder="Email" (input)="Search('email', $event.target.value)"></td>
                 <td><input class="form-control" maxlength="100" type="search" placeholder="Admissão" (input)="Search('data_de_admissao', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Demissão" (input)="Search('data_de_demissao', $event.target.value)"></td>
+                <th></th>
               </tr>
 
-            </thead>
-            <tbody>
               <tr *ngFor="let item of tempItemsList">
                   <td class="situacao">
                     <b [ngClass]="item?.situacao === 'Ativo' ? 'table-row--green status--green status' : 'table-row--red status--red status'">{{ item?.situacao }}</b>
@@ -98,14 +98,14 @@
                   <td>{{ item?.email }}</td>
                   <td>{{ item?.data_de_admissao }}</td>
                   <td>{{ item?.data_de_demissao}}</td>
-                <td>
+                <th>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
                     <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
-                </td>
+                </th>
               </tr>
             </tbody>
-        </table>
-      </div>
+          </table>
+        </div>
         <!-- ========== -->
 
         <!-- Formulario -->
