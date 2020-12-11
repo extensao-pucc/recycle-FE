@@ -40,28 +40,28 @@
               <tr>
                 <td class="situacao"></td>
                 <td class="foto"></td>
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="Matrícula" (input)="Search('matricula', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Nome" (input)="Search('nome', $event.target.value)"></td>
+                <td class="td-pequeno"><input class="form-control" maxlength="9" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
+                <td class="td-pequeno"><input class="form-control" maxlength="9" type="search" placeholder="Matrícula" (input)="Search('matricula', $event.target.value)"></td>
+                <td><input class="form-control" maxlength="100" type="search" placeholder="Nome" (input)="Search('nome', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Nascimento" (input)="Search('data_de_nascimento', $event.target.value)"></td>
                 <td><input class="form-control" mask="00.000.000-0" type="search" placeholder="RG" (input)="Search('RG', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Emissão" (input)="Search('data_emissao', $event.target.value)"></td>
                 <td class="td-pequeno"><input class="form-control" type="search" placeholder="Local" (input)="Search('local_emissao', $event.target.value)"></td>
                 <td class="td-pequeno"><input class="form-control" type="search" placeholder="Expedidor" (input)="Search('orgao_expedidor', $event.target.value)"></td>
                 <td><input class="form-control" mask="000.000.000-00" type="search" placeholder="CPF" (input)="Search('CPF', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Titulo" (input)="Search('titulo_de_Eleitor', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="PIS/PASEP" (input)="Search('PIS_PASEP', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="NIT" (input)="Search('NIT', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Nome mãe" (input)="Search('nome_da_Mae', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Nome pai" (input)="Search('nome_do_Pai', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Endereço" (input)="Search('endereco', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Complemento" (input)="Search('complemento', $event.target.value)"></td>
+                <td><input class="form-control" maxlength="20" type="search" placeholder="Titulo" (input)="Search('titulo_de_Eleitor', $event.target.value)"></td>
+                <td><input class="form-control" mask="000.00000.00-0" type="search" placeholder="PIS/PASEP" (input)="Search('PIS_PASEP', $event.target.value)"></td>
+                <td><input class="form-control" maxlength="20" type="search" placeholder="NIT" (input)="Search('NIT', $event.target.value)"></td>
+                <td><input class="form-control" maxlength="100" type="search" placeholder="Nome mãe" (input)="Search('nome_da_Mae', $event.target.value)"></td>
+                <td><input class="form-control" maxlength="100" type="search" placeholder="Nome pai" (input)="Search('nome_do_Pai', $event.target.value)"></td>
+                <td><input class="form-control" maxlength="100" type="search" placeholder="Endereço" (input)="Search('endereco', $event.target.value)"></td>
+                <td class="td-pequeno"><input class="form-control" maxlength="10" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
+                <td><input class="form-control" maxlength="100" type="search" placeholder="Complemento" (input)="Search('complemento', $event.target.value)"></td>
                 <td class="td-pequeno"><input class="form-control" type="search" placeholder="UF" (input)="Search('UF', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Cidade" (input)="Search('cidade', $event.target.value)"></td>
+                <td><input class="form-control" maxlength="100" type="search" placeholder="Cidade" (input)="Search('cidade', $event.target.value)"></td>
                 <td><input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="search" placeholder="Telefone" (input)="Search('telefone', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Email" (input)="Search('email', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Admissão" (input)="Search('data_de_admissao', $event.target.value)"></td>
+                <td><input class="form-control" maxlength="100" type="search" placeholder="Email" (input)="Search('email', $event.target.value)"></td>
+                <td><input class="form-control" maxlength="100" type="search" placeholder="Admissão" (input)="Search('data_de_admissao', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Demissão" (input)="Search('data_de_demissao', $event.target.value)"></td>
               </tr>
 
@@ -85,7 +85,7 @@
                   <td class="td-pequeno">{{ item?.orgao_expedidor }}</td>
                   <td>{{ item?.CPF | mask: '000.000.000-00'}}</td>
                   <td>{{ item?.titulo_de_Eleitor }}</td>
-                  <td>{{ item?.PIS_PASEP }}</td>
+                  <td>{{ item?.PIS_PASEP | mask: '000.00000.00-0' }}</td>
                   <td>{{ item?.NIT }}</td>
                   <td>{{ item?.nome_da_Mae }}</td>
                   <td>{{ item?.nome_do_Pai }}</td>
@@ -97,7 +97,7 @@
                   <td>{{ item?.telefone | mask: '(00) 0000-0000||(00) 00000-0000'}}</td>
                   <td>{{ item?.email }}</td>
                   <td>{{ item?.data_de_admissao }}</td>
-                  <td>{{ item?.data_de_demissao }}</td>
+                  <td>{{ item?.data_de_demissao}}</td>
                 <td>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
                     <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
@@ -229,7 +229,7 @@
 
             <div class="form-group col-md-3">
               <label>Título de eleitor: </label>
-              <input class="form-control" type="text" maxlength="100" formControlName="titulo_de_Eleitor">
+              <input class="form-control" type="text" maxlength="18" formControlName="titulo_de_Eleitor">
               <p class="error-msg" *ngIf="itemForm.controls.titulo_de_Eleitor.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.titulo_de_Eleitor.errors.msgErro }}
               </p>
@@ -237,7 +237,7 @@
 
             <div class="form-group col-md-3">
               <label>PIS/PASEP: <i class="fa fa-question-circle" tooltip="Programa de Integração Social e o Programa de Formação do Patrimônio do Servidor Público"></i> </label>
-              <input class="form-control" type="text" maxlength="100" formControlName="PIS_PASEP">
+              <input class="form-control" type="text" mask="000.00000.00-0" formControlName="PIS_PASEP">
               <p class="error-msg" *ngIf="itemForm.controls.PIS_PASEP.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.PIS_PASEP.errors.msgErro }}
               </p>
@@ -245,7 +245,7 @@
 
             <div class="form-group col-md-3">
               <label>NIT: <i class="fa fa-question-circle" tooltip="Número de Identificação do Trabalhador"></i> </label>
-              <input class="form-control" type="text" maxlength="100" formControlName="NIT">
+              <input class="form-control" type="text" maxlength="20" formControlName="NIT">
               <p class="error-msg" *ngIf="itemForm.controls.NIT.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.NIT.errors.msgErro }}
               </p>

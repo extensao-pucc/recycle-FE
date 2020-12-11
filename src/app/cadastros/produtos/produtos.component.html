@@ -182,7 +182,9 @@
             <div class="form-group col-md-3">
               <label>CFOPE: <i class="fa fa-question-circle" tooltip="Código Fiscal de Operações e Prestações (Entrada)"></i></label>
               <ng-select *ngIf="naturezaDasOperacoes" formControlName="CFOPE" name="CFOPE">
-                <ng-option *ngFor="let CFOPE of naturezaDasOperacoes" [value]="CFOPE?.id">{{ CFOPE.codigo }} - {{ CFOPE.descricao }}</ng-option>
+                <ng-component *ngFor="let CFOPE of naturezaDasOperacoes">
+                  <ng-option *ngIf="CFOPE?.tipo === 'Entrada'" [value]="CFOPE?.id">{{ CFOPE.codigo }} - {{ CFOPE.descricao }}</ng-option>
+                </ng-component>
               </ng-select>
               <p class="error-msg" *ngIf="itemForm.controls.CFOPE.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.CFOPE.errors.msgErro }}
@@ -192,7 +194,9 @@
             <div class="form-group col-md-3">
               <label>CFOPS: <i class="fa fa-question-circle" tooltip="Código Fiscal de Operações e Prestações (Saida)"></i></label>
               <ng-select *ngIf="naturezaDasOperacoes" formControlName="CFOPS" name="CFOPS">
-                <ng-option *ngFor="let CFOPS of naturezaDasOperacoes" [value]="CFOPS?.id">{{ CFOPS.codigo }} - {{ CFOPS.descricao }}</ng-option>
+                <ng-component *ngFor="let CFOPS of naturezaDasOperacoes">
+                  <ng-option *ngIf="CFOPS?.tipo === 'Saida'" [value]="CFOPS?.id">{{ CFOPS.codigo }} - {{ CFOPS.descricao }}</ng-option>
+                </ng-component>
               </ng-select>
               <p class="error-msg" *ngIf="itemForm.controls.CFOPS.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.CFOPS.errors.msgErro }}
