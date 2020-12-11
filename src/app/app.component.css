@@ -25,11 +25,12 @@ i {
     margin-right: 10px;
 }
 
-/* Fixar coluna de opções ================== */
+/* Fixar coluna e cabeçalho de opções ================== */
 thead th {
     position: -webkit-sticky; /* for Safari */
     position: sticky;
     top: 0;
+
 }
 
 thead th:last-child {
@@ -38,10 +39,11 @@ thead th:last-child {
 }
 
 tbody th {
+    background: #FFF;
     position: -webkit-sticky; /* for Safari */
     position: sticky;
     right: 0;
-    background: #FFF;
+    top: 0;
 }
 /* ========================================= */
 
@@ -59,7 +61,7 @@ th,td {
     margin-left: auto;
     margin-right: auto;
 
-    max-height: 90%;
+    max-height: 85%;
     /* overflow: scroll; */
 }
 

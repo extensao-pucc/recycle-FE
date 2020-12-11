@@ -26,6 +26,7 @@
                 <th scope="col">Opções</th>
               </tr>
             </thead>
+            
             <tbody>
               <tr>
                 <td class="td-pequeno"><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>         
@@ -72,7 +73,6 @@
 
         <!-- Formulario -->
         <hr>
-
         <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
           <input formControlName="id" hidden="true">
 

@@ -14,6 +14,10 @@ body {
     position: fixed;
 }
 
+h2 {
+    margin-bottom: 10px;
+}
+
 tr td {
     min-width: 210px;
 }
