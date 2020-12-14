@@ -8,6 +8,7 @@ export class SharedVariableService {
 
   constructor() { }
 
+  //Orgãos expeditores
   getOrgans(): any[]{
     const organs = [
       {uf: 'AC', organ: 'SSP-AC'},
@@ -41,6 +42,7 @@ export class SharedVariableService {
     return organs;
   } 
 
+  // Estados do Brasil
   getStates(): any[]{
     const states = [
       {uf: 'AC', state: 'Acre'},
@@ -74,6 +76,7 @@ export class SharedVariableService {
     return states;
   }
 
+  // Status para o Socio 
   getStatus(): any[]{
     const status = [
       {status: 'Ativo'},
@@ -82,6 +85,7 @@ export class SharedVariableService {
     return status;
   }
 
+  // Tipo de natureza da operação
   getTypes(): any[]{
     const types = [
       {type: 'Entrada'},
@@ -90,10 +94,11 @@ export class SharedVariableService {
     return types;
   }
 
+  // Perfil do Socio
   getProfiles(): any[]{
     const profile = [
-      {profile: 'Admin'},
-      {profile: 'User'}
+      {profile: 'Administrador'},
+      {profile: 'Usuario'}
     ];
     return profile;
   }

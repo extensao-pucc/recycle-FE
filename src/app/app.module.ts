@@ -38,6 +38,7 @@ import { AuthGuard } from './guards/auth.guard';
 import { PesquisaCepComponent } from './shared/pesquisa-cep/pesquisa-cep.component';
 import { ViewImageComponent } from './shared/view-image/view-image.component';
 import { PrensaComponent } from './producao/prensa/prensa.component';
+import { RemanufaturaComponent } from './producao/remanufatura/remanufatura.component';
 
 const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
 @NgModule({
@@ -61,7 +62,8 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     TriagemComponent,
     PesquisaCepComponent,
     ViewImageComponent,
-    PrensaComponent
+    PrensaComponent,
+    RemanufaturaComponent
   ],
   imports: [
     BrowserModule,

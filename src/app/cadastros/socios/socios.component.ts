@@ -63,7 +63,7 @@ export class SociosComponent implements OnInit {
       orgao_expedidor: ['', [this.formValidatorService.isEmpty]],
       CPF: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validCPF_CNPJ]],
       titulo_de_Eleitor: ['', [this.formValidatorService.isEmpty]],
-      PIS_PASEP: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
+      PIS_PASEP: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validPIS_PASEP]],
       NIT: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       nome_da_Mae: ['', [this.formValidatorService.isEmpty]],
       nome_do_Pai: [''],
@@ -96,8 +96,8 @@ export class SociosComponent implements OnInit {
 
     if (valor !== ''){
       this.tempItemsList = this.itemsList.filter(res => {
-        return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
-               valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
+        return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f-\.|\-\(\) '\/]/g, '').match(
+               valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f-\.|\-\(\) '\/]/g, ''
               ));
       });
     } else if (valor === '') {

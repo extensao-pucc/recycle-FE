@@ -14,10 +14,22 @@ body {
     position: fixed;
 }
 
-/*Scrowbar =============================================================================== */
-::-webkit-scrollbar {
-    width: 12px;
+h2 {
+    margin-bottom: 10px;
 }
+
+tr td {
+    min-width: 210px;
+}
+
+.td-pequeno {
+    min-width: 140px;
+}
+
+/*Scrowbar =============================================================================== */
+/* ::-webkit-scrollbar {
+    width: 12px;
+} */
   
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;

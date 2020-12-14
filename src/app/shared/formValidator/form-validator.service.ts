@@ -91,6 +91,18 @@ export class FormValidatorService {
     return null;
   }
 
+  validPIS_PASEP(control: FormControl): any{
+    const msgErro = 'Valor inválido';
+    let field = control.value;
+
+    let er = new RegExp(/^[0-9]{11}$/);
+
+    if (field &&  !er.test(field) ) {
+      return {msgErro};
+    }
+    return null;
+  }
+
   validCPF_CNPJ(control: FormControl): any{
     let numeros, digitos, soma, i, resultado, digitos_iguais;
     let field = control.value;
@@ -214,5 +226,6 @@ export class FormValidatorService {
       return null;
     }
   }
+
 
 }

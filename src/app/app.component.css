@@ -9,13 +9,12 @@
 .center {
     overflow: auto;
     margin: auto;
-    padding-top: 30px;
     background-color: white;
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 19%), 0 6px 20px 0 rgb(0 0 0 / 19%);
     width: 90%;
     height: 85%;
 
-    padding: 60px;
+    padding: 50px;
 }
 
 div table, form {
@@ -25,6 +24,27 @@ div table, form {
 i {
     margin-right: 10px;
 }
+
+/* Fixar coluna e cabeçalho de opções ================== */
+thead th {
+    position: -webkit-sticky; /* for Safari */
+    position: sticky;
+    top: 0;
+
+}
+
+thead th:last-child {
+    right: 0;
+    z-index: 1;
+}
+
+tbody th {
+    background: #FFF;
+    position: -webkit-sticky; /* for Safari */
+    position: sticky;
+    right: 0;
+}
+/* ========================================= */
 
 th,td {
     white-space: nowrap;
@@ -39,6 +59,9 @@ th,td {
     overflow-x:auto;
     margin-left: auto;
     margin-right: auto;
+
+    max-height: 85%;
+    /* overflow: scroll; */
 }
 
 .app-wrapper {

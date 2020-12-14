@@ -5,34 +5,37 @@
       </h2>
 
         <!-- Tabela -->
-        <table class="table table-hover" *ngIf="!showForm">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Sigla</th>
-                <th scope="col">Descrição</th>
-                <th scope="col">Opções</th>
-              </tr>
-
-              <tr>
-                <td><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
-                <td><input class="form-control" type="search" placeholder="Sigla" (input)="Search('sigla', $event.target.value)"></td>
-                <td><input class="form-control" type="search" placeholder="Descricão" (input)="Search('descricao', $event.target.value)"></td>
-              </tr>
-
-            </thead>
-            <tbody>
-              <tr *ngFor="let item of tempItemsList">
-                <td>{{ item?.id }}</td>
-                <td>{{ item?.sigla }}</td>
-                <td>{{ item?.descricao }}</td>
-                <td>
-                    <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
-                    <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
-                </td>
-              </tr>
-            </tbody>
+        <div class="table-list">
+          <table class="table table-hover" *ngIf="!showForm">
+              <thead class="thead-dark">
+                <tr>
+                  <th scope="col">ID</th>
+                  <th scope="col">Sigla</th>
+                  <th scope="col">Descrição</th>
+                  <th scope="col">Opções</th>
+                </tr>
+              </thead>
+  
+              <tbody>
+                <tr>
+                  <td><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
+                  <td><input class="form-control" type="search" placeholder="Sigla" (input)="Search('sigla', $event.target.value)"></td>
+                  <td><input class="form-control" type="search" placeholder="Descricão" (input)="Search('descricao', $event.target.value)"></td>
+                  <th></th>
+                </tr>
+  
+                <tr *ngFor="let item of tempItemsList">
+                  <td>{{ item?.id }}</td>
+                  <td>{{ item?.sigla }}</td>
+                  <td>{{ item?.descricao }}</td>
+                  <th>
+                      <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
+                      <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
+                  </th>
+                </tr>
+              </tbody>
           </table>
+        </div>
         <!-- ========== -->
 
         <!-- Formulario -->
