@@ -43,7 +43,6 @@ tbody th {
     position: -webkit-sticky; /* for Safari */
     position: sticky;
     right: 0;
-    top: 0;
 }
 /* ========================================= */
 

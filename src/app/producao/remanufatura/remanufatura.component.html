@@ -1,27 +1,22 @@
 <div class="d-flex background">
     <div class="center">
-      <h3>Prensa</h3>
+      <h3>Remanufatura</h3>
   
       <!-- form cabeçalho -->
         <div class="d-flex justify-content-center cabecalho">
             <form [formGroup]="headForm">
                 <div class="form-row">
                     <div class="form-group col-md-2">
-                        <label for="lote">Prensa</label>
+                        <label for="lote">Lote</label>
                         <input class="form-control" formControlName="prensa" type="text" name="lote" [attr.disabled]="true">
                     </div>
-                
-                    <div class="form-group col-md-2">
-                        <label for="lote">Lote</label>
-                        <input class="form-control" formControlName="lote" type="text" name="lote" [attr.disabled]="true">
-                    </div>
                     
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <label for="inicio">Inicio</label>
                         <input class="form-control" formControlName="inicio" type="text" name="inicio" [attr.disabled]="true" placeholder="--:--:--">
                     </div>  
                     
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <label for="time">Termino</label>
                         <input class="form-control" formControlName="termino" type="text" name="termino" [attr.disabled]="true" placeholder="--:--:--">
                     </div>
@@ -65,7 +60,7 @@
             <table class="table table-hover" ALIGN="center">
                 <thead class="thead-dark">
                     <tr>
-                    <th scope="col">Produto</th>
+                    <th scope="col">Matéria Prima</th>
                     <th scope="col">Peso</th>
                     <th scope="col"><button class="btn btn-success"><i class="fa fa-plus"></i>Adicionar</button></th>
                     </tr>
@@ -75,34 +70,19 @@
                 </div>
                 <tbody>
                     <tr>
-                    <td>Jornal</td>
-                    <td>150 kg</td>
-                    <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
+                        <td>Liquidificador</td>
+                        <td>1280 gr.</td>
+                        <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
                     </tr>
                     <tr>
-                    <td>Revista</td>
-                    <td>160 kg</td>
-                    <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
+                        <td>Lavadoura</td>
+                        <td>30100 gr.</td>
+                        <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
                     </tr>
                     <tr>
-                    <td>Vidro</td>
-                    <td>80 kg</td>
-                    <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
-                    </tr>
-                    <tr>
-                    <td>Papelão Ondulado</td>
-                    <td>40 gr</td>
-                    <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
-                    </tr>
-                    <tr>
-                    <td>PET Verde</td>
-                    <td>40 gr</td>
-                    <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
-                    </tr>
-                    <tr>
-                    <td>PET Transparente</td>
-                    <td>40 gr</td>
-                    <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
+                        <td>Toca Discos</td>
+                        <td>1080 gr.</td>
+                        <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -118,8 +98,13 @@
             </thead>
             <tbody>
                 <tr>
-                <td>RSI</td>
-                <td>450 g.</td>
+                <td>Aço Carbono</td>
+                <td>280 g.</td>
+                </tr>
+                
+                <tr>
+                <td>Latão</td>
+                <td>100 g.</td>
                 </tr>
                 
                 <tr>
