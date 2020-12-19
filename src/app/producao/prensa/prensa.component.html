@@ -36,11 +36,9 @@
                     <div class="form-group col-md-6">
                         <label for="socio">Sócio Responsável</label>
                         <ng-select formControlName="socio" name="socio">
-                            <ng-option *ngFor="let socio of socios" [value]="socio">
-                                    <ngx-avatar *ngIf="!socio.foto" name="{{ socio?.nome }}" initialsSize="2" size="35"></ngx-avatar>
-                                    <img *ngIf="socio.foto" src="{{socio.foto}}" class="rounded-circle z-depth-0" height="35" width="35" alt="">
-                                    {{socio.nome}}
-                                </ng-option>
+                            <ng-component  *ngFor="let socio of socios" >
+                                <ng-option *ngIf="socio?.situacao === 'Ativo'" [value]="socio">{{socio.nome}}</ng-option>
+                            </ng-component>
                         </ng-select>
                     </div>
     

@@ -50,27 +50,11 @@ export class CondicoesDePagamentoComponent implements OnInit {
   }
 
   // =========== Busca personalizada ====================================================
-  SearchText(campo: any, valor: any): any{
-    console.log(campo)
-    console.log(valor)
-    this.tempItemsList = this.tempItemsList.filter(res => {
-      return res[campo].toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
-        valor.toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
-      ));
-    });
-  }
-
-  SearchNumber(campo: any, valor: any): any{
-    this.tempItemsList = this.tempItemsList.filter(res => {
-      return res[campo].toString().match(valor);
-    });
-  }
-
   Search(campo: any, valor: any): any{
-    // this.tempItemsList = _.clone(this.itemsList);
+    this.tempItemsList = _.clone(this.tempItemsList);
 
     if (valor !== ''){
-      this.tempItemsList = this.tempItemsList.filter(res => {
+      this.tempItemsList = this.itemsList.filter(res => {
         return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
                valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
               ));
