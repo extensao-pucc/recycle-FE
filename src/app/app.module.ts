@@ -39,6 +39,7 @@ import { PesquisaCepComponent } from './shared/pesquisa-cep/pesquisa-cep.compone
 import { ViewImageComponent } from './shared/view-image/view-image.component';
 import { PrensaComponent } from './producao/prensa/prensa.component';
 import { RemanufaturaComponent } from './producao/remanufatura/remanufatura.component';
+import { MateriasPrimasComponent } from './cadastros/materias-primas/materias-primas.component';
 
 const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
 @NgModule({
@@ -63,7 +64,8 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     PesquisaCepComponent,
     ViewImageComponent,
     PrensaComponent,
-    RemanufaturaComponent
+    RemanufaturaComponent,
+    MateriasPrimasComponent
   ],
   imports: [
     BrowserModule,

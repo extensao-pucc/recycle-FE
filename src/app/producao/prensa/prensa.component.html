@@ -3,10 +3,10 @@
       <h3>Prensa</h3>
   
       <!-- form cabeçalho -->
-        <div class="d-flex justify-content-center cabecalho">
+        <div class="cabecalho">
             <form [formGroup]="headForm">
                 <div class="form-row">
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <label for="lote">Prensa</label>
                         <input class="form-control" formControlName="prensa" type="text" name="lote" [attr.disabled]="true">
                     </div>
@@ -17,12 +17,12 @@
                     </div>
                     
                     <div class="form-group col-md-2">
-                        <label for="inicio">Inicio</label>
+                        <label for="inicio">Início</label>
                         <input class="form-control" formControlName="inicio" type="text" name="inicio" [attr.disabled]="true" placeholder="--:--:--">
                     </div>  
                     
                     <div class="form-group col-md-2">
-                        <label for="time">Termino</label>
+                        <label for="time">Término</label>
                         <input class="form-control" formControlName="termino" type="text" name="termino" [attr.disabled]="true" placeholder="--:--:--">
                     </div>
 
@@ -33,7 +33,7 @@
                 </div>
         
                 <div class="form-row">                                                  
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-7">
                         <label for="socio">Sócio Responsável</label>
                         <ng-select formControlName="socio" name="socio">
                             <ng-component  *ngFor="let socio of socios" >
@@ -59,7 +59,7 @@
         </div>
         <!-- ============== -->
 
-        <div class="table-items">
+        <div>
             <table class="table table-hover" ALIGN="center">
                 <thead class="thead-dark">
                     <tr>

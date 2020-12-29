@@ -3,21 +3,21 @@
       <h3>Remanufatura</h3>
   
       <!-- form cabeçalho -->
-        <div class="d-flex justify-content-center cabecalho">
+        <div class="cabecalho">
             <form [formGroup]="headForm">
                 <div class="form-row">
-                    <div class="form-group col-md-2">
+                    <div class="form-group col-md-3">
                         <label for="lote">Lote</label>
                         <input class="form-control" formControlName="prensa" type="text" name="lote" [attr.disabled]="true">
                     </div>
                     
                     <div class="form-group col-md-3">
-                        <label for="inicio">Inicio</label>
+                        <label for="inicio">Inécio</label>
                         <input class="form-control" formControlName="inicio" type="text" name="inicio" [attr.disabled]="true" placeholder="--:--:--">
                     </div>  
                     
                     <div class="form-group col-md-3">
-                        <label for="time">Termino</label>
+                        <label for="time">Término</label>
                         <input class="form-control" formControlName="termino" type="text" name="termino" [attr.disabled]="true" placeholder="--:--:--">
                     </div>
 
@@ -37,7 +37,7 @@
                         </ng-select>
                     </div>
     
-                    <div class="form-group col-md-5">
+                    <div class="form-group col-md-6">
                         <label for="situacao">Situação</label>
                         <input class="form-control" formControlName="situacao" type="text" name="situacao" [attr.disabled]="true">
                     </div>

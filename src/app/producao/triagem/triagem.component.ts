@@ -1,5 +1,6 @@
 import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
+import { ViewImage } from 'src/app/shared/view-image/view-image.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { CrudService } from '../../cadastros/crud.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
@@ -20,6 +21,8 @@ export class TriagemComponent implements OnInit {
   public yesNoMessage: YesNoMessage = new YesNoMessage();
   public showYesNoMessage: boolean;
   public modalRef: any;
+  public viewImage: ViewImage = new ViewImage();
+  public showModalImage: boolean;
 
   // selects
   public socios: any;
@@ -108,6 +111,7 @@ export class TriagemComponent implements OnInit {
         this.headForm.controls.data.setValue(this.sharedVariableService.currentDate());
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime());
         this.headForm.controls.situacao.setValue('Iniciada');
+        
         const prodInfoHead = {
           currentLote: this.lastTriagem + 1,
           startDate: this.sharedVariableService.currentDate(),
@@ -120,7 +124,7 @@ export class TriagemComponent implements OnInit {
         this.statusProd = 'Iniciada';
       }
     } else {
-      this.toastService.addToast('Selecione um sócio responsável e um fornecedor para iniciar', 'darkred');
+      this.toastService.addToast('Selecione um SÓCIO responsável e/ou um FORNECEDOR para iniciar', 'darkred');
     }
   }
 
@@ -177,5 +181,19 @@ export class TriagemComponent implements OnInit {
       }
     };
     this.showYesNoMessage = true;
+  }
+
+  showImage(image: any): void{
+    this.showModalImage = true;
+
+    this.viewImage = {
+      image,
+      action: {
+        onClickYes: () => {
+          this.showYesNoMessage = true;
+        },
+        onClickNo: () => { }
+      }
+    };
   }
 }
