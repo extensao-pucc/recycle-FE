@@ -3,14 +3,16 @@
     width: 100%;
     padding-top: 65px;
     /* background-color: #e8e7e7; */
-    background-color: #f2f7fa;
+    /* background-color: #f2f7fa; */
+    background-color: #E2EEF2;
 }
 
 .center {
     overflow: auto;
     margin: auto;
     background-color: white;
-    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 19%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+    /* box-shadow: 0 4px 8px 0 rgb(0 0 0 / 19%), 0 6px 20px 0 rgb(0 0 0 / 19%); */
+    box-shadow: 0 4px 10px 0 rgb(0 0 0 / 20%);
     width: 90%;
     height: 85%;
 

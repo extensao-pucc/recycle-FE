@@ -74,14 +74,14 @@
                   </td>
                   <td class="foto"> 
                     <ngx-avatar *ngIf="!item?.foto" name="{{ item?.nome }}" initialsSize="2"></ngx-avatar>
-                    <img *ngIf="item?.foto" src="{{ item?.foto }}" class="rounded-circle z-depth-0" height="50" width="50" alt="" (click)="showImage(item?.foto)">
+                    <img *ngIf="item?.foto" src="{{ item?.foto }}" class="rounded-circle z-depth-0 foto-socio" height="50" width="50" alt="" (click)="showImage(item?.foto)">
                   </td>
                   <td class="td-pequeno">{{ item?.id }}</td>
                   <td class="td-pequeno">{{ item?.matricula }}</td>
                   <td>{{ item?.nome }}</td>
-                  <td>{{ item?.data_de_nascimento | mask: '0000/M0/d0' }}</td>
+                  <td>{{ reverseStringDate(item?.data_de_nascimento) | mask: 'd0/M0/0000' }}</td>
                   <td>{{ item?.RG | mask: '00.000.000-0'}}</td>
-                  <td>{{ item?.data_emissao | mask: '0000/M0/d0' }}</td>
+                  <td>{{ reverseStringDate(item?.data_emissao) | mask: 'd0/M0/0000' }}</td>
                   <td class="td-pequeno">{{ item?.local_emissao }}</td>
                   <td class="td-pequeno">{{ item?.orgao_expedidor }}</td>
                   <td>{{ item?.CPF | mask: '000.000.000-00'}}</td>
@@ -97,8 +97,8 @@
                   <td>{{ item?.cidade }}</td>
                   <td>{{ item?.telefone | mask: '(00) 0000-0000||(00) 00000-0000'}}</td>
                   <td>{{ item?.email }}</td>
-                  <td>{{ item?.data_de_admissao | mask: '0000/M0/d0' }}</td>
-                  <td>{{ item?.data_de_demissao | mask: '0000/M0/d0' }}</td>
+                  <td>{{ reverseStringDate(item?.data_de_admissao) | mask: 'd0/M0/0000' }}</td>
+                  <td>{{ reverseStringDate(item?.data_de_demissao) | mask: 'd0/M0/0000' }}</td>
                 <th>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
                     <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>

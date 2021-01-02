@@ -16,12 +16,12 @@
             </div>  
 
             <div class="form-group col-md-2">
-                <label for="inicio">Inicio</label>
+                <label for="inicio">Início</label>
                 <input class="form-control" formControlName="inicio" type="text" name="inicio" [attr.disabled]="true" placeholder="--:--:--">
             </div>  
 
             <div class="form-group col-md-2">
-                <label for="time">Termino</label>
+                <label for="time">Término</label>
                 <input class="form-control" formControlName="termino" type="text" name="termino" [attr.disabled]="true" placeholder="--:--:--">
             </div>
 
@@ -32,7 +32,7 @@
         </div>
 
         <div class="form-row">                                                  
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label for="socio">Sócio Responsável</label>
                 <ng-select formControlName="socio" name="socio">
                   <ng-component  *ngFor="let socio of socios" >
@@ -41,13 +41,19 @@
                 </ng-select>
             </div>
 
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-4">
                 <label for="fornecedor">Fornecedor</label>
                 <ng-select formControlName="fornecedor" name="fornecedor">
                   <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor">{{fornecedor.razao_social_nome}}</ng-option>
                 </ng-select>
             </div>
 
+            <div class="form-group col-md-4">
+              <label for="fornecedor">Matéria prima</label>
+              <ng-select formControlName="materia_prima" name="materia_prima">
+                <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor">{{fornecedor.razao_social_nome}}</ng-option>
+              </ng-select>
+          </div>
         </div>
       </form>
       
@@ -55,8 +61,8 @@
       <div class="row d-flex justify-content-around btn-prod">
           <button type="button" class="btn btn-primary btn-lg" (click)="showModal('Iniciar')" [disabled]="statusProd == 'Iniciada'"><i class="fa fa-play-circle"></i>Iniciar Produção</button>
           <button type="button" class="btn btn-warning btn-lg" (click)="showModal('Pausar')" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-pause-circle"></i>Pausar Produção</button>
-          <button type="button" class="btn btn-danger btn-lg" (click)="showModal('Finalizar')" disabled="true"><i class="fa fa-check-circle"></i>Finalizar Produção</button>
-          <button type="button" class="btn btn-success btn-lg" (click)="showModal('Imprimir')" disabled="true"><i class="fa fa-print"></i>Imprimir Produção</button>
+          <button type="button" class="btn btn-danger btn-lg" (click)="showModal('Finalizar')" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-check-circle"></i>Finalizar Produção</button>
+          <button type="button" class="btn btn-success btn-lg" (click)="showModal('Imprimir')" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-print"></i>Imprimir Produção</button>
       </div>
     <!-- ============== -->
 
@@ -67,8 +73,8 @@
             <th>Produto</th>
             <th>Quantidade</th>
             <th>Sócio</th>
-            <th>Inicio</th>
-            <th>Fim</th>
+            <th>Início</th>
+            <th>Término</th>
             <!-- <th>Status</th> -->
             <th class="text-right">
               <button class="btn btn-success" (click)="showLoteItemModal()" tooltip="Adicionar item ao lote">
@@ -89,7 +95,10 @@
               <input *ngIf="item?.edit" class="form-control" type="text" name="">
             </td>
             <td class="socio">
-              <span>{{ item.socio.nome }}</span>
+              <ngx-avatar *ngIf="!item.socio.foto" name="{{ item.socio.nome }}" initialsSize="2" size="40" class="my-avatar"></ngx-avatar>
+              <img [src]="item.socio.foto" *ngIf="item.socio.foto" style="height: 40px; width:40px" 
+              class="rounded-circle z-depth-0 image-profile" (click)="showImage(item.socio.foto)">
+              <span> {{ item.socio.nome }}</span>
             </td>
             <td class="time">{{ item.startTime }}</td>
             <td class="time">{{ item.endTime }}</td>
@@ -128,7 +137,7 @@
 
 <ng-template #pauseScreen>
   <div class="modal-header modal-header text-dark">
-      <h4 class="modal-title pull-left"> Palsar Produção</h4>
+      <h4 class="modal-title pull-left"> Pausar Produção</h4>
       <button type="button" class="close pull-right" aria-label="Close">
           <span aria-hidden="true">&times;</span>
       </button>
@@ -189,3 +198,5 @@
       </div>
   </div>
 </ng-template>
+
+<app-view-image [viewImage]="viewImage" *ngIf="showModalImage"></app-view-image>

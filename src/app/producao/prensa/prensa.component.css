@@ -2,14 +2,13 @@
     height: 100%;
     width: 100%;
     padding-top: 65px;
-    background-color: #f2f7fa;
+    background-color: #E3EEF3;
 }
 
 .center {
     overflow: auto;
     margin: auto;
     padding-top: 30px;
-    background-color: #f2f7fa;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     width: 100%;
     height: 100%;
@@ -24,10 +23,6 @@
 
 form{
     align-items: center;
-}
-
-ngx-avatar{
-    display: inline-block;
 }
 
 ngx-avatar, img{
@@ -47,8 +42,7 @@ i {
 }
 
 table {
-    border-collapse: separate;
-    border-spacing: 0 10px;
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 19%), 0 6px 20px 0 rgb(0 0 0 / 19%);
     text-align: center;
     width:  50%;
 }
@@ -62,16 +56,8 @@ table {
     width: 50%;
 }
 
-thead th {
-    position: -webkit-sticky; /* for Safari */
-    position: sticky;
-    top: 0;
-
-}
-
 table tbody tr {
     background-color: white;
-    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 19%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 
 label {

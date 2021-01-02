@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { CondicoesDePagamentoComponent } from './cadastros/condicoes-de-pagamento/condicoes-de-pagamento.component';
 import { FamiliasComponent } from './cadastros/familias/familias.component';
 import { FornecedoresComponent } from './cadastros/fornecedores/fornecedores.component';
+import { MateriasPrimasComponent } from './cadastros/materias-primas/materias-primas.component';
 import { MotivosDeParadaComponent } from './cadastros/motivos-de-parada/motivos-de-parada.component';
 import { NaturezaDasOperacoesComponent } from './cadastros/natureza-das-operacoes/natureza-das-operacoes.component';
 import { PrensasComponent } from './cadastros/prensas/prensas.component';
@@ -27,6 +28,7 @@ const routes: Routes = [
       { path: 'condicoesDePagamento', component: CondicoesDePagamentoComponent, canActivate: [AuthGuard] },
       { path: 'familias', component: FamiliasComponent, canActivate: [AuthGuard] },
       { path: 'fornecedores', component: FornecedoresComponent, canActivate: [AuthGuard] },
+      { path: 'materiasPrimas', component: MateriasPrimasComponent, canActivate: [AuthGuard] },
       { path: 'motivosDeParada', component: MotivosDeParadaComponent, canActivate: [AuthGuard] },
       { path: 'naturezaDasOperacoes', component: NaturezaDasOperacoesComponent, canActivate: [AuthGuard] },
       { path: 'prensas', component: PrensasComponent, canActivate: [AuthGuard] },
