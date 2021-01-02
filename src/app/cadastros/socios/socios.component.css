@@ -2,11 +2,14 @@
     min-width: 70px;
 }
 
+.foto-socio{
+    cursor: pointer;
+}
+
 .image-profile, .my-avatar /deep/ .avatar-content {
     box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%), 0 6px 20px 0 rgb(0 0 0 / 12%);
     margin-bottom: 30px;
 }
-
 
 
 h5 {
@@ -46,7 +49,6 @@ h5 {
     color:#dc3545;
 }
   
-
 .status--green:before{
     background-color: #37c93a;
 }
@@ -55,7 +57,6 @@ h5 {
 }
 
 /* Perfil Socio ========================================= */
-
 .profile-blue {
     background-color: #4e67f1;
     color: white;

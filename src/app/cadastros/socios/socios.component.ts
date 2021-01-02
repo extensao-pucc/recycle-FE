@@ -51,6 +51,12 @@ export class SociosComponent implements OnInit {
     this.loadForm();
   }
 
+  reverseStringDate(str){
+    if (str){
+      return str.split('-').reverse().join('-'); // reverse yyyy/mm/dd to dd/mm/yyyy 
+    }
+  }
+
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
