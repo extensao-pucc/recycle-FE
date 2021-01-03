@@ -16,8 +16,11 @@ export class MateriasPrimasComponent implements OnInit {
   public itemsList: any;
   public itemForm: any;
   public showForm = false;
+
+  // Modal de confirmação =========
   public yesNoMessage: YesNoMessage = new YesNoMessage();
   public showYesNoMessage: boolean;
+  // ==============================
 
   constructor(
     private crudService: CrudService,
@@ -34,8 +37,7 @@ export class MateriasPrimasComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      sigla: ['', [this.formValidatorService.isEmpty]],
-      descricao: ['', [this.formValidatorService.isEmpty]],
+      nome:  ['', [this.formValidatorService.isEmpty]],
     });
   }
 
@@ -46,7 +48,7 @@ export class MateriasPrimasComponent implements OnInit {
     });
   }
 
-   // =========== Busca personalizada ====================================================
+  // =========== Busca personalizada ====================================================
   Search(campo: any, valor: any): any{
     this.tempItemsList = _.clone(this.tempItemsList);
 
@@ -60,9 +62,8 @@ export class MateriasPrimasComponent implements OnInit {
       this.ngOnInit();
     }
   }
-  // ===================================================================================
-  
 
+  // =========== CRUD ===================================================================
   deleteItem(id): void {
     this.crudService.deleteItem('materiasPrimas', id).subscribe(response => {
       this.getItems();
@@ -70,7 +71,6 @@ export class MateriasPrimasComponent implements OnInit {
     }, err => {
       this.toastService.addToast(err['message'], 'darkred');
     });
-
     this.showForm = false;
   }
 
@@ -78,50 +78,67 @@ export class MateriasPrimasComponent implements OnInit {
     this.showForm = true;
 
     this.itemForm.controls.id.setValue(item.id);
-    this.itemForm.controls.sigla.setValue(item.sigla);
-    this.itemForm.controls.descricao.setValue(item.descricao);
+    this.itemForm.controls.nome.setValue(item.nome);
   }
 
   createUpdateItem(): void {
     const formValues = this.itemForm.value;
 
     if (this.itemForm.status === 'VALID'){
+
       if (formValues.id) {
         this.crudService.updateItem('materiasPrimas', formValues, formValues.id).subscribe(response => {
           this.getItems();
+          this.loadForm();
+
+          this.showForm = false;
           this.toastService.addToast('Atualizado com sucesso');
         }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.nome){
+            this.itemForm.controls.nome.errors = {'msgErro': 'Condição de pagamento com essa descrição já existe'};
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
         });
       } else {
         this.crudService.createItem('materiasPrimas', formValues).subscribe(response => {
           this.getItems();
+          this.loadForm();
+
+          this.showForm = false;
           this.toastService.addToast('Cadastrado com sucesso');
         }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.nome){
+            this.itemForm.controls.nome.errors = {'msgErro': 'Condição de pagamento com essa descrição já existe'};
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
         });
       }
-      this.showForm = false;
-      this.loadForm();
     } else {
       this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
   }
+  // ====================================================================================
 
+
+  // =========== Modal de confirmação ===================================================
   showModal(title: string, items: any): void {
     const formValues = this.itemForm.value;
 
     this.yesNoMessage = {
       title,
       mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
-      items: [title === 'Deletar' ? items.sigla : formValues.sigla],
+      items: [title === 'Deletar' ? items.nome : formValues.nome],
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {
           if (title === 'Salvar'){
             this.createUpdateItem();
           } else if (title === 'Deletar'){
-            (items.id) ? this.deleteItem(items.id) : this.deleteItem(items); 
+            (items.id) ? this.deleteItem(items.id) : this.deleteItem(items);
           } else if (title === 'Cancelar edição') {
             this.showForm = false;
             this.loadForm();
@@ -132,4 +149,5 @@ export class MateriasPrimasComponent implements OnInit {
     };
     this.showYesNoMessage = true;
   }
+  // ====================================================================================
 }

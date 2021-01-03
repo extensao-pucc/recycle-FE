@@ -77,9 +77,9 @@
             <div class="form-group col-md-8">  
               <label>Razão social/Nome: </label>
               <input class="form-control" type="text" maxlength="100" formControlName="razao_social_nome">
-              <p class="error-msg" *ngIf="itemForm.controls.razao_social_nome.errors">
+              <span class="error-msg" *ngIf="itemForm.controls.razao_social_nome.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.razao_social_nome.errors.msgErro }}
-              </p>
+              </span>
             </div>
             
             <div class="form-group col-md-4">
