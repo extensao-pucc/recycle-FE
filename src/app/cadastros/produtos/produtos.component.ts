@@ -21,8 +21,8 @@ export class ProdutosComponent implements OnInit {
   public showYesNoMessage: boolean;
 
   public familias: any;
-  public fornecedores: any;
-  public qualidades: any;
+  // public fornecedores: any;
+  // public qualidades: any;
   public unidadesDeMedida: any;
   public naturezaDasOperacoes: any;
 
@@ -45,8 +45,8 @@ export class ProdutosComponent implements OnInit {
       codigo: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       descricao: ['', [this.formValidatorService.isEmpty]],
       familia: ['', [this.formValidatorService.isEmpty]],
-      fornecedor: ['', [this.formValidatorService.isEmpty]],
-      qualidade: ['', [this.formValidatorService.isEmpty]],
+      // fornecedor: ['', [this.formValidatorService.isEmpty]],
+      // qualidade: ['', [this.formValidatorService.isEmpty]],
       unidade_de_medida: ['', [this.formValidatorService.isEmpty]],
       NCM: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validNCM]],
       CSTE: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
@@ -60,8 +60,8 @@ export class ProdutosComponent implements OnInit {
 
   getItems(): void {
     this.crudService.getItems('familias').subscribe(response => { this.familias = response; });
-    this.crudService.getItems('fornecedores').subscribe(response => { this.fornecedores = response; });
-    this.crudService.getItems('qualidades').subscribe(response => { this.qualidades = response; });
+    // this.crudService.getItems('fornecedores').subscribe(response => { this.fornecedores = response; });
+    // this.crudService.getItems('qualidades').subscribe(response => { this.qualidades = response; });
     this.crudService.getItems('unidadesDeMedida').subscribe(response => { this.unidadesDeMedida = response; });
     this.crudService.getItems('naturezaDasOperacoes').subscribe(response => { this.naturezaDasOperacoes = response; });
 
@@ -104,8 +104,8 @@ export class ProdutosComponent implements OnInit {
     this.itemForm.controls.codigo.setValue(item.codigo);
     this.itemForm.controls.descricao.setValue(item.descricao);
     this.itemForm.controls.familia.setValue(item.familia.id);
-    this.itemForm.controls.fornecedor.setValue(item.fornecedor.id);
-    this.itemForm.controls.qualidade.setValue(item.qualidade.id);
+    // this.itemForm.controls.fornecedor.setValue(item.fornecedor.id);
+    // this.itemForm.controls.qualidade.setValue(item.qualidade.id);
     this.itemForm.controls.unidade_de_medida.setValue(item.unidade_de_medida.id);
     this.itemForm.controls.NCM.setValue(item.NCM);
     this.itemForm.controls.CSTE.setValue(item.CSTE);
