@@ -28,6 +28,7 @@ export class TriagemComponent implements OnInit {
   public socios: any;
   public fornecedores: any;
   public motivosDeParada: any;
+  public materiasPrimas: any;
   public produtos: any;
 
   // forms
@@ -101,6 +102,7 @@ export class TriagemComponent implements OnInit {
     this.crudService.getItems('socios').subscribe(response => this.socios = response);
     this.crudService.getItems('fornecedores').subscribe(response => this.fornecedores = response);
     this.crudService.getItems('motivosDeParada').subscribe(response => this.motivosDeParada = response);
+    this.crudService.getItems('materiasPrimas').subscribe(response => this.materiasPrimas = response);
     this.crudService.getItems('produtos').subscribe(response => this.produtos = response);
   }
 

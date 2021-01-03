@@ -17,7 +17,7 @@
             <tbody>            
               <tr>
                 <td><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
-                <td><input class="form-control" type="search" placeholder="Descricão" (input)="Search('nome', $event.target.value)"></td>
+                <td><input class="form-control" type="search" placeholder="Nome" (input)="Search('nome', $event.target.value)"></td>
                 <th></th>
               </tr>
 
@@ -40,7 +40,7 @@
       <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
             
         <input formControlName="id" hidden="true">
-        <label>Descrição: </label>
+        <label>Nome: </label>
         <input class="form-control" type="text" maxlength="100" formControlName="nome">
         <p class="error-msg" *ngIf="itemForm.controls.nome.errors">
           <i class="fa fa-times"></i> {{ itemForm.controls.nome.errors.msgErro }}
