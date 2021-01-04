@@ -65,7 +65,6 @@ export class CondicoesDePagamentoComponent implements OnInit {
   }
 
   // =========== CRUD ===================================================================
-  
   deleteItem(id): void {
     this.crudService.deleteItem('condicoesDePagamento', id).subscribe(response => {
       this.getItems();

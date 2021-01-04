@@ -101,7 +101,7 @@
                   <td>{{ reverseStringDate(item?.data_de_demissao) | mask: 'd0/M0/0000' }}</td>
                 <th>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
-                    <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
+                    <button type="button" class="btn btn-danger mr-2" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
                 </th>
               </tr>
             </tbody>
@@ -117,7 +117,7 @@
           <div class="form-row">
             <div class="col-md-3">
               <ngx-avatar *ngIf="!imageInputView" value="Sem foto" size="290" bgColor="#092540" textSizeRatio="15" class="my-avatar"></ngx-avatar>
-              <img [src]="imageInputView" *ngIf="imageInputView" style="height: 280px; width:290px" class="rounded-circle z-depth-0 image-profile">
+              <img [src]="imageInputView" *ngIf="imageInputView" style="height: 90%; width:90%" class="rounded-circle z-depth-0 image-profile">
             </div>
 
             <div class="col-md-9">
