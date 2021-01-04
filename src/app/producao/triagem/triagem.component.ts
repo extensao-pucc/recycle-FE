@@ -28,6 +28,7 @@ export class TriagemComponent implements OnInit {
   public socios: any;
   public fornecedores: any;
   public motivosDeParada: any;
+  public materiasPrimas: any;
   public produtos: any;
 
   // forms
@@ -63,6 +64,8 @@ export class TriagemComponent implements OnInit {
       this.headForm.get('socio').disable();
       this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor.razao_social_nome);
       this.headForm.get('fornecedor').disable();
+      this.headForm.controls.materia_prima.setValue(prodInfoHead.materia.nome);
+      this.headForm.get('materia_prima').disable();
     } else {
       this.loadHeadForm();
       this.crudService.getItems('parametros').subscribe(response => {
@@ -80,6 +83,7 @@ export class TriagemComponent implements OnInit {
       termino: [null],
       socio: [null],
       fornecedor: [null],
+      materia_prima: [null],
       situacao: [null],
     });
   }
@@ -101,6 +105,7 @@ export class TriagemComponent implements OnInit {
     this.crudService.getItems('socios').subscribe(response => this.socios = response);
     this.crudService.getItems('fornecedores').subscribe(response => this.fornecedores = response);
     this.crudService.getItems('motivosDeParada').subscribe(response => this.motivosDeParada = response);
+    this.crudService.getItems('materiasPrimas').subscribe(response => this.materiasPrimas = response);
     this.crudService.getItems('produtos').subscribe(response => this.produtos = response);
   }
 
@@ -118,7 +123,8 @@ export class TriagemComponent implements OnInit {
           startTime: this.sharedVariableService.currentTime(),
           status: 'Iniciada',
           socio: this.headForm.get('socio').value,
-          fornecedor: this.headForm.get('fornecedor').value
+          fornecedor: this.headForm.get('fornecedor').value,
+          materia: this.headForm.get('materia_prima').value
         };
         localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
         this.statusProd = 'Iniciada';

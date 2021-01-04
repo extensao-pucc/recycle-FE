@@ -84,7 +84,7 @@ export class SociosComponent implements OnInit {
       data_de_demissao: [''],
       situacao: ['', [this.formValidatorService.isEmpty]],
       foto: [''],
-      perfil: ['', [this.formValidatorService.isEmpty]]
+      perfil: ['', [this.formValidatorService.isEmpty]],
     });
     this.imageInputView = '';
   }
@@ -233,6 +233,7 @@ export class SociosComponent implements OnInit {
           }
         });
       } else {
+        formData.append('senha', this.itemForm.get('matricula').value.split('').reverse().join(''));
         this.crudService.createItem('socios', formData).subscribe(response => {
           this.getItems();
           this.loadForm();
