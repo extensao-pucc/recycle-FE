@@ -53,8 +53,8 @@ export class ProdutosComponent implements OnInit {
       CSTS: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       CFOPE: ['', [this.formValidatorService.isEmpty]],
       CFOPS: ['', [this.formValidatorService.isEmpty]],
-      preco_compra: ['', [this.formValidatorService.isEmpty]],
-      preco_venda: ['', [this.formValidatorService.isEmpty]]
+      // preco_compra: ['', [this.formValidatorService.isEmpty]],
+      // preco_venda: ['', [this.formValidatorService.isEmpty]]
     });
   }
 
@@ -112,8 +112,8 @@ export class ProdutosComponent implements OnInit {
     this.itemForm.controls.CSTS.setValue(item.CSTS);
     this.itemForm.controls.CFOPE.setValue(item.CFOPE.id);
     this.itemForm.controls.CFOPS.setValue(item.CFOPS.id);
-    this.itemForm.controls.preco_compra.setValue(item.preco_compra);
-    this.itemForm.controls.preco_venda.setValue(item.preco_venda);
+    // this.itemForm.controls.preco_compra.setValue(item.preco_compra);
+    // this.itemForm.controls.preco_venda.setValue(item.preco_venda);
     this.showForm = true;
   }
 
