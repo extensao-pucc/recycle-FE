@@ -11,9 +11,20 @@
     margin-bottom: 30px;
 }
 
+img, ngx-avatar{
+    box-shadow: 0 2px 7px 0 rgb(0 0 0 / 10%);
+}
 
 h5 {
     padding-top: 30px;
+}
+
+.center-icon {
+    margin-right: 1px;
+}
+
+.shadow-button {
+    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 30%);
 }
 
 /* Status do Sócio ====================== */
@@ -66,6 +77,13 @@ h5 {
 
 .profile-orange {
     background-color:  #f1a54e;
+    color: white;
+    border-radius: 20px;
+    padding: 1px 15px;
+}
+
+.profile-red {
+    background-color:  #fa4068;
     color: white;
     border-radius: 20px;
     padding: 1px 15px;

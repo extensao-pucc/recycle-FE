@@ -28,6 +28,7 @@
                 <th scope="col">Endereço</th>
                 <th scope="col">Número</th>
                 <th scope="col">Complemento</th>
+                <th scope="col">CEP</th>
                 <th scope="col">UF</th>
                 <th scope="col">Cidade</th>
                 <th scope="col">Telefone</th>
@@ -59,6 +60,7 @@
                 <td><input class="form-control" maxlength="100" type="search" placeholder="Endereço" (input)="Search('endereco', $event.target.value)"></td>
                 <td class="td-pequeno"><input class="form-control" maxlength="10" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
                 <td><input class="form-control" maxlength="100" type="search" placeholder="Complemento" (input)="Search('complemento', $event.target.value)"></td>
+                <td class="td-pequeno"><input class="form-control" mask="00000-000" type="search" placeholder="CEP" (input)="Search('CEP', $event.target.value)"></td>
                 <td class="td-pequeno"><input class="form-control" type="search" placeholder="UF" (input)="Search('UF', $event.target.value)"></td>
                 <td><input class="form-control" maxlength="100" type="search" placeholder="Cidade" (input)="Search('cidade', $event.target.value)"></td>
                 <td><input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="search" placeholder="Telefone" (input)="Search('telefone', $event.target.value)"></td>
@@ -93,6 +95,7 @@
                   <td>{{ item?.endereco }}</td>
                   <td class="td-pequeno">{{ item?.numero }}</td>
                   <td>{{ item?.complemento }}</td>
+                  <td class="td-pequeno">{{ item?.CEP | mask: '00000-000'}}</td>
                   <td class="td-pequeno">{{ item?.UF }}</td>
                   <td>{{ item?.cidade }}</td>
                   <td>{{ item?.telefone | mask: '(00) 0000-0000||(00) 00000-0000'}}</td>
@@ -102,6 +105,7 @@
                 <th>
                     <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
                     <button type="button" class="btn btn-danger mr-2" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
+                    <button type="button" class="btn btn-light shadow-button" tooltip="Alterar senha Sócio"><i class="fa fa-unlock-alt center-icon"></i></button>
                 </th>
               </tr>
             </tbody>
@@ -197,7 +201,9 @@
                   <label>Perfil: </label>
                   <ng-select formControlName="perfil"  name="perfil">
                     <ng-option *ngFor="let profile of profiles " [value]="profile.profile">
-                      <a [ngClass]="profile?.profile === 'Administrador' ? 'profile-blue' : 'profile-orange'">
+                      <a [ngClass]="{ 'profile-blue': profile?.profile === 'Administrador', 
+                                      'profile-orange': profile?.profile === 'Usuário',
+                                      'profile-red': profile?.profile === 'Sem acesso'}">
                         {{profile.profile}}
                       </a>
                     </ng-option>
@@ -357,7 +363,10 @@
 
             <div class="form-group col-md-2">
               <label>CEP: </label>
-              <app-pesquisa-cep (retornaPesquisaCep)="populaDados($event)" valor=""></app-pesquisa-cep>
+              <app-pesquisa-cep (retornaPesquisaCep)="populaDados($event)" valor="{{ itemForm.controls.CEP.value }}"></app-pesquisa-cep>
+              <p class="error-msg" *ngIf="itemForm.controls.CEP.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.CEP.errors.msgErro }}
+              </p>
             </div>
           </div>
 
