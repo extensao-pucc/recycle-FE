@@ -48,7 +48,7 @@ export class TransportadorasComponent implements OnInit {
       numero: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       complemento: [''],
       bairro: ['', [this.formValidatorService.isEmpty]],
-      CEP: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validCEP]],
+      CEP: ['', [this.formValidatorService.validCEP]],
       UF: ['', [this.formValidatorService.isEmpty]],
       cidade: ['', [this.formValidatorService.isEmpty]],
       telefone: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validTelefone]],

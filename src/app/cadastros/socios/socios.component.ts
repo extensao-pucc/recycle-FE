@@ -7,6 +7,7 @@ import { ViewImage } from 'src/app/shared/view-image/view-image.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
+import { PesquisaCepService } from '../../shared/pesquisa-cep/pesquisa-cep.service';
 
 @Component({
   selector: 'app-socios',
@@ -76,6 +77,7 @@ export class SociosComponent implements OnInit {
       endereco: ['', [this.formValidatorService.isEmpty]],
       numero: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       complemento: [''],
+      CEP: ['', [this.formValidatorService.validCEP]],
       UF: ['', [this.formValidatorService.isEmpty]],
       cidade: ['', [this.formValidatorService.isEmpty]],
       telefone: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validTelefone]],
@@ -144,6 +146,7 @@ export class SociosComponent implements OnInit {
     this.itemForm.controls.endereco.setValue(item.endereco);
     this.itemForm.controls.numero.setValue(item.numero);
     this.itemForm.controls.complemento.setValue(item.complemento);
+    this.itemForm.controls.CEP.setValue(item.CEP);
     this.itemForm.controls.UF.setValue(item.UF);
     this.itemForm.controls.cidade.setValue(item.cidade);
     this.itemForm.controls.telefone.setValue(item.telefone);
@@ -202,6 +205,7 @@ export class SociosComponent implements OnInit {
       formData.append('endereco', this.itemForm.get('endereco').value);
       formData.append('numero', this.itemForm.get('numero').value);
       formData.append('complemento', this.itemForm.get('complemento').value);
+      formData.append('CEP', this.itemForm.controls.CEP.value);
       formData.append('UF', this.itemForm.get('UF').value);
       formData.append('cidade', this.itemForm.get('cidade').value);
       formData.append('telefone', this.itemForm.get('telefone').value);
@@ -299,6 +303,6 @@ export class SociosComponent implements OnInit {
       this.itemForm.controls.cidade.setValue(item.cidade);
       this.itemForm.controls.UF.setValue(item.estado);
     }
-    // this.itemForm.controls.CEP.setValue(item.cep);
+    this.itemForm.controls.CEP.setValue(item.cep);
   }
 }
