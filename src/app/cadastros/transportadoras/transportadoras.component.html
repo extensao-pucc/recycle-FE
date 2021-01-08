@@ -154,21 +154,21 @@
               </p>
             </div>
 
-            <div class="form-group col-md-3">
+            <div class="form-group col-md-4">
+              <label>Cidade: </label>
+              <input class="form-control" type="text" maxlength="100" formControlName="cidade">
+              <p class="error-msg" *ngIf="itemForm.controls.cidade.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.cidade.errors.msgErro }}
+              </p>
+            </div>
+
+            <div class="form-group col-md-2">
               <label>UF: </label>
               <ng-select formControlName="UF"  name="UF">
                 <ng-option *ngFor="let state of states" [value]="state.uf">{{state.state}}</ng-option>
               </ng-select>
               <p class="error-msg" *ngIf="itemForm.controls.UF.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.UF.errors.msgErro }}
-              </p>
-            </div>
-
-            <div class="form-group col-md-3">
-              <label>Cidade: </label>
-              <input class="form-control" type="text" maxlength="100" formControlName="cidade">
-              <p class="error-msg" *ngIf="itemForm.controls.cidade.errors">
-                <i class="fa fa-times"></i> {{ itemForm.controls.cidade.errors.msgErro }}
               </p>
             </div>
             
