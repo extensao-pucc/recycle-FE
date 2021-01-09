@@ -40,7 +40,7 @@ export class TriagemComponent implements OnInit {
   public lastTriagem: number;
   public statusProd = '';
   public lotItems = [];
-  public lotStops = [];
+  public lotBreaks = [];
 
   constructor(
     private toastService: ToastService,
@@ -66,6 +66,15 @@ export class TriagemComponent implements OnInit {
       this.headForm.get('fornecedor').disable();
       this.headForm.controls.materia_prima.setValue(prodInfoHead.materia.nome);
       this.headForm.get('materia_prima').disable();
+
+      const prodInfoItems = JSON.parse(localStorage.getItem('prodInfoItems'));
+      if(prodInfoItems) {
+        this.lotItems = prodInfoItems;
+      }
+      const productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
+      if(productionBreaks) {
+        this.lotBreaks = productionBreaks;
+      }
     } else {
       this.loadHeadForm();
       this.crudService.getItems('parametros').subscribe(response => {
@@ -75,6 +84,7 @@ export class TriagemComponent implements OnInit {
     this.loadLoteItemForm();
   }
 
+  // Build do form cabeçalho (Informações do lote)
   loadHeadForm(): void {
     this.headForm = this.formBuilder.group({
       lote: [null],
@@ -88,6 +98,7 @@ export class TriagemComponent implements OnInit {
     });
   }
 
+  // Build do form itens (Itens do lote)
   loadLoteItemForm(): void {
     this.loteItemForm = this.formBuilder.group({
       numBag: [null],
@@ -101,6 +112,7 @@ export class TriagemComponent implements OnInit {
     });
   }
 
+  // Chama as API para obter as informações necessária para a triagem
   getItems(): void {
     this.crudService.getItems('socios').subscribe(response => this.socios = response);
     this.crudService.getItems('fornecedores').subscribe(response => this.fornecedores = response);
@@ -109,6 +121,7 @@ export class TriagemComponent implements OnInit {
     this.crudService.getItems('produtos').subscribe(response => this.produtos = response);
   }
 
+  // Inicia a Produção
   startProduction(): void {
     if (this.headForm.get('socio').value && this.headForm.get('fornecedor').value) {
       if (this.statusProd === '') {
@@ -134,14 +147,40 @@ export class TriagemComponent implements OnInit {
     }
   }
 
+  // Pausa a Prudução
   pauseProduction(): void {
-    console.log('pausou')
-    console.log(this.selectedMotivo)
+    const productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
+    let auxSequence = [];
+
+    if (productionBreaks) {
+      this.lotBreaks.forEach(item => {
+        auxSequence.push(item.sequence)
+      })
+    }
+
+    this.lotBreaks.push({
+      motivo: this.selectedMotivo,
+      sequence: this.lotBreaks.length > 0 ? Math.max(...auxSequence) + 1 : 1,
+      startTime: this.sharedVariableService.currentTime(),
+      endTime: null,
+      total: null,
+    });
+
+    localStorage.setItem('productionBreaks', JSON.stringify(this.lotBreaks));
+    this.modalRef.hide();
+    this.selectedMotivo = null;
+    this.statusProd = 'Pausada'
   }
 
+  // Adiciona item no lote (Item escolhido no LoteItemModal)
   addLoteItem(): void {
+    let auxBag = [];
+    this.lotItems.forEach(item => {
+      auxBag.push(item.numBag)
+    })
+
     this.lotItems.push({
-      numBag: 3,
+      numBag: this.lotItems.length > 0 ? Math.max(...auxBag) + 1 : 1,
       product: this.loteItemForm.get('product').value,
       qtn: 0,
       socio: this.loteItemForm.get('socio').value,
@@ -154,17 +193,26 @@ export class TriagemComponent implements OnInit {
     this.modalRef.hide();
   }
 
+  // Salva Item do lote
   saveLoteItem(idx): void {
     this.lotItems[idx].edit = false;
     this.lotItems[idx].endTime = this.sharedVariableService.currentTime();
     localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
   }
 
+  // atualiza a quantidade do item do lote
+  updateQtn(idx, value) {
+    this.lotItems[idx].qtn = value;
+    localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
+  }
+
+  // Mostra modal para adicionar novo item no lote
   showLoteItemModal(): void {
     this.loadLoteItemForm();
     this.modalRef = this.modalService.show(this.loteItemScreen);
   }
 
+  // Mostra uma modal diferente dependendo de qual das 4 ações selecionar
   showModal(title: string): void {
     this.yesNoMessage = {
       title,
@@ -189,6 +237,7 @@ export class TriagemComponent implements OnInit {
     this.showYesNoMessage = true;
   }
 
+  // Expande imagem de cada socio na lista de itens do lote
   showImage(image: any): void{
     this.showModalImage = true;
 

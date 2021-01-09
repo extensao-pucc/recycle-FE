@@ -2,74 +2,74 @@
   <div class="center">
     <h3>Triagem</h3>
 
-    <!-- form cabeçalho -->
-      <form [formGroup]="headForm" *ngIf="headForm" class="cabecalho">
-        <div class="form-row">
-            <div class="form-group col-md-2">
-                <label for="lote">Lote</label>
-                <input class="form-control" formControlName="lote" type="text" name="lote" [attr.disabled]="true">
+    <!-- form cabeçalho Lote -->
+    <form [formGroup]="headForm" *ngIf="headForm" class="cabecalho">
+      <div class="form-row">
+          <div class="form-group col-md-2">
+              <label for="lote">Lote</label>
+              <input class="form-control" formControlName="lote" type="text" name="lote" [attr.disabled]="true">
+          </div>
+
+          <div class="form-group col-md-2">
+              <label for="data">Data</label>
+              <input class="form-control" formControlName="data" type="text" name="data" [attr.disabled]="true" placeholder="dd/mm/aaaa">
+          </div>  
+
+          <div class="form-group col-md-2">
+              <label for="inicio">Início</label>
+              <input class="form-control" formControlName="inicio" type="text" name="inicio" [attr.disabled]="true" placeholder="--:--:--">
+          </div>  
+
+          <div class="form-group col-md-2">
+              <label for="time">Término</label>
+              <input class="form-control" formControlName="termino" type="text" name="termino" [attr.disabled]="true" placeholder="--:--:--">
+          </div>
+
+          <div class="form-group col-md-4">
+                <label for="situacao">Situação</label>
+                <input class="form-control" formControlName="situacao" type="text" name="situacao" [attr.disabled]="true">
             </div>
+      </div>
 
-            <div class="form-group col-md-2">
-                <label for="data">Data</label>
-                <input class="form-control" formControlName="data" type="text" name="data" [attr.disabled]="true" placeholder="dd/mm/aaaa">
-            </div>  
-
-            <div class="form-group col-md-2">
-                <label for="inicio">Início</label>
-                <input class="form-control" formControlName="inicio" type="text" name="inicio" [attr.disabled]="true" placeholder="--:--:--">
-            </div>  
-
-            <div class="form-group col-md-2">
-                <label for="time">Término</label>
-                <input class="form-control" formControlName="termino" type="text" name="termino" [attr.disabled]="true" placeholder="--:--:--">
-            </div>
-
-            <div class="form-group col-md-4">
-                  <label for="situacao">Situação</label>
-                  <input class="form-control" formControlName="situacao" type="text" name="situacao" [attr.disabled]="true">
-              </div>
-        </div>
-
-        <div class="form-row">                                                  
-            <div class="form-group col-md-4">
-                <label for="socio">Sócio Responsável</label>
-                <ng-select formControlName="socio" name="socio">
-                  <ng-component  *ngFor="let socio of socios" >
-                    <ng-option *ngIf="socio?.situacao === 'Ativo'" [value]="socio">{{socio.nome}}</ng-option>
-                </ng-component>
-                </ng-select>
-            </div>
-
-            <div class="form-group col-md-4">
-                <label for="fornecedor">Fornecedor</label>
-                <ng-select formControlName="fornecedor" name="fornecedor">
-                  <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor">{{ fornecedor.razao_social_nome }}</ng-option>
-                </ng-select>
-            </div>
-
-            <div class="form-group col-md-4">
-              <label for="fornecedor">Matéria prima</label>
-              <ng-select formControlName="materia_prima" name="materia_prima">
-                <ng-option *ngFor="let materia of materiasPrimas" [value]="materia">{{ materia.nome }}</ng-option>
+      <div class="form-row">                                                  
+          <div class="form-group col-md-4">
+              <label for="socio">Sócio Responsável</label>
+              <ng-select formControlName="socio" name="socio">
+                <ng-component  *ngFor="let socio of socios" >
+                  <ng-option *ngIf="socio?.situacao === 'Ativo'" [value]="socio">{{socio.nome}}</ng-option>
+              </ng-component>
               </ng-select>
           </div>
+
+          <div class="form-group col-md-4">
+              <label for="fornecedor">Fornecedor</label>
+              <ng-select formControlName="fornecedor" name="fornecedor">
+                <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor">{{ fornecedor.razao_social_nome }}</ng-option>
+              </ng-select>
+          </div>
+
+          <div class="form-group col-md-4">
+            <label for="fornecedor">Matéria prima</label>
+            <ng-select formControlName="materia_prima" name="materia_prima">
+              <ng-option *ngFor="let materia of materiasPrimas" [value]="materia">{{ materia.nome }}</ng-option>
+            </ng-select>
         </div>
-      </form>
-      
-
-      <div class="row d-flex justify-content-around btn-prod">
-          <button type="button" class="btn btn-primary btn-lg" (click)="showModal('Iniciar')" [disabled]="statusProd == 'Iniciada'"><i class="fa fa-play-circle"></i>Iniciar Produção</button>
-          <button type="button" class="btn btn-warning btn-lg" (click)="showModal('Pausar')" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-pause-circle"></i>Pausar Produção</button>
-          <button type="button" class="btn btn-danger btn-lg" (click)="showModal('Finalizar')" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-check-circle"></i>Finalizar Produção</button>
-          <button type="button" class="btn btn-success btn-lg" (click)="showModal('Imprimir')" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-print"></i>Imprimir Produção</button>
       </div>
-    <!-- ============== -->
-
+    </form>
+      
+    <!-- Lote options -->
+    <div class="row d-flex justify-content-around btn-prod">
+        <button type="button" class="btn btn-primary btn-lg" (click)="showModal('Iniciar')" [disabled]="statusProd == 'Iniciada'"><i class="fa fa-play-circle"></i>Iniciar Produção</button>
+        <button type="button" class="btn btn-warning btn-lg" (click)="showModal('Pausar')" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-pause-circle"></i>Pausar Produção</button>
+        <button type="button" class="btn btn-danger btn-lg" (click)="showModal('Finalizar')" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-check-circle"></i>Finalizar Produção</button>
+        <button type="button" class="btn btn-success btn-lg" (click)="showModal('Imprimir')" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-print"></i>Imprimir Produção</button>
+    </div>
+    
+    <!-- Lote items -->
     <table class="table table-hover">
         <thead class="thead-dark">
           <tr>
-            <th>Num. Tambor / Bag</th>
+            <th>Tambor/Bag</th>
             <th>Produto</th>
             <th>Quantidade</th>
             <th>Sócio</th>
@@ -92,7 +92,7 @@
             </td>
             <td class="qtn">
               <span *ngIf="!item.edit">{{ item.qtn }}</span>
-              <input *ngIf="item?.edit" class="form-control" type="text" name="">
+              <input *ngIf="item?.edit" class="form-control" type="number" [value]="item.qtn" (keyup)="updateQtn(idx, $event.target.value)">
             </td>
             <td class="socio">
               <ngx-avatar *ngIf="!item.socio.foto" name="{{ item.socio.nome }}" initialsSize="2" size="40" class="my-avatar"></ngx-avatar>
@@ -112,6 +112,7 @@
         </tbody>
     </table>
 
+    <!-- Resumo do lote -->
     <table class="table table-hover">
         <thead class="thead-dark">
           <tr>
