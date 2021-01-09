@@ -201,11 +201,11 @@
                   <label>Perfil: </label>
                   <ng-select formControlName="perfil"  name="perfil">
                     <ng-option *ngFor="let profile of profiles " [value]="profile.profile">
-                      <a [ngClass]="{ 'profile-blue': profile?.profile === 'Administrador', 
+                      <span [ngClass]="{ 'profile-blue': profile?.profile === 'Administrador', 
                                       'profile-orange': profile?.profile === 'Usuário',
                                       'profile-red': profile?.profile === 'Sem acesso'}">
                         {{profile.profile}}
-                      </a>
+                      </span>
                     </ng-option>
                   </ng-select>
                   <p class="error-msg" *ngIf="itemForm.controls.perfil.errors">

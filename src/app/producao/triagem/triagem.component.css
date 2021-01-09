@@ -74,8 +74,13 @@ table {
     max-height: 800px;
 }
 
-td.numBag {
-    width: 100px;
+tr td {
+    min-width: 80px;
+    max-width: 230px
+}
+
+td.numBag, td.time {
+    width: 80px;
 }
 
 td.product {
@@ -85,6 +90,7 @@ td.product {
 td.qtn {
     width: 100px;
 }
+
 
 td.options {
     text-align: right;
