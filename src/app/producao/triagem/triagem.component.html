@@ -59,10 +59,10 @@
       
     <!-- Lote options -->
     <div class="row d-flex justify-content-around btn-prod">
-        <button type="button" class="btn btn-primary btn-lg" (click)="showModal('Iniciar')" [disabled]="statusProd == 'Iniciada'"><i class="fa fa-play-circle"></i>Iniciar Produção</button>
-        <button type="button" class="btn btn-warning btn-lg" (click)="showModal('Pausar')" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-pause-circle"></i>Pausar Produção</button>
-        <button type="button" class="btn btn-danger btn-lg" (click)="showModal('Finalizar')" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-check-circle"></i>Finalizar Produção</button>
-        <button type="button" class="btn btn-success btn-lg" (click)="showModal('Imprimir')" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-print"></i>Imprimir Produção</button>
+        <button #startBtn type="button" class="btn btn-primary btn-lg" (click)="showModal('Iniciar')"><i class="fa fa-play-circle"></i>Iniciar Produção</button>
+        <button #pausetBtn type="button" class="btn btn-warning btn-lg" (click)="showModal('Pausar')"><i class="fa fa-pause-circle"></i>Pausar Produção</button>
+        <button #stopBtn type="button" class="btn btn-danger btn-lg" (click)="showModal('Finalizar')"><i class="fa fa-check-circle"></i>Finalizar Produção</button>
+        <button #printBtn type="button" class="btn btn-success btn-lg" (click)="showModal('Imprimir')"><i class="fa fa-print"></i>Imprimir Produção</button>
     </div>
     
     <!-- Lote items -->
@@ -82,7 +82,7 @@
             </th>
           </tr>
         </thead>
-        <tbody>
+        <tbody #itemsLoteTable>
           <tr *ngFor="let item of lotItems;let idx=index;">
             <td class="numBag" id="numBag-{{idx}}">
               <span>{{ item.numBag }}</span>
@@ -92,7 +92,7 @@
             </td>
             <td class="qtn">
               <span *ngIf="!item.edit">{{ item.qtn }}</span>
-              <input *ngIf="item?.edit" class="form-control" type="number" [value]="item.qtn" (keyup)="updateQtn(idx, $event.target.value)">
+              <input *ngIf="item?.edit" class="form-control" type="number" [value]="item.qtn" (keyup)="updateQtn(idx, $event.target.value)" [disabled]="statusProd != 'Iniciada'">
             </td>
             <td class="socio">
               <ngx-avatar *ngIf="!item.socio.foto" name="{{ item.socio.nome }}" initialsSize="2" size="40" class="my-avatar"></ngx-avatar>
@@ -103,10 +103,10 @@
             <td class="time">{{ item.startTime }}</td>
             <td class="time">{{ item.endTime }}</td>
             <td class="options">
-              <button *ngIf="item?.edit" class="btn btn-success mr-2" tooltip="Encerrar pesagem e salvar" (click)="saveLoteItem(idx)">
+              <button *ngIf="item?.edit" class="btn btn-success mr-2" tooltip="Encerrar pesagem e salvar" (click)="saveLoteItem(idx)" [disabled]="statusProd != 'Iniciada'">
                 <i class="fa fa-save"></i>Salvar
               </button>
-              <button class="btn btn-danger" tooltip="Remover item do lote"><i class="fa fa-trash"></i>Remover</button>
+              <button class="btn btn-danger" tooltip="Remover item do lote" (click)="removeLoteItem(item.numBag)" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-trash"></i>Remover</button>
             </td>
           </tr>
         </tbody>
@@ -116,17 +116,17 @@
     <table class="table table-hover">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">Total Tambor / Bag</th>
-            <th scope="col">Total Produto</th>
-            <th scope="col">Total Quantidade</th>
+            <th scope="col">Total Tambor / Bag <i class="fa fa-question-circle" tooltip="Total de tambor / bag utilizados até o momento na produção atual"></i></th>
+            <!-- <th scope="col">Total Produto</th> -->
+            <th scope="col">Total Quantidade <i class="fa fa-question-circle" tooltip="Soma total de cada tambor usados na produção atual"></i></th>
             <th scope="col">Total Tempo</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td>4</td>
-            <td>3</td>
-            <td>83kg</td>
+            <td>{{ totBag }}</td>
+            <!-- <td>3</td> -->
+            <td>{{ totQtn }}kg</td>
             <td>04:10:00</td>
           </tr>
         </tbody>
