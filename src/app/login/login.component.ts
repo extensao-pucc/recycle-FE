@@ -40,6 +40,4 @@ export class LoginComponent implements OnInit {
       }
     );
   }
-
-  // storage.removeItem(keyName);
 }

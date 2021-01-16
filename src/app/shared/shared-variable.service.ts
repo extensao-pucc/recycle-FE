@@ -97,9 +97,9 @@ export class SharedVariableService {
   // Perfil do Socio
   getProfiles(): any[]{
     const profile = [
-      {profile: 'Administrador'},
+      {profile: 'Sem acesso'},
       {profile: 'Usuário'},
-      {profile: 'Sem acesso'}
+      {profile: 'Administrador'},
     ];
     return profile;
   }
