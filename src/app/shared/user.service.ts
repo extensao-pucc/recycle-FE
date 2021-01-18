@@ -20,6 +20,7 @@ export class UserService {
 
   onLogout(): any{
     localStorage.removeItem('token');
+    localStorage.removeItem('person');
     this.router.navigate(['login']);
   }
 }
