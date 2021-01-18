@@ -53,8 +53,9 @@
           <div class="btn-group" dropdown placement="bottom left">
             <button id="button-alignment" dropdownToggle type="button"
                     class="btn" aria-controls="dropdown-alignment">
-                    <img src="https://mdbootstrap.com/img/Photos/Avatars/avatar-5.jpg" class="rounded-circle z-depth-0"
-                    alt="avatar image" height="35">
+                    <ngx-avatar *ngIf="!person.foto" name="{{ person.nome }}" initialsSize="2"></ngx-avatar>
+                    <img *ngIf="person.foto" src="{{ person.foto }}" class="rounded-circle z-depth-0"
+                    alt="avatar image" height="45" width="45">
             </button>
             <ul id="dropdown-alignment" *dropdownMenu class="dropdown-menu dropdown-menu-left float-left dropdown-config"
                 role="menu" aria-labelledby="button-alignment">

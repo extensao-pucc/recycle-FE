@@ -49,6 +49,7 @@ export class TriagemComponent implements OnInit {
   public totBag: any;
   public totProduct: any;
   public totQtn: any;
+  public totTime: any;
 
 
   constructor(
