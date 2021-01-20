@@ -266,6 +266,7 @@ export class TriagemComponent implements OnInit {
   removeLoteItem(numBag): void {
     this.lotItems = this.lotItems.filter(obj => obj.numBag !== numBag)
     localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
+    this.updateProductionSummary();
   }
 
   // atualiza a quantidade do item do lote

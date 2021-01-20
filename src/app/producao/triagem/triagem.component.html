@@ -104,9 +104,25 @@
             <td class="time">{{ item.endTime }}</td>
             <td class="options">
               <button *ngIf="item?.edit" class="btn btn-success mr-2" tooltip="Encerrar pesagem e salvar" (click)="saveLoteItem(idx)" [disabled]="statusProd != 'Iniciada'">
-                <i class="fa fa-save"></i>Salvar
+                <i class="fa fa-save"></i>Fechar Tambor/Bag
               </button>
               <button class="btn btn-danger" tooltip="Remover item do lote" (click)="removeLoteItem(item.numBag)" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-trash"></i>Remover</button>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+
+    <!-- Não processados -->
+    <table class="table table-hover">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Não processados</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="qtn">
+              <input  class="form-control" type="number" [disabled]="statusProd != 'Iniciada'">
             </td>
           </tr>
         </tbody>
