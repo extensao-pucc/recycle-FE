@@ -27,19 +27,17 @@ export class LoginComponent implements OnInit {
   LogIn(): void {
     this.person = {matricula: this.user, senha: this.password}
 
-    this.UserService.onLogin(this.person).subscribe ( response => {
-        if (response !== 'Usuário ou senha incorretos'){
-          localStorage['token'] = 'xptoh26410x5=50';
-          this.router.navigate(['home']);
-        } else {
-          this.toastService.addToast('Usuario ou senha incorretos', 'darkred');
-        }
-      }, err => {
-        this.toastService.addToast('Usuario ou senha incorretos', 'darkred');
-        console.log('Deu erro nisso aqui: \n', err);
+    this.UserService.onLogin(this.person).subscribe (response => {
+      if (response.mssg === 'Usuario encontrado'){
+        localStorage.setItem('person', JSON.stringify(response.person));
+        localStorage['token'] = response.token;
+        this.router.navigate(['home']);
+      } else {
+        this.toastService.addToast(response.mssg, 'darkred');
       }
-    );
+    }, err => {
+      this.toastService.addToast(err, 'darkred');
+      console.log('Deu erro nisso aqui: \n', err);
+    });
   }
-
-  // storage.removeItem(keyName);
 }

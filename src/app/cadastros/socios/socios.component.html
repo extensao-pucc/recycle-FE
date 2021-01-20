@@ -75,7 +75,7 @@
                     <b [ngClass]="item?.situacao === 'Ativo' ? 'table-row--green status--green status' : 'table-row--red status--red status'">{{ item?.situacao }}</b>
                   </td>
                   <td class="foto"> 
-                    <ngx-avatar *ngIf="!item?.foto" name="{{ item?.nome }}" initialsSize="2"></ngx-avatar>
+                    <ngx-avatar *ngIf="!item?.foto" name="{{ item?.nome }}" initialsSize="2" ></ngx-avatar>
                     <img *ngIf="item?.foto" src="{{ item?.foto }}" class="rounded-circle z-depth-0 foto-socio" height="50" width="50" alt="" (click)="showImage(item?.foto)">
                   </td>
                   <td class="td-pequeno">{{ item?.id }}</td>

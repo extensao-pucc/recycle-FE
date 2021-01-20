@@ -8,6 +8,7 @@ import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
 import { PesquisaCepService } from '../../shared/pesquisa-cep/pesquisa-cep.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-socios',
