@@ -20,6 +20,8 @@ import { UnidadesDeMedidaComponent } from './cadastros/unidades-de-medida/unidad
 import { TriagemComponent } from './producao/triagem/triagem.component';
 import { PrensaComponent } from './producao/prensa/prensa.component';
 import { RemanufaturaComponent } from './producao/remanufatura/remanufatura.component';
+import { RelatoriosComponent } from './relatorios/relatorios.component';
+
 
 const routes: Routes = [
   {
@@ -40,6 +42,8 @@ const routes: Routes = [
       { path: 'triagem', component: TriagemComponent, canActivate: [AuthGuard] },
       { path: 'prensa', component: PrensaComponent, canActivate: [AuthGuard] },
       { path: 'remanufatura', component: RemanufaturaComponent, canActivate: [AuthGuard] },
+      { path: 'relatorios', component: RelatoriosComponent, canActivate: [AuthGuard] },
+
     ]
   },
   {
