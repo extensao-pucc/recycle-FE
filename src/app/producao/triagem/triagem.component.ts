@@ -7,12 +7,6 @@ import { SharedVariableService } from '../../shared/shared-variable.service';
 import { FormBuilder } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { from, interval, Subject } from 'rxjs';
-
-export interface Entry {
-  created: Date;
-  id: string;
-}
-
 export interface TimeSpan {
   days: number,
   hours: number;
@@ -62,6 +56,7 @@ export class TriagemComponent implements OnInit {
   public totProduct: any;
   public totQtn: any;
   public totTime: any;
+  public finaltime: any;
 
   public elapsedTime: any;
   public hour: any;
@@ -76,8 +71,6 @@ export class TriagemComponent implements OnInit {
     private modalService: BsModalService,
     private changeDetector: ChangeDetectorRef
   ) {}
-
-  entries: Entry[] = [];
 
   private destroyed$ = new Subject();
 
@@ -114,7 +107,7 @@ export class TriagemComponent implements OnInit {
     }
     this.loadLoteItemForm();
 
-    // Calculo de tempo do intem do lote
+    // Calculo de tempo do item do lote
     setInterval(() => {
       const date = new Date();
       this.updateDate(date);
@@ -134,19 +127,12 @@ export class TriagemComponent implements OnInit {
     this.destroyed$.next();
     this.destroyed$.complete();
   }
-  
-  addEntry(id) {
-    this.entries.push({
-      created: new Date(),
-      id: id
-    });
-  }
 
   // Calculo de tempo do TOTAL da triagem
   getElapsedTime(): TimeSpan {
     if (localStorage.prodInfoHead){
       let timerArr = JSON.parse(localStorage.prodInfoHead)
-      let timer = new Date(timerArr.entry[0].created)
+      let timer = new Date(timerArr.totTime)
       let totalSeconds = Math.floor((new Date().getTime() - timer.getTime()) / 1000);
     
       let hours = 0;
@@ -237,12 +223,11 @@ export class TriagemComponent implements OnInit {
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime());
         this.headForm.controls.situacao.setValue('Iniciada');
         
-        // this.addEntry('decorrido')
         const prodInfoHead = {
           currentLote: this.lastTriagem + 1,
           fornecedor: this.headForm.get('fornecedor').value,
           materia: this.headForm.get('materia_prima').value,
-          entry: this.entries,
+          totTime: new Date(),
           startDate: this.sharedVariableService.currentDate(),
           startTime: this.sharedVariableService.currentTime(),
           status: 'Iniciada',
