@@ -95,7 +95,7 @@
               <span>{{ item.product.qualidade.nome }}</span>
             </td>
             <td class="qtn">
-              <span *ngIf="!item.edit">{{ item.qtn }}</span>
+              <span *ngIf="!item.edit">{{ item.qtn }} kg</span>
               <input *ngIf="item?.edit" class="form-control" type="number" [value]="item.qtn" (keyup)="updateQtn(idx, $event.target.value)" [disabled]="statusProd != 'Iniciada'">
             </td>
             <td class="socio">
@@ -123,7 +123,7 @@
     <table class="table table-hover">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">Total Tambor / Bag <i class="fa fa-question-circle" tooltip="Total de tambor / bag utilizados até o momento na produção atual"></i></th>
+            <th scope="col">Tambor/Bag Total <i class="fa fa-question-circle" tooltip="Total de tambor / bag utilizados até o momento na produção atual"></i></th>
             <!-- <th scope="col">Total Produto</th> -->
             <th scope="col">Quantidade Total <i class="fa fa-question-circle" tooltip="Soma total de cada tambor usados na produção atual"></i></th>
             <th scope="col">Tempo Total</th>
@@ -133,7 +133,7 @@
           <tr>
             <td>{{ totBag }}</td>
             <!-- <td>3</td> -->
-            <td>{{ totQtn }}kg</td>
+            <td>{{ totQtn }} kg</td>
             <td> 
               <span *ngIf="getElapsedTime() as elapsed">
                 {{elapsed.hours}} h {{elapsed.minutes}} m {{elapsed.seconds}} s
@@ -141,6 +141,7 @@
             </td>
         </tbody>
     </table>
+
   </div>
 </div>
 

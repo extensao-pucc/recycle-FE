@@ -14,6 +14,7 @@ export interface Entry {
 }
 
 export interface TimeSpan {
+  days: number,
   hours: number;
   minutes: number;
   seconds: number;
@@ -77,7 +78,6 @@ export class TriagemComponent implements OnInit {
   ) {}
 
   entries: Entry[] = [];
-  newId: string;
 
   private destroyed$ = new Subject();
 
@@ -135,12 +135,11 @@ export class TriagemComponent implements OnInit {
     this.destroyed$.complete();
   }
   
-  addEntry() {
+  addEntry(id) {
     this.entries.push({
       created: new Date(),
-      id: this.newId
+      id: id
     });
-    this.newId = '';
   }
 
   // Calculo de tempo do TOTAL da triagem
@@ -149,36 +148,38 @@ export class TriagemComponent implements OnInit {
       let timerArr = JSON.parse(localStorage.prodInfoHead)
       let timer = new Date(timerArr.entry[0].created)
       let totalSeconds = Math.floor((new Date().getTime() - timer.getTime()) / 1000);
+    
+      let hours = 0;
+      let minutes = 0;
+      let seconds = 0;
       
-    let hours = 0;
-    let minutes = 0;
-    let seconds = 0;
-    
-    if (totalSeconds >= 3600) {
-      hours = Math.floor(totalSeconds / 3600);      
-      totalSeconds -= 3600 * hours;      
-    }
-    
-    if (totalSeconds >= 60) {
-      minutes = Math.floor(totalSeconds / 60);
-      totalSeconds -= 60 * minutes;
-    }
+      if (totalSeconds >= 3600) {
+        hours = Math.floor(totalSeconds / 3600);      
+        totalSeconds -= 3600 * hours;      
+      }
+      
+      if (totalSeconds >= 60) {
+        minutes = Math.floor(totalSeconds / 60);
+        totalSeconds -= 60 * minutes;
+      }
 
-    seconds = totalSeconds;
-    
-    return {
-      hours: hours,
-      minutes: minutes,
-      seconds: seconds
-    }};
+      seconds = totalSeconds;
+      
+      return {
+        days: 0,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds
+      }
+    };
   }
 
   //contador de tempo corrente de item do lote
   updateDate (date: Date): any{
     const hours = date.getHours();
     
-    this.hour = hours % 12;
-    this.hour = this.hour ? this.hour : 12
+    this.hour = hours % 24;
+    this.hour = this.hour ? this.hour : 24
     this.hour = this.hour < 10 ? '0' + this.hour : this.hour;
 
     const minutes = date.getMinutes();
@@ -236,7 +237,7 @@ export class TriagemComponent implements OnInit {
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime());
         this.headForm.controls.situacao.setValue('Iniciada');
         
-        this.addEntry()
+        // this.addEntry('decorrido')
         const prodInfoHead = {
           currentLote: this.lastTriagem + 1,
           fornecedor: this.headForm.get('fornecedor').value,
@@ -292,6 +293,8 @@ export class TriagemComponent implements OnInit {
     const productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
     let auxSequence = [];
 
+
+    //this.addEntry('pausa')
     if (productionBreaks) {
       this.lotBreaks = productionBreaks;
       this.lotBreaks.forEach(item => {
