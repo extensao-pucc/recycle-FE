@@ -316,7 +316,6 @@ export class TriagemComponent implements OnInit {
     };
     this.showYesNoMessage = true;
   }
-
   // Expande imagem de cada socio na lista de itens do lote
   showImage(image: any): void{
     this.showModalImage = true;

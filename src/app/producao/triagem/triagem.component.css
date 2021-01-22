@@ -79,19 +79,6 @@ tr td {
     max-width: 230px
 }
 
-td.numBag, td.time {
-    width: 80px;
-}
-
-td.product {
-    width: 260px;
-}
-
-td.qtn, td.quality {
-    width: 100px;
-}
-
-
 td.options {
     text-align: right;
 }

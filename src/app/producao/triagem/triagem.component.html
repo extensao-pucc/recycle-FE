@@ -71,6 +71,7 @@
           <tr>
             <th>Tambor/Bag</th>
             <th>Produto</th>
+            <th>Qualidade</th>
             <th>Quantidade</th>
             <th>Sócio</th>
             <th>Início</th>
@@ -89,6 +90,9 @@
             </td>
             <td class="product">
               <span>{{ item.product.descricao }}</span>
+            </td>
+            <td class="quality">
+              <span>{{ item.product.qualidade.nome }}</span>
             </td>
             <td class="qtn">
               <span *ngIf="!item.edit">{{ item.qtn }}</span>

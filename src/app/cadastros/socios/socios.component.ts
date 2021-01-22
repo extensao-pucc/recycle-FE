@@ -153,6 +153,7 @@ export class SociosComponent implements OnInit {
     this.itemForm.controls.telefone.setValue(item.telefone);
     this.itemForm.controls.email.setValue(item.email);
     this.itemForm.controls.data_de_admissao.setValue(item.data_de_admissao);
+    console.log(new Date(item.data_de_admissao))
     if (item.data_de_demissao != null){
       this.itemForm.controls.data_de_demissao.setValue(item.data_de_demissao);
     }
