@@ -134,8 +134,11 @@
             <td>{{ totBag }}</td>
             <!-- <td>3</td> -->
             <td>{{ totQtn }}kg</td>
-            <td>{{ totTime }}</td>
-          </tr>
+            <td> 
+              <span *ngIf="getElapsedTime() as elapsed">
+                {{elapsed.hours}} h {{elapsed.minutes}} m {{elapsed.seconds}} s
+              </span>
+            </td>
         </tbody>
     </table>
   </div>

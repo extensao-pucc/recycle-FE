@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ViewImage } from 'src/app/shared/view-image/view-image.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
@@ -6,12 +6,23 @@ import { CrudService } from '../../cadastros/crud.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
 import { FormBuilder } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { from } from 'rxjs';
+import { from, interval, Subject } from 'rxjs';
 
+export interface Entry {
+  created: Date;
+  id: string;
+}
+
+export interface TimeSpan {
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
 @Component({
   selector: 'app-triagem',
   templateUrl: './triagem.component.html',
-  styleUrls: ['./triagem.component.css']
+  styleUrls: ['./triagem.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TriagemComponent implements OnInit {
   @ViewChild ('pauseScreen', { static: true }) pauseScreen: ElementRef;
@@ -61,8 +72,14 @@ export class TriagemComponent implements OnInit {
     private crudService: CrudService,
     private sharedVariableService: SharedVariableService,
     private formBuilder: FormBuilder,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private changeDetector: ChangeDetectorRef
   ) {}
+
+  entries: Entry[] = [];
+  newId: string;
+
+  private destroyed$ = new Subject();
 
   ngOnInit(): void {
     const prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
@@ -97,30 +114,66 @@ export class TriagemComponent implements OnInit {
     }
     this.loadLoteItemForm();
 
+    // Calculo de tempo do intem do lote
     setInterval(() => {
       const date = new Date();
       this.updateDate(date);
     }, 1000);
+    
+    // Calculo de tempo do TOTAL da triagem
+    interval(1000).subscribe(() => {
+      if (!this.changeDetector['destroyed']) {
+        this.changeDetector.detectChanges();
+      }
+    });
+
+    this.changeDetector.detectChanges();
   }
 
-  timeLeft: number = 60;
-  interval;
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+  
+  addEntry() {
+    this.entries.push({
+      created: new Date(),
+      id: this.newId
+    });
+    this.newId = '';
+  }
 
-  startTimer() {
-      this.interval = setInterval(() => {
-        if(this.timeLeft > 0) {
-          this.timeLeft--;
-        } else {
-          this.timeLeft = 60;
-        }
-      },1000)
+  // Calculo de tempo do TOTAL da triagem
+  getElapsedTime(): TimeSpan {
+    if (localStorage.prodInfoHead){
+      let timerArr = JSON.parse(localStorage.prodInfoHead)
+      let timer = new Date(timerArr.entry[0].created)
+      let totalSeconds = Math.floor((new Date().getTime() - timer.getTime()) / 1000);
+      
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
+    
+    if (totalSeconds >= 3600) {
+      hours = Math.floor(totalSeconds / 3600);      
+      totalSeconds -= 3600 * hours;      
+    }
+    
+    if (totalSeconds >= 60) {
+      minutes = Math.floor(totalSeconds / 60);
+      totalSeconds -= 60 * minutes;
     }
 
-    pauseTimer() {
-      clearInterval(this.interval);
-    }
+    seconds = totalSeconds;
+    
+    return {
+      hours: hours,
+      minutes: minutes,
+      seconds: seconds
+    }};
+  }
 
-  //contador de tempo corrente
+  //contador de tempo corrente de item do lote
   updateDate (date: Date): any{
     const hours = date.getHours();
     
@@ -135,7 +188,6 @@ export class TriagemComponent implements OnInit {
     this.second = seconds < 10 ? '0' + seconds : seconds.toString();
 
     this.elapsedTime = this.hour + ':' + this.minute + ':' + this.second;
-
   }
 
   // Build do form cabeçalho (Informações do lote)
@@ -184,10 +236,12 @@ export class TriagemComponent implements OnInit {
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime());
         this.headForm.controls.situacao.setValue('Iniciada');
         
+        this.addEntry()
         const prodInfoHead = {
           currentLote: this.lastTriagem + 1,
           fornecedor: this.headForm.get('fornecedor').value,
           materia: this.headForm.get('materia_prima').value,
+          entry: this.entries,
           startDate: this.sharedVariableService.currentDate(),
           startTime: this.sharedVariableService.currentTime(),
           status: 'Iniciada',
