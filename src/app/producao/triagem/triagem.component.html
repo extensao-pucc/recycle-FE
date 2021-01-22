@@ -71,6 +71,7 @@
           <tr>
             <th>Tambor/Bag</th>
             <th>Produto</th>
+            <th>Qualidade</th>
             <th>Quantidade</th>
             <th>Sócio</th>
             <th>Início</th>
@@ -88,20 +89,26 @@
               <span>{{ item.numBag }}</span>
             </td>
             <td class="product">
-              <span>{{ item.product.descricao }}</span>
+              <span tooltip="Descrição: {{ item.product.descricao }}">{{ item.product.descricao }}</span>
+            </td>
+            <td class="quality">
+              <span>{{ item.product.qualidade.nome }}</span>
             </td>
             <td class="qtn">
-              <span *ngIf="!item.edit">{{ item.qtn }}</span>
+              <span *ngIf="!item.edit">{{ item.qtn }} kg</span>
               <input *ngIf="item?.edit" class="form-control" type="number" [value]="item.qtn" (keyup)="updateQtn(idx, $event.target.value)" [disabled]="statusProd != 'Iniciada'">
             </td>
             <td class="socio">
-              <ngx-avatar *ngIf="!item.socio.foto" name="{{ item.socio.nome }}" initialsSize="2" size="40" class="my-avatar"></ngx-avatar>
-              <img [src]="item.socio.foto" *ngIf="item.socio.foto" style="height: 40px; width:40px" 
-              class="rounded-circle z-depth-0 image-profile" (click)="showImage(item.socio.foto)">
-              <span> {{ item.socio.nome }}</span>
+              <span> 
+                <ngx-avatar *ngIf="!item.socio.foto" name="{{ item.socio.nome }}" initialsSize="2" size="40" class="my-avatar"></ngx-avatar>
+                <img [src]="item.socio.foto" *ngIf="item.socio.foto" style="height: 40px; width:40px" 
+                class="rounded-circle z-depth-0 image-profile" (click)="showImage(item.socio.foto)">
+                {{ item.socio.nome }}
+              </span>
             </td>
             <td class="time">{{ item.startTime }}</td>
-            <td class="time">{{ item.endTime }}</td>
+            <td class="time" *ngIf="item.endTime">{{ item.endTime }}</td>
+            <td class="time" *ngIf="!item.endTime">{{ elapsedTime }}</td>
             <td class="options">
               <button *ngIf="item?.edit" class="btn btn-success mr-2" tooltip="Encerrar pesagem e salvar" (click)="saveLoteItem(idx)" [disabled]="statusProd != 'Iniciada'">
                 <i class="fa fa-save"></i>Salvar
@@ -116,21 +123,25 @@
     <table class="table table-hover">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">Total Tambor / Bag <i class="fa fa-question-circle" tooltip="Total de tambor / bag utilizados até o momento na produção atual"></i></th>
+            <th scope="col">Tambor/Bag Total <i class="fa fa-question-circle" tooltip="Total de tambor / bag utilizados até o momento na produção atual"></i></th>
             <!-- <th scope="col">Total Produto</th> -->
-            <th scope="col">Total Quantidade <i class="fa fa-question-circle" tooltip="Soma total de cada tambor usados na produção atual"></i></th>
-            <th scope="col">Total Tempo</th>
+            <th scope="col">Quantidade Total <i class="fa fa-question-circle" tooltip="Soma total de cada tambor usados na produção atual"></i></th>
+            <th scope="col">Tempo Total</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>{{ totBag }}</td>
             <!-- <td>3</td> -->
-            <td>{{ totQtn }}kg</td>
-            <td>04:10:00</td>
-          </tr>
+            <td>{{ totQtn }} kg</td>
+            <td> 
+              <span *ngIf="getElapsedTime() as elapsed">
+                {{elapsed.hours}} h {{elapsed.minutes}} m {{elapsed.seconds}} s
+              </span>
+            </td>
         </tbody>
     </table>
+
   </div>
 </div>
 
