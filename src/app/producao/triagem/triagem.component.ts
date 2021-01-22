@@ -51,7 +51,11 @@ export class TriagemComponent implements OnInit {
   public totQtn: any;
   public totTime: any;
 
-
+  public elapsedTime: any;
+  public hour: any;
+  public minute: string;
+  public second: string;
+  
   constructor(
     private toastService: ToastService,
     private crudService: CrudService,
@@ -92,6 +96,46 @@ export class TriagemComponent implements OnInit {
       });
     }
     this.loadLoteItemForm();
+
+    setInterval(() => {
+      const date = new Date();
+      this.updateDate(date);
+    }, 1000);
+  }
+
+  timeLeft: number = 60;
+  interval;
+
+  startTimer() {
+      this.interval = setInterval(() => {
+        if(this.timeLeft > 0) {
+          this.timeLeft--;
+        } else {
+          this.timeLeft = 60;
+        }
+      },1000)
+    }
+
+    pauseTimer() {
+      clearInterval(this.interval);
+    }
+
+  //contador de tempo corrente
+  updateDate (date: Date): any{
+    const hours = date.getHours();
+    
+    this.hour = hours % 12;
+    this.hour = this.hour ? this.hour : 12
+    this.hour = this.hour < 10 ? '0' + this.hour : this.hour;
+
+    const minutes = date.getMinutes();
+    this.minute = minutes < 10 ? '0' + minutes : minutes.toString();
+
+    const seconds = date.getSeconds();
+    this.second = seconds < 10 ? '0' + seconds : seconds.toString();
+
+    this.elapsedTime = this.hour + ':' + this.minute + ':' + this.second;
+
   }
 
   // Build do form cabeçalho (Informações do lote)
@@ -142,12 +186,12 @@ export class TriagemComponent implements OnInit {
         
         const prodInfoHead = {
           currentLote: this.lastTriagem + 1,
+          fornecedor: this.headForm.get('fornecedor').value,
+          materia: this.headForm.get('materia_prima').value,
           startDate: this.sharedVariableService.currentDate(),
           startTime: this.sharedVariableService.currentTime(),
           status: 'Iniciada',
           socio: this.headForm.get('socio').value,
-          fornecedor: this.headForm.get('fornecedor').value,
-          materia: this.headForm.get('materia_prima').value
         };
         localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
         this.statusProd = 'Iniciada';
@@ -284,6 +328,17 @@ export class TriagemComponent implements OnInit {
     this.lotItems.map(item => {
       this.totQtn += Number(item.qtn)
     })
+  }
+
+  //Calculo de tempo da Triagem
+  getDataDiff (startDate, endDate): any {
+    var diff = endDate.getTime() - startDate.getTime();
+    var days = Math.floor(diff / (60 * 60 * 24 * 1000));
+    var hours = Math.floor(diff / (60 * 60 * 1000)) - (days * 24);
+    var minutes = Math.floor(diff / (60 * 1000)) - ((days * 24 * 60) + (hours * 60));
+    var seconds = Math.floor(diff / 1000) - ((days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60));
+    
+    return { day: days, hour: hours, minute: minutes, second: seconds };
   }
 
   // Mostra modal para adicionar novo item no lote
