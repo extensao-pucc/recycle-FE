@@ -118,9 +118,18 @@ export class FornecedoresComponent implements OnInit {
         this.crudService.updateItem('fornecedores', formValues, formValues.id).subscribe(response => {
           this.getItems();
           this.loadForm();
-
+                    
           this.showForm = false;
           this.toastService.addToast('Atualizado com sucesso');
+
+          // Atualiza fornecedor da triagem no localstorage
+          var triagem = JSON.parse(localStorage.prodInfoHead);
+          if (formValues.id == triagem.fornecedor.id){
+            triagem.fornecedor = formValues;
+            localStorage.removeItem('prodInfoHead')
+            JSON.stringify(triagem)
+            localStorage.setItem('prodInfoHead', JSON.stringify(triagem));
+          }
         }, err => {
         if (err.error.CNPJ_CPF){
           this.itemForm.controls.CNPJ_CPF.errors = {'msgErro': 'Fornecedor com essa CNPJ ou CPF já existe'};
