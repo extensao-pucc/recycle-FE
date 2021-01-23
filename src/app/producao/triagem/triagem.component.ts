@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ViewImage } from 'src/app/shared/view-image/view-image.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
@@ -6,12 +6,18 @@ import { CrudService } from '../../cadastros/crud.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
 import { FormBuilder } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
-import { from } from 'rxjs';
-
+import { from, interval, Subject } from 'rxjs';
+export interface TimeSpan {
+  days: number,
+  hours: number;
+  minutes: number;
+  seconds: number;
+}
 @Component({
   selector: 'app-triagem',
   templateUrl: './triagem.component.html',
-  styleUrls: ['./triagem.component.css']
+  styleUrls: ['./triagem.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TriagemComponent implements OnInit {
   @ViewChild ('pauseScreen', { static: true }) pauseScreen: ElementRef;
@@ -50,15 +56,23 @@ export class TriagemComponent implements OnInit {
   public totProduct: any;
   public totQtn: any;
   public totTime: any;
+  public finaltime: any;
 
-
+  public elapsedTime: any;
+  public hour: any;
+  public minute: string;
+  public second: string;
+  
   constructor(
     private toastService: ToastService,
     private crudService: CrudService,
     private sharedVariableService: SharedVariableService,
     private formBuilder: FormBuilder,
-    private modalService: BsModalService
+    private modalService: BsModalService,
+    private changeDetector: ChangeDetectorRef
   ) {}
+
+  private destroyed$ = new Subject();
 
   ngOnInit(): void {
     const prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
@@ -92,6 +106,75 @@ export class TriagemComponent implements OnInit {
       });
     }
     this.loadLoteItemForm();
+
+    // Calculo de tempo do item do lote
+    setInterval(() => {
+      const date = new Date();
+      this.updateDate(date);
+    }, 1000);
+    
+    // Calculo de tempo do TOTAL da triagem
+    interval(1000).subscribe(() => {
+      if (!this.changeDetector['destroyed']) {
+        this.changeDetector.detectChanges();
+      }
+    });
+
+    this.changeDetector.detectChanges();
+  }
+
+  ngOnDestroy() {
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
+  // Calculo de tempo do TOTAL da triagem
+  getElapsedTime(): TimeSpan {
+    if (localStorage.prodInfoHead){
+      let timerArr = JSON.parse(localStorage.prodInfoHead)
+      let timer = new Date(timerArr.totTime)
+      let totalSeconds = Math.floor((new Date().getTime() - timer.getTime()) / 1000);
+    
+      let hours = 0;
+      let minutes = 0;
+      let seconds = 0;
+      
+      if (totalSeconds >= 3600) {
+        hours = Math.floor(totalSeconds / 3600);      
+        totalSeconds -= 3600 * hours;      
+      }
+      
+      if (totalSeconds >= 60) {
+        minutes = Math.floor(totalSeconds / 60);
+        totalSeconds -= 60 * minutes;
+      }
+
+      seconds = totalSeconds;
+      
+      return {
+        days: 0,
+        hours: hours,
+        minutes: minutes,
+        seconds: seconds
+      }
+    };
+  }
+
+  //contador de tempo corrente de item do lote
+  updateDate (date: Date): any{
+    const hours = date.getHours();
+    
+    this.hour = hours % 24;
+    this.hour = this.hour ? this.hour : 24
+    this.hour = this.hour < 10 ? '0' + this.hour : this.hour;
+
+    const minutes = date.getMinutes();
+    this.minute = minutes < 10 ? '0' + minutes : minutes.toString();
+
+    const seconds = date.getSeconds();
+    this.second = seconds < 10 ? '0' + seconds : seconds.toString();
+
+    this.elapsedTime = this.hour + ':' + this.minute + ':' + this.second;
   }
 
   // Build do form cabeçalho (Informações do lote)
@@ -142,12 +225,13 @@ export class TriagemComponent implements OnInit {
         
         const prodInfoHead = {
           currentLote: this.lastTriagem + 1,
+          fornecedor: this.headForm.get('fornecedor').value,
+          materia: this.headForm.get('materia_prima').value,
+          totTime: new Date(),
           startDate: this.sharedVariableService.currentDate(),
           startTime: this.sharedVariableService.currentTime(),
           status: 'Iniciada',
           socio: this.headForm.get('socio').value,
-          fornecedor: this.headForm.get('fornecedor').value,
-          materia: this.headForm.get('materia_prima').value
         };
         localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
         this.statusProd = 'Iniciada';
@@ -194,6 +278,8 @@ export class TriagemComponent implements OnInit {
     const productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
     let auxSequence = [];
 
+
+    //this.addEntry('pausa')
     if (productionBreaks) {
       this.lotBreaks = productionBreaks;
       this.lotBreaks.forEach(item => {
@@ -287,6 +373,17 @@ export class TriagemComponent implements OnInit {
     })
   }
 
+  //Calculo de tempo da Triagem
+  getDataDiff (startDate, endDate): any {
+    var diff = endDate.getTime() - startDate.getTime();
+    var days = Math.floor(diff / (60 * 60 * 24 * 1000));
+    var hours = Math.floor(diff / (60 * 60 * 1000)) - (days * 24);
+    var minutes = Math.floor(diff / (60 * 1000)) - ((days * 24 * 60) + (hours * 60));
+    var seconds = Math.floor(diff / 1000) - ((days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60));
+    
+    return { day: days, hour: hours, minute: minutes, second: seconds };
+  }
+
   // Mostra modal para adicionar novo item no lote
   showLoteItemModal(): void {
     this.loadLoteItemForm();
@@ -317,7 +414,6 @@ export class TriagemComponent implements OnInit {
     };
     this.showYesNoMessage = true;
   }
-
   // Expande imagem de cada socio na lista de itens do lote
   showImage(image: any): void{
     this.showModalImage = true;

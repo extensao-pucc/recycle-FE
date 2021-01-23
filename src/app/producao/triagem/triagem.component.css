@@ -76,21 +76,16 @@ table {
 
 tr td {
     min-width: 80px;
-    max-width: 230px
+    max-width: 230px;
 }
 
-td.numBag, td.time {
-    width: 80px;
+span {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    max-width: 230px;
+    display: block;
+    overflow: hidden
 }
-
-td.product {
-    width: 260px;
-}
-
-td.qtn, td.quality {
-    width: 100px;
-}
-
 
 td.options {
     text-align: right;
