@@ -217,7 +217,7 @@ export class TriagemComponent implements OnInit {
   // Inicia a Produção
   startProduction(): void {
     if (this.headForm.get('socio').value && this.headForm.get('fornecedor').value && this.headForm.get('materia_prima').value) {
-      if (this.statusProd === '') {
+      if (this.statusProd === '' && localStorage.prodInfoItems) {
         this.headForm.controls.lote.setValue(this.lastTriagem + 1);
         this.headForm.controls.data.setValue(this.sharedVariableService.currentDate());
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime());
@@ -236,6 +236,8 @@ export class TriagemComponent implements OnInit {
         localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
         this.statusProd = 'Iniciada';
         this.changeProductionStatus();
+      } else {
+        this.toastService.addToast('Adicione pelo menos um item na produção para inicia-la', 'darkred');
       }
     } else {
       this.toastService.addToast('Selecione um SÓCIO / FORNECEDOR / MATÉRIA PRIMA para iniciar', 'darkred');
@@ -278,8 +280,6 @@ export class TriagemComponent implements OnInit {
     const productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
     let auxSequence = [];
 
-
-    //this.addEntry('pausa')
     if (productionBreaks) {
       this.lotBreaks = productionBreaks;
       this.lotBreaks.forEach(item => {
@@ -290,7 +290,7 @@ export class TriagemComponent implements OnInit {
     this.lotBreaks.push({
       motivo: this.selectedMotivo,
       sequence: this.lotBreaks.length > 0 ? Math.max(...auxSequence) + 1 : 1,
-      startTime: this.sharedVariableService.currentTime(),
+      startTime: new Date(),
       endTime: null,
       total: null,
     });
@@ -309,7 +309,11 @@ export class TriagemComponent implements OnInit {
 
   continueProduction(): void {
     this.lotBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
-    this.lotBreaks[this.lotBreaks.length - 1].endTime = this.sharedVariableService.currentTime();
+    this.lotBreaks[this.lotBreaks.length - 1].endTime = new Date();
+    this.lotBreaks[this.lotBreaks.length - 1].total = this.sharedVariableService.difTime(
+      this.lotBreaks[this.lotBreaks.length - 1].startTime,
+      this.lotBreaks[this.lotBreaks.length - 1].endTime
+    )
     localStorage.setItem('productionBreaks', JSON.stringify(this.lotBreaks));
 
     this.statusProd = 'Iniciada'
@@ -319,6 +323,16 @@ export class TriagemComponent implements OnInit {
     localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
 
     this.changeProductionStatus();
+  }
+
+  stopProduction(): void {
+    this.lotBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
+    let soma = 0;
+    this,this.lotBreaks.forEach(item => {
+      soma += this.sharedVariableService.strToSeconds(item.total);
+    })
+    console.log(soma)
+    
   }
 
   // Adiciona item no lote (Item escolhido no LoteItemModal)
@@ -361,7 +375,6 @@ export class TriagemComponent implements OnInit {
     this.lotItems[idx].qtn = value;
     localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
     this.updateProductionSummary();
-    this.sharedVariableService.calculateTime("01:00:00", "03:00:00", "+");
   }
 
   // atualiza o resumo da produção
@@ -404,6 +417,7 @@ export class TriagemComponent implements OnInit {
           } else if (title === 'Pausar') {
             this.statusProd === 'Pausada' ? this.continueProduction() : this.modalRef = this.modalService.show(this.pauseScreen);
           } else if (title === 'Finalizar') {
+            this.stopProduction();
             this.toastService.addToast('Desculpa, ainda não temos essa funcionalidade', 'darkred');
           } else {
             this.toastService.addToast('Desculpa, ainda não temos essa funcionalidade', 'darkred');

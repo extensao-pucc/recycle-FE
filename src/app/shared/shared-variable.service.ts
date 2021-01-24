@@ -123,18 +123,37 @@ export class SharedVariableService {
     ':' + (minute.length === 1 ? '0' + minute : minute) +
     ':' + (second.length === 1 ? '0' + second : second);
   }
-
-  calculateTime(first, second, operation): string {
-    first = first.split(":").map(x=>+x);
-    second = second.split(":").map(x=>+x);
-    if (operation === "+") {
-      
-      let firstSec = (first[0] * 3600) + (first[1] * 60) + first[2]
-      let secondSec = (second[0] * 3600) + (second[1] * 60) + second[2]
-      console.log(firstSec)
-      console.log(secondSec)
-    } 
-    return ""
+  
+  strToSeconds(time: string): number {
+    const timeArr = time.split(":").map(x=>+x);
+    return (timeArr[0] * 3600) + (timeArr[1] * 60) + timeArr[2];
   }
 
+  difTime(first, second): string {
+    // const dif = (this.strToSeconds(second)) - (this.strToSeconds(first));
+    const dif = Math.floor((new Date(second).getTime() - new Date(first).getTime()) / 1000);
+    return this.secondsToStr(dif)
+  }
+
+  secondsToStr(time): string {
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
+
+    if (time >= 3600) {​​​​​​​​
+      hours = Math.floor(time / 3600);    
+      time -= 3600 * hours;
+    }​​​​​​​​
+    
+    if (time >= 60) {​​​​​​​​
+      minutes = Math.floor(time / 60);
+      time -= 60 * minutes;
+    }​​​​​​​​
+
+    seconds = time;
+    
+    return (hours.toString().length === 1 ? '0' + hours : hours) +
+    ':' + (minutes.toString().length === 1 ? '0' + minutes : minutes) +
+    ':' + (seconds.toString().length === 1 ? '0' + seconds : seconds);
+  }
 }

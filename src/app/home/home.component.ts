@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { AuthGuard } from '../guards/auth.guard';
+import {Router, ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -8,10 +9,15 @@ import { ActivatedRoute } from '@angular/router';
 })
 export class HomeComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute) { }
+  constructor(
+    private authGuard: AuthGuard,
+    private router:Router, 
+    private route: ActivatedRoute
+    ) { }
 
   ngOnInit(): void {
-    // this.route.params.subscribe(res => console.log(res.id));
+    // if (!this.authGuard.canActivate) {
+    //   this.router.navigate(['']);
+    // }
   }
-
 }
