@@ -79,12 +79,17 @@ tr td {
     max-width: 230px;
 }
 
+
 span {
     white-space: nowrap;
     text-overflow: ellipsis;
     max-width: 230px;
     display: block;
     overflow: hidden
+}
+
+td.qtn {
+    max-width: 100px;
 }
 
 td.options {

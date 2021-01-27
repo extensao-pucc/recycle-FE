@@ -27,9 +27,9 @@ tr td {
 }
 
 /*Scrowbar =============================================================================== */
-/* ::-webkit-scrollbar {
+::-webkit-scrollbar {
     width: 12px;
-} */
+}
   
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;

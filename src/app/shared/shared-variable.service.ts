@@ -104,8 +104,8 @@ export class SharedVariableService {
     return profile;
   }
 
-  currentDate(): string {
-    const currentDate = new Date();
+  currentDate(date): string {
+    const currentDate = new Date(date);
     const day = '' + currentDate.getDate();
     const month = '' + (currentDate.getMonth() + 1);
     const year = '' + currentDate.getFullYear();
@@ -114,8 +114,8 @@ export class SharedVariableService {
     '/' + (year.length === 1 ? '0' + year : year);
   }
 
-  currentTime(): string {
-    const currentDate = new Date();
+  currentTime(date): string {
+    const currentDate = new Date(date);
     const hour = '' + currentDate.getHours();
     const minute = '' + currentDate.getMinutes();
     const second = '' + currentDate.getSeconds();
@@ -123,18 +123,39 @@ export class SharedVariableService {
     ':' + (minute.length === 1 ? '0' + minute : minute) +
     ':' + (second.length === 1 ? '0' + second : second);
   }
-
-  calculateTime(first, second, operation): string {
-    first = first.split(":").map(x=>+x);
-    second = second.split(":").map(x=>+x);
-    if (operation === "+") {
-      
-      let firstSec = (first[0] * 3600) + (first[1] * 60) + first[2]
-      let secondSec = (second[0] * 3600) + (second[1] * 60) + second[2]
-      console.log(firstSec)
-      console.log(secondSec)
-    } 
-    return ""
+  
+  strToSeconds(time: string): number {
+    const timeArr = time.split(":").map(x=>+x);
+    return (timeArr[0] * 3600) + (timeArr[1] * 60) + timeArr[2];
   }
 
+  difTime(first, second): number {
+    const dif = Math.floor((new Date(second).getTime() - new Date(first).getTime()) / 1000);
+    return dif
+  }
+
+  secondsToDate(time): Date {
+    let hours = 0;
+    let minutes = 0;
+    let seconds = 0;
+
+    if (time >= 3600) {​​​​​​​​
+      hours = Math.floor(time / 3600);    
+      time -= 3600 * hours;
+    }​​​​​​​​
+    
+    if (time >= 60) {​​​​​​​​
+      minutes = Math.floor(time / 60);
+      time -= 60 * minutes;
+    }​​​​​​​​
+
+    seconds = time;
+
+    let date = new Date();
+    date.setHours(hours);
+    date.setMinutes(minutes);
+    date.setSeconds(seconds);
+    
+    return date;
+  }
 }
