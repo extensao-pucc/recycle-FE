@@ -106,9 +106,9 @@
                 {{ item.socio.nome }}
               </span>
             </td>
-            <td class="time">{{ item.startTime }}</td>
-            <td class="time" *ngIf="item.endTime">{{ item.endTime }}</td>
-            <td class="time" *ngIf="!item.endTime">{{ elapsedTime }}</td>
+            <td class="time">{{ item.start | date:"hh:mm:ss" }}</td>
+            <td class="time" *ngIf="item.end">{{ item.end | date:"hh:mm:ss" }}</td>
+            <td class="time" *ngIf="!item.end">{{ currentTime | date:"hh:mm:ss" }}</td>
             <td class="options">
               <button *ngIf="item?.edit" class="btn btn-success mr-2" tooltip="Encerrar pesagem e salvar" (click)="saveLoteItem(idx)" [disabled]="statusProd != 'Iniciada'">
                 <i class="fa fa-save"></i>Fechar Tambor/Bag
@@ -143,7 +143,7 @@
             <!-- <th scope="col">Total Produto</th> -->
             <th scope="col">Quantidade Total <i class="fa fa-question-circle" tooltip="Soma total de cada tambor usados na produção atual"></i></th>
             <th scope="col">Tempo Decorrido <i class="fa fa-question-circle" tooltip="Este tempo não inclue pausar"></i></th>
-            <th scope="col">Tempo Pausado <i class="fa fa-question-circle" tooltip="Tempo total de pausas"></i></th>
+            <th scope="col">Tempo Pausado <i class="fa fa-question-circle" tooltip="Tempo total de pausas (Tempo atualizado ao finalizar uma pausa)"></i></th>
           </tr>
         </thead>
         <tbody>
@@ -152,11 +152,12 @@
             <!-- <td>3</td> -->
             <td>{{ totQtn }} kg</td>
             <td> 
-              <span *ngIf="getElapsedTime() as elapsed">
-                {{elapsed.hours}} h {{elapsed.minutes}} m {{elapsed.seconds}} s
-              </span>
+              {{ totalTimeProduction | date:"HH:mm:ss" }}
             </td>
-            <td>Lá lá lá</td>
+            <td>
+              <span *ngIf="statusProd !== 'Pausada'">{{ totalTimeBreak | date:"HH:mm:ss" }}</span>
+              <span *ngIf="statusProd === 'Pausada'">Pausada</span>
+            </td>
         </tbody>
     </table>
 

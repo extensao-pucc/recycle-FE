@@ -104,8 +104,8 @@ export class SharedVariableService {
     return profile;
   }
 
-  currentDate(): string {
-    const currentDate = new Date();
+  currentDate(date): string {
+    const currentDate = new Date(date);
     const day = '' + currentDate.getDate();
     const month = '' + (currentDate.getMonth() + 1);
     const year = '' + currentDate.getFullYear();
@@ -114,8 +114,8 @@ export class SharedVariableService {
     '/' + (year.length === 1 ? '0' + year : year);
   }
 
-  currentTime(): string {
-    const currentDate = new Date();
+  currentTime(date): string {
+    const currentDate = new Date(date);
     const hour = '' + currentDate.getHours();
     const minute = '' + currentDate.getMinutes();
     const second = '' + currentDate.getSeconds();
@@ -129,13 +129,12 @@ export class SharedVariableService {
     return (timeArr[0] * 3600) + (timeArr[1] * 60) + timeArr[2];
   }
 
-  difTime(first, second): string {
-    // const dif = (this.strToSeconds(second)) - (this.strToSeconds(first));
+  difTime(first, second): number {
     const dif = Math.floor((new Date(second).getTime() - new Date(first).getTime()) / 1000);
-    return this.secondsToStr(dif)
+    return dif
   }
 
-  secondsToStr(time): string {
+  secondsToDate(time): Date {
     let hours = 0;
     let minutes = 0;
     let seconds = 0;
@@ -151,9 +150,12 @@ export class SharedVariableService {
     }​​​​​​​​
 
     seconds = time;
+
+    let date = new Date();
+    date.setHours(hours);
+    date.setMinutes(minutes);
+    date.setSeconds(seconds);
     
-    return (hours.toString().length === 1 ? '0' + hours : hours) +
-    ':' + (minutes.toString().length === 1 ? '0' + minutes : minutes) +
-    ':' + (seconds.toString().length === 1 ? '0' + seconds : seconds);
+    return date;
   }
 }

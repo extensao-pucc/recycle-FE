@@ -7,12 +7,7 @@ import { SharedVariableService } from '../../shared/shared-variable.service';
 import { FormBuilder } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { from, interval, Subject } from 'rxjs';
-export interface TimeSpan {
-  days: number,
-  hours: number;
-  minutes: number;
-  seconds: number;
-}
+
 @Component({
   selector: 'app-triagem',
   templateUrl: './triagem.component.html',
@@ -58,10 +53,9 @@ export class TriagemComponent implements OnInit {
   public totTime: any;
   public finaltime: any;
 
-  public elapsedTime: any;
-  public hour: any;
-  public minute: string;
-  public second: string;
+  public totalTimeProduction: any;
+  public totalTimeBreak: any
+  public currentTime: any
   
   constructor(
     private toastService: ToastService,
@@ -70,7 +64,13 @@ export class TriagemComponent implements OnInit {
     private formBuilder: FormBuilder,
     private modalService: BsModalService,
     private changeDetector: ChangeDetectorRef
-  ) {}
+  ) {
+    interval(1000).subscribe(() => {
+      if (!this.changeDetector['destroyed']) {
+        this.changeDetector.detectChanges();
+      }
+    });
+  }
 
   private destroyed$ = new Subject();
 
@@ -80,8 +80,8 @@ export class TriagemComponent implements OnInit {
     if (prodInfoHead) {
       this.loadHeadForm();
       this.headForm.controls.lote.setValue(prodInfoHead['currentLote']);
-      this.headForm.controls.data.setValue(prodInfoHead['startDate']);
-      this.headForm.controls.inicio.setValue(prodInfoHead['startTime']);
+      this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(prodInfoHead['start']));
+      this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(prodInfoHead['start']));
       this.headForm.controls.situacao.setValue(prodInfoHead['status']);
       this.statusProd = prodInfoHead['status'];
       this.changeProductionStatus();
@@ -98,6 +98,11 @@ export class TriagemComponent implements OnInit {
         this.lotBreaks = productionBreaks;
       }
       this.updateProductionSummary();
+
+      setInterval(() => {
+        this.getElapsedTime();
+        this.currentTime = new Date();
+      }, 1000);
     } else {
       this.loadHeadForm();
       this.changeProductionStatus();
@@ -106,19 +111,6 @@ export class TriagemComponent implements OnInit {
       });
     }
     this.loadLoteItemForm();
-
-    // Calculo de tempo do item do lote
-    setInterval(() => {
-      const date = new Date();
-      this.updateDate(date);
-    }, 1000);
-    
-    // Calculo de tempo do TOTAL da triagem
-    interval(1000).subscribe(() => {
-      if (!this.changeDetector['destroyed']) {
-        this.changeDetector.detectChanges();
-      }
-    });
 
     this.changeDetector.detectChanges();
   }
@@ -129,52 +121,12 @@ export class TriagemComponent implements OnInit {
   }
 
   // Calculo de tempo do TOTAL da triagem
-  getElapsedTime(): TimeSpan {
-    if (localStorage.prodInfoHead){
-      let timerArr = JSON.parse(localStorage.prodInfoHead)
-      let timer = new Date(timerArr.totTime)
-      let totalSeconds = Math.floor((new Date().getTime() - timer.getTime()) / 1000);
-    
-      let hours = 0;
-      let minutes = 0;
-      let seconds = 0;
-      
-      if (totalSeconds >= 3600) {
-        hours = Math.floor(totalSeconds / 3600);      
-        totalSeconds -= 3600 * hours;      
-      }
-      
-      if (totalSeconds >= 60) {
-        minutes = Math.floor(totalSeconds / 60);
-        totalSeconds -= 60 * minutes;
-      }
-
-      seconds = totalSeconds;
-      
-      return {
-        days: 0,
-        hours: hours,
-        minutes: minutes,
-        seconds: seconds
-      }
-    };
-  }
-
-  //contador de tempo corrente de item do lote
-  updateDate (date: Date): any{
-    const hours = date.getHours();
-    
-    this.hour = hours % 24;
-    this.hour = this.hour ? this.hour : 24
-    this.hour = this.hour < 10 ? '0' + this.hour : this.hour;
-
-    const minutes = date.getMinutes();
-    this.minute = minutes < 10 ? '0' + minutes : minutes.toString();
-
-    const seconds = date.getSeconds();
-    this.second = seconds < 10 ? '0' + seconds : seconds.toString();
-
-    this.elapsedTime = this.hour + ':' + this.minute + ':' + this.second;
+  getElapsedTime(): void {
+    const prodInfo = JSON.parse(localStorage.prodInfoHead)
+    const start = new Date(prodInfo.start)
+    let totalSeconds = this.sharedVariableService.difTime(start, new Date());
+    this.totalTimeProduction = this.sharedVariableService.secondsToDate(totalSeconds);
+    console.log(this.totalTimeProduction)
   }
 
   // Build do form cabeçalho (Informações do lote)
@@ -199,8 +151,8 @@ export class TriagemComponent implements OnInit {
       qtn: [null],
       socio: [null],
       tempo: [null],
-      startTime: [null],
-      endTime: [null],
+      start: [null],
+      end: [null],
       edit: true
     });
   }
@@ -219,17 +171,16 @@ export class TriagemComponent implements OnInit {
     if (this.headForm.get('socio').value && this.headForm.get('fornecedor').value && this.headForm.get('materia_prima').value) {
       if (this.statusProd === '' && localStorage.prodInfoItems) {
         this.headForm.controls.lote.setValue(this.lastTriagem + 1);
-        this.headForm.controls.data.setValue(this.sharedVariableService.currentDate());
-        this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime());
+        this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(new Date()));
+        this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(new Date()));
         this.headForm.controls.situacao.setValue('Iniciada');
         
         const prodInfoHead = {
           currentLote: this.lastTriagem + 1,
           fornecedor: this.headForm.get('fornecedor').value,
           materia: this.headForm.get('materia_prima').value,
-          totTime: new Date(),
-          startDate: this.sharedVariableService.currentDate(),
-          startTime: this.sharedVariableService.currentTime(),
+          start: new Date(),
+          end: null,
           status: 'Iniciada',
           socio: this.headForm.get('socio').value,
         };
@@ -322,6 +273,12 @@ export class TriagemComponent implements OnInit {
     prodInfoHead.status = 'Iniciada';
     localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
 
+    let totalSec = 0;
+    this.lotBreaks.forEach(item => {
+      totalSec += item.total;
+    });
+    this.totalTimeBreak = this.sharedVariableService.secondsToDate(totalSec);
+
     this.changeProductionStatus();
   }
 
@@ -331,7 +288,6 @@ export class TriagemComponent implements OnInit {
     this,this.lotBreaks.forEach(item => {
       soma += this.sharedVariableService.strToSeconds(item.total);
     })
-    console.log(soma)
     
   }
 
@@ -347,8 +303,8 @@ export class TriagemComponent implements OnInit {
       product: this.loteItemForm.get('product').value,
       qtn: 0,
       socio: this.loteItemForm.get('socio').value,
-      startTime: this.sharedVariableService.currentTime(),
-      endTime: '',
+      start: new Date(),
+      end: null,
       edit: true
     });
     localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
@@ -360,7 +316,7 @@ export class TriagemComponent implements OnInit {
   // Salva Item do lote
   saveLoteItem(idx): void {
     this.lotItems[idx].edit = false;
-    this.lotItems[idx].endTime = this.sharedVariableService.currentTime();
+    this.lotItems[idx].end = new Date();
     localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
   }
 
