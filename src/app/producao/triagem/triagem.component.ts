@@ -83,11 +83,12 @@ export class TriagemComponent implements OnInit {
       this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(prodInfoHead['start']));
       this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(prodInfoHead['start']));
       this.headForm.controls.situacao.setValue(prodInfoHead['status']);
-      this.statusProd = prodInfoHead['status'];
-      this.changeProductionStatus();
       this.headForm.controls.socio.setValue(prodInfoHead.socio.nome);
       this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor.razao_social_nome);
       this.headForm.controls.materia_prima.setValue(prodInfoHead.materia.nome);
+      this.statusProd = prodInfoHead['status'];
+      this.totalTimeBreak = prodInfoHead['totalTimeBreak'];
+      this.changeProductionStatus();
       
       const prodInfoItems = JSON.parse(localStorage.getItem('prodInfoItems'));
       if(prodInfoItems) {
@@ -99,10 +100,10 @@ export class TriagemComponent implements OnInit {
       }
       this.updateProductionSummary();
 
-      setInterval(() => {
-        this.getElapsedTime();
-        this.currentTime = new Date();
-      }, 1000);
+      // setInterval(() => {
+      //   this.getElapsedTime();
+      //   this.currentTime = new Date();
+      // }, 1000);
     } else {
       this.loadHeadForm();
       this.changeProductionStatus();
@@ -110,8 +111,13 @@ export class TriagemComponent implements OnInit {
         this.lastTriagem =  Number(response[0].triagem);
       });
     }
-    this.loadLoteItemForm();
 
+    setInterval(() => {
+      this.getElapsedTime();
+      this.currentTime = new Date();
+    }, 1000);
+
+    this.loadLoteItemForm();
     this.changeDetector.detectChanges();
   }
 
@@ -125,8 +131,7 @@ export class TriagemComponent implements OnInit {
     const prodInfo = JSON.parse(localStorage.prodInfoHead)
     const start = new Date(prodInfo.start)
     let totalSeconds = this.sharedVariableService.difTime(start, new Date());
-    this.totalTimeProduction = this.sharedVariableService.secondsToDate(totalSeconds);
-    console.log(this.totalTimeProduction)
+    this.totalTimeProduction = (this.sharedVariableService.secondsToDate(totalSeconds));
   }
 
   // Build do form cabeçalho (Informações do lote)
@@ -181,6 +186,7 @@ export class TriagemComponent implements OnInit {
           materia: this.headForm.get('materia_prima').value,
           start: new Date(),
           end: null,
+          totalTimeBreak: null,
           status: 'Iniciada',
           socio: this.headForm.get('socio').value,
         };
@@ -258,6 +264,7 @@ export class TriagemComponent implements OnInit {
     this.changeProductionStatus();
   }
 
+  // Continua a Produção (sai do status de pausa)
   continueProduction(): void {
     this.lotBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
     this.lotBreaks[this.lotBreaks.length - 1].endTime = new Date();
@@ -269,19 +276,22 @@ export class TriagemComponent implements OnInit {
 
     this.statusProd = 'Iniciada'
 
-    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
-    prodInfoHead.status = 'Iniciada';
-    localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
-
+    
     let totalSec = 0;
     this.lotBreaks.forEach(item => {
       totalSec += item.total;
     });
     this.totalTimeBreak = this.sharedVariableService.secondsToDate(totalSec);
-
+    
+    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
+    prodInfoHead.status = 'Iniciada';
+    prodInfoHead.totalTimeBreak = this.totalTimeBreak;
+    localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
+    
     this.changeProductionStatus();
   }
 
+  // soma todas as pausas da produção 
   stopProduction(): void {
     this.lotBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
     let soma = 0;
