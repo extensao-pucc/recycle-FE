@@ -100,10 +100,10 @@ export class TriagemComponent implements OnInit {
       }
       this.updateProductionSummary();
 
-      // setInterval(() => {
-      //   this.getElapsedTime();
-      //   this.currentTime = new Date();
-      // }, 1000);
+      setInterval(() => {
+        this.getElapsedTime();
+        this.currentTime = new Date();
+      }, 1000);
     } else {
       this.loadHeadForm();
       this.changeProductionStatus();
@@ -112,10 +112,10 @@ export class TriagemComponent implements OnInit {
       });
     }
 
-    setInterval(() => {
-      this.getElapsedTime();
-      this.currentTime = new Date();
-    }, 1000);
+    // setInterval(() => {
+    //   this.getElapsedTime();
+    //   this.currentTime = new Date();
+    // }, 1000);
 
     this.loadLoteItemForm();
     this.changeDetector.detectChanges();
@@ -193,6 +193,7 @@ export class TriagemComponent implements OnInit {
         localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
         this.statusProd = 'Iniciada';
         this.changeProductionStatus();
+        this.ngOnInit();
       } else {
         this.toastService.addToast('Adicione pelo menos um item na produção para inicia-la', 'darkred');
       }
@@ -291,13 +292,15 @@ export class TriagemComponent implements OnInit {
     this.changeProductionStatus();
   }
 
-  // soma todas as pausas da produção 
   stopProduction(): void {
-    this.lotBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
-    let soma = 0;
-    this,this.lotBreaks.forEach(item => {
-      soma += this.sharedVariableService.strToSeconds(item.total);
-    })
+    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
+    console.log(prodInfoHead.filter(item => item.edit === true))
+    
+    // this.lotBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
+    // let soma = 0;
+    // this,this.lotBreaks.forEach(item => {
+    //   soma += this.sharedVariableService.strToSeconds(item.total);
+    // })
     
   }
 

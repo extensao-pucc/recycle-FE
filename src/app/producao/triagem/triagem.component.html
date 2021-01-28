@@ -108,13 +108,13 @@
                 </span>
               </td>
               <td class="time">
-                Dia {{ item.start | date:"dd" }} as {{ item.start | date:"hh:mm:ss" }}
+                Dia {{ item.start | date:"dd" }} às {{ item.start | date:"hh:mm:ss" }}
               </td>
               <td class="time" *ngIf="item.end">
-                Dia {{ item.end | date:"dd" }} as {{ item.end | date:"hh:mm:ss" }}
+                Dia {{ item.end | date:"dd" }} às {{ item.end | date:"hh:mm:ss" }}
               </td>
               <td class="time" *ngIf="!item.end">
-                Dia {{ currentTime | date:"dd" }} as {{ currentTime | date:"hh:mm:ss" }}
+                Dia {{ currentTime | date:"dd" }} às {{ currentTime | date:"hh:mm:ss" }}
               </td>
               
               <td class="options">
@@ -159,7 +159,6 @@
           <tbody>
             <tr>
               <td>{{ totBag }}</td>
-              <!-- <td>3</td> -->
               <td>{{ totQtn }} kg</td>
               <td>
                 <span *ngIf="statusProd !== 'Pausada'">{{ totalTimeBreak | date:"HH:mm:ss" }}</span>
