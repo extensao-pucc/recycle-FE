@@ -41,7 +41,8 @@ th, td {
 
 /*Scrowbar =============================================================================== */
 ::-webkit-scrollbar {
-    width: 12px;
+    width: 10px;
+    height: 10px;
 }
   
 ::-webkit-scrollbar-thumb {
