@@ -19,10 +19,6 @@ form {
     margin-top: 25px;
 }
 
-.table th, .table td {
-    vertical-align: middle;
-}
-
 /* Fixar coluna e cabeçalho de opções ================== */
 thead th {
     position: -webkit-sticky; /* for Safari */

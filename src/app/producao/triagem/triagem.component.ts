@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild, ChangeDetectionStrategy, Chan
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ViewImage } from 'src/app/shared/view-image/view-image.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
+import { ProductionService } from '../production.service';
 import { CrudService } from '../../cadastros/crud.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
 import { FormBuilder } from '@angular/forms';
@@ -14,6 +15,7 @@ import { from, interval, Subject } from 'rxjs';
   styleUrls: ['./triagem.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
+
 export class TriagemComponent implements OnInit {
   @ViewChild ('pauseScreen', { static: true }) pauseScreen: ElementRef;
   @ViewChild('loteItemScreen', { static: true }) loteItemScreen: ElementRef;
@@ -25,10 +27,10 @@ export class TriagemComponent implements OnInit {
 
   // screen
   public modalRef: any;
+  public yesNoMessage: YesNoMessage = new YesNoMessage();
+  public viewImage: ViewImage = new ViewImage();
   public showYesNoMessage: boolean;
   public showModalImage: boolean;
-  public viewImage: ViewImage = new ViewImage();
-  public yesNoMessage: YesNoMessage = new YesNoMessage();
 
   // selects
   public fornecedores: any;
@@ -45,8 +47,8 @@ export class TriagemComponent implements OnInit {
   public lotItems = [];
   public lotBreaks = [];
   public statusProd = '';
-  public selectedSocio: any;
   public selectedMotivo: any;
+  public selectedFornecedor: any;
   public totBag: any;
   public totProduct: any;
   public totQtn: any;
@@ -60,6 +62,7 @@ export class TriagemComponent implements OnInit {
   constructor(
     private toastService: ToastService,
     private crudService: CrudService,
+    private ProductionService: ProductionService,
     private sharedVariableService: SharedVariableService,
     private formBuilder: FormBuilder,
     private modalService: BsModalService,
@@ -87,6 +90,7 @@ export class TriagemComponent implements OnInit {
       this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor.razao_social_nome);
       this.headForm.controls.materia_prima.setValue(prodInfoHead.materia.nome);
       this.statusProd = prodInfoHead['status'];
+      this.selectedFornecedor = prodInfoHead['fornecedor']
       this.totalTimeBreak = prodInfoHead['totalTimeBreak'];
       this.changeProductionStatus();
       
@@ -111,11 +115,6 @@ export class TriagemComponent implements OnInit {
         this.lastTriagem =  Number(response[0].triagem);
       });
     }
-
-    // setInterval(() => {
-    //   this.getElapsedTime();
-    //   this.currentTime = new Date();
-    // }, 1000);
 
     this.loadLoteItemForm();
     this.changeDetector.detectChanges();
@@ -174,7 +173,7 @@ export class TriagemComponent implements OnInit {
   // Inicia a Produção
   startProduction(): void {
     if (this.headForm.get('socio').value && this.headForm.get('fornecedor').value && this.headForm.get('materia_prima').value) {
-      if (this.statusProd === '' && localStorage.prodInfoItems) {
+      if (this.statusProd === '') {
         this.headForm.controls.lote.setValue(this.lastTriagem + 1);
         this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(new Date()));
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(new Date()));
@@ -292,38 +291,102 @@ export class TriagemComponent implements OnInit {
     this.changeProductionStatus();
   }
 
+  // Finaliza produção
   stopProduction(): void {
-    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
-    console.log(prodInfoHead.filter(item => item.edit === true))
+    let prodInfoItems = JSON.parse(localStorage.getItem('prodInfoItems'));
     
-    // this.lotBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
-    // let soma = 0;
-    // this,this.lotBreaks.forEach(item => {
-    //   soma += this.sharedVariableService.strToSeconds(item.total);
-    // })
-    
+    if (prodInfoItems) { // Verifica se existe itens na produção
+      if (prodInfoItems.filter(item => item.edit === true).length == 0) { // Verifica se nenhum item ainda não foi fechado
+        let headSucess = false;
+        let ItemsSucess = false;
+        let BreaksSucess = false;
+        
+        // // Converte prodInfoHead do local storage e insere no banco
+        let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead')); 
+        prodInfoHead.end = new Date().toISOString();
+        this.totalTimeProduction = this.sharedVariableService.difTime(prodInfoHead.start, new Date());
+  
+        const loteData = new FormData();
+        loteData.append('num_lote', prodInfoHead.currentLote);
+        loteData.append('finalizado', prodInfoHead.end);
+        loteData.append('fornecedor', prodInfoHead.fornecedor.id);
+        loteData.append('iniciado', prodInfoHead.start);
+        loteData.append('socio', prodInfoHead.socio.id);
+        loteData.append('tempo_total', this.totalTimeProduction);
+        loteData.append('observacao', 'bla bla bla');
+  
+        this.ProductionService.createProduction('lote', loteData).subscribe(response => { headSucess = true}, err => {});
+  
+        // Converte prodLoteItems do local storage e insere no banco        
+        const loteItemsData = new FormData();
+        prodInfoItems.forEach(item => {
+          let totalTimeItem = this.sharedVariableService.difTime(item.start, item.end);
+          loteItemsData.append('finalizado', item.end);
+          loteItemsData.append('iniciado', item.start);
+          loteItemsData.append('num_lote', prodInfoHead.currentLote);
+          loteItemsData.append('num_recipiente', item.numBag);
+          loteItemsData.append('produto', item.product.id);
+          loteItemsData.append('quantidade', item.qtn);
+          loteItemsData.append('socio', item.socio.id);
+          loteItemsData.append('tempo_total', totalTimeItem.toString());
+  
+          this.ProductionService.createProduction('loteItens', loteItemsData).subscribe(response => { ItemsSucess = true }, err => {});
+        });
+        
+        // Converte productionBreaks do local storage e insere no banco
+        let productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
+        const loteBreaksData = new FormData();
+        productionBreaks.forEach(item => {
+          loteBreaksData.append('finalizado', item.endTime);
+          loteBreaksData.append('iniciado', item.startTime);
+          loteBreaksData.append('motivo', item.motivo);
+          loteBreaksData.append('num_lote', prodInfoHead.currentLote);
+          loteBreaksData.append('sequencia', item.sequence);
+          loteBreaksData.append('tempo_total', item.total);
+          
+          this.ProductionService.createProduction('loteParadas', loteBreaksData).subscribe(response => { BreaksSucess = true }, err => {});
+        });
+  
+        
+        if (BreaksSucess && headSucess && ItemsSucess){
+          this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead['end']));
+          prodInfoHead.status = 'Finalizada';
+          this.toastService.addToast('Produção salva com sucesso');
+        } else {
+          this.toastService.addToast('Não foi possivel salvar a produção', 'darkred');
+        }
+      } else {
+        this.toastService.addToast('Feche todos os Tambores/Bags para Finalizar', 'darkred');
+      }
+    } else {
+      this.toastService.addToast('Estaprodução ainda não possui itens', 'darkred')
+    }
   }
 
   // Adiciona item no lote (Item escolhido no LoteItemModal)
   addLoteItem(): void {
-    let auxBag = [];
-    this.lotItems.forEach(item => {
-      auxBag.push(item.numBag)
-    })
-
-    this.lotItems.push({
-      numBag: this.lotItems.length > 0 ? Math.max(...auxBag) + 1 : 1,
-      product: this.loteItemForm.get('product').value,
-      qtn: 0,
-      socio: this.loteItemForm.get('socio').value,
-      start: new Date(),
-      end: null,
-      edit: true
-    });
-    localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
-    this.loadLoteItemForm();
-    this.modalRef.hide();
-    this.updateProductionSummary();
+    if (this.loteItemForm.get('product').value && this.loteItemForm.get('socio').value) {
+      let auxBag = [];
+      this.lotItems.forEach(item => {
+        auxBag.push(item.numBag)
+      })
+  
+      this.lotItems.push({
+        numBag: this.lotItems.length > 0 ? Math.max(...auxBag) + 1 : 1,
+        product: this.loteItemForm.get('product').value,
+        qtn: 0,
+        socio: this.loteItemForm.get('socio').value,
+        start: new Date(),
+        end: null,
+        edit: true
+      });
+      localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
+      this.loadLoteItemForm();
+      this.modalRef.hide();
+      this.updateProductionSummary();
+    } else {
+      this.toastService.addToast('Selecione sócio e/ou produto para continuar', 'darkred');
+    }
   }
 
   // Salva Item do lote
@@ -355,17 +418,6 @@ export class TriagemComponent implements OnInit {
     })
   }
 
-  //Calculo de tempo da Triagem
-  getDataDiff (startDate, endDate): any {
-    var diff = endDate.getTime() - startDate.getTime();
-    var days = Math.floor(diff / (60 * 60 * 24 * 1000));
-    var hours = Math.floor(diff / (60 * 60 * 1000)) - (days * 24);
-    var minutes = Math.floor(diff / (60 * 1000)) - ((days * 24 * 60) + (hours * 60));
-    var seconds = Math.floor(diff / 1000) - ((days * 24 * 60 * 60) + (hours * 60 * 60) + (minutes * 60));
-    
-    return { day: days, hour: hours, minute: minutes, second: seconds };
-  }
-
   // Mostra modal para adicionar novo item no lote
   showLoteItemModal(): void {
     this.loadLoteItemForm();
@@ -387,7 +439,6 @@ export class TriagemComponent implements OnInit {
             this.statusProd === 'Pausada' ? this.continueProduction() : this.modalRef = this.modalService.show(this.pauseScreen);
           } else if (title === 'Finalizar') {
             this.stopProduction();
-            this.toastService.addToast('Desculpa, ainda não temos essa funcionalidade', 'darkred');
           } else {
             this.toastService.addToast('Desculpa, ainda não temos essa funcionalidade', 'darkred');
           }
@@ -397,6 +448,7 @@ export class TriagemComponent implements OnInit {
     };
     this.showYesNoMessage = true;
   }
+  
   // Expande imagem de cada socio na lista de itens do lote
   showImage(image: any): void{
     this.showModalImage = true;

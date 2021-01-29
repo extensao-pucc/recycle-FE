@@ -66,7 +66,7 @@
     </div>
     
     <!-- Lote items -->
-    <div class="table-list">
+    <div class="table-list table-shadow">
       <table class="table table-hover">
           <thead class="thead-dark">
             <tr>
@@ -86,16 +86,16 @@
           </thead>
           <tbody #itemsLoteTable>
             <tr *ngFor="let item of lotItems;let idx=index;">
-              <td class="numBag" id="numBag-{{idx}}">
+              <td class="numBag td-pequeno" id="numBag-{{idx}}">
                 <span>{{ item.numBag }}</span>
               </td>
               <td class="product">
                 <span tooltip="Descrição: {{ item.product.descricao }}">{{ item.product.descricao }}</span>
               </td>
-              <td class="quality">
+              <td class="quality td-pequeno">
                 <span>{{ item.product.qualidade.nome }}</span>
               </td>
-              <td class="qtn">
+              <td class="qtn td-pequeno">
                 <span *ngIf="!item.edit">{{ item.qtn }} kg</span>
                 <input *ngIf="item?.edit" class="form-control" type="number" [value]="item.qtn" (keyup)="updateQtn(idx, $event.target.value)" [disabled]="statusProd != 'Iniciada'">
               </td>
@@ -145,33 +145,30 @@
     </table> -->
 
     <!-- Resumo do lote -->
-    <div class="table-list">
-      <table class="table table-hover">
-          <thead class="thead-dark">
-            <tr>
-              <th scope="col">Tambor/Bag Total <i class="fa fa-question-circle" tooltip="Total de tambor / bag utilizados até o momento na produção atual"></i></th>
-              <!-- <th scope="col">Total Produto</th> -->
-              <th scope="col">Quantidade Total <i class="fa fa-question-circle" tooltip="Soma total de cada tambor usados na produção atual"></i></th>
-              <th scope="col">Tempo Pausado <i class="fa fa-question-circle" tooltip="Tempo total de pausas (Tempo atualizado ao finalizar uma pausa)"></i></th>
-              <th scope="col">Tempo Decorrido <i class="fa fa-question-circle" tooltip="Este tempo não inclue pausar"></i></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>{{ totBag }}</td>
-              <td>{{ totQtn }} kg</td>
-              <td>
-                <span *ngIf="statusProd !== 'Pausada'">{{ totalTimeBreak | date:"HH:mm:ss" }}</span>
-                <span *ngIf="!totalTimeBreak && statusProd !== 'Pausada'">Não ocorreram pausas</span>
-                <span *ngIf="statusProd === 'Pausada'">Triagem pausada</span>
-              </td>
-              <td>
-                <span *ngIf="totalTimeProduction">{{ totalTimeProduction | date:"HH:mm:ss" }}</span>              
-              </td>
-          </tbody>
-      </table>
-    </div>
-
+    <table class="table table-hover table-shadow">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Tambor/Bag Total <i class="fa fa-question-circle" tooltip="Total de tambor / bag utilizados até o momento na produção atual"></i></th>
+            <!-- <th scope="col">Total Produto</th> -->
+            <th scope="col">Quantidade Total <i class="fa fa-question-circle" tooltip="Soma total de cada tambor usados na produção atual"></i></th>
+            <th scope="col">Tempo Pausado <i class="fa fa-question-circle" tooltip="Tempo total de pausas (Tempo atualizado ao finalizar uma pausa)"></i></th>
+            <th scope="col">Tempo Decorrido <i class="fa fa-question-circle" tooltip="Este tempo não inclue pausar"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ totBag }}</td>
+            <td>{{ totQtn }} kg</td>
+            <td>
+              <span *ngIf="statusProd !== 'Pausada'">{{ totalTimeBreak | date:"HH:mm:ss" }}</span>
+              <span *ngIf="!totalTimeBreak && statusProd !== 'Pausada'">Não ocorreram pausas</span>
+              <span *ngIf="statusProd === 'Pausada'">Triagem pausada</span>
+            </td>
+            <td>
+              <span *ngIf="totalTimeProduction">{{ totalTimeProduction | date:"HH:mm:ss" }}</span>              
+            </td>
+        </tbody>
+    </table>
   </div>
 </div>
 
@@ -219,9 +216,13 @@
               <p class="font-weight-bold">Selecione os seguintes campos para adicionar um item ao lote:</p>
               <div class="form-group col">
                 <form [formGroup]="loteItemForm" *ngIf="loteItemForm">
-                  <p for="product">Produto:</p>
+                  <p for="product"> Produto:
+                    <i class="fa fa-question-circle" tooltip="Apenas produtos pertencentes ao fornecedor dessa triagem"></i>
+                  </p>
                   <ng-select formControlName="product" name="product">
-                    <ng-option *ngFor="let produto of produtos" [value]="produto">{{produto.descricao}}</ng-option>
+                    <ng-component *ngFor="let produto of produtos">
+                      <ng-option *ngIf="selectedFornecedor.id === produto.fornecedor.id" [value]="produto">{{produto.descricao}}</ng-option>
+                    </ng-component>
                   </ng-select>
 
                   <p for="fornecedor">Socio:</p>
