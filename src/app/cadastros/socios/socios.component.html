@@ -235,7 +235,7 @@
 
             <div class="form-group col-md-3">
               <label>Título de eleitor: </label>
-              <input class="form-control" type="text" maxlength="18" formControlName="titulo_de_Eleitor">
+              <input class="form-control" type="text" maxlength="14" formControlName="titulo_de_Eleitor">
               <p class="error-msg" *ngIf="itemForm.controls.titulo_de_Eleitor.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.titulo_de_Eleitor.errors.msgErro }}
               </p>
@@ -251,7 +251,7 @@
 
             <div class="form-group col-md-2">
               <label>NIT: <i class="fa fa-question-circle" tooltip="Número de Identificação do Trabalhador"></i> </label>
-              <input class="form-control" type="text" maxlength="20" formControlName="NIT">
+              <input class="form-control" type="text" maxlength="14" formControlName="NIT">
               <p class="error-msg" *ngIf="itemForm.controls.NIT.errors">
                 <i class="fa fa-times"></i> {{ itemForm.controls.NIT.errors.msgErro }}
               </p>

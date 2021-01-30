@@ -100,8 +100,8 @@
               <ng-select *ngIf="fornecedores" formControlName="fornecedor" name="fornecedor">
                 <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor?.id">{{fornecedor.CNPJ_CPF}} - {{fornecedor.razao_social_nome}}</ng-option>
               </ng-select>
-              <p class="error-msg" *ngIf="itemForm.controls.unidade_de_medida.errors">
-                <i class="fa fa-times"></i> {{ itemForm.controls.unidade_de_medida.errors.msgErro }}
+              <p class="error-msg" *ngIf="itemForm.controls.fornecedor.errors">
+                <i class="fa fa-times"></i> {{ itemForm.controls.fornecedor.errors.msgErro }}
               </p>             
             </div>
 

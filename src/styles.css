@@ -14,21 +14,22 @@ body {
     position: fixed;
 }
 
-h2 {
-    margin-bottom: 10px;
-}
-
 i {
     margin-right: 10px;
 }
 
-th, td {
-    white-space: nowrap;
-    min-width: 80px;
+div.table-list table {
+    margin-bottom: 0.1px;
 }
 
-.td-pequeno {
-    min-width: 140px;
+th, td {
+    vertical-align: middle;
+    white-space: nowrap;
+    min-width: 170px;
+}
+
+td.td-pequeno {
+    min-width: 130px;
 }
 
 .table-list {
@@ -36,7 +37,7 @@ th, td {
     overflow-x:auto;
     margin-left: auto;
     margin-right: auto;
-    max-height: 85%;
+    max-height: 80%;
 }
 
 /*Scrowbar =============================================================================== */

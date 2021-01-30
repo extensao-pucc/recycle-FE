@@ -61,9 +61,12 @@ span {
     overflow: hidden
 }
 
-table {
+.table-list {
+    margin-bottom: 40px;
+}
+
+.table-shadow {
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 19%), 0 6px 20px 0 rgb(0 0 0 / 19%);
-    vertical-align: middle;
 }
 
 tr {
@@ -92,7 +95,7 @@ thead th:last-child {
 
 tbody td:last-child {
     position: -webkit-sticky; /* for Safari */
-    background: #DEDEDE;
+    background: #e7e4e4;
     position: sticky;
     right: 0;
 }
