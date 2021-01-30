@@ -174,6 +174,14 @@ export class TriagemComponent implements OnInit {
   startProduction(): void {
     if (this.headForm.get('socio').value && this.headForm.get('fornecedor').value && this.headForm.get('materia_prima').value) {
       if (this.statusProd === '') {
+
+        // const numLote = new FormData();
+        // numLote.append('triagem', (this.lastTriagem + 1).toString());
+        // this.crudService.updateItem('parametros', numLote, 1).subscribe(response => {
+        //   console.log(numLote)
+        //   console.log('Cadu')
+        // }, err => {});
+
         this.headForm.controls.lote.setValue(this.lastTriagem + 1);
         this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(new Date()));
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(new Date()));
@@ -293,73 +301,25 @@ export class TriagemComponent implements OnInit {
 
   // Finaliza produção
   stopProduction(): void {
+    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead')); 
     let prodInfoItems = JSON.parse(localStorage.getItem('prodInfoItems'));
-    
+    let productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
+
+    prodInfoHead.totalTimeProduction = this.sharedVariableService.difTime(prodInfoHead.start, new Date());
+    prodInfoHead.end = new Date().toISOString();
+
     if (prodInfoItems) { // Verifica se existe itens na produção
-      if (prodInfoItems.filter(item => item.edit === true).length == 0) { // Verifica se nenhum item ainda não foi fechado
-        let headSucess = false;
-        let ItemsSucess = false;
-        let BreaksSucess = false;
+      if (prodInfoItems.filter(item => item.edit === true).length == 0) { // Verifica se nenhum item ainda não foi fechado  
+           
+        this.ProductionService.createTriagem(prodInfoHead, prodInfoItems, productionBreaks);
         
-        // // Converte prodInfoHead do local storage e insere no banco
-        let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead')); 
-        prodInfoHead.end = new Date().toISOString();
-        this.totalTimeProduction = this.sharedVariableService.difTime(prodInfoHead.start, new Date());
-  
-        const loteData = new FormData();
-        loteData.append('num_lote', prodInfoHead.currentLote);
-        loteData.append('finalizado', prodInfoHead.end);
-        loteData.append('fornecedor', prodInfoHead.fornecedor.id);
-        loteData.append('iniciado', prodInfoHead.start);
-        loteData.append('socio', prodInfoHead.socio.id);
-        loteData.append('tempo_total', this.totalTimeProduction);
-        loteData.append('observacao', 'bla bla bla');
-  
-        this.ProductionService.createProduction('lote', loteData).subscribe(response => { headSucess = true}, err => {});
-  
-        // Converte prodLoteItems do local storage e insere no banco        
-        const loteItemsData = new FormData();
-        prodInfoItems.forEach(item => {
-          let totalTimeItem = this.sharedVariableService.difTime(item.start, item.end);
-          loteItemsData.append('finalizado', item.end);
-          loteItemsData.append('iniciado', item.start);
-          loteItemsData.append('num_lote', prodInfoHead.currentLote);
-          loteItemsData.append('num_recipiente', item.numBag);
-          loteItemsData.append('produto', item.product.id);
-          loteItemsData.append('quantidade', item.qtn);
-          loteItemsData.append('socio', item.socio.id);
-          loteItemsData.append('tempo_total', totalTimeItem.toString());
-  
-          this.ProductionService.createProduction('loteItens', loteItemsData).subscribe(response => { ItemsSucess = true }, err => {});
-        });
-        
-        // Converte productionBreaks do local storage e insere no banco
-        let productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
-        const loteBreaksData = new FormData();
-        productionBreaks.forEach(item => {
-          loteBreaksData.append('finalizado', item.endTime);
-          loteBreaksData.append('iniciado', item.startTime);
-          loteBreaksData.append('motivo', item.motivo);
-          loteBreaksData.append('num_lote', prodInfoHead.currentLote);
-          loteBreaksData.append('sequencia', item.sequence);
-          loteBreaksData.append('tempo_total', item.total);
-          
-          this.ProductionService.createProduction('loteParadas', loteBreaksData).subscribe(response => { BreaksSucess = true }, err => {});
-        });
-  
-        
-        if (BreaksSucess && headSucess && ItemsSucess){
-          this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead['end']));
-          prodInfoHead.status = 'Finalizada';
-          this.toastService.addToast('Produção salva com sucesso');
-        } else {
-          this.toastService.addToast('Não foi possivel salvar a produção', 'darkred');
-        }
+        this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead['end']));
+        prodInfoHead.status = 'Finalizada';      
       } else {
         this.toastService.addToast('Feche todos os Tambores/Bags para Finalizar', 'darkred');
       }
     } else {
-      this.toastService.addToast('Estaprodução ainda não possui itens', 'darkred')
+      this.toastService.addToast('Esta produção ainda não possui itens', 'darkred')
     }
   }
 
