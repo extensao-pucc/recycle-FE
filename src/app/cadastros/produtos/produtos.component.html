@@ -29,36 +29,36 @@
             
             <tbody>
               <tr>
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>         
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="Código" (input)="Search('codigo', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>         
+                <td class="td-medio"><input class="form-control" type="search" placeholder="Código" (input)="Search('codigo', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Descrição" (input)="Search('descricao', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Família" (input)="Search('fornecedor.razao_social_nome', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Fornecedor" (input)="Search('qualidade.nome', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Qualidade" (input)="Search('familia.nome', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Unidade de medida" (input)="Search('unidade_de_medida.sigla', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" mask="0000.00.00" type="search" placeholder="NCM" (input)="Search('NCM', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" mask="0000.00.00" type="search" placeholder="NCM" (input)="Search('NCM', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="CSTE" (input)="Search('CSTE', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="CSTS" (input)="Search('CSTS', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="CFOPE" (input)="Search('CFOPE.codigo', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="CFOPS" (input)="Search('CFOPS.codigo', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="Compra" (input)="Search('preco_compra', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="Venda" (input)="Search('preco_venda', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" type="search" placeholder="CFOPE" (input)="Search('CFOPE.codigo', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" type="search" placeholder="CFOPS" (input)="Search('CFOPS.codigo', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" type="search" placeholder="Compra" (input)="Search('preco_compra', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" type="search" placeholder="Venda" (input)="Search('preco_venda', $event.target.value)"></td>
                 <th></th>
               </tr>
 
               <tr *ngFor="let item of tempItemsList">
-                <td class="td-pequeno">{{ item?.id }}</td>
-                <td class="td-pequeno">{{ item?.codigo }}</td>
+                <td class="td-medio">{{ item?.id }}</td>
+                <td class="td-medio">{{ item?.codigo }}</td>
                 <td>{{ item?.descricao }}</td>
                 <td>{{ item?.familia.nome }}</td>
                 <td>{{ item?.fornecedor.razao_social_nome }}</td>
                 <td>{{ item?.qualidade.nome }}</td>
                 <td>{{ item?.unidade_de_medida.sigla }}</td>
-                <td class="td-pequeno">{{ item?.NCM | mask: '0000.00.00'}}</td>
+                <td class="td-medio">{{ item?.NCM | mask: '0000.00.00'}}</td>
                 <td>{{ item?.CSTE }}</td>
                 <td>{{ item?.CSTS }}</td>
-                <td class="td-pequeno">{{ item?.CFOPE.codigo }}</td>
-                <td class="td-pequeno">{{ item?.CFOPS.codigo }}</td>
+                <td class="td-medio">{{ item?.CFOPE.codigo }}</td>
+                <td class="td-medio">{{ item?.CFOPS.codigo }}</td>
                 <td>R$ {{ item?.preco_compra | mask: 'separator.2'}}</td>
                 <td>R$ {{ item?.preco_venda | mask: 'separator.2'}}</td>
                 <th>

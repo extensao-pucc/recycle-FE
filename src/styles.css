@@ -28,8 +28,12 @@ th, td {
     min-width: 170px;
 }
 
-td.td-pequeno {
+td.td-medio {
     min-width: 130px;
+}
+
+table td.td-pequeno, th.th-pequeno {
+    min-width: 100px;
 }
 
 .table-list {

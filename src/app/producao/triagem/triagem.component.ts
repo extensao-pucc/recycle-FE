@@ -175,12 +175,14 @@ export class TriagemComponent implements OnInit {
     if (this.headForm.get('socio').value && this.headForm.get('fornecedor').value && this.headForm.get('materia_prima').value) {
       if (this.statusProd === '') {
 
-        // const numLote = new FormData();
-        // numLote.append('triagem', (this.lastTriagem + 1).toString());
-        // this.crudService.updateItem('parametros', numLote, 1).subscribe(response => {
-        //   console.log(numLote)
-        //   console.log('Cadu')
-        // }, err => {});
+        const nextTriagem = this.lastTriagem + 1;
+        const numLote = new FormData();
+        numLote.append('numero_proxima_NFE', this.motivosDeParada.numero_proxima_NFE);
+        numLote.append('numero_proxima_NFS', this.motivosDeParada.numero_proxima_NFS);
+        numLote.append('prensa', this.motivosDeParada.prensa);
+        numLote.append('remanufatura', this.motivosDeParada.remanufatura);
+        numLote.append('triagem', nextTriagem.toString());
+        this.crudService.updateItem('parametros', numLote, '1').subscribe(response => {}, err => {});
 
         this.headForm.controls.lote.setValue(this.lastTriagem + 1);
         this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(new Date()));
