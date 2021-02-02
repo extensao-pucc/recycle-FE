@@ -85,6 +85,7 @@ export class TriagemComponent implements OnInit {
       this.headForm.controls.lote.setValue(prodInfoHead['currentLote']);
       this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(prodInfoHead['start']));
       this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(prodInfoHead['start']));
+      this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead['end']));
       this.headForm.controls.situacao.setValue(prodInfoHead['status']);
       this.headForm.controls.socio.setValue(prodInfoHead.socio.nome);
       this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor.razao_social_nome);
@@ -313,10 +314,11 @@ export class TriagemComponent implements OnInit {
     if (prodInfoItems) { // Verifica se existe itens na produção
       if (prodInfoItems.filter(item => item.edit === true).length == 0) { // Verifica se nenhum item ainda não foi fechado  
            
-        this.ProductionService.createTriagem(prodInfoHead, prodInfoItems, productionBreaks);
+        this.ProductionService.createTriagem(prodInfoHead, prodInfoItems, productionBreaks);        
+        this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead.end));
+        prodInfoHead.status = 'Finalizada';
+        localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
         
-        this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead['end']));
-        prodInfoHead.status = 'Finalizada';      
       } else {
         this.toastService.addToast('Feche todos os Tambores/Bags para Finalizar', 'darkred');
       }

@@ -22,7 +22,7 @@ div.table-list table {
     margin-bottom: 0.1px;
 }
 
-th, td {
+.table th, .table td {
     vertical-align: middle;
     white-space: nowrap;
     min-width: 170px;
