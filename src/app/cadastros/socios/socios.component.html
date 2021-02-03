@@ -9,10 +9,10 @@
           <table class="table table-hover" *ngIf="!showForm">
             <thead class="thead-dark">
               <tr>
-                <th scope="col"></th> <!-- Situação do usuario-->
-                <th scope="col"></th> <!-- Foto do usuario -->
-                <th scope="col">ID</th>
-                <th scope="col">Matrícula</th>
+                <th scope="col" class="th-pequeno"></th> <!-- Situação do usuario-->
+                <th scope="col" class="th-pequeno"></th> <!-- Foto do usuario -->
+                <th scope="col" class="th-pequeno">ID</th>
+                <th scope="col" >Matrícula</th>
                 <th scope="col">Nome</th>
                 <th scope="col">Data de nascimento</th>
                 <th scope="col">RG</th>
@@ -41,16 +41,16 @@
             
             <tbody>
               <tr>
-                <td class="situacao"></td>
-                <td class="foto"></td>
+                <td class="situacao td-pequeno"></td>
+                <td class="foto td-pequeno"></td>
                 <td class="td-pequeno"><input class="form-control" maxlength="9" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
-                <td class="td-pequeno"><input class="form-control" maxlength="9" type="search" placeholder="Matrícula" (input)="Search('matricula', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" maxlength="9" type="search" placeholder="Matrícula" (input)="Search('matricula', $event.target.value)"></td>
                 <td><input class="form-control" maxlength="100" type="search" placeholder="Nome" (input)="Search('nome', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Nascimento" (input)="Search('data_de_nascimento', $event.target.value)"></td>
                 <td><input class="form-control" mask="00.000.000-0" type="search" placeholder="RG" (input)="Search('RG', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Emissão" (input)="Search('data_emissao', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="Local" (input)="Search('local_emissao', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="Expedidor" (input)="Search('orgao_expedidor', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" type="search" placeholder="Local" (input)="Search('local_emissao', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" type="search" placeholder="Expedidor" (input)="Search('orgao_expedidor', $event.target.value)"></td>
                 <td><input class="form-control" mask="000.000.000-00" type="search" placeholder="CPF" (input)="Search('CPF', $event.target.value)"></td>
                 <td><input class="form-control" maxlength="20" type="search" placeholder="Titulo" (input)="Search('titulo_de_Eleitor', $event.target.value)"></td>
                 <td><input class="form-control" mask="000.00000.00-0" type="search" placeholder="PIS/PASEP" (input)="Search('PIS_PASEP', $event.target.value)"></td>
@@ -58,10 +58,10 @@
                 <td><input class="form-control" maxlength="100" type="search" placeholder="Nome mãe" (input)="Search('nome_da_Mae', $event.target.value)"></td>
                 <td><input class="form-control" maxlength="100" type="search" placeholder="Nome pai" (input)="Search('nome_do_Pai', $event.target.value)"></td>
                 <td><input class="form-control" maxlength="100" type="search" placeholder="Endereço" (input)="Search('endereco', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" maxlength="10" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" maxlength="10" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
                 <td><input class="form-control" maxlength="100" type="search" placeholder="Complemento" (input)="Search('complemento', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" mask="00000-000" type="search" placeholder="CEP" (input)="Search('CEP', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="UF" (input)="Search('UF', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" mask="00000-000" type="search" placeholder="CEP" (input)="Search('CEP', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" type="search" placeholder="UF" (input)="Search('UF', $event.target.value)"></td>
                 <td><input class="form-control" maxlength="100" type="search" placeholder="Cidade" (input)="Search('cidade', $event.target.value)"></td>
                 <td><input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="search" placeholder="Telefone" (input)="Search('telefone', $event.target.value)"></td>
                 <td><input class="form-control" maxlength="100" type="search" placeholder="Email" (input)="Search('email', $event.target.value)"></td>
@@ -71,21 +71,21 @@
               </tr>
 
               <tr *ngFor="let item of tempItemsList">
-                  <td class="situacao">
+                  <td class="situacao td-pequeno">
                     <b [ngClass]="item?.situacao === 'Ativo' ? 'table-row--green status--green status' : 'table-row--red status--red status'">{{ item?.situacao }}</b>
                   </td>
-                  <td class="foto"> 
+                  <td class="foto td-pequeno"> 
                     <ngx-avatar *ngIf="!item?.foto" name="{{ item?.nome }}" initialsSize="2" ></ngx-avatar>
                     <img *ngIf="item?.foto" src="{{ item?.foto }}" class="rounded-circle z-depth-0 foto-socio" height="50" width="50" alt="" (click)="showImage(item?.foto)">
                   </td>
                   <td class="td-pequeno">{{ item?.id }}</td>
-                  <td class="td-pequeno">{{ item?.matricula }}</td>
+                  <td class="td-medio">{{ item?.matricula }}</td>
                   <td>{{ item?.nome }}</td>
                   <td>{{ reverseStringDate(item?.data_de_nascimento) | mask: 'd0/M0/0000' }}</td>
                   <td>{{ item?.RG | mask: '00.000.000-0'}}</td>
                   <td>{{ reverseStringDate(item?.data_emissao) | mask: 'd0/M0/0000' }}</td>
-                  <td class="td-pequeno">{{ item?.local_emissao }}</td>
-                  <td class="td-pequeno">{{ item?.orgao_expedidor }}</td>
+                  <td class="td-medio">{{ item?.local_emissao }}</td>
+                  <td class="td-medio">{{ item?.orgao_expedidor }}</td>
                   <td>{{ item?.CPF | mask: '000.000.000-00'}}</td>
                   <td>{{ item?.titulo_de_Eleitor }}</td>
                   <td>{{ item?.PIS_PASEP | mask: '000.00000.00-0' }}</td>
@@ -93,10 +93,10 @@
                   <td>{{ item?.nome_da_Mae }}</td>
                   <td>{{ item?.nome_do_Pai }}</td>
                   <td>{{ item?.endereco }}</td>
-                  <td class="td-pequeno">{{ item?.numero }}</td>
+                  <td class="td-medio">{{ item?.numero }}</td>
                   <td>{{ item?.complemento }}</td>
-                  <td class="td-pequeno">{{ item?.CEP | mask: '00000-000'}}</td>
-                  <td class="td-pequeno">{{ item?.UF }}</td>
+                  <td class="td-medio">{{ item?.CEP | mask: '00000-000'}}</td>
+                  <td class="td-medio">{{ item?.UF }}</td>
                   <td>{{ item?.cidade }}</td>
                   <td>{{ item?.telefone | mask: '(00) 0000-0000||(00) 00000-0000'}}</td>
                   <td>{{ item?.email }}</td>

@@ -37,6 +37,7 @@ export class ProductionService {
         const loteItemsData = new FormData();
         prodInfoItems.forEach(item => {
           let totalTimeItem = this.sharedVariableService.difTime(item.start, item.end);
+          
           loteItemsData.append('finalizado', item.end);
           loteItemsData.append('iniciado', item.start);
           loteItemsData.append('num_lote', prodInfoHead.currentLote);

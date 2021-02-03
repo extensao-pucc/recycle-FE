@@ -18,18 +18,26 @@ i {
     margin-right: 10px;
 }
 
+.shadow-button {
+    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 30%);
+}
+
 div.table-list table {
     margin-bottom: 0.1px;
 }
 
-th, td {
+.table th, .table td {
     vertical-align: middle;
     white-space: nowrap;
     min-width: 170px;
 }
 
-td.td-pequeno {
+td.td-medio {
     min-width: 130px;
+}
+
+table td.td-pequeno, th.th-pequeno {
+    min-width: 100px;
 }
 
 .table-list {

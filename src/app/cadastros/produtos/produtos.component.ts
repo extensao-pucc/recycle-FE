@@ -99,8 +99,10 @@ export class ProdutosComponent implements OnInit {
     this.showForm = false;
   }
 
-  updateItem(item: any): void {
-    this.itemForm.controls.id.setValue(item.id);
+  updateCloneItem(item: any, title: any): void {
+    if (title === 'update'){
+      this.itemForm.controls.id.setValue(item.id);
+    }
     this.itemForm.controls.codigo.setValue(item.codigo);
     this.itemForm.controls.descricao.setValue(item.descricao);
     this.itemForm.controls.familia.setValue(item.familia.id);
@@ -163,7 +165,7 @@ export class ProdutosComponent implements OnInit {
     this.yesNoMessage = {
       title,
       mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
-      items: [title === 'Deletar' ? items.descricao : formValues.descricao],
+      items: [title === 'Deletar' ? items.descricao + ' - ' + items.qualidade.nome : formValues.descricao],
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {

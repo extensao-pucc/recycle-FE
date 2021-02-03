@@ -85,6 +85,7 @@ export class TriagemComponent implements OnInit {
       this.headForm.controls.lote.setValue(prodInfoHead['currentLote']);
       this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(prodInfoHead['start']));
       this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(prodInfoHead['start']));
+      this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead['end']));
       this.headForm.controls.situacao.setValue(prodInfoHead['status']);
       this.headForm.controls.socio.setValue(prodInfoHead.socio.nome);
       this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor.razao_social_nome);
@@ -175,12 +176,14 @@ export class TriagemComponent implements OnInit {
     if (this.headForm.get('socio').value && this.headForm.get('fornecedor').value && this.headForm.get('materia_prima').value) {
       if (this.statusProd === '') {
 
-        // const numLote = new FormData();
-        // numLote.append('triagem', (this.lastTriagem + 1).toString());
-        // this.crudService.updateItem('parametros', numLote, 1).subscribe(response => {
-        //   console.log(numLote)
-        //   console.log('Cadu')
-        // }, err => {});
+        const nextTriagem = this.lastTriagem + 1;
+        const numLote = new FormData();
+        numLote.append('numero_proxima_NFE', this.motivosDeParada.numero_proxima_NFE);
+        numLote.append('numero_proxima_NFS', this.motivosDeParada.numero_proxima_NFS);
+        numLote.append('prensa', this.motivosDeParada.prensa);
+        numLote.append('remanufatura', this.motivosDeParada.remanufatura);
+        numLote.append('triagem', nextTriagem.toString());
+        this.crudService.updateItem('parametros', numLote, '1').subscribe(response => {}, err => {});
 
         this.headForm.controls.lote.setValue(this.lastTriagem + 1);
         this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(new Date()));
@@ -311,10 +314,11 @@ export class TriagemComponent implements OnInit {
     if (prodInfoItems) { // Verifica se existe itens na produção
       if (prodInfoItems.filter(item => item.edit === true).length == 0) { // Verifica se nenhum item ainda não foi fechado  
            
-        this.ProductionService.createTriagem(prodInfoHead, prodInfoItems, productionBreaks);
+        this.ProductionService.createTriagem(prodInfoHead, prodInfoItems, productionBreaks);        
+        this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead.end));
+        prodInfoHead.status = 'Finalizada';
+        localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
         
-        this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead['end']));
-        prodInfoHead.status = 'Finalizada';      
       } else {
         this.toastService.addToast('Feche todos os Tambores/Bags para Finalizar', 'darkred');
       }
@@ -362,14 +366,14 @@ export class TriagemComponent implements OnInit {
     this.updateProductionSummary();
   }
 
-  // atualiza a quantidade do item do lote
+  // Atualiza a quantidade do item do lote
   updateQtn(idx, value) {
     this.lotItems[idx].qtn = value;
     localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
     this.updateProductionSummary();
   }
 
-  // atualiza o resumo da produção
+  // Atualiza o resumo da produção
   updateProductionSummary(): void {
     this.totQtn = 0
     this.totBag = this.lotItems.map(item => item.numBag).length;

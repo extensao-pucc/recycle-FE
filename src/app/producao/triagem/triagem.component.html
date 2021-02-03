@@ -62,7 +62,7 @@
         <button #startBtn type="button" class="btn btn-primary btn-lg" (click)="showModal('Iniciar')"><i class="fa fa-play-circle"></i>Iniciar Produção</button>
         <button #pausetBtn type="button" class="btn btn-warning btn-lg" (click)="showModal('Pausar')"><i class="fa fa-pause-circle"></i>Pausar Produção</button>
         <button #stopBtn type="button" class="btn btn-danger btn-lg" (click)="showModal('Finalizar')"><i class="fa fa-check-circle"></i>Finalizar Produção</button>
-        <button #printBtn type="button" class="btn btn-success btn-lg" (click)="showModal('Imprimir')"><i class="fa fa-print"></i>Imprimir Produção</button>
+        <button #printBtn type="button" class="btn btn-success btn-lg" (click)="showModal('Imprimir')"><i class="fa fa-print"></i>Imprimir Etiquetas</button>
     </div>
     
     <!-- Lote items -->
@@ -86,16 +86,16 @@
           </thead>
           <tbody #itemsLoteTable>
             <tr *ngFor="let item of lotItems;let idx=index;">
-              <td class="numBag td-pequeno" id="numBag-{{idx}}">
+              <td class="numBag td-medio" id="numBag-{{idx}}">
                 <span>{{ item.numBag }}</span>
               </td>
               <td class="product">
                 <span tooltip="Descrição: {{ item.product.descricao }}">{{ item.product.descricao }}</span>
               </td>
-              <td class="quality td-pequeno">
+              <td class="quality td-medio">
                 <span>{{ item.product.qualidade.nome }}</span>
               </td>
-              <td class="qtn td-pequeno">
+              <td class="qtn td-medio">
                 <span *ngIf="!item.edit">{{ item.qtn }} kg</span>
                 <input *ngIf="item?.edit" class="form-control" type="number" [value]="item.qtn" (keyup)="updateQtn(idx, $event.target.value)" [disabled]="statusProd != 'Iniciada'">
               </td>
@@ -149,7 +149,6 @@
         <thead class="thead-dark">
           <tr>
             <th scope="col">Tambor/Bag Total <i class="fa fa-question-circle" tooltip="Total de tambor / bag utilizados até o momento na produção atual"></i></th>
-            <!-- <th scope="col">Total Produto</th> -->
             <th scope="col">Quantidade Total <i class="fa fa-question-circle" tooltip="Soma total de cada tambor usados na produção atual"></i></th>
             <th scope="col">Tempo Pausado <i class="fa fa-question-circle" tooltip="Tempo total de pausas (Tempo atualizado ao finalizar uma pausa)"></i></th>
             <th scope="col">Tempo Decorrido <i class="fa fa-question-circle" tooltip="Este tempo não inclue pausar"></i></th>
@@ -221,14 +220,20 @@
                   </p>
                   <ng-select formControlName="product" name="product">
                     <ng-component *ngFor="let produto of produtos">
-                      <ng-option *ngIf="selectedFornecedor.id === produto.fornecedor.id" [value]="produto">{{produto.descricao}}</ng-option>
+                      <ng-option *ngIf="selectedFornecedor.id === produto.fornecedor.id" [value]="produto">{{produto.descricao}} - {{produto.qualidade.nome}}</ng-option>
                     </ng-component>
                   </ng-select>
 
-                  <p for="fornecedor">Socio:</p>
+                  <p for="fornecedor">Socio:
+                    <i class="fa fa-question-circle" tooltip="Apenas sócios ativos aparecem aqui"></i>
+                  </p>
                   <ng-select formControlName="socio" name="socio">
                     <ng-component  *ngFor="let socio of socios" >
-                      <ng-option *ngIf="socio?.situacao === 'Ativo'" [value]="socio">{{socio.nome}}</ng-option>
+                      <ng-option *ngIf="socio?.situacao === 'Ativo'" [value]="socio">
+                        <ngx-avatar *ngIf="!socio?.foto" name="{{ socio?.nome }}" initialsSize="2" size="30"></ngx-avatar>
+                        <img *ngIf="socio?.foto" src="{{ socio?.foto }}" class="rounded-circle z-depth-0 foto-socio" height="30" width="30" alt="">
+                        {{socio.nome}}
+                      </ng-option>
                     </ng-component>
                   </ng-select>
                 </form>

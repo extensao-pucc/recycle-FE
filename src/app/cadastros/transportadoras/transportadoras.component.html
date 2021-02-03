@@ -28,16 +28,16 @@
 
             <tbody>
               <tr>
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
+                <td class="td-medio"><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
                 <td><input class="form-control" mask="CPF_CNPJ" type="search" placeholder="CPF/CNPJ" (input)="Search('CNPJ_CPF', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Razão/Nome" (input)="Search('razao_social_nome', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Inscrição" (input)="Search('IE', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Endereço" (input)="Search('endereco', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Complemento" (input)="Search('complemento', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Bairro" (input)="Search('bairro', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" mask="00000-000" type="search" placeholder="CEP" (input)="Search('CEP', $event.target.value)"></td>
-                <td class="td-pequeno"><input class="form-control" type="search" placeholder="UF" (input)="Search('UF', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" mask="00000-000" type="search" placeholder="CEP" (input)="Search('CEP', $event.target.value)"></td>
+                <td class="td-medio"><input class="form-control" type="search" placeholder="UF" (input)="Search('UF', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Cidade" (input)="Search('cidade', $event.target.value)"></td>
                 <td><input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="search" placeholder="Telefone" (input)="Search('telefone', $event.target.value)"></td>
                 <td><input class="form-control" type="search" placeholder="Email" (input)="Search('email', $event.target.value)"></td>
@@ -45,16 +45,16 @@
               </tr>
 
               <tr *ngFor="let item of tempItemsList">
-                <td class="td-pequeno">{{ item?.id }}</td>
+                <td class="td-medio">{{ item?.id }}</td>
                 <td>{{ item?.CNPJ_CPF | mask: 'CPF_CNPJ'}}</td>
                 <td>{{ item?.razao_social_nome }}</td>
                 <td>{{ item?.IE }}</td>
                 <td>{{ item?.endereco }}</td>
-                <td class="td-pequeno">{{ item?.numero }}</td>
+                <td class="td-medio">{{ item?.numero }}</td>
                 <td>{{ item?.complemento }}</td>
                 <td>{{ item?.bairro }}</td>
-                <td class="td-pequeno">{{ item?.CEP | mask: '00000-000'}}</td>
-                <td class="td-pequeno">{{ item?.UF }}</td>
+                <td class="td-medio">{{ item?.CEP | mask: '00000-000'}}</td>
+                <td class="td-medio">{{ item?.UF }}</td>
                 <td>{{ item?.cidade }}</td>
                 <td>{{ item?.telefone | mask: '(00) 0000-0000||(00) 00000-0000'}}</td>
                 <td>{{ item?.email }}</td>
