@@ -366,14 +366,14 @@ export class TriagemComponent implements OnInit {
     this.updateProductionSummary();
   }
 
-  // atualiza a quantidade do item do lote
+  // Atualiza a quantidade do item do lote
   updateQtn(idx, value) {
     this.lotItems[idx].qtn = value;
     localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
     this.updateProductionSummary();
   }
 
-  // atualiza o resumo da produção
+  // Atualiza o resumo da produção
   updateProductionSummary(): void {
     this.totQtn = 0
     this.totBag = this.lotItems.map(item => item.numBag).length;

@@ -62,8 +62,12 @@
                 <td>R$ {{ item?.preco_compra | mask: 'separator.2'}}</td>
                 <td>R$ {{ item?.preco_venda | mask: 'separator.2'}}</td>
                 <th>
-                    <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
-                    <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
+                    <button type="button" class="btn btn-info mr-2" (click)="updateCloneItem(item, 'update')"><i class="fa fa-edit"></i>Editar</button>
+                    <button type="button" class="btn btn-danger mr-2" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
+                    <button type="button" class="btn btn-light shadow-button" (click)="updateCloneItem(item, 'clone')" 
+                      tooltip="Duplique seu produto e edite apenas o que precisar">
+                      <i class="fa fa-clone"></i>Duplicar
+                    </button>
                 </th>
               </tr>
             </tbody>
