@@ -166,6 +166,22 @@
             <td>
               <span *ngIf="totalTimeProduction">{{ totalTimeProduction | date:"HH:mm:ss" }}</span>              
             </td>
+          </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-hover table-shadow">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Observações <i class="fa fa-question-circle" tooltip="Adicione aqui, informações que achar importante sobre esta produção"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <textarea class="form-control" name="observation" rows="3" [(ngModel)]="observation" (keyup)="updateObs()"></textarea>
+            </td>
+          </tr>
         </tbody>
     </table>
   </div>
