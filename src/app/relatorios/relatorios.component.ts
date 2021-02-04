@@ -8,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class RelatoriosComponent implements OnInit {
 
   constructor() { }
-
+  public headForm
+  public socios
   ngOnInit(): void {
   }
 
