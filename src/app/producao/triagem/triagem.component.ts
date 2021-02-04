@@ -54,6 +54,7 @@ export class TriagemComponent implements OnInit {
   public totQtn: any;
   public totTime: any;
   public finaltime: any;
+  public observation = '';
 
   public totalTimeProduction: any;
   public totalTimeBreak: any
@@ -93,6 +94,7 @@ export class TriagemComponent implements OnInit {
       this.statusProd = prodInfoHead['status'];
       this.selectedFornecedor = prodInfoHead['fornecedor']
       this.totalTimeBreak = prodInfoHead['totalTimeBreak'];
+      this.observation = prodInfoHead['observacao'];
       this.changeProductionStatus();
       
       const prodInfoItems = JSON.parse(localStorage.getItem('prodInfoItems'));
@@ -199,6 +201,7 @@ export class TriagemComponent implements OnInit {
           totalTimeBreak: null,
           status: 'Iniciada',
           socio: this.headForm.get('socio').value,
+          observacao: this.observation
         };
         localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
         this.statusProd = 'Iniciada';
@@ -367,10 +370,16 @@ export class TriagemComponent implements OnInit {
   }
 
   // Atualiza a quantidade do item do lote
-  updateQtn(idx, value) {
+  updateQtn(idx, value): void {
     this.lotItems[idx].qtn = value;
     localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
     this.updateProductionSummary();
+  }
+
+  updateObs(): void {
+    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
+    prodInfoHead.observacao = this.observation;
+    localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
   }
 
   // Atualiza o resumo da produção
