@@ -91,16 +91,17 @@ export class TriagemComponent implements OnInit {
         this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead['end']));
         this.headForm.controls.situacao.setValue(prodInfoHead['status']);
         this.headForm.controls.socio.setValue(prodInfoHead.socio.nome);
-        this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor.razao_social_nome);
         this.headForm.controls.materia_prima.setValue(prodInfoHead.materia.nome);
         this.statusProd = prodInfoHead['status'];
         this.totalTimeBreak = prodInfoHead['totalTimeBreak'];
-
+        
         setInterval(() => {
           this.getElapsedTime();
           this.currentTime = new Date();
         }, 1000);
       }
+
+      this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor.razao_social_nome);
       this.selectedFornecedor = prodInfoHead['fornecedor']
       this.changeProductionStatus();
 
@@ -353,7 +354,7 @@ export class TriagemComponent implements OnInit {
     if (!prodInfoHead){
       const produto = this.loteItemForm.get('product').value
       this.selectedFornecedor = produto.fornecedor
-      this.headForm.controls.fornecedor.setValue(this.selectedFornecedor.razao_social_nome);
+      this.headForm.controls.fornecedor.setValue(this.selectedFornecedor);
       // this.headForm.controls.fornecedor.setText(this.selectedFornecedor.razao_social_nome);
 
       prodInfoHead = {
