@@ -134,7 +134,7 @@ export class SharedVariableService {
     return dif
   }
 
-  secondsToDate(time): Date {
+  secondsToArryTime(time): any {
     let hours = 0;
     let minutes = 0;
     let seconds = 0;
@@ -151,11 +151,12 @@ export class SharedVariableService {
 
     seconds = time;
 
-    let date = new Date();
-    date.setHours(hours);
-    date.setMinutes(minutes);
-    date.setSeconds(seconds);
+    let TotTime = { 'hours': hours, 'minutes': minutes, 'seconds': seconds}
+    // let date = new Date();
+    // date.setHours(hours);
+    // date.setMinutes(minutes);
+    // date.setSeconds(seconds);
     
-    return date;
+    return TotTime;
   }
 }
