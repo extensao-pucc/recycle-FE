@@ -101,7 +101,7 @@ export class TriagemComponent implements OnInit {
         }, 1000);
       }
 
-      this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor.razao_social_nome);
+      this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor);
       this.selectedFornecedor = prodInfoHead['fornecedor']
       this.changeProductionStatus();
 
