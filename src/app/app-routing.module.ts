@@ -1,3 +1,4 @@
+import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -20,6 +21,8 @@ import { UnidadesDeMedidaComponent } from './cadastros/unidades-de-medida/unidad
 import { TriagemComponent } from './producao/triagem/triagem.component';
 import { PrensaComponent } from './producao/prensa/prensa.component';
 import { RemanufaturaComponent } from './producao/remanufatura/remanufatura.component';
+import { RelatoriosComponent } from './relatorios/relatorios.component';
+
 
 const routes: Routes = [
   {
@@ -40,6 +43,9 @@ const routes: Routes = [
       { path: 'triagem', component: TriagemComponent, canActivate: [AuthGuard] },
       { path: 'prensa', component: PrensaComponent, canActivate: [AuthGuard] },
       { path: 'remanufatura', component: RemanufaturaComponent, canActivate: [AuthGuard] },
+      { path: 'relatorios', component: RelatoriosComponent, canActivate: [AuthGuard] },
+      { path: 'historicoDeProduto', component: HistoricoDeProdutoComponent, canActivate: [AuthGuard] },
+
     ]
   },
   {

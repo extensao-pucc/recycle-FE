@@ -42,8 +42,18 @@
           </div>
         </li>
         
-        <li class="nav-item">
-          <a class="nav-link" routerLink="/home">Relatórios</a>
+        <li>
+          <div class="btn-group" dropdown>
+            <button id="button-basic" dropdownToggle type="button" class="btn" aria-controls="dropdown-basic">
+                    Relatórios
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu"
+                role="menu" aria-labelledby="button-basic">
+              <li role="menuitem"><a class="dropdown-item" routerLink="/historicoDeProduto">Historico de Produto</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/relatorios">Relatório 2</a></li>
+              <li role="menuitem"><a class="dropdown-item" routerLink="/relatorios">Relatório 3</a></li>
+            </ul>
+          </div>
         </li>
 
       </ul>
