@@ -105,3 +105,28 @@ tbody td:last-child {
 }
 /* ========================================= */
 
+.productOption {
+    display: inline-block;
+}
+
+/* Seleção de produto ========================================= */
+.productSelection {
+    background-color: #17A2B8;
+    color: white;
+    border-radius: 20px;
+    padding: 1px 15px;
+}
+
+.reasonSelection {
+    background-color:  #be46c0;
+    color: white;
+    border-radius: 20px;
+    padding: 1px 15px;
+}
+
+.companySelection {
+    background-color:  #397cc2;
+    color: white;
+    border-radius: 20px;
+    padding: 1px 15px;
+}
