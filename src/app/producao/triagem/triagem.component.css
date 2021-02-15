@@ -27,6 +27,19 @@ form.cabecalho {
     margin-bottom: 25px;
 }
 
+input#fornecedor-triagem{
+    width: 100%;
+    padding-left: 10px;
+    padding-right: 50px;
+    color: #333;
+    background-color: #fff;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    min-height: 36px;
+    align-items: center;
+    cursor: default;
+}
+
 .btn-prod button {
     margin: 10px 0;  
     color: white;
@@ -105,3 +118,26 @@ tbody td:last-child {
 }
 /* ========================================= */
 
+.productOption {
+    display: inline-block;
+}
+
+/* Seleção de produto ========================================= */
+.selesctionItem {
+    color: white;
+    border-radius: 20px;
+    padding: 1px 15px;
+    margin-top: 6px;
+}
+
+.productSelection {
+    background-color: #17A2B8;
+}
+
+.reasonSelection {
+    background-color:  #be46c0;
+}
+
+.companySelection {
+    background-color:  #397cc2;
+}

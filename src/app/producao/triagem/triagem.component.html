@@ -43,9 +43,10 @@
 
           <div class="form-group col-md-4">
               <label for="fornecedor">Fornecedor</label>
-              <ng-select formControlName="fornecedor" name="fornecedor">
+              <ng-select formControlName="fornecedor" name="fornecedor" *ngIf="!selectedFornecedor">
                 <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor">{{ fornecedor.razao_social_nome }}</ng-option>
               </ng-select>
+              <input id="fornecedor-triagem" type="text" *ngIf="selectedFornecedor" value="{{ selectedFornecedor.razao_social_nome }}" tooltip="Não pode ser alterado. Remova os produtos para liberar a edição deste campo" readonly>
           </div>
 
           <div class="form-group col-md-4">
@@ -79,13 +80,13 @@
               <th>Término</th>
               <!-- <th>Status</th> -->
               <th class="text-right">
-                <button class="btn btn-success" (click)="showLoteItemModal()" tooltip="Adicionar item ao lote">
+                <button class="btn btn-success" (click)="showLoteItemModal()" tooltip="Adicionar item ao lote" #itemsLoteTable>
                   <i class="fa fa-plus"></i>Adicionar</button>
               </th>
             </tr>
           </thead>
           <tbody #itemsLoteTable>
-            <tr *ngFor="let item of lotItems;let idx=index;">
+            <tr *ngFor="let item of lotItems; let idx=index;">
               <td class="numBag td-medio" id="numBag-{{idx}}">
                 <span>{{ item.numBag }}</span>
               </td>
@@ -107,21 +108,17 @@
                   {{ item.socio.nome }}
                 </span>
               </td>
-              <td class="time">
-                Dia {{ item.start | date:"dd" }} às {{ item.start | date:"hh:mm:ss" }}
-              </td>
-              <td class="time" *ngIf="item.end">
-                Dia {{ item.end | date:"dd" }} às {{ item.end | date:"hh:mm:ss" }}
-              </td>
-              <td class="time" *ngIf="!item.end">
-                Dia {{ currentTime | date:"dd" }} às {{ currentTime | date:"hh:mm:ss" }}
-              </td>
+              <td class="time" *ngIf="item.start"> Dia {{ item.start | date:"dd" }} às {{ item.start | date:"HH:mm:ss" }}</td>
+              <td class="time" *ngIf="!item.start"></td>
+              <td class="time" *ngIf="!item.start"></td>
+              <td class="time" *ngIf="item.end && item.start"> Dia {{ item.end | date:"dd" }} às {{ item.end | date:"HH:mm:ss" }}</td>
+              <td class="time" *ngIf="!item.end && item.start"> Dia {{ currentTime | date:"dd" }} às {{ currentTime | date:"HH:mm:ss" }}</td>
               
               <td class="options">
                 <button *ngIf="item?.edit" class="btn btn-success mr-2" tooltip="Encerrar pesagem e salvar" (click)="saveLoteItem(idx)" [disabled]="statusProd != 'Iniciada'">
                   <i class="fa fa-save"></i>Fechar Tambor/Bag
                 </button>
-                <button class="btn btn-danger" tooltip="Remover item do lote" (click)="removeLoteItem(item.numBag)" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-trash"></i>Remover</button>
+                <button class="btn btn-danger" tooltip="Remover item do lote" (click)="removeLoteItem(item.numBag)" [disabled]="statusProd === 'Pausada'"><i class="fa fa-trash"></i>Remover</button>
               </td>
             </tr>
           </tbody>
@@ -159,12 +156,14 @@
             <td>{{ totBag }}</td>
             <td>{{ totQtn }} kg</td>
             <td>
-              <span *ngIf="statusProd !== 'Pausada'">{{ totalTimeBreak | date:"HH:mm:ss" }}</span>
+              <span *ngIf="totalTimeBreak && statusProd !== 'Pausada' ">{{totalTimeBreak.hours + ':' + totalTimeBreak.minutes + ':' + totalTimeBreak.seconds
+               }}</span>
               <span *ngIf="!totalTimeBreak && statusProd !== 'Pausada'">Não ocorreram pausas</span>
               <span *ngIf="statusProd === 'Pausada'">Triagem pausada</span>
             </td>
             <td>
-              <span *ngIf="totalTimeProduction">{{ totalTimeProduction | date:"HH:mm:ss" }}</span>              
+              <span *ngIf="totalTimeProduction">{{totalTimeProduction.hours + ':' + totalTimeProduction.minutes + ':' + totalTimeProduction.seconds
+               }}</span>              
             </td>
           </tr>
         </tbody>
@@ -179,7 +178,7 @@
         <tbody>
           <tr>
             <td>
-              <textarea class="form-control" name="observation" rows="3" [(ngModel)]="observation" (keyup)="updateObs()"></textarea>
+              <textarea class="form-control" name="observation" rows="3" [(ngModel)]="observation" (keyup)="updateObs()" placeholder="Digite suas observações sobre a triagem...."></textarea>
             </td>
           </tr>
         </tbody>
@@ -236,8 +235,19 @@
                   </p>
                   <ng-select formControlName="product" name="product">
                     <ng-component *ngFor="let produto of produtos">
-                      <ng-option *ngIf="selectedFornecedor.id === produto.fornecedor.id" [value]="produto">{{produto.descricao}} - {{produto.qualidade.nome}}</ng-option>
-                    </ng-component>
+                      <ng-component *ngIf="!selectedFornecedor">  
+                        <ng-option [value]="produto"> 
+                          <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
+                          <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span> 
+                          <span class="productOption companySelection selesctionItem"> {{ produto.fornecedor.razao_social_nome }} </span>
+                        </ng-option>
+                      </ng-component>
+
+                     <ng-option *ngIf="selectedFornecedor && selectedFornecedor.id === produto.fornecedor.id" [value]="produto">
+                      <span class="productOption productSelection"> {{produto.descricao}} </span> 
+                      <span class="productOption reasonSelection"> {{produto.qualidade.nome}} </span>                       
+                     </ng-option>
+                   </ng-component>
                   </ng-select>
 
                   <p for="fornecedor">Socio:
