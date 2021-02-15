@@ -104,7 +104,6 @@ export class TriagemComponent implements OnInit {
 
       this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor);
       this.selectedFornecedor = prodInfoHead['fornecedor']
-
       this.totalTimeBreak = prodInfoHead['totalTimeBreak'];
       this.observation = prodInfoHead['observacao'];
       this.changeProductionStatus();
@@ -339,12 +338,21 @@ export class TriagemComponent implements OnInit {
 
     if (prodInfoItems) { // Verifica se existe itens na produção
       if (prodInfoItems.filter(item => item.edit === true).length == 0) { // Verifica se nenhum item ainda não foi fechado  
-           
-        this.ProductionService.createTriagem(prodInfoHead, prodInfoItems, productionBreaks);        
-        this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead.end));
-        prodInfoHead.status = 'Finalizada';
-        localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
+        // this.ProductionService.createTriagem(prodInfoHead, prodInfoItems, productionBreaks);        
         
+        let arrayUniqueByKey = [...new Map(prodInfoItems.map(item => [item.product.id, item.product])).values()];
+        arrayUniqueByKey.forEach(item => {
+          Number(item['quantidade'])
+          prodInfoItems.forEach(element => {
+            if (element.product.id === item['id']) {
+              // console.log(item['quantidade'])
+              item['quantidade'] += Number(element.qtn)
+              // console.log(element.product)
+            }
+          });
+          
+        });
+        console.log(arrayUniqueByKey)
       } else {
         this.toastService.addToast('Feche todos os Tambores/Bags para Finalizar', 'darkred');
       }
