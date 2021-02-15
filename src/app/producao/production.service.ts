@@ -29,7 +29,7 @@ export class ProductionService {
     loteData.append('iniciado', prodInfoHead.start);
     loteData.append('socio', prodInfoHead.socio.id);
     loteData.append('tempo_total', prodInfoHead.totalTimeProduction);
-    loteData.append('observacao', 'bla bla bla');
+    loteData.append('observacao', prodInfoHead.observacao);
 
     this.createProduction('lote', loteData).subscribe(response => {
       // setTimeout(() => {    

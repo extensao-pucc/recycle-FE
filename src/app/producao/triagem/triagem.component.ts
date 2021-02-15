@@ -54,6 +54,7 @@ export class TriagemComponent implements OnInit {
   public totQtn: any;
   public totTime: any;
   public finaltime: any;
+  public observation = '';
 
   public totalTimeProduction: any;
   public totalTimeBreak: any
@@ -101,8 +102,11 @@ export class TriagemComponent implements OnInit {
         }, 1000);
       }
 
-      this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor.razao_social_nome);
+      this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor);
       this.selectedFornecedor = prodInfoHead['fornecedor']
+
+      this.totalTimeBreak = prodInfoHead['totalTimeBreak'];
+      this.observation = prodInfoHead['observacao'];
       this.changeProductionStatus();
 
     } else {
@@ -204,6 +208,7 @@ export class TriagemComponent implements OnInit {
           totalTimeBreak: null,
           status: 'Iniciada',
           socio: this.headForm.get('socio').value,
+          observacao: this.observation
         };
 
         let prodInfoItems = JSON.parse(localStorage.getItem('prodInfoItems'));
@@ -396,16 +401,31 @@ export class TriagemComponent implements OnInit {
   }
 
   removeLoteItem(numBag): void {
+    
     this.lotItems = this.lotItems.filter(obj => obj.numBag !== numBag)
+    localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
+    this.updateProductionSummary();
+
+    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
+    if (!prodInfoHead['status'] && prodInfoHead['fornecedor']){
+      if(this.lotItems.length == 0){
+        this.selectedFornecedor = '';
+        localStorage.removeItem('prodInfoHead')
+      }
+    }
+  }
+
+  // Atualiza a quantidade do item do lote
+  updateQtn(idx, value): void {
+    this.lotItems[idx].qtn = value;
     localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
     this.updateProductionSummary();
   }
 
-  // Atualiza a quantidade do item do lote
-  updateQtn(idx, value) {
-    this.lotItems[idx].qtn = value;
-    localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
-    this.updateProductionSummary();
+  updateObs(): void {
+    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
+    prodInfoHead.observacao = this.observation;
+    localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
   }
 
   // Atualiza o resumo da produção

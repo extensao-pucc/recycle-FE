@@ -43,9 +43,10 @@
 
           <div class="form-group col-md-4">
               <label for="fornecedor">Fornecedor</label>
-              <ng-select formControlName="fornecedor" name="fornecedor">
+              <ng-select formControlName="fornecedor" name="fornecedor" *ngIf="!selectedFornecedor">
                 <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor">{{ fornecedor.razao_social_nome }}</ng-option>
               </ng-select>
+              <input id="fornecedor-triagem" type="text" *ngIf="selectedFornecedor" value="{{ selectedFornecedor.razao_social_nome }}" tooltip="Não pode ser alterado. Remova os produtos para liberar a edição deste campo" readonly>
           </div>
 
           <div class="form-group col-md-4">
@@ -117,7 +118,7 @@
                 <button *ngIf="item?.edit" class="btn btn-success mr-2" tooltip="Encerrar pesagem e salvar" (click)="saveLoteItem(idx)" [disabled]="statusProd != 'Iniciada'">
                   <i class="fa fa-save"></i>Fechar Tambor/Bag
                 </button>
-                <button class="btn btn-danger" tooltip="Remover item do lote" (click)="removeLoteItem(item.numBag)" [disabled]="statusProd != 'Iniciada'"><i class="fa fa-trash"></i>Remover</button>
+                <button class="btn btn-danger" tooltip="Remover item do lote" (click)="removeLoteItem(item.numBag)" [disabled]="statusProd === 'Pausada'"><i class="fa fa-trash"></i>Remover</button>
               </td>
             </tr>
           </tbody>
@@ -164,6 +165,22 @@
               <span *ngIf="totalTimeProduction">{{totalTimeProduction.hours + ':' + totalTimeProduction.minutes + ':' + totalTimeProduction.seconds
                }}</span>              
             </td>
+          </tr>
+        </tbody>
+    </table>
+
+    <table class="table table-hover table-shadow">
+        <thead class="thead-dark">
+          <tr>
+            <th scope="col">Observações <i class="fa fa-question-circle" tooltip="Adicione aqui, informações que achar importante sobre esta produção"></i></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <textarea class="form-control" name="observation" rows="3" [(ngModel)]="observation" (keyup)="updateObs()" placeholder="Digite suas observações sobre a triagem...."></textarea>
+            </td>
+          </tr>
         </tbody>
     </table>
   </div>
@@ -220,9 +237,9 @@
                     <ng-component *ngFor="let produto of produtos">
                       <ng-component *ngIf="!selectedFornecedor">  
                         <ng-option [value]="produto"> 
-                          <span class="productOption productSelection"> {{produto.descricao}} </span> 
-                          <span class="productOption reasonSelection"> {{produto.qualidade.nome}} </span> 
-                          <span class="productOption companySelection"> {{ produto.fornecedor.razao_social_nome }} </span>
+                          <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
+                          <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span> 
+                          <span class="productOption companySelection selesctionItem"> {{ produto.fornecedor.razao_social_nome }} </span>
                         </ng-option>
                       </ng-component>
 
