@@ -102,7 +102,7 @@ export class TriagemComponent implements OnInit {
         }, 1000);
       }
 
-      this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor.razao_social_nome);
+      this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor);
       this.selectedFornecedor = prodInfoHead['fornecedor']
       this.totalTimeBreak = prodInfoHead['totalTimeBreak'];
       this.observation = prodInfoHead['observacao'];
@@ -409,9 +409,18 @@ export class TriagemComponent implements OnInit {
   }
 
   removeLoteItem(numBag): void {
+    
     this.lotItems = this.lotItems.filter(obj => obj.numBag !== numBag)
     localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
     this.updateProductionSummary();
+
+    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
+    if (!prodInfoHead['status'] && prodInfoHead['fornecedor']){
+      if(this.lotItems.length == 0){
+        this.selectedFornecedor = '';
+        localStorage.removeItem('prodInfoHead')
+      }
+    }
   }
 
   // Atualiza a quantidade do item do lote
