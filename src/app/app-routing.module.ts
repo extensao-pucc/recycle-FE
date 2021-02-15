@@ -1,3 +1,4 @@
+import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 
@@ -43,6 +44,7 @@ const routes: Routes = [
       { path: 'prensa', component: PrensaComponent, canActivate: [AuthGuard] },
       { path: 'remanufatura', component: RemanufaturaComponent, canActivate: [AuthGuard] },
       { path: 'relatorios', component: RelatoriosComponent, canActivate: [AuthGuard] },
+      { path: 'historicoDeProduto', component: HistoricoDeProdutoComponent, canActivate: [AuthGuard] },
 
     ]
   },
