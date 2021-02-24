@@ -115,3 +115,24 @@ td div {
     border-radius: 20px;
     padding: 1px 15px;
 }
+
+/* Seleção de produto ========================================= */
+.selesctionItem {
+    color: white;
+    border-radius: 20px;
+    padding: 1px 15px;
+    margin-top: 6px;
+    margin-right: 5px;
+}
+
+.productSelection {
+    background-color: #17A2B8;
+}
+
+.reasonSelection {
+    background-color:  #519bd0;
+}
+
+.companySelection {
+    background-color:  #397cc2;
+}
