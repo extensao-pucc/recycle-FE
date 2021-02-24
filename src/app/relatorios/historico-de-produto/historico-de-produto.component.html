@@ -8,22 +8,26 @@
                 <div class="form-row">
                     
                     <div class="form-group col-md-6"> 
-                        <label for="tipo_relatorio">Produto</label>                   
-                        <select class="custom-select">
-                            <option value="1">Papelão - Solto sujo - Empresa 1</option>
-                            <option value="2">Latinha 2 - Solto limpo - Empresa 1</option>
-                            <option value="3">Sacola - Plastico - EMpresa 2</option>
-                        </select>
+                        <label for="produto">Produto</label>                   
+                        <ng-select formControlName="product" name="product">
+                            <ng-component *ngFor="let produto of produtos">
+                                <ng-option [value]="produto"> 
+                                  <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
+                                  <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span> 
+                                  <span class="productOption companySelection selesctionItem"> {{ produto.fornecedor.razao_social_nome }} </span>
+                                </ng-option>
+                              </ng-component>
+                          </ng-select>
                     </div>  
 
                     <div class="form-group col-md-3">
                         <label for="data">Data Início <i class="fa fa-question-circle" tooltip="Gostaria de visualizar o historico partindo de qual dia?"></i></label>
-                        <input class="form-control" formControlName="data-inicio" type="date">
+                        <input class="form-control" formControlName="inicio"  name="inicio" type="date">
                     </div>  
 
                     <div class="form-group col-md-3">
                         <label for="data">Data Término <i class="fa fa-question-circle" tooltip="Gostaria de visualizar o historico até qual dia?"></i></label>
-                        <input class="form-control" formControlName="data-fim" type="date">
+                        <input class="form-control" formControlName="fim" name="fim" type="date">
                     </div>  
                 </div>
             </form>

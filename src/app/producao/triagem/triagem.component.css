@@ -128,6 +128,7 @@ tbody td:last-child {
     border-radius: 20px;
     padding: 1px 15px;
     margin-top: 6px;
+    margin-right: 5px;
 }
 
 .productSelection {
