@@ -48,6 +48,10 @@ table td.td-pequeno, th.th-pequeno {
     max-height: 80%;
 }
 
+.table-shadow {
+    box-shadow: 0 4px 8px 0 rgb(0 0 0 / 19%), 0 6px 20px 0 rgb(0 0 0 / 19%);
+}
+
 /*Scrowbar =============================================================================== */
 ::-webkit-scrollbar {
     width: 10px;
