@@ -1,18 +1,18 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
-html {
+/* html {
     height: 100%;
-}
+} */
 
-body {
+/* body {
     height: 100%;
     width: 100%;
-    overflow: hidden;  /*makes the body non-scrollable (we will add scrolling to the sidebar and main content containers)*/
-    margin: 0px;  /*removes default style*/
-    display: flex;  /*enables flex content for its children*/
+    overflow: hidden;
+    margin: 0px;  
+    display: flex; 
     box-sizing: border-box;
     position: fixed;
-}
+} */
 
 i {
     margin-right: 10px;
@@ -63,10 +63,6 @@ table td.td-pequeno, th.th-pequeno {
 
 ::-webkit-scrollbar-track-piece {
     background: rgb(177, 177, 177);
-}
-
-app-root {
-    min-width: 100%;
 }
 
 .error-msg {
