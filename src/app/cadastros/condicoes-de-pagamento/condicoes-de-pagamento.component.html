@@ -1,9 +1,9 @@
-<div class="d-flex background">
-    <div class="center">
+<!-- <div class="d-flex background"> -->
+    <div class="">
       <h2 class="d-flex justify-content-between">Condições de Pagamento    
         <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()">
         <i class="fa fa-plus"></i>Cadastrar</button>
-    </h2>
+      </h2>
 
         <!-- Tabela -->
         <div class="table-list">
@@ -69,6 +69,6 @@
         <!-- =============== -->
     </div>
 
-</div>  
+<!-- </div>   -->
 
 <app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>
