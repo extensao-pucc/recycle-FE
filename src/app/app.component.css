@@ -1,12 +1,9 @@
 .body {
-    height: 100vh;
     display: grid;
 }
 
 .navigation {
     grid-template-areas: navigation;
-    height: auto;
-    /* overflow: hidden; */
 }
 
 .main {
@@ -14,7 +11,7 @@
     align-items: center; /* alinha verticalmente */
     justify-items: center; /* alinha horizontalmente */
     padding: 30px;
-    border: 15px solid green;
+    overflow-x: auto;
 }
 
 /* Extra small devices (phones, 600px and down) */
@@ -28,6 +25,10 @@
         "navigation"
         "main";
     }
+
+    .navigation {
+        height: auto;
+    }
 }
 
 /* Large devices (laptops/desktops, 992px and up) */
@@ -35,10 +36,14 @@
 @media only screen and (min-width: 992px) {
     .body {
         grid-template-columns: 1fr;
-        grid-template-rows: 89px auto;
+        grid-template-rows: auto auto;
         grid-template-areas: 
         "navigation"
         "main";
+    }
+
+    .navigation {
+        height: 80px;
     }
 }
 
@@ -49,11 +54,9 @@
 }
 
 .center {
-    /* overflow: auto; */
     margin: 0px;
     background-color: white;
     box-shadow: 0 4px 10px 0 rgb(0 0 0 / 20%);
-    /* width: 90%; */
     height: 100%;
     padding: 50px;
 }

@@ -1,71 +1,66 @@
-<div class="d-flex background">
-    <div class="center">
-      <h2 class="d-flex justify-content-between">Motivos de Parada    
-          <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"><i class="fa fa-plus"></i>Cadastrar</button>
-      </h2>
+<h2 class="d-flex justify-content-between">Motivos de Parada    
+    <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"><i class="fa fa-plus"></i>Cadastrar</button>
+</h2>
 
-        <!-- Tabela -->
-        <div class="table-list">
-          <table class="table table-hover" *ngIf="!showForm">
-              <thead class="thead-dark">
-                <tr>
-                  <th scope="col">ID</th>
-                  <th scope="col">Motivo</th>
-                  <th scope="col">Opções</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
-                  <td><input class="form-control" type="search" placeholder="Motivo" (input)="Search('motivo', $event.target.value)"></td>
-                  <th></th>
-                </tr>
-  
-                <tr *ngFor="let item of tempItemsList">
-                  <td>{{ item?.id }}</td>
-                  <td>{{ item?.motivo }}</td>
-                  <th>
-                      <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
-                      <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
-                  </th>
-                </tr>
-              </tbody>
-          </table>
-        </div>
-        <!-- ========== -->
+<!-- Tabela -->
+<div class="table-list">
+  <table class="table table-hover" *ngIf="!showForm">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Motivo</th>
+          <th scope="col">Opções</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
+          <td><input class="form-control" type="search" placeholder="Motivo" (input)="Search('motivo', $event.target.value)"></td>
+          <th></th>
+        </tr>
 
-        <!-- Formulario -->
-        <hr>
-        <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
-              
-          <input formControlName="id" hidden="true">
-          <label>Motivo: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="motivo">
-          <p class="error-msg" *ngIf="itemForm.controls.motivo.errors">
-            <i class="fa fa-times"></i> {{ itemForm.controls.motivo.errors.msgErro }}
-          </p>
-        
-          <div class="row align-items-end">
-            <hr>
-  
-            <div>
-              <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
-              <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
-              <button class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value" (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
-            </div>
-          </div>          
-                    
-        </form>
-        <!-- ========== -->
-        
-        <!-- Lista sem dados -->
-        <div *ngIf="!showForm && !tempItemsList?.length"  class="alert alert-info " role="alert">
-          <h4 class="alert-heading ">Opa !</h4>
-          <p>Nenhum resultado foi encontrado.</p>
-        </div>
-        <!-- =============== -->
+        <tr *ngFor="let item of tempItemsList">
+          <td>{{ item?.id }}</td>
+          <td>{{ item?.motivo }}</td>
+          <th>
+              <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
+              <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
+          </th>
+        </tr>
+      </tbody>
+  </table>
+</div>
+<!-- ========== -->
 
+<!-- Formulario -->
+<hr>
+<form [formGroup]="itemForm" *ngIf="itemForm && showForm">
+      
+  <input formControlName="id" hidden="true">
+  <label>Motivo: </label>
+  <input class="form-control" type="text" maxlength="100" formControlName="motivo">
+  <p class="error-msg" *ngIf="itemForm.controls.motivo.errors">
+    <i class="fa fa-times"></i> {{ itemForm.controls.motivo.errors.msgErro }}
+  </p>
+
+  <div class="row align-items-end">
+    <hr>
+
+    <div>
+      <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
+      <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
+      <button class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value" (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
     </div>
-</div>  
+  </div>          
+            
+</form>
+<!-- ========== -->
+
+<!-- Lista sem dados -->
+<div *ngIf="!showForm && !tempItemsList?.length"  class="alert alert-info " role="alert">
+  <h4 class="alert-heading ">Opa !</h4>
+  <p>Nenhum resultado foi encontrado.</p>
+</div>
+<!-- =============== -->
 
 <app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>
