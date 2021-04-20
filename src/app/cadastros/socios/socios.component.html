@@ -1,400 +1,398 @@
-<div class="">
-  <h2 class="d-flex justify-content-between">Socios   
-    <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"><i class="fa fa-plus"></i>Cadastrar</button>
-  </h2>
+<h2 class="d-flex justify-content-between">Socios   
+  <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"><i class="fa fa-plus"></i>Cadastrar</button>
+</h2>
 
-  <!-- Tabela -->
-  <div class="table-list">
-    <table class="table" *ngIf="!showForm">
-      <thead class="table-thead thead-dark">
-        <tr>
-          <th class="table-th th-pequeno"></th>
-          <th class="table-th th-pequeno"></th>
-          <th class="table-th th-pequeno"></th>
-          <th class="table-th">ID</th>
-          <th class="table-th">Matrícula</th>
-          <th class="table-th">Nome</th>
-          <th class="table-th">Data de nascimento</th>
-          <th class="table-th">RG</th>
-          <th class="table-th">Data de emissão</th>
-          <th class="table-th">Local de emissão</th>
-          <th class="table-th">Orgão expedidor</th>
-          <th class="table-th">CPF</th>
-          <th class="table-th">Título de eleitor</th>
-          <th class="table-th">PIS/PASEP</th>
-          <th class="table-th">NIT</th>
-          <th class="table-th">Nome da Mãe</th>
-          <th class="table-th">Nome do Pai</th>
-          <th class="table-th">Endereço</th>
-          <th class="table-th">Número</th>
-          <th class="table-th">Complemento</th>
-          <th class="table-th">CEP</th>
-          <th class="table-th">UF</th>
-          <th class="table-th">Cidade</th>
-          <th class="table-th">Telefone</th>
-          <th class="table-th">Email</th>
-          <th class="table-th">Data de admissão</th>
-          <th class="table-th">Data de demissão</th>
-          <th class="table-th"></th>
-        </tr>
-      </thead>
-      
-      <tbody class="table__tbody">
-        <tr>
-          <td class="table-row-not-visible td-pequeno"></td>
-          <td class="table-row-not-visible td-pequeno"></td>
-          <td class="table-row-not-visible td-pequeno"></td>
-          <td class="table-row-not-visible td-pequeno"><input class="form-control" maxlength="9" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
-          <td class="table-row-not-visible td-medio"><input class="form-control" maxlength="9" type="search" placeholder="Matrícula" (input)="Search('matricula', $event.target.value)"></td>
-          <td class="table-row-not-visible" ><input class="form-control" maxlength="100" type="search" placeholder="Nome" (input)="Search('nome', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" type="search" placeholder="Nascimento" (input)="Search('data_de_nascimento', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" mask="00.000.000-0" type="search" placeholder="RG" (input)="Search('RG', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" type="search" placeholder="Emissão" (input)="Search('data_emissao', $event.target.value)"></td>
-          <td class="td-medio table-row-not-visible"><input class="form-control" type="search" placeholder="Local" (input)="Search('local_emissao', $event.target.value)"></td>
-          <td class="td-medio table-row-not-visible"><input class="form-control" type="search" placeholder="Expedidor" (input)="Search('orgao_expedidor', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" mask="000.000.000-00" type="search" placeholder="CPF" (input)="Search('CPF', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" maxlength="20" type="search" placeholder="Titulo" (input)="Search('titulo_de_Eleitor', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" mask="000.00000.00-0" type="search" placeholder="PIS/PASEP" (input)="Search('PIS_PASEP', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" maxlength="20" type="search" placeholder="NIT" (input)="Search('NIT', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Nome mãe" (input)="Search('nome_da_Mae', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Nome pai" (input)="Search('nome_do_Pai', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Endereço" (input)="Search('endereco', $event.target.value)"></td>
-          <td class="td-medio table-row-not-visible"><input class="form-control" maxlength="10" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Complemento" (input)="Search('complemento', $event.target.value)"></td>
-          <td class="td-medio table-row-not-visible"><input class="form-control" mask="00000-000" type="search" placeholder="CEP" (input)="Search('CEP', $event.target.value)"></td>
-          <td class="td-medio table-row-not-visible"><input class="form-control" type="search" placeholder="UF" (input)="Search('UF', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Cidade" (input)="Search('cidade', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="search" placeholder="Telefone" (input)="Search('telefone', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Email" (input)="Search('email', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Admissão" (input)="Search('data_de_admissao', $event.target.value)"></td>
-          <td class="table-row-not-visible"><input class="form-control" type="search" placeholder="Demissão" (input)="Search('data_de_demissao', $event.target.value)"></td>
-          <th class="table-row-not-visible"></th>
-        </tr>
-
-        <tr [ngClass]="item?.situacao === 'Ativo' ? 'table-row' : ' table-row table-row--red'" *ngFor="let item of tempItemsList">
-          <td class="table-row-td td-pequeno">
-            <div *ngIf="item?.situacao === 'Inativo'" class="red-row"></div>
-            <input id="" type="checkbox" class="table-select-row">
-          </td>
-          <td class="table-row-td td-pequeno">
-              <ngx-avatar *ngIf="!item?.foto" name="{{ item?.nome }}" initialsSize="2"></ngx-avatar>
-              <img *ngIf="item?.foto" src="{{ item?.foto }}" alt="{{ item?.nome }}" (click)="showImage(item?.foto)">
-          </td>
-          <td class="table-row-td td-pequeno">
-              <b [ngClass]="item?.situacao === 'Ativo' ? 'table-row--green status--green status' : 'table-row--red status--red status'">{{ item?.situacao }}</b>
-          </td>
-          <td data-column="ID" class="table-row-td table-row-not-visible">{{ item?.id }}</td>
-          <td data-column="Matricula" class="table-row-td ">{{ item?.matricula }}</td>
-          <td data-column="Nome" class="table-row-td">{{ item?.nome }}</td>
-          <td data-column="Nascimento" class="table-row-td table-row-not-visible">{{ reverseStringDate(item?.data_de_nascimento) | mask: 'd0/M0/0000' }}</td>
-          <td data-column="RG" class="table-row-td">{{ item?.RG | mask: '00.000.000-0'}}</td>
-          <td data-column="Emissão" class="table-row-td table-row-not-visible">{{ reverseStringDate(item?.data_emissao) | mask: 'd0/M0/0000' }}</td>
-          <td data-column="Local" class="table-row-td table-row-not-visible">{{ item?.local_emissao }}</td>
-          <td data-column="Orgão" class="table-row-td table-row-not-visible">{{ item?.orgao_expedidor }}</td>
-          <td data-column="CPF" class="table-row-td">{{ item?.CPF | mask: '000.000.000-00'}}</td>
-          <td data-column="Titulo" class="table-row-td table-row-not-visible">{{ item?.titulo_de_Eleitor }}</td>
-          <td data-column="PIS/PASEP" class="table-row-td table-row-not-visible">{{ item?.PIS_PASEP | mask: '000.00000.00-0' }}</td>
-          <td data-column="NIT" class="table-row-td table-row-not-visible">{{ item?.NIT }}</td>
-          <td data-column="Nome mãe" class="table-row-td table-row-not-visible">{{ item?.nome_da_Mae }}</td>
-          <td data-column="Nome pai" class="table-row-td table-row-not-visible">{{ item?.nome_do_Pai }}</td>
-          <td data-column="Endereço" class="table-row-td table-row-not-visible">{{ item?.endereco }}</td>
-          <td data-column="Número" class="table-row-td table-row-not-visible">{{ item?.numero }}</td>
-          <td data-column="Complemento" class="table-row-td table-row-not-visible">{{ item?.complemento }}</td>
-          <td data-column="CEP" class="table-row-td">{{ item?.CEP | mask: '00000-000'}}</td>
-          <td data-column="UF" class="table-row-td">{{ item?.UF }}</td>
-          <td data-column="Cidade" class="table-row-td table-row-not-visible">{{ item?.cidade }}</td>
-          <td data-column="Telefone" class="table-row-td">{{ item?.telefone | mask: '(00) 0000-0000||(00) 00000-0000'}}</td>
-          <td data-column="Email" class="table-row-td">{{ item?.email }}</td>
-          <td data-column="Admissão" class="table-row-td">{{ reverseStringDate(item?.data_de_admissao) | mask: 'd0/M0/0000' }}</td>
-          <td data-column="Demissão" class="table-row-td table-row-not-visible">{{ reverseStringDate(item?.data_de_demissao) | mask: 'd0/M0/0000' }}</td>
-          <th class="table-row-td">
-            <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
-              <button type="button" class="btn btn-danger mr-2" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
-              <button type="button" class="btn btn-light shadow-button" tooltip="Alterar senha Sócio"><i class="fa fa-unlock-alt center-icon"></i></button>
-          </th>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-  <!-- ========== -->
-
-  <!-- Formulario -->
-  <hr>
-  <form [formGroup]="itemForm" *ngIf="itemForm && showForm">
-    <input formControlName="id" hidden="true">
-
-    <div class="form-row">
-      <div class="col-md-3">
-        <ngx-avatar *ngIf="!imageInputView" value="Sem foto" size="290" bgColor="#092540" textSizeRatio="15" class="my-avatar"></ngx-avatar>
-        <img [src]="imageInputView" *ngIf="imageInputView" style="height: 90%; width:90%" class="rounded-circle z-depth-0 image-profile">
-      </div>
-
-      <div class="col-md-9">
-        <div class="form-row">
-          <div class="form-group col-md-2">
-            <label>Matrícula: </label>
-            <input class="form-control" type="text" maxlength="9" formControlName="matricula">
-            <p class="error-msg" *ngIf="itemForm.controls.matricula.errors">
-              <i class="fa fa-times"></i> {{ itemForm.controls.matricula.errors.msgErro }}
-            </p>
-          </div>
-
-          <div class="form-group col-md-7">
-            <label>Nome: </label>
-            <input class="form-control" type="text" maxlength="100" formControlName="nome">
-            <p class="error-msg" *ngIf="itemForm.controls.nome.errors">
-              <i class="fa fa-times"></i> {{ itemForm.controls.nome.errors.msgErro }}
-            </p>
-          </div>
-
-          <div class="form-group col-md-3">
-            <label>Data de nascimento: </label>
-            <input class="form-control" type="date" maxlength="15" formControlName="data_de_nascimento">
-            <p class="error-msg" *ngIf="itemForm.controls.data_de_nascimento.errors">
-              <i class="fa fa-times"></i> {{ itemForm.controls.data_de_nascimento.errors.msgErro }}
-            </p>
-          </div>
-
-        </div>
-
-        <div class="form-row">
-          <div class="form-group col-md-6">
-            <label>Email: </label>
-            <input class="form-control" type="email" maxlength="100" formControlName="email" placeholder="Ex: exemplo@email.com">
-            <p class="error-msg" *ngIf="itemForm.controls.email.errors">
-              <i class="fa fa-times"></i> {{ itemForm.controls.email.errors.msgErro }}
-            </p>
-          </div>
-
-          <div class="form-group col-md-3">
-            <label>Data de admissão: </label>
-            <input class="form-control" type="date" maxlength="100" formControlName="data_de_admissao">
-            <p class="error-msg" *ngIf="itemForm.controls.data_de_admissao.errors">
-              <i class="fa fa-times"></i> {{ itemForm.controls.data_de_admissao.errors.msgErro }}
-            </p>
-          </div>
-
-          <div class="form-group col-md-3">
-            <label>Data de demissão: </label>
-            <input class="form-control" type="date" maxlength="100" formControlName="data_de_demissao">
-            <p class="error-msg" *ngIf="itemForm.controls.data_de_demissao.errors">
-              <i class="fa fa-times"></i> {{ itemForm.controls.data_de_demissao.errors.msgErro }}
-            </p>
-          </div>
-        </div>
-
-        <div class="form-row">
-          <div class="form-group col-md-5">
-            <label>Foto: </label>
-            <input class="form-control" type="file" name="foto" (change)="onChange($event)" accept="image/*" >
-          </div>
-
-          <div class="form-group col-md-2">
-            <label>Situação: </label>
-            <ng-select formControlName="situacao"  name="situacao">
-              <ng-option *ngFor="let stat of status" [value]="stat.status">
-                <b [ngClass]="stat?.status === 'Ativo' ? 'status--green status' : 'status--red status'"></b>
-                {{stat.status}}
-              </ng-option>
-            </ng-select>
-            <p class="error-msg" *ngIf="itemForm.controls.situacao.errors">
-              <i class="fa fa-times"></i> {{ itemForm.controls.situacao.errors.msgErro }}
-            </p>
-          </div>
-
-          <div class="form-group col-md-3">
-            <label>Perfil: </label>
-            <ng-select formControlName="perfil"  name="perfil">
-              <ng-option *ngFor="let profile of profiles " [value]="profile.profile">
-                <span [ngClass]="{ 'profile-blue': profile?.profile === 'Administrador', 
-                                'profile-orange': profile?.profile === 'Usuário',
-                                'profile-red': profile?.profile === 'Sem acesso'}">
-                  {{profile.profile}}
-                </span>
-              </ng-option>
-            </ng-select>
-            <p class="error-msg" *ngIf="itemForm.controls.perfil.errors">
-              <i class="fa fa-times"></i> {{ itemForm.controls.perfil.errors.msgErro }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+<!-- Tabela -->
+<div class="table-list">
+  <table class="table" *ngIf="!showForm">
+    <thead class="table-thead thead-dark">
+      <tr>
+        <th class="table-th th-pequeno"></th>
+        <th class="table-th th-pequeno"></th>
+        <th class="table-th th-pequeno"></th>
+        <th class="table-th">ID</th>
+        <th class="table-th">Matrícula</th>
+        <th class="table-th">Nome</th>
+        <th class="table-th">Data de nascimento</th>
+        <th class="table-th">RG</th>
+        <th class="table-th">Data de emissão</th>
+        <th class="table-th">Local de emissão</th>
+        <th class="table-th">Orgão expedidor</th>
+        <th class="table-th">CPF</th>
+        <th class="table-th">Título de eleitor</th>
+        <th class="table-th">PIS/PASEP</th>
+        <th class="table-th">NIT</th>
+        <th class="table-th">Nome da Mãe</th>
+        <th class="table-th">Nome do Pai</th>
+        <th class="table-th">Endereço</th>
+        <th class="table-th">Número</th>
+        <th class="table-th">Complemento</th>
+        <th class="table-th">CEP</th>
+        <th class="table-th">UF</th>
+        <th class="table-th">Cidade</th>
+        <th class="table-th">Telefone</th>
+        <th class="table-th">Email</th>
+        <th class="table-th">Data de admissão</th>
+        <th class="table-th">Data de demissão</th>
+        <th class="table-th"></th>
+      </tr>
+    </thead>
     
-    <div class="form-row">            
-      <div class="form-group col-md-2">
-        <label>Telefone: </label>
-        <input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="text" formControlName="telefone" placeholder="Ex: (19) 9999-9999">
-        <p class="error-msg" *ngIf="itemForm.controls.telefone.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.telefone.errors.msgErro }}
-        </p>
-      </div>
+    <tbody class="table__tbody">
+      <tr>
+        <td class="table-row-not-visible td-pequeno"></td>
+        <td class="table-row-not-visible td-pequeno"></td>
+        <td class="table-row-not-visible td-pequeno"></td>
+        <td class="table-row-not-visible td-pequeno"><input class="form-control" maxlength="9" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
+        <td class="table-row-not-visible td-medio"><input class="form-control" maxlength="9" type="search" placeholder="Matrícula" (input)="Search('matricula', $event.target.value)"></td>
+        <td class="table-row-not-visible" ><input class="form-control" maxlength="100" type="search" placeholder="Nome" (input)="Search('nome', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" type="search" placeholder="Nascimento" (input)="Search('data_de_nascimento', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" mask="00.000.000-0" type="search" placeholder="RG" (input)="Search('RG', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" type="search" placeholder="Emissão" (input)="Search('data_emissao', $event.target.value)"></td>
+        <td class="td-medio table-row-not-visible"><input class="form-control" type="search" placeholder="Local" (input)="Search('local_emissao', $event.target.value)"></td>
+        <td class="td-medio table-row-not-visible"><input class="form-control" type="search" placeholder="Expedidor" (input)="Search('orgao_expedidor', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" mask="000.000.000-00" type="search" placeholder="CPF" (input)="Search('CPF', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" maxlength="20" type="search" placeholder="Titulo" (input)="Search('titulo_de_Eleitor', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" mask="000.00000.00-0" type="search" placeholder="PIS/PASEP" (input)="Search('PIS_PASEP', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" maxlength="20" type="search" placeholder="NIT" (input)="Search('NIT', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Nome mãe" (input)="Search('nome_da_Mae', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Nome pai" (input)="Search('nome_do_Pai', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Endereço" (input)="Search('endereco', $event.target.value)"></td>
+        <td class="td-medio table-row-not-visible"><input class="form-control" maxlength="10" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Complemento" (input)="Search('complemento', $event.target.value)"></td>
+        <td class="td-medio table-row-not-visible"><input class="form-control" mask="00000-000" type="search" placeholder="CEP" (input)="Search('CEP', $event.target.value)"></td>
+        <td class="td-medio table-row-not-visible"><input class="form-control" type="search" placeholder="UF" (input)="Search('UF', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Cidade" (input)="Search('cidade', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="search" placeholder="Telefone" (input)="Search('telefone', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Email" (input)="Search('email', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" maxlength="100" type="search" placeholder="Admissão" (input)="Search('data_de_admissao', $event.target.value)"></td>
+        <td class="table-row-not-visible"><input class="form-control" type="search" placeholder="Demissão" (input)="Search('data_de_demissao', $event.target.value)"></td>
+        <th class="table-row-not-visible"></th>
+      </tr>
 
-      <div class="form-group col-md-3">
-        <label>CPF: </label>
-        <input class="form-control" mask="000.000.000-00" type="text" formControlName="CPF" placeholder="EX: 999.999.999-99">
-        <p class="error-msg" *ngIf="itemForm.controls.CPF.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.CPF.errors.msgErro }}
-        </p>
-      </div>
-
-      <div class="form-group col-md-3">
-        <label>Título de eleitor: </label>
-        <input class="form-control" type="text" maxlength="14" formControlName="titulo_de_Eleitor">
-        <p class="error-msg" *ngIf="itemForm.controls.titulo_de_Eleitor.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.titulo_de_Eleitor.errors.msgErro }}
-        </p>
-      </div>
-
-      <div class="form-group col-md-2">
-        <label>PIS/PASEP: <i class="fa fa-question-circle" tooltip="Programa de Integração Social e o Programa de Formação do Patrimônio do Servidor Público"></i> </label>
-        <input class="form-control" type="text" mask="000.00000.00-0" formControlName="PIS_PASEP">
-        <p class="error-msg" *ngIf="itemForm.controls.PIS_PASEP.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.PIS_PASEP.errors.msgErro }}
-        </p>
-      </div>
-
-      <div class="form-group col-md-2">
-        <label>NIT: <i class="fa fa-question-circle" tooltip="Número de Identificação do Trabalhador"></i> </label>
-        <input class="form-control" type="text" maxlength="14" formControlName="NIT">
-        <p class="error-msg" *ngIf="itemForm.controls.NIT.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.NIT.errors.msgErro }}
-        </p>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group col-md-2">
-        <label>RG: </label>
-        <input class="form-control" mask="00.000.000-0" type="text" formControlName="RG" placeholder="EX: 99.999.999-9">
-        <p class="error-msg" *ngIf="itemForm.controls.RG.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.RG.errors.msgErro }}
-        </p>
-      </div>
-      
-      <div class="form-group col-md-3">
-        <label>Local emissão: </label>
-        <ng-select formControlName="local_emissao"  name="local_emissao">
-          <ng-option *ngFor="let state of states" [value]="state.uf">{{state.state}}</ng-option>
-        </ng-select>
-        <p class="error-msg" *ngIf="itemForm.controls.local_emissao.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.local_emissao.errors.msgErro }}
-        </p>
-      </div>
-
-      <div class="form-group col-md-2">
-        <label>Orgão expedidor: </label>
-        <ng-select formControlName="orgao_expedidor"  name="orgao_expedidor">
-          <ng-option *ngFor="let organ of organs" [value]="organ.organ">{{organ.organ}}</ng-option>
-        </ng-select>
-        <p class="error-msg" *ngIf="itemForm.controls.orgao_expedidor.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.orgao_expedidor.errors.msgErro }}
-        </p>
-      </div>
-
-      <div class="form-group col-md-3">
-        <label>Data emissão: </label>
-        <input class="form-control" type="date" maxlength="100" formControlName="data_emissao">
-        <p class="error-msg" *ngIf="itemForm.controls.data_emissao.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.data_emissao.errors.msgErro }}
-        </p>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group col-md-5">
-        <label>Nome da mãe: </label>
-        <input class="form-control" type="text" maxlength="100" formControlName="nome_da_Mae">
-        <p class="error-msg" *ngIf="itemForm.controls.nome_da_Mae.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.nome_da_Mae.errors.msgErro }}
-        </p>
-      </div>
-
-      <div class="form-group col-md-5">
-        <label>Nome do pai: </label>
-        <input class="form-control" type="text" maxlength="100" formControlName="nome_do_Pai">
-        <p class="error-msg" *ngIf="itemForm.controls.nome_do_Pai.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.nome_do_Pai.errors.msgErro }}
-        </p>
-      </div>
-    </div>
-
-    <h5>Endereço</h5>
-    <hr>
-    <div class="form-row">
-      <div class="form-group col-md-5">
-        <label>Logradouro: </label>
-        <input class="form-control" type="text" maxlength="100" formControlName="endereco">
-        <p class="error-msg" *ngIf="itemForm.controls.endereco.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.endereco.errors.msgErro }}
-        </p>
-      </div>
-
-      <div class="form-group col-md-2">
-        <label>Número: </label>
-        <input class="form-control" type="text" maxlength="100" formControlName="numero">
-        <p class="error-msg" *ngIf="itemForm.controls.numero.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.numero.errors.msgErro }}
-        </p>
-      </div>
-
-      <div class="form-group col-md-5">
-        <label>Complemento: </label>
-        <input class="form-control" type="text" maxlength="100" formControlName="complemento">
-        <p class="error-msg" *ngIf="itemForm.controls.complemento.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.complemento.errors.msgErro }}
-        </p>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <div class="form-group col-md-5">
-        <label>Cidade: </label>
-        <input class="form-control" type="text" maxlength="100" formControlName="cidade">
-        <p class="error-msg" *ngIf="itemForm.controls.cidade.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.cidade.errors.msgErro }}
-        </p>
-      </div>
-
-      <div class="form-group col-md-2">
-        <label>UF: </label>
-        <ng-select formControlName="UF"  name="UF">
-          <ng-option *ngFor="let state of states" [value]="state.uf">{{state.state}}</ng-option>
-        </ng-select>
-        <p class="error-msg" *ngIf="itemForm.controls.UF.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.UF.errors.msgErro }}
-        </p>
-      </div>
-
-      <div class="form-group col-md-2">
-        <label>CEP: </label>
-        <app-pesquisa-cep (retornaPesquisaCep)="populaDados($event)" valor="{{ itemForm.controls.CEP.value }}"></app-pesquisa-cep>
-        <p class="error-msg" *ngIf="itemForm.controls.CEP.errors">
-          <i class="fa fa-times"></i> {{ itemForm.controls.CEP.errors.msgErro }}
-        </p>
-      </div>
-    </div>
-
-    <div class="row align-items-end">
-      <hr>
-
-      <div>
-        <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
-        <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
-        <button class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value" (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
-      </div>
-    </div>
-    
-  </form>
-  <!-- ========== -->
-
-  <!-- Lista sem dados -->
-  <div *ngIf="!showForm && !tempItemsList?.length"  class="alert alert-info " role="alert">
-    <h4 class="alert-heading ">Opa !</h4>
-    <p>Nenhum resultado foi encontrado.</p>
-  </div>        
-  <!-- =============== -->
+      <tr [ngClass]="item?.situacao === 'Ativo' ? 'table-row' : ' table-row table-row--red'" *ngFor="let item of tempItemsList">
+        <td class="table-row-td td-pequeno">
+          <div *ngIf="item?.situacao === 'Inativo'" class="red-row"></div>
+          <input id="" type="checkbox" class="table-select-row">
+        </td>
+        <td class="table-row-td td-pequeno">
+            <ngx-avatar *ngIf="!item?.foto" name="{{ item?.nome }}" initialsSize="2"></ngx-avatar>
+            <img *ngIf="item?.foto" src="{{ item?.foto }}" alt="{{ item?.nome }}" (click)="showImage(item?.foto)">
+        </td>
+        <td class="table-row-td td-pequeno">
+            <b [ngClass]="item?.situacao === 'Ativo' ? 'table-row--green status--green status' : 'table-row--red status--red status'">{{ item?.situacao }}</b>
+        </td>
+        <td data-column="ID" class="table-row-td table-row-not-visible">{{ item?.id }}</td>
+        <td data-column="Matricula" class="table-row-td ">{{ item?.matricula }}</td>
+        <td data-column="Nome" class="table-row-td">{{ item?.nome }}</td>
+        <td data-column="Nascimento" class="table-row-td table-row-not-visible">{{ reverseStringDate(item?.data_de_nascimento) | mask: 'd0/M0/0000' }}</td>
+        <td data-column="RG" class="table-row-td">{{ item?.RG | mask: '00.000.000-0'}}</td>
+        <td data-column="Emissão" class="table-row-td table-row-not-visible">{{ reverseStringDate(item?.data_emissao) | mask: 'd0/M0/0000' }}</td>
+        <td data-column="Local" class="table-row-td table-row-not-visible">{{ item?.local_emissao }}</td>
+        <td data-column="Orgão" class="table-row-td table-row-not-visible">{{ item?.orgao_expedidor }}</td>
+        <td data-column="CPF" class="table-row-td">{{ item?.CPF | mask: '000.000.000-00'}}</td>
+        <td data-column="Titulo" class="table-row-td table-row-not-visible">{{ item?.titulo_de_Eleitor }}</td>
+        <td data-column="PIS/PASEP" class="table-row-td table-row-not-visible">{{ item?.PIS_PASEP | mask: '000.00000.00-0' }}</td>
+        <td data-column="NIT" class="table-row-td table-row-not-visible">{{ item?.NIT }}</td>
+        <td data-column="Nome mãe" class="table-row-td table-row-not-visible">{{ item?.nome_da_Mae }}</td>
+        <td data-column="Nome pai" class="table-row-td table-row-not-visible">{{ item?.nome_do_Pai }}</td>
+        <td data-column="Endereço" class="table-row-td table-row-not-visible">{{ item?.endereco }}</td>
+        <td data-column="Número" class="table-row-td table-row-not-visible">{{ item?.numero }}</td>
+        <td data-column="Complemento" class="table-row-td table-row-not-visible">{{ item?.complemento }}</td>
+        <td data-column="CEP" class="table-row-td">{{ item?.CEP | mask: '00000-000'}}</td>
+        <td data-column="UF" class="table-row-td">{{ item?.UF }}</td>
+        <td data-column="Cidade" class="table-row-td table-row-not-visible">{{ item?.cidade }}</td>
+        <td data-column="Telefone" class="table-row-td">{{ item?.telefone | mask: '(00) 0000-0000||(00) 00000-0000'}}</td>
+        <td data-column="Email" class="table-row-td">{{ item?.email }}</td>
+        <td data-column="Admissão" class="table-row-td">{{ reverseStringDate(item?.data_de_admissao) | mask: 'd0/M0/0000' }}</td>
+        <td data-column="Demissão" class="table-row-td table-row-not-visible">{{ reverseStringDate(item?.data_de_demissao) | mask: 'd0/M0/0000' }}</td>
+        <th class="table-row-td">
+          <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
+            <button type="button" class="btn btn-danger mr-2" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
+            <button type="button" class="btn btn-light shadow-button" tooltip="Alterar senha Sócio"><i class="fa fa-unlock-alt center-icon"></i></button>
+        </th>
+      </tr>
+    </tbody>
+  </table>
 </div>
+<!-- ========== -->
+
+<!-- Formulario -->
+<hr>
+<form [formGroup]="itemForm" *ngIf="itemForm && showForm">
+  <input formControlName="id" hidden="true">
+
+  <div class="form-row">
+    <div class="col-md-3">
+      <ngx-avatar *ngIf="!imageInputView" value="Sem foto" size="290" bgColor="#092540" textSizeRatio="15" class="my-avatar"></ngx-avatar>
+      <img [src]="imageInputView" *ngIf="imageInputView" style="height: 90%; width:90%" class="rounded-circle z-depth-0 image-profile">
+    </div>
+
+    <div class="col-md-9">
+      <div class="form-row">
+        <div class="form-group col-md-2">
+          <label>Matrícula: </label>
+          <input class="form-control" type="text" maxlength="9" formControlName="matricula">
+          <p class="error-msg" *ngIf="itemForm.controls.matricula.errors">
+            <i class="fa fa-times"></i> {{ itemForm.controls.matricula.errors.msgErro }}
+          </p>
+        </div>
+
+        <div class="form-group col-md-7">
+          <label>Nome: </label>
+          <input class="form-control" type="text" maxlength="100" formControlName="nome">
+          <p class="error-msg" *ngIf="itemForm.controls.nome.errors">
+            <i class="fa fa-times"></i> {{ itemForm.controls.nome.errors.msgErro }}
+          </p>
+        </div>
+
+        <div class="form-group col-md-3">
+          <label>Data de nascimento: </label>
+          <input class="form-control" type="date" maxlength="15" formControlName="data_de_nascimento">
+          <p class="error-msg" *ngIf="itemForm.controls.data_de_nascimento.errors">
+            <i class="fa fa-times"></i> {{ itemForm.controls.data_de_nascimento.errors.msgErro }}
+          </p>
+        </div>
+
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-6">
+          <label>Email: </label>
+          <input class="form-control" type="email" maxlength="100" formControlName="email" placeholder="Ex: exemplo@email.com">
+          <p class="error-msg" *ngIf="itemForm.controls.email.errors">
+            <i class="fa fa-times"></i> {{ itemForm.controls.email.errors.msgErro }}
+          </p>
+        </div>
+
+        <div class="form-group col-md-3">
+          <label>Data de admissão: </label>
+          <input class="form-control" type="date" maxlength="100" formControlName="data_de_admissao">
+          <p class="error-msg" *ngIf="itemForm.controls.data_de_admissao.errors">
+            <i class="fa fa-times"></i> {{ itemForm.controls.data_de_admissao.errors.msgErro }}
+          </p>
+        </div>
+
+        <div class="form-group col-md-3">
+          <label>Data de demissão: </label>
+          <input class="form-control" type="date" maxlength="100" formControlName="data_de_demissao">
+          <p class="error-msg" *ngIf="itemForm.controls.data_de_demissao.errors">
+            <i class="fa fa-times"></i> {{ itemForm.controls.data_de_demissao.errors.msgErro }}
+          </p>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-md-5">
+          <label>Foto: </label>
+          <input class="form-control" type="file" name="foto" (change)="onChange($event)" accept="image/*" >
+        </div>
+
+        <div class="form-group col-md-2">
+          <label>Situação: </label>
+          <ng-select formControlName="situacao"  name="situacao">
+            <ng-option *ngFor="let stat of status" [value]="stat.status">
+              <b [ngClass]="stat?.status === 'Ativo' ? 'status--green status' : 'status--red status'"></b>
+              {{stat.status}}
+            </ng-option>
+          </ng-select>
+          <p class="error-msg" *ngIf="itemForm.controls.situacao.errors">
+            <i class="fa fa-times"></i> {{ itemForm.controls.situacao.errors.msgErro }}
+          </p>
+        </div>
+
+        <div class="form-group col-md-3">
+          <label>Perfil: </label>
+          <ng-select formControlName="perfil"  name="perfil">
+            <ng-option *ngFor="let profile of profiles " [value]="profile.profile">
+              <span [ngClass]="{ 'profile-blue': profile?.profile === 'Administrador', 
+                              'profile-orange': profile?.profile === 'Usuário',
+                              'profile-red': profile?.profile === 'Sem acesso'}">
+                {{profile.profile}}
+              </span>
+            </ng-option>
+          </ng-select>
+          <p class="error-msg" *ngIf="itemForm.controls.perfil.errors">
+            <i class="fa fa-times"></i> {{ itemForm.controls.perfil.errors.msgErro }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="form-row">            
+    <div class="form-group col-md-2">
+      <label>Telefone: </label>
+      <input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="text" formControlName="telefone" placeholder="Ex: (19) 9999-9999">
+      <p class="error-msg" *ngIf="itemForm.controls.telefone.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.telefone.errors.msgErro }}
+      </p>
+    </div>
+
+    <div class="form-group col-md-3">
+      <label>CPF: </label>
+      <input class="form-control" mask="000.000.000-00" type="text" formControlName="CPF" placeholder="EX: 999.999.999-99">
+      <p class="error-msg" *ngIf="itemForm.controls.CPF.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.CPF.errors.msgErro }}
+      </p>
+    </div>
+
+    <div class="form-group col-md-3">
+      <label>Título de eleitor: </label>
+      <input class="form-control" type="text" maxlength="14" formControlName="titulo_de_Eleitor">
+      <p class="error-msg" *ngIf="itemForm.controls.titulo_de_Eleitor.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.titulo_de_Eleitor.errors.msgErro }}
+      </p>
+    </div>
+
+    <div class="form-group col-md-2">
+      <label>PIS/PASEP: <i class="fa fa-question-circle" tooltip="Programa de Integração Social e o Programa de Formação do Patrimônio do Servidor Público"></i> </label>
+      <input class="form-control" type="text" mask="000.00000.00-0" formControlName="PIS_PASEP">
+      <p class="error-msg" *ngIf="itemForm.controls.PIS_PASEP.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.PIS_PASEP.errors.msgErro }}
+      </p>
+    </div>
+
+    <div class="form-group col-md-2">
+      <label>NIT: <i class="fa fa-question-circle" tooltip="Número de Identificação do Trabalhador"></i> </label>
+      <input class="form-control" type="text" maxlength="14" formControlName="NIT">
+      <p class="error-msg" *ngIf="itemForm.controls.NIT.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.NIT.errors.msgErro }}
+      </p>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-2">
+      <label>RG: </label>
+      <input class="form-control" mask="00.000.000-0" type="text" formControlName="RG" placeholder="EX: 99.999.999-9">
+      <p class="error-msg" *ngIf="itemForm.controls.RG.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.RG.errors.msgErro }}
+      </p>
+    </div>
+    
+    <div class="form-group col-md-3">
+      <label>Local emissão: </label>
+      <ng-select formControlName="local_emissao"  name="local_emissao">
+        <ng-option *ngFor="let state of states" [value]="state.uf">{{state.state}}</ng-option>
+      </ng-select>
+      <p class="error-msg" *ngIf="itemForm.controls.local_emissao.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.local_emissao.errors.msgErro }}
+      </p>
+    </div>
+
+    <div class="form-group col-md-2">
+      <label>Orgão expedidor: </label>
+      <ng-select formControlName="orgao_expedidor"  name="orgao_expedidor">
+        <ng-option *ngFor="let organ of organs" [value]="organ.organ">{{organ.organ}}</ng-option>
+      </ng-select>
+      <p class="error-msg" *ngIf="itemForm.controls.orgao_expedidor.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.orgao_expedidor.errors.msgErro }}
+      </p>
+    </div>
+
+    <div class="form-group col-md-3">
+      <label>Data emissão: </label>
+      <input class="form-control" type="date" maxlength="100" formControlName="data_emissao">
+      <p class="error-msg" *ngIf="itemForm.controls.data_emissao.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.data_emissao.errors.msgErro }}
+      </p>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-5">
+      <label>Nome da mãe: </label>
+      <input class="form-control" type="text" maxlength="100" formControlName="nome_da_Mae">
+      <p class="error-msg" *ngIf="itemForm.controls.nome_da_Mae.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.nome_da_Mae.errors.msgErro }}
+      </p>
+    </div>
+
+    <div class="form-group col-md-5">
+      <label>Nome do pai: </label>
+      <input class="form-control" type="text" maxlength="100" formControlName="nome_do_Pai">
+      <p class="error-msg" *ngIf="itemForm.controls.nome_do_Pai.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.nome_do_Pai.errors.msgErro }}
+      </p>
+    </div>
+  </div>
+
+  <h5>Endereço</h5>
+  <hr>
+  <div class="form-row">
+    <div class="form-group col-md-5">
+      <label>Logradouro: </label>
+      <input class="form-control" type="text" maxlength="100" formControlName="endereco">
+      <p class="error-msg" *ngIf="itemForm.controls.endereco.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.endereco.errors.msgErro }}
+      </p>
+    </div>
+
+    <div class="form-group col-md-2">
+      <label>Número: </label>
+      <input class="form-control" type="text" maxlength="100" formControlName="numero">
+      <p class="error-msg" *ngIf="itemForm.controls.numero.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.numero.errors.msgErro }}
+      </p>
+    </div>
+
+    <div class="form-group col-md-5">
+      <label>Complemento: </label>
+      <input class="form-control" type="text" maxlength="100" formControlName="complemento">
+      <p class="error-msg" *ngIf="itemForm.controls.complemento.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.complemento.errors.msgErro }}
+      </p>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-5">
+      <label>Cidade: </label>
+      <input class="form-control" type="text" maxlength="100" formControlName="cidade">
+      <p class="error-msg" *ngIf="itemForm.controls.cidade.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.cidade.errors.msgErro }}
+      </p>
+    </div>
+
+    <div class="form-group col-md-2">
+      <label>UF: </label>
+      <ng-select formControlName="UF"  name="UF">
+        <ng-option *ngFor="let state of states" [value]="state.uf">{{state.state}}</ng-option>
+      </ng-select>
+      <p class="error-msg" *ngIf="itemForm.controls.UF.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.UF.errors.msgErro }}
+      </p>
+    </div>
+
+    <div class="form-group col-md-2">
+      <label>CEP: </label>
+      <app-pesquisa-cep (retornaPesquisaCep)="populaDados($event)" valor="{{ itemForm.controls.CEP.value }}"></app-pesquisa-cep>
+      <p class="error-msg" *ngIf="itemForm.controls.CEP.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.CEP.errors.msgErro }}
+      </p>
+    </div>
+  </div>
+
+  <div class="row align-items-end">
+    <hr>
+
+    <div>
+      <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
+      <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
+      <button class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value" (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
+    </div>
+  </div>
+  
+</form>
+<!-- ========== -->
+
+<!-- Lista sem dados -->
+<div *ngIf="!showForm && !tempItemsList?.length"  class="alert alert-info " role="alert">
+  <h4 class="alert-heading ">Opa !</h4>
+  <p>Nenhum resultado foi encontrado.</p>
+</div>        
+<!-- =============== -->
 
 <app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>
 <app-view-image [viewImage]="viewImage" *ngIf="showModalImage"></app-view-image>
