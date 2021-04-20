@@ -14,7 +14,7 @@
     align-items: center; /* alinha verticalmente */
     justify-items: center; /* alinha horizontalmente */
     padding: 30px;
-    border: 15px solid green;
+    border: 10px solid #F7F7F8;
 }
 
 /* Extra small devices (phones, 600px and down) */
