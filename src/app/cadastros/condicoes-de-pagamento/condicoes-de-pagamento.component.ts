@@ -168,33 +168,35 @@ export class CondicoesDePagamentoComponent implements OnInit {
         x = rows[i].getElementsByTagName("TD")[n];
         y = rows[i + 1].getElementsByTagName("TD")[n];
 
+        var cmpX = isNaN(parseInt(x.innerHTML)) ? x.innerHTML.toLowerCase() : parseInt(x.innerHTML);
+        var cmpY = isNaN(parseInt(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseInt(y.innerHTML);
+        cmpX = (cmpX == '-') ? 0 : cmpX;
+        cmpY = (cmpY == '-') ? 0 : cmpY;
+
+        console.log(cmpX)
+        console.log(cmpY)
+
         if (dir == "asc") {
-          if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
-            //if so, mark as a switch and break the loop:
-            shouldSwitch= true;
-            break;
-          }
+            if (cmpX > cmpY) {
+                shouldSwitch= true;
+                break;
+            }
         } else if (dir == "desc") {
-          if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
-            //if so, mark as a switch and break the loop:
-            shouldSwitch = true;
-            break;
-          }
+            if (cmpX < cmpY) {
+                shouldSwitch= true;
+                break;
+            }
         }
       }
+
       if (shouldSwitch) {
-        /*If a switch has been marked, make the switch
-        and mark that a switch has been done:*/
         rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
         switching = true;
-        //Each time a switch is done, increase this count by 1:
         switchcount ++;      
       } else {
-        /*If no switching has been done AND the direction is "asc",
-        set the direction to "desc" and run the while loop again.*/
         if (switchcount == 0 && dir == "asc") {
-          dir = "desc";
-          switching = true;
+            dir = "desc";
+            switching = true;
         }
       }
     }

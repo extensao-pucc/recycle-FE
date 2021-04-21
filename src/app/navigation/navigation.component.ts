@@ -29,6 +29,4 @@ export class NavigationComponent implements OnInit {
   toggleNavbar() {
     this.navbarOpen = !this.navbarOpen;
   }
-
-
 }
