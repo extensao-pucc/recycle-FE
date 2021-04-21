@@ -4,22 +4,22 @@
 
 <!-- Tabela -->
 <div class="table-list">
-  <table class="table table-hover" *ngIf="!showForm">
+  <table id="myTable" class="table table-hover" *ngIf="!showForm">
     <thead class="thead-dark">
       <tr>
-        <th scope="col">ID</th>
-        <th scope="col">CNPJ/CPF</th>
-        <th scope="col">Razão social/Nome</th>
-        <th scope="col">IE</th>
-        <th scope="col">Endereço</th>
-        <th scope="col">Número</th>
-        <th scope="col">Complemento</th>
-        <th scope="col">Bairro</th>
-        <th scope="col">CEP</th>
-        <th scope="col">UF</th>
-        <th scope="col">Cidade</th>
-        <th scope="col">Telefone</th>
-        <th scope="col">Email</th>
+        <th scope="col" (click)="sortTable(0)">ID</th>
+        <th scope="col" (click)="sortTable(1)">CNPJ/CPF</th>
+        <th scope="col" (click)="sortTable(2)">Razão social/Nome</th>
+        <th scope="col" (click)="sortTable(3)">IE</th>
+        <th scope="col" (click)="sortTable(4)">Endereço</th>
+        <th scope="col" (click)="sortTable(5)">Número</th>
+        <th scope="col" (click)="sortTable(6)">Complemento</th>
+        <th scope="col" (click)="sortTable(7)">Bairro</th>
+        <th scope="col" (click)="sortTable(8)">CEP</th>
+        <th scope="col" (click)="sortTable(9)">UF</th>
+        <th scope="col" (click)="sortTable(10)">Cidade</th>
+        <th scope="col" (click)="sortTable(11)">Telefone</th>
+        <th scope="col" (click)="sortTable(12)">Email</th>
         <th scope="col">Opções</th>
       </tr>            
     </thead>

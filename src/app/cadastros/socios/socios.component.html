@@ -4,36 +4,36 @@
 
 <!-- Tabela -->
 <div class="table-list">
-  <table class="table" *ngIf="!showForm">
-    <thead class="table-thead thead-dark">
+  <table id="myTable" class="table" *ngIf="!showForm">
+    <thead class="table-thead">
       <tr>
         <th class="table-th th-pequeno"></th>
         <th class="table-th th-pequeno"></th>
         <th class="table-th th-pequeno"></th>
-        <th class="table-th">ID</th>
-        <th class="table-th">Matrícula</th>
-        <th class="table-th">Nome</th>
-        <th class="table-th">Data de nascimento</th>
-        <th class="table-th">RG</th>
-        <th class="table-th">Data de emissão</th>
-        <th class="table-th">Local de emissão</th>
-        <th class="table-th">Orgão expedidor</th>
-        <th class="table-th">CPF</th>
-        <th class="table-th">Título de eleitor</th>
-        <th class="table-th">PIS/PASEP</th>
-        <th class="table-th">NIT</th>
-        <th class="table-th">Nome da Mãe</th>
-        <th class="table-th">Nome do Pai</th>
-        <th class="table-th">Endereço</th>
-        <th class="table-th">Número</th>
-        <th class="table-th">Complemento</th>
-        <th class="table-th">CEP</th>
-        <th class="table-th">UF</th>
-        <th class="table-th">Cidade</th>
-        <th class="table-th">Telefone</th>
-        <th class="table-th">Email</th>
-        <th class="table-th">Data de admissão</th>
-        <th class="table-th">Data de demissão</th>
+        <th class="table-th" (click)="sortTable(0)">ID</th>
+        <th class="table-th" (click)="sortTable(1)">Matrícula</th>
+        <th class="table-th" (click)="sortTable(2)">Nome</th>
+        <th class="table-th" (click)="sortTable(3)">Data de nascimento</th>
+        <th class="table-th" (click)="sortTable(4)">RG</th>
+        <th class="table-th" (click)="sortTable(5)">Data de emissão</th>
+        <th class="table-th" (click)="sortTable(6)">Local de emissão</th>
+        <th class="table-th" (click)="sortTable(7)">Orgão expedidor</th>
+        <th class="table-th" (click)="sortTable(8)">CPF</th>
+        <th class="table-th" (click)="sortTable(9)">Título de eleitor</th>
+        <th class="table-th" (click)="sortTable(10)">PIS/PASEP</th>
+        <th class="table-th" (click)="sortTable(11)">NIT</th>
+        <th class="table-th" (click)="sortTable(12)">Nome da Mãe</th>
+        <th class="table-th" (click)="sortTable(13)">Nome do Pai</th>
+        <th class="table-th" (click)="sortTable(14)">Endereço</th>
+        <th class="table-th" (click)="sortTable(15)">Número</th>
+        <th class="table-th" (click)="sortTable(16)">Complemento</th>
+        <th class="table-th" (click)="sortTable(17)">CEP</th>
+        <th class="table-th" (click)="sortTable(18)">UF</th>
+        <th class="table-th" (click)="sortTable(19)">Cidade</th>
+        <th class="table-th" (click)="sortTable(20)">Telefone</th>
+        <th class="table-th" (click)="sortTable(21)">Email</th>
+        <th class="table-th" (click)="sortTable(22)">Data de admissão</th>
+        <th class="table-th" (click)="sortTable(23)">Data de demissão</th>
         <th class="table-th"></th>
       </tr>
     </thead>
@@ -76,7 +76,7 @@
           <input id="" type="checkbox" class="table-select-row">
         </td>
         <td class="table-row-td td-pequeno">
-            <ngx-avatar *ngIf="!item?.foto" name="{{ item?.nome }}" initialsSize="2"></ngx-avatar>
+            <ngx-avatar class="my-avatar" *ngIf="!item?.foto" name="{{ item?.nome }}" initialsSize="2"></ngx-avatar>
             <img *ngIf="item?.foto" src="{{ item?.foto }}" alt="{{ item?.nome }}" (click)="showImage(item?.foto)">
         </td>
         <td class="table-row-td td-pequeno">
@@ -110,6 +110,7 @@
           <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
             <button type="button" class="btn btn-danger mr-2" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
             <button type="button" class="btn btn-light shadow-button" tooltip="Alterar senha Sócio"><i class="fa fa-unlock-alt center-icon"></i></button>
+            <button type="button" class="btn btn-light shadow-button not-visible"><i class="fa fa-chevron-circle-down">Visualizar</i></button>
         </th>
       </tr>
     </tbody>

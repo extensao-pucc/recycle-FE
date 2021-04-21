@@ -4,23 +4,23 @@
 
 <!-- Tabela -->
 <div class="table-list">
-  <table class="table table-hover" *ngIf="!showForm">
+  <table id="myTable" class="table table-hover" *ngIf="!showForm">
     <thead class="thead-dark">
       <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Código</th>
-        <th scope="col">Descrição</th>
-        <th scope="col">Família</th>
-        <th scope="col">Fornecedor</th>
-        <th scope="col">Qualidade</th>
-        <th scope="col">Unidade de medida</th>
-        <th scope="col">NCM</th>
-        <th scope="col">CSTE</th>
-        <th scope="col">CSTS</th>
-        <th scope="col">CFOPE</th>
-        <th scope="col">CFOPS</th>
-        <th scope="col">Preço de compra</th>
-        <th scope="col">Preço de venda</th>
+        <th scope="col" (click)="sortTable(0)">ID</th>
+        <th scope="col" (click)="sortTable(1)">Código</th>
+        <th scope="col" (click)="sortTable(2)">Descrição</th>
+        <th scope="col" (click)="sortTable(3)">Família</th>
+        <th scope="col" (click)="sortTable(4)">Fornecedor</th>
+        <th scope="col" (click)="sortTable(5)">Qualidade</th>
+        <th scope="col" (click)="sortTable(6)">Unidade de medida</th>
+        <th scope="col" (click)="sortTable(7)">NCM</th>
+        <th scope="col" (click)="sortTable(8)">CSTE</th>
+        <th scope="col" (click)="sortTable(9)">CSTS</th>
+        <th scope="col" (click)="sortTable(10)">CFOPE</th>
+        <th scope="col" (click)="sortTable(11)">CFOPS</th>
+        <th scope="col" (click)="sortTable(12)">Preço de compra</th>
+        <th scope="col" (click)="sortTable(13)">Preço de venda</th>
         <th scope="col">Opções</th>
       </tr>
     </thead>

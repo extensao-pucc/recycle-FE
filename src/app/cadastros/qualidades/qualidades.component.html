@@ -4,11 +4,11 @@
 
 <!-- Tabela -->
 <div class="table-list">
-  <table class="table table-hover" *ngIf="!showForm">
+  <table id="myTable" class="table table-hover" *ngIf="!showForm">
       <thead class="thead-dark">
         <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Nome</th>
+          <th scope="col" (click)="sortTable(0)">ID</th>
+          <th scope="col" (click)="sortTable(1)">Nome</th>
           <th scope="col">Opções</th>
         </tr>
       </thead>

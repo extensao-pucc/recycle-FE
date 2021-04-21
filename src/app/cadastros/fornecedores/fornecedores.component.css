@@ -1,3 +1,7 @@
 h5 {
     padding-top: 20px;
 }
+
+th {
+    cursor: pointer;
+}
