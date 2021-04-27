@@ -2,25 +2,20 @@
 
 <!-- form cabeçalho -->
 <div class="cabecalho">
-    <form [formGroup]="headForm">
+    <form [formGroup]="headForm" *ngIf="headForm">
         <div class="form-row">
             <div class="form-group col-md-3">
                 <label for="lote">Prensa</label>
-                <input class="form-control" formControlName="prensa" type="text" name="lote" [attr.disabled]="true">
-            </div>
-        
-            <div class="form-group col-md-2">
-                <label for="lote">Lote</label>
                 <input class="form-control" formControlName="lote" type="text" name="lote" [attr.disabled]="true">
             </div>
             
-            <div class="form-group col-md-2">
+            <div class="form-group col-md-3">
                 <label for="inicio">Início</label>
                 <input class="form-control" formControlName="inicio" type="text" name="inicio" [attr.disabled]="true" placeholder="--:--:--">
             </div>  
             
-            <div class="form-group col-md-2">
-                <label for="time">Término</label>
+            <div class="form-group col-md-3">
+                <label for="end">Término</label>
                 <input class="form-control" formControlName="termino" type="text" name="termino" [attr.disabled]="true" placeholder="--:--:--">
             </div>
 
@@ -47,13 +42,13 @@
         </div>
     </form>
 </div>
-    
-    
+       
+<!-- Lote options -->
 <div class="row d-flex justify-content-around btn-prod">
-    <button type="button" class="btn btn-primary btn-lg"><i class="fa fa-play-circle"></i>Iniciar Produção</button>
-    <button type="button" class="btn btn-warning btn-lg"><i class="fa fa-pause-circle"></i>Pausar Produção</button>
-    <button type="button" class="btn btn-danger btn-lg" ><i class="fa fa-check-circle"></i>Finalizar Produção</button>
-    <button type="button" class="btn btn-success btn-lg"><i class="fa fa-print"></i>Imprimir Etiquetas</button>
+    <button #startBtn type="button" class="btn btn-primary btn-lg" (click)="showModal('Iniciar')"><i class="fa fa-play-circle"></i>Iniciar Produção</button>
+    <button #pausetBtn type="button" class="btn btn-warning btn-lg" (click)="showModal('Pausar')"><i class="fa fa-pause-circle"></i>Pausar Produção</button>
+    <button #stopBtn type="button" class="btn btn-danger btn-lg" (click)="showModal('Finalizar')"><i class="fa fa-check-circle"></i>Finalizar Produção</button>
+    <button #printBtn type="button" class="btn btn-success btn-lg" (click)="showModal('Imprimir')"><i class="fa fa-print"></i>Imprimir Etiquetas</button>
 </div>
 <!-- ============== -->
 
@@ -61,49 +56,35 @@
     <table class="table table-hover" ALIGN="center">
         <thead class="thead-dark">
             <tr>
-            <th scope="col">Produto</th>
-            <th scope="col">Peso</th>
-            <th scope="col"><button class="btn btn-success"><i class="fa fa-plus"></i>Adicionar</button></th>
+                <th>Tambor/Bag</th>
+                <th scope="col">Produto</th>
+                <th scope="col">Peso</th>
+                <th class="text-right">
+                    <button class="btn btn-success" (click)="showLoteItemModal()" tooltip="Adicionar item ao lote" #itemsLoteTable>
+                    <i class="fa fa-plus"></i>Adicionar</button>
+                </th>
             </tr>
         </thead>
-        <div class="table-list">
-            
-        </div>
-        <tbody>
-            <tr>
-            <td>Jornal</td>
-            <td>150 kg</td>
-            <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
-            </tr>
-            <tr>
-            <td>Revista</td>
-            <td>160 kg</td>
-            <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
-            </tr>
-            <tr>
-            <td>Vidro</td>
-            <td>80 kg</td>
-            <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
-            </tr>
-            <tr>
-            <td>Papelão Ondulado</td>
-            <td>40 gr</td>
-            <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
-            </tr>
-            <tr>
-            <td>PET Verde</td>
-            <td>40 gr</td>
-            <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
-            </tr>
-            <tr>
-            <td>PET Transparente</td>
-            <td>40 gr</td>
-            <td><button class="btn btn-danger" ><i class="fa fa-trash"></i>Remover</button></td>
+
+        <tbody #itemsLoteTable>
+            <tr *ngFor="let item of lotItems; let idx=index;">
+                <td class="numBag td-medio" id="numBag-{{idx}}">
+                    <span>{{ item.numBag }}</span>
+                </td>
+                <td class="product">
+                    <span tooltip="Descrição: {{ item.product.descricao }}">{{ item.product.descricao }} - {{ item.product.qualidade.nome }}</span>
+                </td>
+                <td class="qtn td-medio">
+                    <span *ngIf="!item.edit">{{ item.qtn }} kg</span>
+                    <input *ngIf="item?.edit" class="form-control" type="number" [value]="item.qtn" (keyup)="updateQtn(idx, $event.target.value)" [disabled]="statusProd != 'Iniciada'">
+                </td>
+                <td class="options">
+                    <button class="btn btn-danger" tooltip="Remover item do lote" (click)="removeLoteItem(item.numBag)" [disabled]="statusProd === 'Pausada'"><i class="fa fa-trash"></i>Remover</button>
+                </td>
             </tr>
         </tbody>
     </table>
 </div>
-
 
 <table class="table table-hover" ALIGN="center">
     <thead class="thead-dark">
@@ -124,3 +105,85 @@
         </tr>
     </tbody>
 </table>
+
+<table class="table table-hover table-shadow">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Observações <i class="fa fa-question-circle" tooltip="Adicione aqui, informações que achar importante sobre esta produção"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <textarea class="form-control" name="observation" rows="3" [(ngModel)]="observation" (keyup)="updateObs()" placeholder="Digite suas observações sobre a triagem...."></textarea>
+        </td>
+      </tr>
+    </tbody>
+</table>
+
+<ng-template #pauseScreen>
+    <div class="modal-header modal-header text-dark">
+        <h4 class="modal-title pull-left"> Pausar Produção</h4>
+        <button type="button" class="close pull-right" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row pause-screen-body">
+            <div class="col pt-2">
+                <p class="font-weight-bold">Selecione o motivo da pausa</p>
+                <div class="form-group col">
+                  <ng-select [items]="motivosDeParada"
+                    [virtualScroll]="true"
+                    bindLabel="motivo"
+                    bindValue="id"
+                    placeholder="Motivo de parada"
+                    [(ngModel)]="selectedMotivo">
+                  </ng-select>
+              </div>
+            </div>
+        </div>
+        <div class="mt-3 text-center">
+            <button type="button" class="btn btn btn-danger mr-2 yesNoButton" id="btn-no" (click)="modalRef.hide()"><i class="fa fa-times-circle"></i>Cancelar</button>
+            <button type="button" class="btn btn btn-success mr-2 yesNoButton" id="btn-yes" (click)="pauseProduction()"><i class="fa fa-check-circle"></i>Salvar</button>
+        </div>
+    </div>
+</ng-template>
+
+
+<ng-template #loteItemScreen>
+<div class="modal-header modal-header text-dark">
+    <h4 class="modal-title pull-left"> Item do Lote</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row pause-screen-body">
+        <div class="col pt-2">
+            <div class="form-group col">
+                <form [formGroup]="loteItemForm" *ngIf="loteItemForm">
+                <p for="product"> Produto:
+                    <i class="fa fa-question-circle" tooltip="Apenas produtos pertencentes ao fornecedor dessa triagem"></i>
+                </p>
+                <ng-select formControlName="product" name="product">
+                    <ng-component *ngFor="let produto of produtos">
+                        <ng-option [value]="produto"> 
+                            <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
+                            <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span>                       
+                        </ng-option>
+                    </ng-component>
+                </ng-select>
+                </form>
+            </div>               
+        </div>
+    </div>
+    <div class="mt-3 text-center">
+        <button type="button" class="btn btn btn-danger mr-2 yesNoButton" id="btn-no" (click)="modalRef.hide()"><i class="fa fa-times-circle"></i>Cancelar</button>
+        <button type="button" class="btn btn btn-success mr-2 yesNoButton" id="btn-yes" (click)="addLoteItem()"><i class="fa fa-check-circle"></i>Salvar</button>
+    </div>
+</div>
+</ng-template>
+  
+<app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>
+<app-view-image [viewImage]="viewImage" *ngIf="showModalImage"></app-view-image>
