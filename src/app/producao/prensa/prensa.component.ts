@@ -141,8 +141,8 @@ export class PrensaComponent implements OnInit {
 
   // Atualiza o resumo da produção
   updateProductionSummary(): void {
-    this.totQtn = 0
-    this.lotItems.map(item => {
+      this.totQtn = 0
+      this.lotItems.map(item => {
       this.totQtn += Number(item.qtn)
     })
   }
@@ -166,6 +166,13 @@ export class PrensaComponent implements OnInit {
     this.crudService.getItems('socios').subscribe(response => this.socios = response);
     this.crudService.getItems('motivosDeParada').subscribe(response => this.motivosDeParada = response);
     this.crudService.getItems('produtos').subscribe(response => this.produtos = response);
+  }
+
+  // Salva Item do lote
+  saveLoteItem(idx): void {
+    this.lotItems[idx].edit = false;
+    this.lotItems[idx].end = new Date();
+    localStorage.setItem('prensaInfoItems', JSON.stringify(this.lotItems));
   }
 
   loadHeadForm(): void {
@@ -341,6 +348,7 @@ export class PrensaComponent implements OnInit {
         numBag: this.lotItems.length > 0 ? Math.max(...auxBag) + 1 : 1,
         product: this.loteItemForm.get('product').value,
         qtn: 0,
+        edit: true
       });
 
       localStorage.setItem('prensaInfoItems', JSON.stringify(this.lotItems));

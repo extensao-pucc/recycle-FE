@@ -1,86 +1,84 @@
-<div class="d-flex background">
-    <div class="center">
-        <h3>Historico de produto</h3>
-  
-      <!-- form cabeçalho -->
-        <div class="cabecalho">
-            <form [formGroup]="headForm">
-                <div class="form-row">
-                    
-                    <div class="form-group col-md-6"> 
-                        <label for="produto">Produto</label>                   
-                        <ng-select formControlName="product" name="product">
-                            <ng-component *ngFor="let produto of produtos">
-                                <ng-option [value]="produto"> 
-                                  <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
-                                  <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span> 
-                                  <span class="productOption companySelection selesctionItem"> {{ produto.fornecedor.razao_social_nome }} </span>
-                                </ng-option>
-                              </ng-component>
-                          </ng-select>
-                    </div>  
 
-                    <div class="form-group col-md-3">
-                        <label for="data">Data Início <i class="fa fa-question-circle" tooltip="Gostaria de visualizar o historico partindo de qual dia?"></i></label>
-                        <input class="form-control" formControlName="inicio"  name="inicio" type="date">
-                    </div>  
+<h3>Historico de produto</h3>
 
-                    <div class="form-group col-md-3">
-                        <label for="data">Data Término <i class="fa fa-question-circle" tooltip="Gostaria de visualizar o historico até qual dia?"></i></label>
-                        <input class="form-control" formControlName="fim" name="fim" type="date">
-                    </div>  
-                </div>
-            </form>
-        </div>          
-        <!-- ============== -->
+<!-- form cabeçalho -->
+<div class="cabecalho">
+    <form [formGroup]="headForm">
+        <div class="form-row">
+            
+            <div class="form-group col-md-6"> 
+                <label for="produto">Produto</label>                   
+                <ng-select formControlName="product" name="product">
+                    <ng-component *ngFor="let produto of produtos">
+                        <ng-option [value]="produto"> 
+                            <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
+                            <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span> 
+                            <span class="productOption companySelection selesctionItem"> {{ produto.fornecedor.razao_social_nome }} </span>
+                        </ng-option>
+                        </ng-component>
+                    </ng-select>
+            </div>  
 
-        <div class="row d-flex justify-content-around btn-prod">
-            <button type="button"  class="btn btn-success btn-lg"><i class="fa fa-print"></i>Gerar Relatório</button>
-            <button type="button"  class="btn btn-primary btn-lg"><i class="fa fa-play-circle"></i>Baixar Relatório</button>
+            <div class="form-group col-md-3">
+                <label for="data">Data Início <i class="fa fa-question-circle" tooltip="Gostaria de visualizar o historico partindo de qual dia?"></i></label>
+                <input class="form-control" formControlName="inicio"  name="inicio" type="date">
+            </div>  
+
+            <div class="form-group col-md-3">
+                <label for="data">Data Término <i class="fa fa-question-circle" tooltip="Gostaria de visualizar o historico até qual dia?"></i></label>
+                <input class="form-control" formControlName="fim" name="fim" type="date">
+            </div>  
         </div>
+    </form>
+</div>          
+<!-- ============== -->
 
-        <!-- <ng-select formControlName="product" name="product">
-            <ng-component *ngFor="let movimentacao of movimentacoes">
-                <ng-option [value]="movimentacao"> 
-                  <span class="productOption productSelection selesctionItem"> {{ movimentacao.data }} </span> 
-                </ng-option>
-              </ng-component>
-          </ng-select> -->
-        
-            <div class="table-list table-shadow">
-                <table class="table table-hover">
-                    <thead class="thead-dark">
-                    <tr>
-                        <th scope="col"> <i class="fa fa-calendar"></i>Dia</th>
-                        <th scope="col"> <i class="fa fa-history"></i>Horário</th>
-                        <th scope="col"> <i class="fa fa-male"></i>Responsável</th>                    
-                        <th scope="col"> <i class="fa fa-list"></i>E/S</th>
-                        <th scope="col"> <i class="fa fa-map-pin" tooltip="Origem da movimentação"></i>Tipo</th>
-                        <th scope="col"> <i class="fa fa-exclamation-circle" tooltip="Código da origem da movimentação"></i>Número</th>
-                        <th scope="col"> <i class="fa fa-question-circle" tooltip="Quantidade que foi movimentada"></i>Movimentado </th>
-                        <th scope="col"> <i class="fa fa-question-circle" tooltip="Saldo após a movimentação"></i>Saldo </th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let movimentacao of movimentacoes.reverse()">
-                            <td > {{ sharedVariableService.currentDate(movimentacao.data) }} </td>
-                            <td> {{ sharedVariableService.currentTime(movimentacao.data) }} </td>
-                            <td>Marcos Andrade Silvio de Oliveira </td>
-                            <td> 
-                                <div class="saida" *ngIf="movimentacao.entrada_saida === 'S' "> Saida </div>
-                                <div class="entrada" *ngIf="movimentacao.entrada_saida === 'E'"> Entrada </div>
-                            </td>
-                            <td>{{ movimentacao.tipo }}</td>
-                            <td>{{ movimentacao.numero_tipo }}</td>
-                            <td>
-                                <div class="inOutProduct outProduct" *ngIf="movimentacao.entrada_saida === 'S' ">{{ movimentacao.qtd_movimentadang }}</div>
-                                <div class="inOutProduct inProduct" *ngIf="movimentacao.entrada_saida === 'E' ">{{ movimentacao.qtd_movimentada }}</div>
-                            </td>
-                            <td>{{ movimentacao.saldo_atual }}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-    </div>
+<div class="row d-flex justify-content-around btn-prod">
+    <button type="button"  class="btn btn-success btn-lg"><i class="fa fa-print"></i>Gerar Relatório</button>
+    <button type="button"  class="btn btn-primary btn-lg"><i class="fa fa-play-circle"></i>Baixar Relatório</button>
 </div>
+
+<!-- <ng-select formControlName="product" name="product">
+    <ng-component *ngFor="let movimentacao of movimentacoes">
+        <ng-option [value]="movimentacao"> 
+            <span class="productOption productSelection selesctionItem"> {{ movimentacao.data }} </span> 
+        </ng-option>
+        </ng-component>
+    </ng-select> -->
+
+<div class="table-list table-shadow">
+    <table class="table table-hover">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col"> <i class="fa fa-calendar"></i>Dia</th>
+            <th scope="col"> <i class="fa fa-history"></i>Horário</th>
+            <th scope="col"> <i class="fa fa-male"></i>Responsável</th>                    
+            <th scope="col"> <i class="fa fa-list"></i>E/S</th>
+            <th scope="col"> <i class="fa fa-map-pin" tooltip="Origem da movimentação"></i>Tipo</th>
+            <th scope="col"> <i class="fa fa-exclamation-circle" tooltip="Código da origem da movimentação"></i>Número</th>
+            <th scope="col"> <i class="fa fa-question-circle" tooltip="Quantidade que foi movimentada"></i>Movimentado </th>
+            <th scope="col"> <i class="fa fa-question-circle" tooltip="Saldo após a movimentação"></i>Saldo </th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let movimentacao of movimentacoes.reverse()">
+                <td > {{ sharedVariableService.currentDate(movimentacao.data) }} </td>
+                <td> {{ sharedVariableService.currentTime(movimentacao.data) }} </td>
+                <td>Marcos Andrade Silvio de Oliveira </td>
+                <td> 
+                    <div class="saida" *ngIf="movimentacao.entrada_saida === 'S' "> Saida </div>
+                    <div class="entrada" *ngIf="movimentacao.entrada_saida === 'E'"> Entrada </div>
+                </td>
+                <td>{{ movimentacao.tipo }}</td>
+                <td>{{ movimentacao.numero_tipo }}</td>
+                <td>
+                    <div class="inOutProduct outProduct" *ngIf="movimentacao.entrada_saida === 'S' ">{{ movimentacao.qtd_movimentadang }}</div>
+                    <div class="inOutProduct inProduct" *ngIf="movimentacao.entrada_saida === 'E' ">{{ movimentacao.qtd_movimentada }}</div>
+                </td>
+                <td>{{ movimentacao.saldo_atual }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+

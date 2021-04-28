@@ -79,6 +79,7 @@
                     <input *ngIf="item?.edit" class="form-control" type="number" [value]="item.qtn" (keyup)="updateQtn(idx, $event.target.value)" [disabled]="statusProd != 'Iniciada'">
                 </td>
                 <td class="options">
+                    <button *ngIf="item?.edit" class="btn btn-success mr-2" tooltip="Encerrar pesagem e salvar" (click)="saveLoteItem(idx)" [disabled]="statusProd != 'Iniciada'"> <i class="fa fa-save"></i>Salvar</button>
                     <button class="btn btn-danger" tooltip="Remover item do lote" (click)="removeLoteItem(item.numBag)" [disabled]="statusProd === 'Pausada'"><i class="fa fa-trash"></i>Remover</button>
                 </td>
             </tr>
@@ -106,7 +107,7 @@
     </tbody>
 </table>
 
-<table class="table table-hover table-shadow">
+<table class="table table-hover table-shadow" ALIGN="center">
     <thead class="thead-dark">
       <tr>
         <th scope="col">Observações <i class="fa fa-question-circle" tooltip="Adicione aqui, informações que achar importante sobre esta produção"></i></th>

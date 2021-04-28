@@ -13,6 +13,7 @@
     padding: 30px;
     border: 10px solid #F7F7F8;
     overflow-x: auto;
+    overflow-y: auto;
 }
 
 /* Extra small devices (phones, 600px and down) */
