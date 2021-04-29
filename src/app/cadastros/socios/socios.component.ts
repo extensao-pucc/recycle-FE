@@ -157,10 +157,9 @@ export class SociosComponent implements OnInit {
       this.itemForm.controls.data_de_demissao.setValue(item.data_de_demissao);
     }
     this.itemForm.controls.situacao.setValue(item.situacao);
-    // this.itemForm.controls.foto.setValue(item.foto);
     this.itemForm.controls.perfil.setValue(item.perfil);
 
-    this.imageInputView = item.foto;
+    this.imageInputView = item.foto;    
   }
 
   onChange(fileInput): void {
@@ -183,7 +182,7 @@ export class SociosComponent implements OnInit {
     };
   }
 
-  createUpdateItem(): void {
+  async createUpdateItem() {
     const formValues = this.itemForm.value;
 
     if (this.itemForm.status === 'VALID'){
@@ -216,9 +215,18 @@ export class SociosComponent implements OnInit {
       formData.append('situacao', this.itemForm.get('situacao').value);
       if (this.imageInput != undefined){
         formData.append('foto', this.imageInput);
+        console.log(this.imageInput)
         this.imageInput = undefined;
       } else {
+        if (this.imageInputView !== null && this.imageInputView !== ""){
+          var b: any = await fetch(this.imageInputView).then(r => r.blob());
+          var file = new File([b], this.itemForm.get('matricula').value + ".jpeg", {type: "image/jpeg", lastModified: Date.now()});
+
+          formData.append('foto', file);
+        } else {
+          console.log("To no arquivo vazio")
           formData.append('foto', '');
+        }
       }
       formData.append('perfil', this.itemForm.get('perfil').value);
 
