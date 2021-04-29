@@ -1,6 +1,14 @@
 .image-profile, .my-avatar /deep/ .avatar-content {
-    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%), 0 6px 20px 0 rgb(0 0 0 / 12%);
+    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%);
     margin-bottom: 30px;
+}
+
+.image-upload > input {
+  display: none;
+}
+
+img {
+  cursor: pointer;
 }
 
 h5 {
@@ -169,15 +177,22 @@ GENERAL
   .table-thead {
     display: none;
   }
+
+  .not-visible {
+    display: block;
+  }
+
   .table-row {
     display: inline-block;
     border: 0;
     background-color: #fff;
     width: calc(33.3% - 13px);
-    margin: 0px 10px 0px 3px;
+    margin: 5px 10px 10px 3px;
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 19%), 0 6px 20px 0 rgb(0 0 0 / 19%);
     border-radius: 20px;
+    padding: 10px 15px;
   }
+
   .table-row-td img, .my-avatar {
     width: 42px;
     height: 42px;
@@ -203,16 +218,12 @@ GENERAL
     background-color: #fff2f2;
   }
 
-  .table-row-not-visible {
+  .element-not-visible {
     display: none;
   }
 
   .table-select-row {
     display: none;
-  }
-
-  .not-visible {
-    visibility: visible;
   }
 }
 

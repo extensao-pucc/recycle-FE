@@ -56,8 +56,8 @@
     <table class="table table-hover" ALIGN="center">
         <thead class="thead-dark">
             <tr>
-                <th>Tambor/Bag</th>
                 <th scope="col">Produto</th>
+                <th scope="col">Qualidade</th>
                 <th scope="col">Peso</th>
                 <th class="text-right">
                     <button class="btn btn-success" (click)="showLoteItemModal()" tooltip="Adicionar item ao lote" #itemsLoteTable>
@@ -68,11 +68,11 @@
 
         <tbody #itemsLoteTable>
             <tr *ngFor="let item of lotItems; let idx=index;">
-                <td class="numBag td-medio" id="numBag-{{idx}}">
-                    <span>{{ item.numBag }}</span>
+                <td class="product">
+                    <span tooltip="Descrição: {{ item.product.descricao }}">{{ item.product.descricao }}</span>
                 </td>
                 <td class="product">
-                    <span tooltip="Descrição: {{ item.product.descricao }}">{{ item.product.descricao }} - {{ item.product.qualidade.nome }}</span>
+                    <span>{{ item.product.qualidade.nome }}</span>
                 </td>
                 <td class="qtn td-medio">
                     <span *ngIf="!item.edit">{{ item.qtn }} kg</span>
