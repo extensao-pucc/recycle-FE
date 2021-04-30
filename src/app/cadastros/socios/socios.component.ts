@@ -215,7 +215,6 @@ export class SociosComponent implements OnInit {
       formData.append('situacao', this.itemForm.get('situacao').value);
       if (this.imageInput != undefined){
         formData.append('foto', this.imageInput);
-        console.log(this.imageInput)
         this.imageInput = undefined;
       } else {
         if (this.imageInputView !== null && this.imageInputView !== ""){
