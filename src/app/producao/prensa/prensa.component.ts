@@ -397,5 +397,23 @@ export class PrensaComponent implements OnInit {
       }
     };
     this.showYesNoMessage = true;
+  }         
+  
+  adicionarTR(){
+    // var qtdRows = document.getElementById("tblListaProduto").rows.length;
+    // var table = document.getElementById("tblListaProduto");
+    // var newRow = table.insertRow(qtdRows);
+    // var chave = "composto_" + qtdRows
+    // newRow.id = chave;
+
+    // // add cells to the row
+    // var cel1 = newRow.insertCell(0);
+    // var cel2 = newRow.insertCell(1);
+    // var cel3 = newRow.insertCell(2);
+
+    // // add values to the cells
+    // cel1.innerHTML = "aa"
+    // cel2.innerHTML = "bbb";
+    // cel3.innerHTML = "<input class='form-control' type='number' (keyup)='updateQtn(idx, $event.target.value)' [disabled]='statusProd != 'Iniciada''>";
   }
 }
