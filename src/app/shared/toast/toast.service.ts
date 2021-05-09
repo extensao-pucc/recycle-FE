@@ -14,7 +14,7 @@ export class ToastService {
     const _this = this;
     const background = toastBg || '#009933';
     this.snackbarService.add({
-      msg: message || 'Unknown Error',
+      msg: message || 'Erro na operação',
       timeout: 5000,
       background: background,
       action: {

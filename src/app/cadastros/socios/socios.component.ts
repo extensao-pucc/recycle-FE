@@ -157,10 +157,9 @@ export class SociosComponent implements OnInit {
       this.itemForm.controls.data_de_demissao.setValue(item.data_de_demissao);
     }
     this.itemForm.controls.situacao.setValue(item.situacao);
-    // this.itemForm.controls.foto.setValue(item.foto);
     this.itemForm.controls.perfil.setValue(item.perfil);
 
-    this.imageInputView = item.foto;
+    this.imageInputView = item.foto;    
   }
 
   onChange(fileInput): void {
@@ -183,7 +182,7 @@ export class SociosComponent implements OnInit {
     };
   }
 
-  createUpdateItem(): void {
+  async createUpdateItem() {
     const formValues = this.itemForm.value;
 
     if (this.itemForm.status === 'VALID'){
@@ -218,7 +217,15 @@ export class SociosComponent implements OnInit {
         formData.append('foto', this.imageInput);
         this.imageInput = undefined;
       } else {
+        if (this.imageInputView !== null && this.imageInputView !== ""){
+          var b: any = await fetch(this.imageInputView).then(r => r.blob());
+          var file = new File([b], this.itemForm.get('matricula').value + ".jpeg", {type: "image/jpeg", lastModified: Date.now()});
+
+          formData.append('foto', file);
+        } else {
+          console.log("To no arquivo vazio")
           formData.append('foto', '');
+        }
       }
       formData.append('perfil', this.itemForm.get('perfil').value);
 
@@ -228,7 +235,7 @@ export class SociosComponent implements OnInit {
           this.loadForm();
 
           this.showForm = false;
-          this.toastService.addToast('Atualizado com sucesso');
+          this.toastService.addToast('Atualizado com sucesso!');
         }, err => {
           if (err.error.matricula){
             this.itemForm.controls.matricula.errors = {'msgErro': 'Sócio com essa matrícula já existe'};
@@ -305,5 +312,55 @@ export class SociosComponent implements OnInit {
       this.itemForm.controls.UF.setValue(item.estado);
     }
     this.itemForm.controls.CEP.setValue(item.cep);
+  }
+
+  sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("myTable");
+    switching = true;
+    dir = "asc"; 
+
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+
+      for (i = 2; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+
+        var cmpX = isNaN(parseInt(x.innerHTML)) ? x.innerHTML.toLowerCase() : parseInt(x.innerHTML);
+        var cmpY = isNaN(parseInt(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseInt(y.innerHTML);
+        cmpX = (cmpX == '-') ? 0 : cmpX;
+        cmpY = (cmpY == '-') ? 0 : cmpY;
+
+        console.log(cmpX)
+        console.log(cmpY)
+
+        if (dir == "asc") {
+            if (cmpX > cmpY) {
+                shouldSwitch= true;
+                break;
+            }
+        } else if (dir == "desc") {
+            if (cmpX < cmpY) {
+                shouldSwitch= true;
+                break;
+            }
+        }
+      }
+
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount ++;      
+      } else {
+        if (switchcount == 0 && dir == "asc") {
+            dir = "desc";
+            switching = true;
+        }
+      }
+    }
   }
 }
