@@ -1,3 +1,4 @@
+import { crudDeactivateGuard } from './guards/crud.deactivate.guard';
 import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
@@ -26,27 +27,28 @@ import { from } from 'rxjs';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
-  { path: 'condicoesDePagamento', component: CondicoesDePagamentoComponent, canActivate: [AuthGuard] },
-  { path: 'familias', component: FamiliasComponent, canActivate: [AuthGuard] },
-  { path: 'fornecedores', component: FornecedoresComponent, canActivate: [AuthGuard] },
-  { path: 'materiasPrimas', component: MateriasPrimasComponent, canActivate: [AuthGuard] },
-  { path: 'motivosDeParada', component: MotivosDeParadaComponent, canActivate: [AuthGuard] },
-  { path: 'naturezaDasOperacoes', component: NaturezaDasOperacoesComponent, canActivate: [AuthGuard] },
-  { path: 'prensas', component: PrensasComponent, canActivate: [AuthGuard] },
-  { path: 'produtos', component: ProdutosComponent, canActivate: [AuthGuard] },
-  { path: 'qualidades', component: QualidadesComponent, canActivate: [AuthGuard] },
-  { path: 'socios', component: SociosComponent, canActivate: [AuthGuard] },
-  { path: 'transportadoras', component: TransportadorasComponent, canActivate: [AuthGuard] },
-  { path: 'unidadesDeMedida', component: UnidadesDeMedidaComponent, canActivate: [AuthGuard] },
+  { path: 'condicoesDePagamento', component: CondicoesDePagamentoComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'familias', component: FamiliasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'fornecedores', component: FornecedoresComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'materiasPrimas', component: MateriasPrimasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'motivosDeParada', component: MotivosDeParadaComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'naturezaDasOperacoes', component: NaturezaDasOperacoesComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'prensas', component: PrensasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'produtos', component: ProdutosComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'qualidades', component: QualidadesComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'socios', component: SociosComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'transportadoras', component: TransportadorasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'unidadesDeMedida', component: UnidadesDeMedidaComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'triagem', component: TriagemComponent, canActivate: [AuthGuard] },
   { path: 'prensa', component: PrensaComponent, canActivate: [AuthGuard] },
   { path: 'remanufatura', component: RemanufaturaComponent, canActivate: [AuthGuard] },
   { path: 'relatorios', component: RelatoriosComponent, canActivate: [AuthGuard] },
   { path: 'historicoDeProduto', component: HistoricoDeProdutoComponent, canActivate: [AuthGuard] }, 
-  { path: 'login', component: LoginComponent },
+  { path: 'login', component: LoginComponent},
   { path: '**', redirectTo: '' }
 ];
 
+// canDeactivate: [crudDeactivateGuard]
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

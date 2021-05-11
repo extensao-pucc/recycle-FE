@@ -6,7 +6,7 @@
     [accent]="'#ffffff'">
   </ngx-snackbar>
   <div class="navigation">
-    <app-navigation></app-navigation>
+    <app-navigation *ngIf="viewNavBar"></app-navigation>
   </div>
   <div class="main">
     <router-outlet></router-outlet>

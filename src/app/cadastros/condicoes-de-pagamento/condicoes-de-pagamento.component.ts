@@ -1,10 +1,11 @@
-import { Component, OnInit, Input, ɵCompiler_compileModuleAndAllComponentsAsync__POST_R3__ } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, Input, ɵCompiler_compileModuleAndAllComponentsAsync__POST_R3__, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
+import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 
 @Component({
   selector: 'app-condicoes-de-pagamento',
@@ -12,7 +13,9 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
   styleUrls: ['./condicoes-de-pagamento.component.css', '../../app.component.css']
 })
 
-export class CondicoesDePagamentoComponent implements OnInit {
+export class CondicoesDePagamentoComponent implements OnInit, IFormCanDeactivate {
+  @ViewChild('eventForm') public eventListingForm: NgForm;
+  
   public tempItemsList: any;
   public itemsList: any;
   public itemForm: any;
@@ -29,6 +32,15 @@ export class CondicoesDePagamentoComponent implements OnInit {
     private formBuilder: FormBuilder,
     private formValidatorService: FormValidatorService
   ) { }
+  
+  canDeactivate(): boolean {
+    if (this.eventListingForm) {
+      if (this.eventListingForm.dirty) {
+        return confirm('Tem certeza que deseja sair ? Suas alterações serão perdidas');
+      }
+    }
+    return true
+  }
 
   ngOnInit(): void {
     this.getItems();
@@ -126,7 +138,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
 
 
   // =========== Modal de confirmação ===================================================
-  showModal(title: string, items: any): void {
+  showModal(title: string, items: any) {
     const formValues = this.itemForm.value;
 
     this.yesNoMessage = {
@@ -148,6 +160,7 @@ export class CondicoesDePagamentoComponent implements OnInit {
         onClickNo: () => { }
       }
     };
+  
     this.showYesNoMessage = true;
   }
   // ====================================================================================

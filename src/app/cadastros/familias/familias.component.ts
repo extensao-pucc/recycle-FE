@@ -1,10 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { FormBuilder, Validators, FormControl, NgForm } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
+import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 
 
 @Component({
@@ -12,7 +13,9 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
   templateUrl: './familias.component.html',
   styleUrls: ['./familias.component.css', '../../app.component.css']
 })
-export class FamiliasComponent implements OnInit {
+export class FamiliasComponent implements OnInit, IFormCanDeactivate {
+  @ViewChild('eventForm') public eventListingForm: NgForm;
+  
   public tempItemsList: any;
   public itemsList: any;
   public itemForm: any;
@@ -31,6 +34,15 @@ export class FamiliasComponent implements OnInit {
   ngOnInit(): void {
     this.getItems();
     this.loadForm();
+  }
+
+  canDeactivate(): boolean {
+    if (this.eventListingForm) {
+      if (this.eventListingForm.dirty) {
+        return confirm('Tem certeza que deseja sair ? Suas alterações serão perdidas');
+      }
+    }
+    return true
   }
 
   loadForm(): void {

@@ -6,7 +6,7 @@
 <div class="table-list">
   <input class="form-control not-visible small-input-search" maxlength="100" type="search" placeholder="Busque pelo nome do sócio" (input)="Search('nome', $event.target.value)" *ngIf="!showForm">
   <table id="myTable" class="table" *ngIf="!showForm">
-    <thead class="table-thead">
+    <thead class="table-thead thead-dark">
       <tr>
         <th class="table-th th-pequeno"></th>
         <th class="table-th th-pequeno"></th>
@@ -121,7 +121,7 @@
 
 <!-- Formulario -->
 <hr>
-<form [formGroup]="itemForm" *ngIf="itemForm && showForm">
+<form [formGroup]="itemForm" *ngIf="itemForm && showForm" #eventForm="ngForm">
   <input formControlName="id" hidden="true">
 
   <div class="form-row">

@@ -17,6 +17,5 @@ export class AuthGuard implements CanActivate {
             console.log('Error 401');
             this.router.navigate(['/login']);
         }
-
     }
 }
