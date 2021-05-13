@@ -23,4 +23,12 @@ export class NavigationComponent implements OnInit {
   logOut(): void{
     this.UserService.onLogout();
   }
+
+  navbarOpen = false;
+
+  toggleNavbar() {
+    this.navbarOpen = !this.navbarOpen;
+  }
+
+  
 }

@@ -4,15 +4,13 @@
 
         <div class="form-group">
             <label for="user">Matrícula</label>
-            <input type="email" class="form-control" id="user" name="user" [(ngModel)]="user">
+            <input type="text" class="form-control" id="user" name="user" [(ngModel)]="person.matricula">
         </div>
         <div class="form-group">
             <label for="password">Senha</label>
-            <!-- <i class="fa fa-eye"></i> -->
-            <input type="password" class="form-control" id="password" name="password" [(ngModel)]="password">
+            <input type="password" class="form-control" id="password" name="password" [(ngModel)]="person.senha">
         </div>
 
         <button type="button" class="btn btn-success btn-lg btn-block" (click)="LogIn()">Entrar</button>
     </div>
 </div>  
-
