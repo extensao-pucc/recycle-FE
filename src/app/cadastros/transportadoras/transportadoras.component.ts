@@ -1,18 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
+import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 
 @Component({
   selector: 'app-transportadoras',
   templateUrl: './transportadoras.component.html',
   styleUrls: ['./transportadoras.component.css', '../../app.component.css']
 })
-export class TransportadorasComponent implements OnInit {
+export class TransportadorasComponent implements OnInit, IFormCanDeactivate {
+  @ViewChild('eventForm') public eventListingForm: NgForm;
+
   public tempItemsList: any;
   public itemsList: any;
   public itemForm: any;
@@ -36,6 +39,15 @@ export class TransportadorasComponent implements OnInit {
   ngOnInit(): void {
     this.getItems();
     this.loadForm();
+  }
+
+  canDeactivate(): boolean {
+    if (this.eventListingForm) {
+      if (this.eventListingForm.dirty) {
+        return confirm('Tem certeza que deseja sair ? Suas alterações serão perdidas');
+      }
+    }
+    return true
   }
 
   loadForm(): void {
@@ -119,7 +131,7 @@ export class TransportadorasComponent implements OnInit {
           this.loadForm();
 
           this.showForm = false;
-          this.toastService.addToast('Atualizado com sucesso');
+          this.toastService.addToast('Atualizado com sucesso!');
         }, err => {
           if (err.error.CNPJ_CPF){
             this.itemForm.controls.CNPJ_CPF.errors = {'msgErro': 'Transportadora com esse CNPJ ou CPF já existe'};
@@ -182,5 +194,55 @@ export class TransportadorasComponent implements OnInit {
       this.itemForm.controls.UF.setValue(item.estado);
     }
     this.itemForm.controls.CEP.setValue(item.cep);
+  }
+
+  sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("myTable");
+    switching = true;
+    dir = "asc"; 
+
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+
+      for (i = 2; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+
+        var cmpX = isNaN(parseInt(x.innerHTML)) ? x.innerHTML.toLowerCase() : parseInt(x.innerHTML);
+        var cmpY = isNaN(parseInt(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseInt(y.innerHTML);
+        cmpX = (cmpX == '-') ? 0 : cmpX;
+        cmpY = (cmpY == '-') ? 0 : cmpY;
+
+        console.log(cmpX)
+        console.log(cmpY)
+
+        if (dir == "asc") {
+            if (cmpX > cmpY) {
+                shouldSwitch= true;
+                break;
+            }
+        } else if (dir == "desc") {
+            if (cmpX < cmpY) {
+                shouldSwitch= true;
+                break;
+            }
+        }
+      }
+
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount ++;      
+      } else {
+        if (switchcount == 0 && dir == "asc") {
+            dir = "desc";
+            switching = true;
+        }
+      }
+    }
   }
 }

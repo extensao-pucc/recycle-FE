@@ -59,6 +59,8 @@ export class TriagemComponent implements OnInit {
   public totalTimeProduction: any;
   public totalTimeBreak: any
   public currentTime: any
+
+  public disableAddButton: false;
   
   constructor(
     private toastService: ToastService,
@@ -83,34 +85,29 @@ export class TriagemComponent implements OnInit {
     this.getItems();
     if (prodInfoHead) {
       this.loadHeadForm();
-      this.headForm.controls.lote.setValue(prodInfoHead['currentLote']);
-      this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(prodInfoHead['start']));
-      this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(prodInfoHead['start']));
-      this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead['end']));
-      this.headForm.controls.situacao.setValue(prodInfoHead['status']);
-      this.headForm.controls.socio.setValue(prodInfoHead.socio.nome);
-      this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor.razao_social_nome);
-      this.headForm.controls.materia_prima.setValue(prodInfoHead.materia.nome);
-      this.statusProd = prodInfoHead['status'];
+      if(prodInfoHead['status']){
+        this.headForm.controls.lote.setValue(prodInfoHead['currentLote']);
+        this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(prodInfoHead['start']));
+        this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(prodInfoHead['start']));
+        this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead['end']));
+        this.headForm.controls.situacao.setValue(prodInfoHead['status']);
+        this.headForm.controls.socio.setValue(prodInfoHead.socio.nome);
+        this.headForm.controls.materia_prima.setValue(prodInfoHead.materia.nome);
+        this.statusProd = prodInfoHead['status'];
+        this.totalTimeBreak = prodInfoHead['totalTimeBreak'];
+        
+        setInterval(() => {
+          this.getElapsedTime();
+          this.currentTime = new Date();
+        }, 1000);
+      }
+
+      this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor);
       this.selectedFornecedor = prodInfoHead['fornecedor']
       this.totalTimeBreak = prodInfoHead['totalTimeBreak'];
       this.observation = prodInfoHead['observacao'];
       this.changeProductionStatus();
-      
-      const prodInfoItems = JSON.parse(localStorage.getItem('prodInfoItems'));
-      if(prodInfoItems) {
-        this.lotItems = prodInfoItems;
-      }
-      const productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
-      if(productionBreaks) {
-        this.lotBreaks = productionBreaks;
-      }
-      this.updateProductionSummary();
 
-      setInterval(() => {
-        this.getElapsedTime();
-        this.currentTime = new Date();
-      }, 1000);
     } else {
       this.loadHeadForm();
       this.changeProductionStatus();
@@ -118,6 +115,16 @@ export class TriagemComponent implements OnInit {
         this.lastTriagem =  Number(response[0].triagem);
       });
     }
+
+    const prodInfoItems = JSON.parse(localStorage.getItem('prodInfoItems'));
+    if(prodInfoItems) {
+      this.lotItems = prodInfoItems;
+    }
+    const productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
+    if(productionBreaks) {
+      this.lotBreaks = productionBreaks;
+    }
+    this.updateProductionSummary();
 
     this.loadLoteItemForm();
     this.changeDetector.detectChanges();
@@ -133,7 +140,7 @@ export class TriagemComponent implements OnInit {
     const prodInfo = JSON.parse(localStorage.prodInfoHead)
     const start = new Date(prodInfo.start)
     let totalSeconds = this.sharedVariableService.difTime(start, new Date());
-    this.totalTimeProduction = (this.sharedVariableService.secondsToDate(totalSeconds));
+    this.totalTimeProduction = (this.sharedVariableService.secondsToArryTime(totalSeconds));
   }
 
   // Build do form cabeçalho (Informações do lote)
@@ -177,7 +184,6 @@ export class TriagemComponent implements OnInit {
   startProduction(): void {
     if (this.headForm.get('socio').value && this.headForm.get('fornecedor').value && this.headForm.get('materia_prima').value) {
       if (this.statusProd === '') {
-
         const nextTriagem = this.lastTriagem + 1;
         const numLote = new FormData();
         numLote.append('numero_proxima_NFE', this.motivosDeParada.numero_proxima_NFE);
@@ -203,9 +209,19 @@ export class TriagemComponent implements OnInit {
           socio: this.headForm.get('socio').value,
           observacao: this.observation
         };
+
+        let prodInfoItems = JSON.parse(localStorage.getItem('prodInfoItems'));
+        if (prodInfoItems){
+          prodInfoItems.forEach(element => {
+            element.start = new Date();
+          });
+        }
+
         localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
+        localStorage.setItem('prodInfoItems', JSON.stringify(prodInfoItems));
         this.statusProd = 'Iniciada';
         this.changeProductionStatus();
+
         this.ngOnInit();
       } else {
         this.toastService.addToast('Adicione pelo menos um item na produção para inicia-la', 'darkred');
@@ -218,11 +234,13 @@ export class TriagemComponent implements OnInit {
   // muda status da produção baseado no parametro
   changeProductionStatus(): void {
     if (this.statusProd === '') {
+      this.itemsLoteTable.nativeElement.disabled = false;
       this.startBtn.nativeElement.disabled = false;
       this.pausetBtn.nativeElement.disabled = true;
       this.stopBtn.nativeElement.disabled = true;
       this.printBtn.nativeElement.disabled = true;
     }else if (this.statusProd === 'Iniciada') {
+      this.itemsLoteTable.nativeElement.disabled = false;
       this.startBtn.nativeElement.disabled = true;
       this.pausetBtn.nativeElement.disabled = false;
       this.stopBtn.nativeElement.disabled = false;
@@ -233,7 +251,7 @@ export class TriagemComponent implements OnInit {
       this.headForm.get('materia_prima').disable();
       this.pausetBtn.nativeElement.innerHTML = '<i class="fa fa-pause-circle"></i> Pausar Produção'
     } else if (this.statusProd === 'Pausada') {
-      this.itemsLoteTable.nativeElement.disabled = true; //testre
+      this.itemsLoteTable.nativeElement.disabled = true;
       this.headForm.controls.situacao.setValue('Pausada');
       this.startBtn.nativeElement.disabled = true;
       this.pausetBtn.nativeElement.disabled = false; 
@@ -248,34 +266,38 @@ export class TriagemComponent implements OnInit {
 
   // Pausa a Prudução
   pauseProduction(): void {
-    const productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
-    let auxSequence = [];
+    if (this.selectedMotivo) {
+      const productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
+      let auxSequence = [];
 
-    if (productionBreaks) {
-      this.lotBreaks = productionBreaks;
-      this.lotBreaks.forEach(item => {
-        auxSequence.push(item.sequence)
-      })
+      if (productionBreaks) {
+        this.lotBreaks = productionBreaks;
+        this.lotBreaks.forEach(item => {
+          auxSequence.push(item.sequence)
+        })
+      }
+
+      this.lotBreaks.push({
+        motivo: this.selectedMotivo,
+        sequence: this.lotBreaks.length > 0 ? Math.max(...auxSequence) + 1 : 1,
+        startTime: new Date(),
+        endTime: null,
+        total: null,
+      });
+
+      localStorage.setItem('productionBreaks', JSON.stringify(this.lotBreaks));
+      this.modalRef.hide();
+      this.selectedMotivo = null;
+      this.statusProd = 'Pausada'
+
+      let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
+      prodInfoHead.status = 'Pausada';
+      localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
+
+      this.changeProductionStatus();
+    } else {
+      this.toastService.addToast('Selecione o motivo para continuar', 'darkred');
     }
-
-    this.lotBreaks.push({
-      motivo: this.selectedMotivo,
-      sequence: this.lotBreaks.length > 0 ? Math.max(...auxSequence) + 1 : 1,
-      startTime: new Date(),
-      endTime: null,
-      total: null,
-    });
-
-    localStorage.setItem('productionBreaks', JSON.stringify(this.lotBreaks));
-    this.modalRef.hide();
-    this.selectedMotivo = null;
-    this.statusProd = 'Pausada'
-
-    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
-    prodInfoHead.status = 'Pausada';
-    localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
-
-    this.changeProductionStatus();
   }
 
   // Continua a Produção (sai do status de pausa)
@@ -295,7 +317,7 @@ export class TriagemComponent implements OnInit {
     this.lotBreaks.forEach(item => {
       totalSec += item.total;
     });
-    this.totalTimeBreak = this.sharedVariableService.secondsToDate(totalSec);
+    this.totalTimeBreak = this.sharedVariableService.secondsToArryTime(totalSec);
     
     let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
     prodInfoHead.status = 'Iniciada';
@@ -316,12 +338,21 @@ export class TriagemComponent implements OnInit {
 
     if (prodInfoItems) { // Verifica se existe itens na produção
       if (prodInfoItems.filter(item => item.edit === true).length == 0) { // Verifica se nenhum item ainda não foi fechado  
-           
-        this.ProductionService.createTriagem(prodInfoHead, prodInfoItems, productionBreaks);        
-        this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead.end));
-        prodInfoHead.status = 'Finalizada';
-        localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
+        // this.ProductionService.createTriagem(prodInfoHead, prodInfoItems, productionBreaks);        
         
+        let arrayUniqueByKey = [...new Map(prodInfoItems.map(item => [item.product.id, item.product])).values()];
+        arrayUniqueByKey.forEach(item => {
+          Number(item['quantidade'])
+          prodInfoItems.forEach(element => {
+            if (element.product.id === item['id']) {
+              // console.log(item['quantidade'])
+              item['quantidade'] += Number(element.qtn)
+              // console.log(element.product)
+            }
+          });
+          
+        });
+        console.log(arrayUniqueByKey)
       } else {
         this.toastService.addToast('Feche todos os Tambores/Bags para Finalizar', 'darkred');
       }
@@ -332,21 +363,35 @@ export class TriagemComponent implements OnInit {
 
   // Adiciona item no lote (Item escolhido no LoteItemModal)
   addLoteItem(): void {
+    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
+    if (!prodInfoHead){
+      const produto = this.loteItemForm.get('product').value
+      this.selectedFornecedor = produto.fornecedor
+      this.headForm.controls.fornecedor.setValue(this.selectedFornecedor);
+      // this.headForm.controls.fornecedor.setText(this.selectedFornecedor.razao_social_nome);
+
+      prodInfoHead = {
+        fornecedor: this.headForm.get('fornecedor').value,
+      }
+      localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
+    }
+
     if (this.loteItemForm.get('product').value && this.loteItemForm.get('socio').value) {
       let auxBag = [];
       this.lotItems.forEach(item => {
         auxBag.push(item.numBag)
       })
-  
+     
       this.lotItems.push({
         numBag: this.lotItems.length > 0 ? Math.max(...auxBag) + 1 : 1,
         product: this.loteItemForm.get('product').value,
         qtn: 0,
         socio: this.loteItemForm.get('socio').value,
-        start: new Date(),
+        start: this.statusProd === '' ? null : new Date(),
         end: null,
         edit: true
       });
+
       localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
       this.loadLoteItemForm();
       this.modalRef.hide();
@@ -364,9 +409,18 @@ export class TriagemComponent implements OnInit {
   }
 
   removeLoteItem(numBag): void {
+    
     this.lotItems = this.lotItems.filter(obj => obj.numBag !== numBag)
     localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
     this.updateProductionSummary();
+
+    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
+    if (!prodInfoHead['status'] && prodInfoHead['fornecedor']){
+      if(this.lotItems.length == 0){
+        this.selectedFornecedor = '';
+        localStorage.removeItem('prodInfoHead')
+      }
+    }
   }
 
   // Atualiza a quantidade do item do lote

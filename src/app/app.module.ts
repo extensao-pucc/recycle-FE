@@ -35,11 +35,15 @@ import { TriagemComponent } from './producao/triagem/triagem.component';
 
 // providers
 import { AuthGuard } from './guards/auth.guard';
+import { AuthService } from './login/auth.service';
 import { PesquisaCepComponent } from './shared/pesquisa-cep/pesquisa-cep.component';
 import { ViewImageComponent } from './shared/view-image/view-image.component';
 import { PrensaComponent } from './producao/prensa/prensa.component';
 import { RemanufaturaComponent } from './producao/remanufatura/remanufatura.component';
 import { MateriasPrimasComponent } from './cadastros/materias-primas/materias-primas.component';
+import { RelatoriosComponent } from './relatorios/relatorios.component';
+import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
+import { crudDeactivateGuard } from './guards/crud.deactivate.guard';
 
 const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
 @NgModule({
@@ -65,7 +69,9 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     ViewImageComponent,
     PrensaComponent,
     RemanufaturaComponent,
-    MateriasPrimasComponent
+    MateriasPrimasComponent,
+    RelatoriosComponent,
+    HistoricoDeProdutoComponent
   ],
   imports: [
     BrowserModule,
@@ -84,7 +90,7 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
       colors: avatarColors
     })
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, AuthService, crudDeactivateGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

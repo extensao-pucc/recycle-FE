@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
+import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 
 @Component({
   selector: 'app-unidades-de-medida',
   templateUrl: './unidades-de-medida.component.html',
   styleUrls: ['./unidades-de-medida.component.css', '../../app.component.css']
 })
-export class UnidadesDeMedidaComponent implements OnInit {
+export class UnidadesDeMedidaComponent implements OnInit, IFormCanDeactivate {
+  @ViewChild('eventForm') public eventListingForm: NgForm;
+
   public tempItemsList: any;
   public itemsList: any;
   public itemForm: any;
@@ -29,6 +32,15 @@ export class UnidadesDeMedidaComponent implements OnInit {
   ngOnInit(): void {
     this.getItems();
     this.loadForm();
+  }
+
+  canDeactivate(): boolean {
+    if (this.eventListingForm) {
+      if (this.eventListingForm.dirty) {
+        return confirm('Tem certeza que deseja sair ? Suas alterações serão perdidas');
+      }
+    }
+    return true
   }
 
   loadForm(): void {
@@ -89,7 +101,7 @@ export class UnidadesDeMedidaComponent implements OnInit {
       if (formValues.id) {
         this.crudService.updateItem('unidadesDeMedida', formValues, formValues.id).subscribe(response => {
           this.getItems();
-          this.toastService.addToast('Atualizado com sucesso');
+          this.toastService.addToast('Atualizado com sucesso!');
         }, err => {
           this.toastService.addToast(err['message'], 'darkred');
         });
@@ -131,5 +143,55 @@ export class UnidadesDeMedidaComponent implements OnInit {
       }
     };
     this.showYesNoMessage = true;
+  }
+
+  sortTable(n) {
+    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById("myTable");
+    switching = true;
+    dir = "asc"; 
+
+    while (switching) {
+      switching = false;
+      rows = table.rows;
+
+      for (i = 2; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+
+        var cmpX = isNaN(parseInt(x.innerHTML)) ? x.innerHTML.toLowerCase() : parseInt(x.innerHTML);
+        var cmpY = isNaN(parseInt(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseInt(y.innerHTML);
+        cmpX = (cmpX == '-') ? 0 : cmpX;
+        cmpY = (cmpY == '-') ? 0 : cmpY;
+
+        console.log(cmpX)
+        console.log(cmpY)
+
+        if (dir == "asc") {
+            if (cmpX > cmpY) {
+                shouldSwitch= true;
+                break;
+            }
+        } else if (dir == "desc") {
+            if (cmpX < cmpY) {
+                shouldSwitch= true;
+                break;
+            }
+        }
+      }
+
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount ++;      
+      } else {
+        if (switchcount == 0 && dir == "asc") {
+            dir = "desc";
+            switching = true;
+        }
+      }
+    }
   }
 }
