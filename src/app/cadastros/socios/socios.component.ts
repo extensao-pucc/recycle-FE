@@ -347,9 +347,6 @@ export class SociosComponent implements OnInit, IFormCanDeactivate {
         cmpX = (cmpX == '-') ? 0 : cmpX;
         cmpY = (cmpY == '-') ? 0 : cmpY;
 
-        console.log(cmpX)
-        console.log(cmpY)
-
         if (dir == "asc") {
             if (cmpX > cmpY) {
                 shouldSwitch= true;

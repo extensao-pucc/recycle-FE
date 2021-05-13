@@ -11,7 +11,8 @@
     align-items: center; /* alinha verticalmente */
     justify-items: center; /* alinha horizontalmente */
     padding: 30px;
-    border: 10px solid #F7F7F8;
+    height: calc(100vh - 80px);
+    /* border: 10px solid #F7F7F8; */
     overflow-x: auto;
     overflow-y: auto;
 }
