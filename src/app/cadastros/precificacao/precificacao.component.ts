@@ -6,13 +6,12 @@ import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.compo
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 
-
 @Component({
-  selector: 'app-produtos',
-  templateUrl: './produtos.component.html',
-  styleUrls: ['./produtos.component.css', '../../app.component.css']
+  selector: 'app-precificacao',
+  templateUrl: './precificacao.component.html',
+  styleUrls: ['./precificacao.component.css']
 })
-export class ProdutosComponent implements OnInit {
+export class PrecificacaoComponent implements OnInit {
   public tempItemsList: any;
   public itemsList: any;
   public itemForm: any;
@@ -20,7 +19,12 @@ export class ProdutosComponent implements OnInit {
   public yesNoMessage: YesNoMessage = new YesNoMessage();
   public showYesNoMessage: boolean;
 
-  public familias: any;
+  // trocar
+  public produtos: any;
+  public fornecedores: any;
+  public qualidades: any;
+  public unidadesDeMedida: any;
+  public naturezaDasOperacoes: any;
 
   constructor(
     private crudService: CrudService,
@@ -38,16 +42,29 @@ export class ProdutosComponent implements OnInit {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      codigo: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
-      descricao: ['', [this.formValidatorService.isEmpty]],
-      familia: ['', [this.formValidatorService.isEmpty]]
+      produto: ['', [this.formValidatorService.isEmpty]], // trocar
+      fornecedor: ['', [this.formValidatorService.isEmpty]],
+      qualidade: ['', [this.formValidatorService.isEmpty]],
+      unidade_de_medida: ['', [this.formValidatorService.isEmpty]],
+      NCM: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validNCM]],
+      CSTE: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
+      CSTS: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
+      CFOPE: ['', [this.formValidatorService.isEmpty]],
+      CFOPS: ['', [this.formValidatorService.isEmpty]],
+      preco_compra: ['', [this.formValidatorService.isEmpty]],
+      preco_venda: ['', [this.formValidatorService.isEmpty]]
     });
   }
 
   getItems(): void {
-    this.crudService.getItems('familias').subscribe(response => { this.familias = response; });
+    // trocar
+    this.crudService.getItems('produtos').subscribe(response => { this.produtos = response; });
+    this.crudService.getItems('fornecedores').subscribe(response => { this.fornecedores = response; });
+    this.crudService.getItems('qualidades').subscribe(response => { this.qualidades = response; });
+    this.crudService.getItems('unidadesDeMedida').subscribe(response => { this.unidadesDeMedida = response; });
+    this.crudService.getItems('naturezaDasOperacoes').subscribe(response => { this.naturezaDasOperacoes = response; });
 
-    this.crudService.getItems('produtos').subscribe(response => {
+    this.crudService.getItems('precificacao').subscribe(response => {
       this.itemsList = response;
       this.tempItemsList = _.clone(this.itemsList);
     });
@@ -71,7 +88,7 @@ export class ProdutosComponent implements OnInit {
 
 
   deleteItem(id): void {
-    this.crudService.deleteItem('produtos', id).subscribe(response => {
+    this.crudService.deleteItem('precificacao', id).subscribe(response => {
       this.getItems();
       this.toastService.addToast('Deletado com sucesso');
     }, err => {
@@ -85,9 +102,18 @@ export class ProdutosComponent implements OnInit {
     if (title === 'update'){
       this.itemForm.controls.id.setValue(item.id);
     }
-    this.itemForm.controls.codigo.setValue(item.codigo);
-    this.itemForm.controls.descricao.setValue(item.descricao);
-    this.itemForm.controls.familia.setValue(item.familia.id);
+    // trocar
+    this.itemForm.controls.produto.setValue(item.produto.id);
+    this.itemForm.controls.fornecedor.setValue(item.fornecedor.id);
+    this.itemForm.controls.qualidade.setValue(item.qualidade.id);
+    this.itemForm.controls.unidade_de_medida.setValue(item.unidade_de_medida.id);
+    this.itemForm.controls.NCM.setValue(item.NCM);
+    this.itemForm.controls.CSTE.setValue(item.CSTE);
+    this.itemForm.controls.CSTS.setValue(item.CSTS);
+    this.itemForm.controls.CFOPE.setValue(item.CFOPE.id);
+    this.itemForm.controls.CFOPS.setValue(item.CFOPS.id);
+    this.itemForm.controls.preco_compra.setValue(item.preco_compra);
+    this.itemForm.controls.preco_venda.setValue(item.preco_venda);
     this.showForm = true;
   }
 
@@ -96,7 +122,7 @@ export class ProdutosComponent implements OnInit {
 
     if (this.itemForm.status === 'VALID'){
       if (formValues.id) {
-        this.crudService.updateItem('produtos', formValues, formValues.id).subscribe(response => {
+        this.crudService.updateItem('precificacao', formValues, formValues.id).subscribe(response => {
           this.getItems();
           this.loadForm();
 
@@ -111,7 +137,7 @@ export class ProdutosComponent implements OnInit {
           }
         });
       } else {
-        this.crudService.createItem('produtos', formValues).subscribe(response => {
+        this.crudService.createItem('precificacao', formValues).subscribe(response => {
           this.getItems();
           this.loadForm();
 

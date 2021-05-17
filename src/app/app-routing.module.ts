@@ -11,6 +11,7 @@ import { FornecedoresComponent } from './cadastros/fornecedores/fornecedores.com
 import { MateriasPrimasComponent } from './cadastros/materias-primas/materias-primas.component';
 import { MotivosDeParadaComponent } from './cadastros/motivos-de-parada/motivos-de-parada.component';
 import { NaturezaDasOperacoesComponent } from './cadastros/natureza-das-operacoes/natureza-das-operacoes.component';
+import { PrecificacaoComponent } from './cadastros/precificacao/precificacao.component';
 import { PrensasComponent } from './cadastros/prensas/prensas.component';
 import { ProdutosComponent } from './cadastros/produtos/produtos.component';
 import { QualidadesComponent } from './cadastros/qualidades/qualidades.component';
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: 'materiasPrimas', component: MateriasPrimasComponent, canActivate: [AuthGuard] },
   { path: 'motivosDeParada', component: MotivosDeParadaComponent, canActivate: [AuthGuard] },
   { path: 'naturezaDasOperacoes', component: NaturezaDasOperacoesComponent, canActivate: [AuthGuard] },
+  { path: 'precificacao', component: PrecificacaoComponent, canActivate: [AuthGuard] },
   { path: 'prensas', component: PrensasComponent, canActivate: [AuthGuard] },
   { path: 'produtos', component: ProdutosComponent, canActivate: [AuthGuard] },
   { path: 'qualidades', component: QualidadesComponent, canActivate: [AuthGuard] },

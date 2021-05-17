@@ -24,6 +24,7 @@ import { FamiliasComponent } from './cadastros/familias/familias.component';
 import { FornecedoresComponent } from './cadastros/fornecedores/fornecedores.component';
 import { MotivosDeParadaComponent } from './cadastros/motivos-de-parada/motivos-de-parada.component';
 import { NaturezaDasOperacoesComponent } from './cadastros/natureza-das-operacoes/natureza-das-operacoes.component';
+import { PrecificacaoComponent } from './cadastros/precificacao/precificacao.component';
 import { PrensasComponent } from './cadastros/prensas/prensas.component';
 import { ProdutosComponent } from './cadastros/produtos/produtos.component';
 import { QualidadesComponent } from './cadastros/qualidades/qualidades.component';
@@ -55,6 +56,7 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     FornecedoresComponent,
     MotivosDeParadaComponent,
     NaturezaDasOperacoesComponent,
+    PrecificacaoComponent,
     PrensasComponent,
     ProdutosComponent,
     QualidadesComponent,
