@@ -51,6 +51,8 @@ export class PrensaComponent implements OnInit {
   public totalTimeProduction: any;
   public totalTimeBreak: any
   public currentTime: any
+  public totalWeightProduction: number = 0;
+  public unprocessed: number = 0;
 
   constructor(
     private toastService: ToastService,
@@ -88,6 +90,8 @@ export class PrensaComponent implements OnInit {
         this.headForm.controls.socio.setValue(prensaInfoHead.socio.nome);
         this.statusProd = prensaInfoHead['status'];
         this.totalTimeBreak = prensaInfoHead['totalTimeBreak'];
+        this.totalWeightProduction = prensaInfoHead['pesoProduzido'];
+        this.unprocessed = prensaInfoHead['naoProcessado'];
         
         setInterval(() => {
           this.getElapsedTime();
@@ -151,7 +155,22 @@ export class PrensaComponent implements OnInit {
    updateQtn(idx, value): void {
     this.lotItems[idx].qtn = value;
     localStorage.setItem('prensaInfoItems', JSON.stringify(this.lotItems));
+    this.totalWeight("soma");
     this.updateProductionSummary();
+  }
+
+  updateQtnUnprocessed(value): void {
+    if (value == "" || value == null){
+      value = 0;
+    }
+
+    this.unprocessed = value;
+    this.totalWeight('subtrai');
+
+
+    let prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead'));
+    prensaInfoHead.naoProcessado = Number(this.unprocessed);
+    localStorage.setItem('prensaInfoHead', JSON.stringify(prensaInfoHead));
   }
 
   // Calculo de tempo do TOTAL
@@ -222,7 +241,6 @@ export class PrensaComponent implements OnInit {
       this.headForm.get('socio').disable();
       this.pausetBtn.nativeElement.innerHTML = '<i class="fa fa-play-circle"></i> Continuar Produção'
     }
-    console.log('Não cai nos if')
   }
 
   // Inicia a Produção
@@ -250,7 +268,9 @@ export class PrensaComponent implements OnInit {
           totalTimeBreak: null,
           status: 'Iniciada',
           socio: this.headForm.get('socio').value,
-          observacao: this.observation
+          observacao: this.observation,
+          pesoProduzido: 0,
+          naoProcessado: 0
         };
 
         localStorage.setItem('prensaInfoHead', JSON.stringify(prensaInfoHead));
@@ -360,10 +380,10 @@ export class PrensaComponent implements OnInit {
     }
   }
 
-  removeLoteItem(numBag): void {
-    
+  removeLoteItem(numBag): void { 
     this.lotItems = this.lotItems.filter(obj => obj.numBag !== numBag)
     localStorage.setItem('prensaInfoItems', JSON.stringify(this.lotItems));
+    this.totalWeight("soma");
     this.updateProductionSummary();
 
     let prensaInfoItems = JSON.parse(localStorage.getItem('prensaInfoItems'));
@@ -397,7 +417,29 @@ export class PrensaComponent implements OnInit {
       }
     };
     this.showYesNoMessage = true;
-  }         
+  }       
+  
+  totalWeight(operacao: string){
+    if (localStorage['prensaInfoItems'] != null){
+      let prensaInfoItems = JSON.parse(localStorage.getItem('prensaInfoItems'));
+      let prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead'));
+
+      this.totalWeightProduction = 0;
+      prensaInfoItems.forEach(item => {
+        if (item.qtn == "" || item.qtn == null){
+          item.qtn = 0;
+        }
+        this.totalWeightProduction += parseFloat(item.qtn);
+      });
+
+      if (operacao == 'subtrai'){
+        this.totalWeightProduction -= this.unprocessed;
+      }
+      
+      prensaInfoHead.pesoProduzido = this.totalWeightProduction;
+      localStorage.setItem('prensaInfoHead', JSON.stringify(prensaInfoHead));
+    }
+  }
   
   adicionarTR(){
     // var qtdRows = document.getElementById("tblListaProduto").rows.length;

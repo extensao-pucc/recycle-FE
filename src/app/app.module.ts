@@ -30,12 +30,12 @@ import { ProdutosComponent } from './cadastros/produtos/produtos.component';
 import { QualidadesComponent } from './cadastros/qualidades/qualidades.component';
 import { SociosComponent } from './cadastros/socios/socios.component';
 import { TransportadorasComponent } from './cadastros/transportadoras/transportadoras.component';
-import { UnidadesDeMedidaComponent } from './cadastros/unidades-de-medida/unidades-de-medida.component';
 import { YesNoMessageComponent } from './shared/yes-no-message/yes-no-message.component';
 import { TriagemComponent } from './producao/triagem/triagem.component';
 
 // providers
 import { AuthGuard } from './guards/auth.guard';
+import { AuthService } from './login/auth.service';
 import { PesquisaCepComponent } from './shared/pesquisa-cep/pesquisa-cep.component';
 import { ViewImageComponent } from './shared/view-image/view-image.component';
 import { PrensaComponent } from './producao/prensa/prensa.component';
@@ -43,6 +43,7 @@ import { RemanufaturaComponent } from './producao/remanufatura/remanufatura.comp
 import { MateriasPrimasComponent } from './cadastros/materias-primas/materias-primas.component';
 import { RelatoriosComponent } from './relatorios/relatorios.component';
 import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
+import { crudDeactivateGuard } from './guards/crud.deactivate.guard';
 
 const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
 @NgModule({
@@ -62,7 +63,6 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     QualidadesComponent,
     SociosComponent,
     TransportadorasComponent,
-    UnidadesDeMedidaComponent,
     YesNoMessageComponent,
     TriagemComponent,
     PesquisaCepComponent,
@@ -90,7 +90,7 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
       colors: avatarColors
     })
   ],
-  providers: [AuthGuard],
+  providers: [AuthGuard, AuthService, crudDeactivateGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -5,7 +5,7 @@
     [background]="toastBg"
     [accent]="'#ffffff'">
   </ngx-snackbar>
-  <div class="navigation">
+  <div class="navigation" *ngIf="viewNavBar">
     <app-navigation></app-navigation>
   </div>
   <div class="main">

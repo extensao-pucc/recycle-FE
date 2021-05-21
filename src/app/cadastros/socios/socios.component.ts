@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, FormControl, NgForm, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
@@ -9,13 +9,16 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
 import { SharedVariableService } from '../../shared/shared-variable.service';
 import { PesquisaCepService } from '../../shared/pesquisa-cep/pesquisa-cep.service';
 import { environment } from '../../../environments/environment';
+import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 
 @Component({
   selector: 'app-socios',
   templateUrl: './socios.component.html',
   styleUrls: ['./socios.component.css', '../../app.component.css']
 })
-export class SociosComponent implements OnInit {
+export class SociosComponent implements OnInit, IFormCanDeactivate {
+  @ViewChild('eventForm') public eventListingForm: NgForm;
+
   public tempItemsList: any;
   public itemsList: any;
   public itemForm: any;
@@ -51,6 +54,15 @@ export class SociosComponent implements OnInit {
   ngOnInit(): void {
     this.getItems();
     this.loadForm();
+  }
+
+  canDeactivate(): boolean {
+    if (this.eventListingForm) {
+      if (this.eventListingForm.dirty) {
+        return confirm('Tem certeza que deseja sair ? Suas alterações serão perdidas');
+      }
+    }
+    return true
   }
 
   reverseStringDate(str){
@@ -334,9 +346,6 @@ export class SociosComponent implements OnInit {
         var cmpY = isNaN(parseInt(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseInt(y.innerHTML);
         cmpX = (cmpX == '-') ? 0 : cmpX;
         cmpY = (cmpY == '-') ? 0 : cmpY;
-
-        console.log(cmpX)
-        console.log(cmpY)
 
         if (dir == "asc") {
             if (cmpX > cmpY) {

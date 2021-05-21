@@ -11,6 +11,11 @@
         <th scope="col" (click)="sortTable(1)">Código</th>
         <th scope="col" (click)="sortTable(2)">Descrição</th>
         <th scope="col" (click)="sortTable(3)">Família</th>
+        <th scope="col" (click)="sortTable(4)">NCM</th>
+				<th scope="col" (click)="sortTable(5)">CSTE</th>
+				<th scope="col" (click)="sortTable(6)">CSTS</th>
+				<th scope="col" (click)="sortTable(7)">CFOPE</th>
+				<th scope="col" (click)="sortTable(8)">CFOPS</th>
         <th scope="col">Opções</th>
       </tr>
     </thead>
@@ -21,6 +26,11 @@
         <td class="td-medio"><input class="form-control" type="search" placeholder="Código" (input)="Search('codigo', $event.target.value)"></td>
         <td><input class="form-control" type="search" placeholder="Descrição" (input)="Search('descricao', $event.target.value)"></td>
         <td><input class="form-control" type="search" placeholder="Família" (input)="Search('familia.nome', $event.target.value)"></td>
+        <td class="td-medio"><input class="form-control" mask="0000.00.00" type="search" placeholder="NCM" (input)="Search('NCM', $event.target.value)"></td>
+				<td><input class="form-control" type="search" placeholder="CSTE" (input)="Search('CSTE', $event.target.value)"></td>
+				<td><input class="form-control" type="search" placeholder="CSTS" (input)="Search('CSTS', $event.target.value)"></td>
+				<td class="td-medio"><input class="form-control" type="search" placeholder="CFOPE" (input)="Search('CFOPE.codigo', $event.target.value)"></td>
+				<td class="td-medio"><input class="form-control" type="search" placeholder="CFOPS" (input)="Search('CFOPS.codigo', $event.target.value)"></td>
         <th></th>
       </tr>
 
@@ -29,6 +39,11 @@
         <td class="td-medio">{{ item?.codigo }}</td>
         <td>{{ item?.descricao }}</td>
         <td>{{ item?.familia.nome }}</td>
+        <td class="td-medio">{{ item?.NCM | mask: '0000.00.00'}}</td>
+				<td>{{ item?.CSTE }}</td>
+				<td>{{ item?.CSTS }}</td>
+				<td class="td-medio">{{ item?.CFOPE.codigo }}</td>
+				<td class="td-medio">{{ item?.CFOPS.codigo }}</td>
         <th>
           <button type="button" class="btn btn-info mr-2" (click)="updateCloneItem(item, 'update')"><i class="fa fa-edit"></i>Editar</button>
           <button type="button" class="btn btn-danger mr-2" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
@@ -42,7 +57,7 @@
 
 <!-- Formulario -->
 <hr>
-<form [formGroup]="itemForm" *ngIf="itemForm && showForm">
+<form [formGroup]="itemForm" *ngIf="itemForm && showForm" #eventForm="ngForm">
   <input formControlName="id" hidden="true">
 
   <div class="form-row">
@@ -74,6 +89,56 @@
       </p> 
     </div>
   </div>
+
+  <div class="form-row">
+		<div class="form-group col-md-2">
+		<label>NCM: <i class="fa fa-question-circle" tooltip="Nomenclatura Comum do Mercosul"></i></label>
+		<input class="form-control" mask="0000.00.00" type="text" formControlName="NCM" placeholder="EX: 0000.00.00">
+		<p class="error-msg" *ngIf="itemForm.controls.NCM.errors">
+			<i class="fa fa-times"></i> {{ itemForm.controls.NCM.errors.msgErro }}
+		</p> 
+		</div>
+
+		<div class="form-group col-md-2">
+		<label>CSTE: <i class="fa fa-question-circle" tooltip="Código de Situação Tributária (Entrada)"></i></label>
+		<input class="form-control" type="text" maxlength="5" formControlName="CSTE" placeholder="EX: 000">
+		<p class="error-msg" *ngIf="itemForm.controls.CSTE.errors">
+			<i class="fa fa-times"></i> {{ itemForm.controls.CSTE.errors.msgErro }}
+		</p> 
+		</div>
+
+		<div class="form-group col-md-2">
+		<label>CSTS: <i class="fa fa-question-circle" tooltip="Código de Situação Tributária (Saida)"></i></label>
+		<input class="form-control" type="text" maxlength="5" formControlName="CSTS" placeholder="EX: 000">
+		<p class="error-msg" *ngIf="itemForm.controls.CSTS.errors">
+			<i class="fa fa-times"></i> {{ itemForm.controls.CSTS.errors.msgErro }}
+		</p> 
+		</div>
+
+		<div class="form-group col-md-3">
+		<label>CFOPE: <i class="fa fa-question-circle" tooltip="Código Fiscal de Operações e Prestações (Entrada)"></i></label>
+		<ng-select *ngIf="naturezaDasOperacoes" formControlName="CFOPE" name="CFOPE">
+			<ng-component *ngFor="let CFOPE of naturezaDasOperacoes">
+			<ng-option *ngIf="CFOPE?.tipo === 'Entrada'" [value]="CFOPE?.id">{{ CFOPE.codigo }} - {{ CFOPE.descricao }}</ng-option>
+			</ng-component>
+		</ng-select>
+		<p class="error-msg" *ngIf="itemForm.controls.CFOPE.errors">
+			<i class="fa fa-times"></i> {{ itemForm.controls.CFOPE.errors.msgErro }}
+		</p> 
+		</div>
+
+		<div class="form-group col-md-3">
+		<label>CFOPS: <i class="fa fa-question-circle" tooltip="Código Fiscal de Operações e Prestações (Saida)"></i></label>
+		<ng-select *ngIf="naturezaDasOperacoes" formControlName="CFOPS" name="CFOPS">
+			<ng-component *ngFor="let CFOPS of naturezaDasOperacoes">
+			<ng-option *ngIf="CFOPS?.tipo === 'Saida'" [value]="CFOPS?.id">{{ CFOPS.codigo }} - {{ CFOPS.descricao }}</ng-option>
+			</ng-component>
+		</ng-select>
+		<p class="error-msg" *ngIf="itemForm.controls.CFOPS.errors">
+			<i class="fa fa-times"></i> {{ itemForm.controls.CFOPS.errors.msgErro }}
+		</p> 
+		</div>
+	</div>
 
   <div class="row align-items-end">
     <hr>

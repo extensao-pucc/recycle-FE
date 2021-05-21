@@ -1,17 +1,20 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
+import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 
 @Component({
   selector: 'app-precificacao',
   templateUrl: './precificacao.component.html',
   styleUrls: ['./precificacao.component.css']
 })
-export class PrecificacaoComponent implements OnInit {
+export class PrecificacaoComponent implements OnInit, IFormCanDeactivate {
+  @ViewChild('eventForm') public eventListingForm: NgForm;
+
   public tempItemsList: any;
   public itemsList: any;
   public itemForm: any;
@@ -23,8 +26,8 @@ export class PrecificacaoComponent implements OnInit {
   public produtos: any;
   public fornecedores: any;
   public qualidades: any;
-  public unidadesDeMedida: any;
-  public naturezaDasOperacoes: any;
+  // public unidadesDeMedida: any;
+  // public naturezaDasOperacoes: any;
 
   constructor(
     private crudService: CrudService,
@@ -39,18 +42,22 @@ export class PrecificacaoComponent implements OnInit {
     this.loadForm();
   }
 
+  canDeactivate(): boolean {
+    if (this.eventListingForm) {
+      if (this.eventListingForm.dirty) {
+        return confirm('Tem certeza que deseja sair ? Suas alterações serão perdidas');
+      }
+    }
+    return true
+  }
+
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
       produto: ['', [this.formValidatorService.isEmpty]], // trocar
       fornecedor: ['', [this.formValidatorService.isEmpty]],
       qualidade: ['', [this.formValidatorService.isEmpty]],
-      unidade_de_medida: ['', [this.formValidatorService.isEmpty]],
-      NCM: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validNCM]],
-      CSTE: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
-      CSTS: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
-      CFOPE: ['', [this.formValidatorService.isEmpty]],
-      CFOPS: ['', [this.formValidatorService.isEmpty]],
+      // unidade_de_medida: ['', [this.formValidatorService.isEmpty]],
       preco_compra: ['', [this.formValidatorService.isEmpty]],
       preco_venda: ['', [this.formValidatorService.isEmpty]]
     });
@@ -61,9 +68,7 @@ export class PrecificacaoComponent implements OnInit {
     this.crudService.getItems('produtos').subscribe(response => { this.produtos = response; });
     this.crudService.getItems('fornecedores').subscribe(response => { this.fornecedores = response; });
     this.crudService.getItems('qualidades').subscribe(response => { this.qualidades = response; });
-    this.crudService.getItems('unidadesDeMedida').subscribe(response => { this.unidadesDeMedida = response; });
-    this.crudService.getItems('naturezaDasOperacoes').subscribe(response => { this.naturezaDasOperacoes = response; });
-
+    // this.crudService.getItems('unidadesDeMedida').subscribe(response => { this.unidadesDeMedida = response; });
     this.crudService.getItems('precificacao').subscribe(response => {
       this.itemsList = response;
       this.tempItemsList = _.clone(this.itemsList);
@@ -106,12 +111,7 @@ export class PrecificacaoComponent implements OnInit {
     this.itemForm.controls.produto.setValue(item.produto.id);
     this.itemForm.controls.fornecedor.setValue(item.fornecedor.id);
     this.itemForm.controls.qualidade.setValue(item.qualidade.id);
-    this.itemForm.controls.unidade_de_medida.setValue(item.unidade_de_medida.id);
-    this.itemForm.controls.NCM.setValue(item.NCM);
-    this.itemForm.controls.CSTE.setValue(item.CSTE);
-    this.itemForm.controls.CSTS.setValue(item.CSTS);
-    this.itemForm.controls.CFOPE.setValue(item.CFOPE.id);
-    this.itemForm.controls.CFOPS.setValue(item.CFOPS.id);
+    // this.itemForm.controls.unidade_de_medida.setValue(item.unidade_de_medida.id);
     this.itemForm.controls.preco_compra.setValue(item.preco_compra);
     this.itemForm.controls.preco_venda.setValue(item.preco_venda);
     this.showForm = true;

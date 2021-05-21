@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
+import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 
 
 @Component({
@@ -12,7 +13,9 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
   templateUrl: './produtos.component.html',
   styleUrls: ['./produtos.component.css', '../../app.component.css']
 })
-export class ProdutosComponent implements OnInit {
+export class ProdutosComponent implements OnInit, IFormCanDeactivate {
+  @ViewChild('eventForm') public eventListingForm: NgForm;
+
   public tempItemsList: any;
   public itemsList: any;
   public itemForm: any;
@@ -21,6 +24,7 @@ export class ProdutosComponent implements OnInit {
   public showYesNoMessage: boolean;
 
   public familias: any;
+  public naturezaDasOperacoes: any;
 
   constructor(
     private crudService: CrudService,
@@ -35,17 +39,32 @@ export class ProdutosComponent implements OnInit {
     this.loadForm();
   }
 
+  canDeactivate(): boolean {
+    if (this.eventListingForm) {
+      if (this.eventListingForm.dirty) {
+        return confirm('Tem certeza que deseja sair ? Suas alterações serão perdidas');
+      }
+    }
+    return true
+  }
+
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
       codigo: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       descricao: ['', [this.formValidatorService.isEmpty]],
-      familia: ['', [this.formValidatorService.isEmpty]]
+      familia: ['', [this.formValidatorService.isEmpty]],
+      NCM: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validNCM]],
+      CSTE: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
+      CSTS: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
+      CFOPE: ['', [this.formValidatorService.isEmpty]],
+      CFOPS: ['', [this.formValidatorService.isEmpty]]
     });
   }
 
   getItems(): void {
     this.crudService.getItems('familias').subscribe(response => { this.familias = response; });
+    this.crudService.getItems('naturezaDasOperacoes').subscribe(response => { this.naturezaDasOperacoes = response; });
 
     this.crudService.getItems('produtos').subscribe(response => {
       this.itemsList = response;
@@ -88,6 +107,11 @@ export class ProdutosComponent implements OnInit {
     this.itemForm.controls.codigo.setValue(item.codigo);
     this.itemForm.controls.descricao.setValue(item.descricao);
     this.itemForm.controls.familia.setValue(item.familia.id);
+    this.itemForm.controls.NCM.setValue(item.NCM);
+    this.itemForm.controls.CSTE.setValue(item.CSTE);
+    this.itemForm.controls.CSTS.setValue(item.CSTS);
+    this.itemForm.controls.CFOPE.setValue(item.CFOPE.id);
+    this.itemForm.controls.CFOPS.setValue(item.CFOPS.id);
     this.showForm = true;
   }
 
@@ -176,9 +200,6 @@ export class ProdutosComponent implements OnInit {
         var cmpY = isNaN(parseInt(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseInt(y.innerHTML);
         cmpX = (cmpX == '-') ? 0 : cmpX;
         cmpY = (cmpY == '-') ? 0 : cmpY;
-
-        console.log(cmpX)
-        console.log(cmpY)
 
         if (dir == "asc") {
             if (cmpX > cmpY) {

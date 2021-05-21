@@ -70,7 +70,7 @@
 <!-- Formulario -->
 <hr>
 
-<form [formGroup]="itemForm" *ngIf="itemForm && showForm">
+<form [formGroup]="itemForm" *ngIf="itemForm && showForm" #eventForm="ngForm">
   <div class="form-row">
     <div class="form-group col-md-8">  
       <label>Razão social/Nome: </label>

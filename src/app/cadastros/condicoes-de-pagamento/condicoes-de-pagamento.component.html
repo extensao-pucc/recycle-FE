@@ -36,8 +36,7 @@
 <!-- Formulario -->
 <hr>
 
-<form [formGroup]="itemForm" *ngIf="itemForm && showForm">
-      
+<form [formGroup]="itemForm" *ngIf="itemForm && showForm" #eventForm="ngForm">     
   <input formControlName="id" hidden="true">
   <label>Descrição: </label>
   <input class="form-control" type="text" maxlength="100" formControlName="descricao">
