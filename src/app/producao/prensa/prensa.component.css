@@ -48,6 +48,15 @@ label {
     color: white;
 }
 
+/* .unprocessed {
+    width: 150px; 
+} */
+
+.unprocessed input {
+    width: 40%;
+    text-align: center;
+}
+
 /* Seleção de produto ========================================= */
 .selesctionItem {
     color: white;

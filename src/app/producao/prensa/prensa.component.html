@@ -113,13 +113,41 @@
         
         <tr>
         <td>Não processado</td>
-        <td class="td-medio">
-            <input class="form-control" type="number" [value]="unprocessed" (keyup)="updateQtnUnprocessed($event.target.value)" [disabled]="statusProd != 'Iniciada'">
+        <td class="td-medio td">
+            <div class="unprocessed" ALIGN="center">
+                <input class="form-control" type="number" [value]="unprocessed" (keyup)="updateQtnUnprocessed($event.target.value)" [disabled]="statusProd != 'Iniciada'">
+            </div>
        </td>
         </tr>
     </tbody>
 </table>
 <!-- <button (click)="adicionarTR();">Add</button> -->
+
+<!-- Resumo do lote -->
+<table class="table table-hover table-shadow" ALIGN="center">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Quantidade Total <i class="fa fa-question-circle" tooltip="Soma total de cada tambor usados na produção atual"></i></th>
+        <th scope="col">Tempo Pausado <i class="fa fa-question-circle" tooltip="Tempo total de pausas (Tempo atualizado ao finalizar uma pausa)"></i></th>
+        <th scope="col">Tempo Decorrido <i class="fa fa-question-circle" tooltip="Este tempo não inclue pausar"></i></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>{{ totQtn }} kg</td>
+        <td>
+          <span *ngIf="totalTimeBreak && statusProd !== 'Pausada' ">{{totalTimeBreak.hours + ':' + totalTimeBreak.minutes + ':' + totalTimeBreak.seconds
+            }}</span>
+          <span *ngIf="!totalTimeBreak && statusProd !== 'Pausada'">Não ocorreram pausas</span>
+          <span *ngIf="statusProd === 'Pausada'">Triagem pausada</span>
+        </td>
+        <td>
+          <span *ngIf="totalTimeProduction">{{totalTimeProduction.hours + ':' + totalTimeProduction.minutes + ':' + totalTimeProduction.seconds
+            }}</span>              
+        </td>
+      </tr>
+    </tbody>
+</table>
 
 <table class="table table-hover table-shadow" ALIGN="center">
     <thead class="thead-dark">
@@ -130,7 +158,7 @@
     <tbody>
       <tr>
         <td>
-          <textarea class="form-control" name="observation" rows="3" [(ngModel)]="observation" (keyup)="updateObs()" placeholder="Digite suas observações sobre a triagem...."></textarea>
+          <textarea class="form-control" name="observation" rows="3" [(ngModel)]="observation" (keyup)="updateObs()" placeholder="Digite suas observações sobre a prensa...."></textarea>
         </td>
       </tr>
     </tbody>

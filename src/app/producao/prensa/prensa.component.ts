@@ -384,6 +384,7 @@ export class PrensaComponent implements OnInit {
     this.lotItems = this.lotItems.filter(obj => obj.numBag !== numBag)
     localStorage.setItem('prensaInfoItems', JSON.stringify(this.lotItems));
     this.totalWeight("soma");
+    this.totalWeight("subtrai");
     this.updateProductionSummary();
 
     let prensaInfoItems = JSON.parse(localStorage.getItem('prensaInfoItems'));
