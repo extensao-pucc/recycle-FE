@@ -11,7 +11,6 @@
 				<th scope="col" (click)="sortTable(1)">Produto</th>
 				<th scope="col" (click)="sortTable(2)">Fornecedor</th>
 				<th scope="col" (click)="sortTable(3)">Qualidade</th>
-				<!-- <th scope="col" (click)="sortTable(4)">Unidade de medida</th> -->
 				<th scope="col" (click)="sortTable(4)">Preço de compra</th>
 				<th scope="col" (click)="sortTable(5)">Preço de venda</th>
 				<th scope="col">Opções</th>
@@ -24,7 +23,6 @@
 				<td><input class="form-control" type="search" placeholder="Produto" (input)="Search('produto.descricao', $event.target.value)"></td>
 				<td><input class="form-control" type="search" placeholder="Fornecedor" (input)="Search('fornecedor.razao_social_nome', $event.target.value)"></td>
 				<td><input class="form-control" type="search" placeholder="Qualidade" (input)="Search('qualidade.nome', $event.target.value)"></td>
-				<!-- <td><input class="form-control" type="search" placeholder="Unidade de medida" (input)="Search('unidade_de_medida.sigla', $event.target.value)"></td> -->
 				<td class="td-medio"><input class="form-control" type="search" placeholder="Compra" (input)="Search('preco_compra', $event.target.value)"></td>
 				<td class="td-medio"><input class="form-control" type="search" placeholder="Venda" (input)="Search('preco_venda', $event.target.value)"></td>
 				<th></th>
@@ -35,7 +33,6 @@
 				<td>{{ item?.produto.descricao }}</td>
 				<td>{{ item?.fornecedor.razao_social_nome }}</td>
 				<td>{{ item?.qualidade.nome }}</td>
-				<!-- <td>{{ item?.unidade_de_medida.sigla }}</td> -->
 				<td>R$ {{ item?.preco_compra | mask: 'separator.2'}}</td>
 				<td>R$ {{ item?.preco_venda | mask: 'separator.2'}}</td>
 				<th>
@@ -104,16 +101,7 @@
 			<i class="fa fa-times"></i> {{ itemForm.controls.qualidade.errors.msgErro }}
 		</p>             
 		</div>
-
-		<!-- <div class="form-group col-md-4">
-		<label>Unidade de medida: </label>
-		<ng-select *ngIf="unidadesDeMedida" formControlName="unidade_de_medida" name="unidade_de_medida">
-			<ng-option *ngFor="let unidade_de_medida of unidadesDeMedida" [value]="unidade_de_medida?.id">{{unidade_de_medida.sigla}} - {{unidade_de_medida.descricao}}</ng-option>
-		</ng-select>
-		<p class="error-msg" *ngIf="itemForm.controls.unidade_de_medida.errors">
-			<i class="fa fa-times"></i> {{ itemForm.controls.unidade_de_medida.errors.msgErro }}
-		</p>             
-		</div> -->
+		
 	</div>
 
 	<div class="row align-items-end">

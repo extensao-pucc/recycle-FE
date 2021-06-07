@@ -26,8 +26,6 @@ export class PrecificacaoComponent implements OnInit, IFormCanDeactivate {
   public produtos: any;
   public fornecedores: any;
   public qualidades: any;
-  // public unidadesDeMedida: any;
-  // public naturezaDasOperacoes: any;
 
   constructor(
     private crudService: CrudService,
@@ -57,7 +55,6 @@ export class PrecificacaoComponent implements OnInit, IFormCanDeactivate {
       produto: ['', [this.formValidatorService.isEmpty]], // trocar
       fornecedor: ['', [this.formValidatorService.isEmpty]],
       qualidade: ['', [this.formValidatorService.isEmpty]],
-      // unidade_de_medida: ['', [this.formValidatorService.isEmpty]],
       preco_compra: ['', [this.formValidatorService.isEmpty]],
       preco_venda: ['', [this.formValidatorService.isEmpty]]
     });
@@ -68,7 +65,6 @@ export class PrecificacaoComponent implements OnInit, IFormCanDeactivate {
     this.crudService.getItems('produtos').subscribe(response => { this.produtos = response; });
     this.crudService.getItems('fornecedores').subscribe(response => { this.fornecedores = response; });
     this.crudService.getItems('qualidades').subscribe(response => { this.qualidades = response; });
-    // this.crudService.getItems('unidadesDeMedida').subscribe(response => { this.unidadesDeMedida = response; });
     this.crudService.getItems('precificacao').subscribe(response => {
       this.itemsList = response;
       this.tempItemsList = _.clone(this.itemsList);
@@ -111,7 +107,6 @@ export class PrecificacaoComponent implements OnInit, IFormCanDeactivate {
     this.itemForm.controls.produto.setValue(item.produto.id);
     this.itemForm.controls.fornecedor.setValue(item.fornecedor.id);
     this.itemForm.controls.qualidade.setValue(item.qualidade.id);
-    // this.itemForm.controls.unidade_de_medida.setValue(item.unidade_de_medida.id);
     this.itemForm.controls.preco_compra.setValue(item.preco_compra);
     this.itemForm.controls.preco_venda.setValue(item.preco_venda);
     this.showForm = true;

@@ -120,9 +120,9 @@ export class PrensaComponent implements OnInit {
       this.lotItems = prensaInfoItems;
     }
 
-    const productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
-    if(productionBreaks) {
-      this.lotBreaks = productionBreaks;
+    const prensaBreaks = JSON.parse(localStorage.getItem('prensaBreaks'));
+    if(prensaBreaks) {
+      this.lotBreaks = prensaBreaks;
     }
     this.updateProductionSummary();
 
