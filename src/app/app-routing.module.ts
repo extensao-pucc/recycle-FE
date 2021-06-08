@@ -1,3 +1,4 @@
+import { SidebarComponent } from './sidebar/sidebar.component';
 import { crudDeactivateGuard } from './guards/crud.deactivate.guard';
 import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
 import { NgModule } from '@angular/core';
@@ -45,6 +46,7 @@ const routes: Routes = [
   { path: 'relatorios', component: RelatoriosComponent, canActivate: [AuthGuard] },
   { path: 'historicoDeProduto', component: HistoricoDeProdutoComponent, canActivate: [AuthGuard] }, 
   { path: 'login', component: LoginComponent},
+  { path: 'sidebar', component: SidebarComponent},
   { path: '**', redirectTo: '' }
 ];
 
