@@ -24,9 +24,6 @@ export class ProdutosComponent implements OnInit, IFormCanDeactivate {
   public showYesNoMessage: boolean;
 
   public familias: any;
-  public fornecedores: any;
-  public qualidades: any;
-  public unidadesDeMedida: any;
   public naturezaDasOperacoes: any;
 
   constructor(
@@ -57,24 +54,16 @@ export class ProdutosComponent implements OnInit, IFormCanDeactivate {
       codigo: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       descricao: ['', [this.formValidatorService.isEmpty]],
       familia: ['', [this.formValidatorService.isEmpty]],
-      fornecedor: ['', [this.formValidatorService.isEmpty]],
-      qualidade: ['', [this.formValidatorService.isEmpty]],
-      unidade_de_medida: ['', [this.formValidatorService.isEmpty]],
       NCM: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validNCM]],
       CSTE: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       CSTS: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
       CFOPE: ['', [this.formValidatorService.isEmpty]],
-      CFOPS: ['', [this.formValidatorService.isEmpty]],
-      preco_compra: ['', [this.formValidatorService.isEmpty]],
-      preco_venda: ['', [this.formValidatorService.isEmpty]]
+      CFOPS: ['', [this.formValidatorService.isEmpty]]
     });
   }
 
   getItems(): void {
     this.crudService.getItems('familias').subscribe(response => { this.familias = response; });
-    this.crudService.getItems('fornecedores').subscribe(response => { this.fornecedores = response; });
-    this.crudService.getItems('qualidades').subscribe(response => { this.qualidades = response; });
-    this.crudService.getItems('unidadesDeMedida').subscribe(response => { this.unidadesDeMedida = response; });
     this.crudService.getItems('naturezaDasOperacoes').subscribe(response => { this.naturezaDasOperacoes = response; });
 
     this.crudService.getItems('produtos').subscribe(response => {
@@ -118,16 +107,11 @@ export class ProdutosComponent implements OnInit, IFormCanDeactivate {
     this.itemForm.controls.codigo.setValue(item.codigo);
     this.itemForm.controls.descricao.setValue(item.descricao);
     this.itemForm.controls.familia.setValue(item.familia.id);
-    this.itemForm.controls.fornecedor.setValue(item.fornecedor.id);
-    this.itemForm.controls.qualidade.setValue(item.qualidade.id);
-    this.itemForm.controls.unidade_de_medida.setValue(item.unidade_de_medida.id);
     this.itemForm.controls.NCM.setValue(item.NCM);
     this.itemForm.controls.CSTE.setValue(item.CSTE);
     this.itemForm.controls.CSTS.setValue(item.CSTS);
     this.itemForm.controls.CFOPE.setValue(item.CFOPE.id);
     this.itemForm.controls.CFOPS.setValue(item.CFOPS.id);
-    this.itemForm.controls.preco_compra.setValue(item.preco_compra);
-    this.itemForm.controls.preco_venda.setValue(item.preco_venda);
     this.showForm = true;
   }
 
