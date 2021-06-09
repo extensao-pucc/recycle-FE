@@ -58,6 +58,7 @@
             <tr>
                 <th scope="col">Produto</th>
                 <th scope="col">Qualidade</th>
+                <th scope="col">Fornecedor</th>
                 <th scope="col">Peso</th>
                 <th class="text-right">
                     <button class="btn btn-success" (click)="showLoteItemModal()" tooltip="Adicionar item ao lote" #itemsLoteTable>
@@ -71,8 +72,11 @@
                 <td class="product">
                     <span tooltip="Descrição: {{ item.product.descricao }}">{{ item.product.descricao }}</span>
                 </td>
-                <td class="product">
+                <td class="quality">
                     <span>{{ item.product.qualidade.nome }}</span>
+                </td>
+                <td class="provider">
+                    <span>{{ item.product.fornecedor.razao_social_nome }}</span>
                 </td>
                 <td class="qtn td-medio">
                     <span *ngIf="!item.edit">{{ item.qtn }} kg</span>
@@ -96,13 +100,22 @@
     </thead>
     <tbody id="tblListaProduto">
         <tr>
-        <td>RSI</td>
-        <td>450 g.</td>
+        <td> <ng-select formControlName="product" name="product">
+            <ng-component *ngFor="let produto of produtos">
+                <ng-option [value]="produto"> 
+                    <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
+                    <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span>                       
+                </ng-option>
+            </ng-component>
+        </ng-select></td>
+        <td><span *ngIf="totalWeightProduction != 0">{{ totalWeightProduction }} Kg.</span></td>
         </tr>
         
         <tr>
         <td>Não processado</td>
-        <td>20 kg.</td>
+        <td class="td-medio">
+            <input class="form-control" type="number" [value]="unprocessed" (keyup)="updateQtnUnprocessed($event.target.value)" [disabled]="statusProd != 'Iniciada'">
+       </td>
         </tr>
     </tbody>
 </table>

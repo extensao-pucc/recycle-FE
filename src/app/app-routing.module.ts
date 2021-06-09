@@ -12,12 +12,12 @@ import { FornecedoresComponent } from './cadastros/fornecedores/fornecedores.com
 import { MateriasPrimasComponent } from './cadastros/materias-primas/materias-primas.component';
 import { MotivosDeParadaComponent } from './cadastros/motivos-de-parada/motivos-de-parada.component';
 import { NaturezaDasOperacoesComponent } from './cadastros/natureza-das-operacoes/natureza-das-operacoes.component';
+import { PrecificacaoComponent } from './cadastros/precificacao/precificacao.component';
 import { PrensasComponent } from './cadastros/prensas/prensas.component';
 import { ProdutosComponent } from './cadastros/produtos/produtos.component';
 import { QualidadesComponent } from './cadastros/qualidades/qualidades.component';
 import { SociosComponent } from './cadastros/socios/socios.component';
 import { TransportadorasComponent } from './cadastros/transportadoras/transportadoras.component';
-import { UnidadesDeMedidaComponent } from './cadastros/unidades-de-medida/unidades-de-medida.component';
 import { TriagemComponent } from './producao/triagem/triagem.component';
 import { PrensaComponent } from './producao/prensa/prensa.component';
 import { RemanufaturaComponent } from './producao/remanufatura/remanufatura.component';
@@ -33,12 +33,12 @@ const routes: Routes = [
   { path: 'materiasPrimas', component: MateriasPrimasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'motivosDeParada', component: MotivosDeParadaComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'naturezaDasOperacoes', component: NaturezaDasOperacoesComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'precificacao', component: PrecificacaoComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'prensas', component: PrensasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'produtos', component: ProdutosComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'qualidades', component: QualidadesComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'socios', component: SociosComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'transportadoras', component: TransportadorasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
-  { path: 'unidadesDeMedida', component: UnidadesDeMedidaComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'triagem', component: TriagemComponent, canActivate: [AuthGuard] },
   { path: 'prensa', component: PrensaComponent, canActivate: [AuthGuard] },
   { path: 'remanufatura', component: RemanufaturaComponent, canActivate: [AuthGuard] },

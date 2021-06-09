@@ -65,7 +65,7 @@ export class TriagemComponent implements OnInit {
   constructor(
     private toastService: ToastService,
     private crudService: CrudService,
-    private ProductionService: ProductionService,
+    private productionService: ProductionService,
     private sharedVariableService: SharedVariableService,
     private formBuilder: FormBuilder,
     private modalService: BsModalService,
@@ -81,20 +81,20 @@ export class TriagemComponent implements OnInit {
   private destroyed$ = new Subject();
 
   ngOnInit(): void {
-    const prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
-    this.getItems();
-    if (prodInfoHead) {
+    const triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead'));
+    
+    if (triagemInfoHead) {
       this.loadHeadForm();
-      if(prodInfoHead['status']){
-        this.headForm.controls.lote.setValue(prodInfoHead['currentLote']);
-        this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(prodInfoHead['start']));
-        this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(prodInfoHead['start']));
-        this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(prodInfoHead['end']));
-        this.headForm.controls.situacao.setValue(prodInfoHead['status']);
-        this.headForm.controls.socio.setValue(prodInfoHead.socio.nome);
-        this.headForm.controls.materia_prima.setValue(prodInfoHead.materia.nome);
-        this.statusProd = prodInfoHead['status'];
-        this.totalTimeBreak = prodInfoHead['totalTimeBreak'];
+      if(triagemInfoHead['status']){
+        this.headForm.controls.lote.setValue(triagemInfoHead['currentLote']);
+        this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(triagemInfoHead['start']));
+        this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(triagemInfoHead['start']));
+        this.headForm.controls.termino.setValue(this.sharedVariableService.currentTime(triagemInfoHead['end']));
+        this.headForm.controls.situacao.setValue(triagemInfoHead['status']);
+        this.headForm.controls.socio.setValue(triagemInfoHead.socio.nome);
+        this.headForm.controls.materia_prima.setValue(triagemInfoHead.materia.nome);
+        this.statusProd = triagemInfoHead['status'];
+        this.totalTimeBreak = triagemInfoHead['totalTimeBreak'];
         
         setInterval(() => {
           this.getElapsedTime();
@@ -102,10 +102,10 @@ export class TriagemComponent implements OnInit {
         }, 1000);
       }
 
-      this.headForm.controls.fornecedor.setValue(prodInfoHead.fornecedor);
-      this.selectedFornecedor = prodInfoHead['fornecedor']
-      this.totalTimeBreak = prodInfoHead['totalTimeBreak'];
-      this.observation = prodInfoHead['observacao'];
+      this.headForm.controls.fornecedor.setValue(triagemInfoHead.fornecedor);
+      this.selectedFornecedor = triagemInfoHead['fornecedor']
+      this.totalTimeBreak = triagemInfoHead['totalTimeBreak'];
+      this.observation = triagemInfoHead['observacao'];
       this.changeProductionStatus();
 
     } else {
@@ -115,14 +115,15 @@ export class TriagemComponent implements OnInit {
         this.lastTriagem =  Number(response[0].triagem);
       });
     }
+    this.getItems();
 
-    const prodInfoItems = JSON.parse(localStorage.getItem('prodInfoItems'));
-    if(prodInfoItems) {
-      this.lotItems = prodInfoItems;
+    const triagemInfoItems = JSON.parse(localStorage.getItem('triagemInfoItems'));
+    if(triagemInfoItems) {
+      this.lotItems = triagemInfoItems;
     }
-    const productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
-    if(productionBreaks) {
-      this.lotBreaks = productionBreaks;
+    const triagemBreaks = JSON.parse(localStorage.getItem('triagemBreaks'));
+    if(triagemBreaks) {
+      this.lotBreaks = triagemBreaks;
     }
     this.updateProductionSummary();
 
@@ -137,7 +138,7 @@ export class TriagemComponent implements OnInit {
 
   // Calculo de tempo do TOTAL da triagem
   getElapsedTime(): void {
-    const prodInfo = JSON.parse(localStorage.prodInfoHead)
+    const prodInfo = JSON.parse(localStorage.triagemInfoHead)
     const start = new Date(prodInfo.start)
     let totalSeconds = this.sharedVariableService.difTime(start, new Date());
     this.totalTimeProduction = (this.sharedVariableService.secondsToArryTime(totalSeconds));
@@ -177,7 +178,17 @@ export class TriagemComponent implements OnInit {
     this.crudService.getItems('fornecedores').subscribe(response => this.fornecedores = response);
     this.crudService.getItems('motivosDeParada').subscribe(response => this.motivosDeParada = response);
     this.crudService.getItems('materiasPrimas').subscribe(response => this.materiasPrimas = response);
-    this.crudService.getItems('produtos').subscribe(response => this.produtos = response);
+    // this.crudService.getItems('produtos').subscribe(response => this.produtos = response);
+
+    if (this.selectedFornecedor) {
+      this.productionService.getProdByFornecedor(String(this.selectedFornecedor['id'])).subscribe(response => this.produtos = response );
+    }
+    // this.crudService.getItems('precificacao').subscribe(response => {
+    //   this.produtos = response.filter(resp => resp['fornecedor']['id'] == this.selectedFornecedor.id)
+    //   this.produtos = this.produtos.map(item => {
+    //     item.produto
+    //   });
+    // });
   }
 
   // Inicia a Produção
@@ -198,7 +209,7 @@ export class TriagemComponent implements OnInit {
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(new Date()));
         this.headForm.controls.situacao.setValue('Iniciada');
         
-        const prodInfoHead = {
+        const triagemInfoHead = {
           currentLote: this.lastTriagem + 1,
           fornecedor: this.headForm.get('fornecedor').value,
           materia: this.headForm.get('materia_prima').value,
@@ -210,15 +221,15 @@ export class TriagemComponent implements OnInit {
           observacao: this.observation
         };
 
-        let prodInfoItems = JSON.parse(localStorage.getItem('prodInfoItems'));
-        if (prodInfoItems){
-          prodInfoItems.forEach(element => {
+        let triagemInfoItems = JSON.parse(localStorage.getItem('triagemInfoItems'));
+        if (triagemInfoItems){
+          triagemInfoItems.forEach(element => {
             element.start = new Date();
           });
         }
 
-        localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
-        localStorage.setItem('prodInfoItems', JSON.stringify(prodInfoItems));
+        localStorage.setItem('triagemInfoHead', JSON.stringify(triagemInfoHead));
+        localStorage.setItem('triagemInfoItems', JSON.stringify(triagemInfoItems));
         this.statusProd = 'Iniciada';
         this.changeProductionStatus();
 
@@ -267,11 +278,11 @@ export class TriagemComponent implements OnInit {
   // Pausa a Prudução
   pauseProduction(): void {
     if (this.selectedMotivo) {
-      const productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
+      const triagemBreaks = JSON.parse(localStorage.getItem('triagemBreaks'));
       let auxSequence = [];
 
-      if (productionBreaks) {
-        this.lotBreaks = productionBreaks;
+      if (triagemBreaks) {
+        this.lotBreaks = triagemBreaks;
         this.lotBreaks.forEach(item => {
           auxSequence.push(item.sequence)
         })
@@ -285,14 +296,14 @@ export class TriagemComponent implements OnInit {
         total: null,
       });
 
-      localStorage.setItem('productionBreaks', JSON.stringify(this.lotBreaks));
+      localStorage.setItem('triagemBreaks', JSON.stringify(this.lotBreaks));
       this.modalRef.hide();
       this.selectedMotivo = null;
       this.statusProd = 'Pausada'
 
-      let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
-      prodInfoHead.status = 'Pausada';
-      localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
+      let triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead'));
+      triagemInfoHead.status = 'Pausada';
+      localStorage.setItem('triagemInfoHead', JSON.stringify(triagemInfoHead));
 
       this.changeProductionStatus();
     } else {
@@ -302,13 +313,13 @@ export class TriagemComponent implements OnInit {
 
   // Continua a Produção (sai do status de pausa)
   continueProduction(): void {
-    this.lotBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
+    this.lotBreaks = JSON.parse(localStorage.getItem('triagemBreaks'));
     this.lotBreaks[this.lotBreaks.length - 1].endTime = new Date();
     this.lotBreaks[this.lotBreaks.length - 1].total = this.sharedVariableService.difTime(
       this.lotBreaks[this.lotBreaks.length - 1].startTime,
       this.lotBreaks[this.lotBreaks.length - 1].endTime
     )
-    localStorage.setItem('productionBreaks', JSON.stringify(this.lotBreaks));
+    localStorage.setItem('triagemBreaks', JSON.stringify(this.lotBreaks));
 
     this.statusProd = 'Iniciada'
 
@@ -319,40 +330,36 @@ export class TriagemComponent implements OnInit {
     });
     this.totalTimeBreak = this.sharedVariableService.secondsToArryTime(totalSec);
     
-    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
-    prodInfoHead.status = 'Iniciada';
-    prodInfoHead.totalTimeBreak = this.totalTimeBreak;
-    localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
+    let triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead'));
+    triagemInfoHead.status = 'Iniciada';
+    triagemInfoHead.totalTimeBreak = this.totalTimeBreak;
+    localStorage.setItem('triagemInfoHead', JSON.stringify(triagemInfoHead));
     
     this.changeProductionStatus();
   }
 
   // Finaliza produção
   stopProduction(): void {
-    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead')); 
-    let prodInfoItems = JSON.parse(localStorage.getItem('prodInfoItems'));
-    let productionBreaks = JSON.parse(localStorage.getItem('productionBreaks'));
+    let triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead')); 
+    let triagemInfoItems = JSON.parse(localStorage.getItem('triagemInfoItems'));
+    let triagemBreaks = JSON.parse(localStorage.getItem('triagemBreaks'));
 
-    prodInfoHead.totalTimeProduction = this.sharedVariableService.difTime(prodInfoHead.start, new Date());
-    prodInfoHead.end = new Date().toISOString();
+    triagemInfoHead.totalTimeProduction = this.sharedVariableService.difTime(triagemInfoHead.start, new Date());
+    triagemInfoHead.end = new Date().toISOString();
 
-    if (prodInfoItems) { // Verifica se existe itens na produção
-      if (prodInfoItems.filter(item => item.edit === true).length == 0) { // Verifica se nenhum item ainda não foi fechado  
-        // this.ProductionService.createTriagem(prodInfoHead, prodInfoItems, productionBreaks);        
+    if (triagemInfoItems) { // Verifica se existe itens na produção
+      if (triagemInfoItems.filter(item => item.edit === true).length == 0) { // Verifica se nenhum item ainda não foi fechado  
         
-        let arrayUniqueByKey = [...new Map(prodInfoItems.map(item => [item.product.id, item.product])).values()];
+        let arrayUniqueByKey = [...new Map(triagemInfoItems.map(item => [item.product.precificacao_id, item.product])).values()];
         arrayUniqueByKey.forEach(item => {
-          Number(item['quantidade'])
-          prodInfoItems.forEach(element => {
-            if (element.product.id === item['id']) {
-              // console.log(item['quantidade'])
+          item['quantidade'] = 0;
+          triagemInfoItems.forEach(element => {
+            if (element.product.precificacao_id === item['precificacao_id']) {
               item['quantidade'] += Number(element.qtn)
-              // console.log(element.product)
             }
           });
-          
         });
-        console.log(arrayUniqueByKey)
+        this.productionService.stopTriagem(triagemInfoHead, triagemInfoItems, triagemBreaks, arrayUniqueByKey);        
       } else {
         this.toastService.addToast('Feche todos os Tambores/Bags para Finalizar', 'darkred');
       }
@@ -363,17 +370,17 @@ export class TriagemComponent implements OnInit {
 
   // Adiciona item no lote (Item escolhido no LoteItemModal)
   addLoteItem(): void {
-    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
-    if (!prodInfoHead){
+    let triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead'));
+    if (!triagemInfoHead){
       const produto = this.loteItemForm.get('product').value
       this.selectedFornecedor = produto.fornecedor
       this.headForm.controls.fornecedor.setValue(this.selectedFornecedor);
       // this.headForm.controls.fornecedor.setText(this.selectedFornecedor.razao_social_nome);
 
-      prodInfoHead = {
+      triagemInfoHead = {
         fornecedor: this.headForm.get('fornecedor').value,
       }
-      localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
+      localStorage.setItem('triagemInfoHead', JSON.stringify(triagemInfoHead));
     }
 
     if (this.loteItemForm.get('product').value && this.loteItemForm.get('socio').value) {
@@ -392,7 +399,7 @@ export class TriagemComponent implements OnInit {
         edit: true
       });
 
-      localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
+      localStorage.setItem('triagemInfoItems', JSON.stringify(this.lotItems));
       this.loadLoteItemForm();
       this.modalRef.hide();
       this.updateProductionSummary();
@@ -405,20 +412,20 @@ export class TriagemComponent implements OnInit {
   saveLoteItem(idx): void {
     this.lotItems[idx].edit = false;
     this.lotItems[idx].end = new Date();
-    localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
+    localStorage.setItem('triagemInfoItems', JSON.stringify(this.lotItems));
   }
 
   removeLoteItem(numBag): void {
     
     this.lotItems = this.lotItems.filter(obj => obj.numBag !== numBag)
-    localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
+    localStorage.setItem('triagemInfoItems', JSON.stringify(this.lotItems));
     this.updateProductionSummary();
 
-    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
-    if (!prodInfoHead['status'] && prodInfoHead['fornecedor']){
+    let triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead'));
+    if (!triagemInfoHead['status'] && triagemInfoHead['fornecedor']){
       if(this.lotItems.length == 0){
         this.selectedFornecedor = '';
-        localStorage.removeItem('prodInfoHead')
+        localStorage.removeItem('triagemInfoHead')
       }
     }
   }
@@ -426,14 +433,14 @@ export class TriagemComponent implements OnInit {
   // Atualiza a quantidade do item do lote
   updateQtn(idx, value): void {
     this.lotItems[idx].qtn = value;
-    localStorage.setItem('prodInfoItems', JSON.stringify(this.lotItems));
+    localStorage.setItem('triagemInfoItems', JSON.stringify(this.lotItems));
     this.updateProductionSummary();
   }
 
   updateObs(): void {
-    let prodInfoHead = JSON.parse(localStorage.getItem('prodInfoHead'));
-    prodInfoHead.observacao = this.observation;
-    localStorage.setItem('prodInfoHead', JSON.stringify(prodInfoHead));
+    let triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead'));
+    triagemInfoHead.observacao = this.observation;
+    localStorage.setItem('triagemInfoHead', JSON.stringify(triagemInfoHead));
   }
 
   // Atualiza o resumo da produção

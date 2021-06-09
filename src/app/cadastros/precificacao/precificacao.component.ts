@@ -8,11 +8,11 @@ import { FormValidatorService } from '../../shared/formValidator/form-validator.
 import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 
 @Component({
-  selector: 'app-unidades-de-medida',
-  templateUrl: './unidades-de-medida.component.html',
-  styleUrls: ['./unidades-de-medida.component.css', '../../app.component.css']
+  selector: 'app-precificacao',
+  templateUrl: './precificacao.component.html',
+  styleUrls: ['./precificacao.component.css']
 })
-export class UnidadesDeMedidaComponent implements OnInit, IFormCanDeactivate {
+export class PrecificacaoComponent implements OnInit, IFormCanDeactivate {
   @ViewChild('eventForm') public eventListingForm: NgForm;
 
   public tempItemsList: any;
@@ -22,15 +22,21 @@ export class UnidadesDeMedidaComponent implements OnInit, IFormCanDeactivate {
   public yesNoMessage: YesNoMessage = new YesNoMessage();
   public showYesNoMessage: boolean;
 
+  // trocar
+  public produtos: any;
+  public fornecedores: any;
+  public qualidades: any;
+
   constructor(
     private crudService: CrudService,
     private toastService: ToastService,
     private formBuilder: FormBuilder,
     private formValidatorService: FormValidatorService
-  ) { }
+  ) {
+    this.getItems();
+  }
 
   ngOnInit(): void {
-    this.getItems();
     this.loadForm();
   }
 
@@ -46,26 +52,33 @@ export class UnidadesDeMedidaComponent implements OnInit, IFormCanDeactivate {
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      sigla: ['', [this.formValidatorService.isEmpty]],
-      descricao: ['', [this.formValidatorService.isEmpty]],
+      produto: ['', [this.formValidatorService.isEmpty]], // trocar
+      fornecedor: ['', [this.formValidatorService.isEmpty]],
+      qualidade: ['', [this.formValidatorService.isEmpty]],
+      preco_compra: ['', [this.formValidatorService.isEmpty]],
+      preco_venda: ['', [this.formValidatorService.isEmpty]]
     });
   }
 
   getItems(): void {
-    this.crudService.getItems('unidadesDeMedida').subscribe(response => {
+    // trocar
+    this.crudService.getItems('produtos').subscribe(response => { this.produtos = response; });
+    this.crudService.getItems('fornecedores').subscribe(response => { this.fornecedores = response; });
+    this.crudService.getItems('qualidades').subscribe(response => { this.qualidades = response; });
+    this.crudService.getItems('precificacao').subscribe(response => {
       this.itemsList = response;
       this.tempItemsList = _.clone(this.itemsList);
     });
   }
 
    // =========== Busca personalizada ====================================================
-  Search(campo: any, valor: any): any{
+   Search(campo: any, valor: any): any{
     this.tempItemsList = _.clone(this.tempItemsList);
 
     if (valor !== ''){
       this.tempItemsList = this.itemsList.filter(res => {
-        return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
-               valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
+        return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f-\.|\-\(\) '\/]/g, '').match(
+               valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f-\.|\-\(\) '\/]/g, ''
               ));
       });
     } else if (valor === '') {
@@ -73,10 +86,10 @@ export class UnidadesDeMedidaComponent implements OnInit, IFormCanDeactivate {
     }
   }
   // ===================================================================================
-  
+
 
   deleteItem(id): void {
-    this.crudService.deleteItem('unidadesDeMedida', id).subscribe(response => {
+    this.crudService.deleteItem('precificacao', id).subscribe(response => {
       this.getItems();
       this.toastService.addToast('Deletado com sucesso');
     }, err => {
@@ -86,12 +99,17 @@ export class UnidadesDeMedidaComponent implements OnInit, IFormCanDeactivate {
     this.showForm = false;
   }
 
-  updateItem(item: any): void {
+  updateCloneItem(item: any, title: any): void {
+    if (title === 'update'){
+      this.itemForm.controls.id.setValue(item.id);
+    }
+    // trocar
+    this.itemForm.controls.produto.setValue(item.produto.id);
+    this.itemForm.controls.fornecedor.setValue(item.fornecedor.id);
+    this.itemForm.controls.qualidade.setValue(item.qualidade.id);
+    this.itemForm.controls.preco_compra.setValue(item.preco_compra);
+    this.itemForm.controls.preco_venda.setValue(item.preco_venda);
     this.showForm = true;
-
-    this.itemForm.controls.id.setValue(item.id);
-    this.itemForm.controls.sigla.setValue(item.sigla);
-    this.itemForm.controls.descricao.setValue(item.descricao);
   }
 
   createUpdateItem(): void {
@@ -99,22 +117,36 @@ export class UnidadesDeMedidaComponent implements OnInit, IFormCanDeactivate {
 
     if (this.itemForm.status === 'VALID'){
       if (formValues.id) {
-        this.crudService.updateItem('unidadesDeMedida', formValues, formValues.id).subscribe(response => {
+        this.crudService.updateItem('precificacao', formValues, formValues.id).subscribe(response => {
           this.getItems();
+          this.loadForm();
+
+          this.showForm = false;
           this.toastService.addToast('Atualizado com sucesso!');
         }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.codigo){
+            this.itemForm.controls.codigo.errors = {'msgErro': 'Produto com esse código já existe'};
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
         });
       } else {
-        this.crudService.createItem('unidadesDeMedida', formValues).subscribe(response => {
+        this.crudService.createItem('precificacao', formValues).subscribe(response => {
           this.getItems();
+          this.loadForm();
+
+          this.showForm = false;
           this.toastService.addToast('Cadastrado com sucesso');
         }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
+          if (err.error.codigo){
+            this.itemForm.controls.codigo.errors = {'msgErro': 'Produto com esse código já existe'};
+            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
+          }else {
+            this.toastService.addToast(err['message'], 'darkred');
+          }
         });
       }
-      this.showForm = false;
-      this.loadForm();
     } else {
       this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
@@ -126,14 +158,14 @@ export class UnidadesDeMedidaComponent implements OnInit, IFormCanDeactivate {
     this.yesNoMessage = {
       title,
       mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
-      items: [title === 'Deletar' ? items.sigla : formValues.sigla],
+      items: [title === 'Deletar' ? items.descricao + ' - ' + items.qualidade.nome : formValues.descricao],
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {
           if (title === 'Salvar'){
             this.createUpdateItem();
           } else if (title === 'Deletar'){
-            (items.id) ? this.deleteItem(items.id) : this.deleteItem(items); 
+            (items.id) ? this.deleteItem(items.id) : this.deleteItem(items);
           } else if (title === 'Cancelar edição') {
             this.showForm = false;
             this.loadForm();
@@ -160,7 +192,7 @@ export class UnidadesDeMedidaComponent implements OnInit, IFormCanDeactivate {
 
         x = rows[i].getElementsByTagName("TD")[n];
         y = rows[i + 1].getElementsByTagName("TD")[n];
-
+        
         var cmpX = isNaN(parseInt(x.innerHTML)) ? x.innerHTML.toLowerCase() : parseInt(x.innerHTML);
         var cmpY = isNaN(parseInt(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseInt(y.innerHTML);
         cmpX = (cmpX == '-') ? 0 : cmpX;
@@ -194,4 +226,5 @@ export class UnidadesDeMedidaComponent implements OnInit, IFormCanDeactivate {
       }
     }
   }
+
 }
