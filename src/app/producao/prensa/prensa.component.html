@@ -70,7 +70,7 @@
         <tbody #itemsLoteTable>
             <tr *ngFor="let item of lotItems; let idx=index;">
                 <td class="product">
-                    <span tooltip="Descrição: {{ item.product.descricao }}">{{ item.product.descricao }}</span>
+                    <span tooltip="Descrição: {{ item.product.produto.descricao }}">{{ item.product.produto.descricao }}</span>
                 </td>
                 <td class="quality">
                     <span>{{ item.product.qualidade.nome }}</span>
@@ -103,8 +103,8 @@
         <td> <ng-select formControlName="product" name="product">
             <ng-component *ngFor="let produto of produtos">
                 <ng-option [value]="produto"> 
-                    <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
-                    <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span>                       
+                    <span class="productOption productSelection selesctionItem"> {{ produto.produto.descricao }} </span> 
+                    <span class="productOption reasonSelection selesctionItem"> {{ produto.qualidade.nome }} </span>                       
                 </ng-option>
             </ng-component>
         </ng-select></td>
@@ -207,13 +207,14 @@
                 <div class="form-group col">
                     <form [formGroup]="loteItemForm" *ngIf="loteItemForm">
                     <p for="product"> Produto:
-                        <i class="fa fa-question-circle" tooltip="Apenas produtos pertencentes ao fornecedor dessa triagem"></i>
+                        <i class="fa fa-question-circle"></i>
                     </p>
                     <ng-select formControlName="product" name="product">
                         <ng-component *ngFor="let produto of produtos">
                             <ng-option [value]="produto"> 
-                                <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
-                                <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span>                       
+                                <span class="productOption productSelection selesctionItem"> {{ produto.produto.descricao }} </span> 
+                                <span class="productOption reasonSelection selesctionItem"> {{ produto.qualidade.nome }} </span>    
+                                <span class="productOption companySelection selesctionItem"> {{ produto.fornecedor.razao_social_nome }} </span>                   
                             </ng-option>
                         </ng-component>
                     </ng-select>
@@ -246,8 +247,8 @@
                     <ng-select formControlName="product" name="product">
                         <ng-component *ngFor="let produto of produtos">
                             <ng-option [value]="produto"> 
-                                <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
-                                <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span>                       
+                                <span class="productOption productSelection selesctionItem"> {{ produto.produto.descricao }} </span> 
+                                <span class="productOption reasonSelection selesctionItem"> {{ produto.qualidade.nome }} </span>                       
                             </ng-option>
                         </ng-component>
                     </ng-select>
