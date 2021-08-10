@@ -10,7 +10,7 @@ import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 @Component({
   selector: 'app-materias-primas',
   templateUrl: './materias-primas.component.html',
-  styleUrls: ['./materias-primas.component.css', '../../app.component.css']
+  styleUrls: ['./materias-primas.component.css', '../../app.component.css', '../table.css']
 })
 export class MateriasPrimasComponent implements OnInit, IFormCanDeactivate {
   @ViewChild('eventForm') public eventListingForm: NgForm;

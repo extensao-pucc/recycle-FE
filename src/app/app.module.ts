@@ -1,3 +1,4 @@
+import { HelloComponent } from './sidebar/hello.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -44,6 +45,8 @@ import { MateriasPrimasComponent } from './cadastros/materias-primas/materias-pr
 import { RelatoriosComponent } from './relatorios/relatorios.component';
 import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
 import { crudDeactivateGuard } from './guards/crud.deactivate.guard';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { SidebarDirective } from './sidebar/sidebar.directive';
 
 const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
 @NgModule({
@@ -71,7 +74,9 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     RemanufaturaComponent,
     MateriasPrimasComponent,
     RelatoriosComponent,
-    HistoricoDeProdutoComponent
+    HistoricoDeProdutoComponent,
+    SidebarComponent,
+    SidebarDirective,
   ],
   imports: [
     BrowserModule,
@@ -88,7 +93,7 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     NgSelectModule,
     AvatarModule.forRoot({
       colors: avatarColors
-    })
+    }),
   ],
   providers: [AuthGuard, AuthService, crudDeactivateGuard],
   bootstrap: [AppComponent]

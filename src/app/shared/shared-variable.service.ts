@@ -8,6 +8,31 @@ export class SharedVariableService {
 
   constructor() { }
 
+  currentDate(date): string {
+    const currentDate = new Date(date);
+    const day = '' + currentDate.getDate();
+    const month = '' + (currentDate.getMonth() + 1);
+    const year = '' + currentDate.getFullYear();
+    return (day.length === 1 ? '0' + day : day) +
+    '/' + (month.length === 1 ? '0' + month : month) +
+    '/' + (year.length === 1 ? '0' + year : year);
+  }
+
+  currentTime(date): string {
+    const currentDate = new Date(date);
+    const hour = '' + currentDate.getHours();
+    const minute = '' + currentDate.getMinutes();
+    const second = '' + currentDate.getSeconds();
+    return (hour.length === 1 ? '0' + hour : hour) +
+    ':' + (minute.length === 1 ? '0' + minute : minute) +
+    ':' + (second.length === 1 ? '0' + second : second);
+  }
+
+  difTime(first, second): number {
+    const dif = Math.floor((new Date(second).getTime() - new Date(first).getTime()) / 1000);
+    return dif
+  }
+
   //Orgãos expeditores
   getOrgans(): any[]{
     const organs = [
@@ -104,34 +129,9 @@ export class SharedVariableService {
     return profile;
   }
 
-  currentDate(date): string {
-    const currentDate = new Date(date);
-    const day = '' + currentDate.getDate();
-    const month = '' + (currentDate.getMonth() + 1);
-    const year = '' + currentDate.getFullYear();
-    return (day.length === 1 ? '0' + day : day) +
-    '/' + (month.length === 1 ? '0' + month : month) +
-    '/' + (year.length === 1 ? '0' + year : year);
-  }
-
-  currentTime(date): string {
-    const currentDate = new Date(date);
-    const hour = '' + currentDate.getHours();
-    const minute = '' + currentDate.getMinutes();
-    const second = '' + currentDate.getSeconds();
-    return (hour.length === 1 ? '0' + hour : hour) +
-    ':' + (minute.length === 1 ? '0' + minute : minute) +
-    ':' + (second.length === 1 ? '0' + second : second);
-  }
-  
   strToSeconds(time: string): number {
     const timeArr = time.split(":").map(x=>+x);
     return (timeArr[0] * 3600) + (timeArr[1] * 60) + timeArr[2];
-  }
-
-  difTime(first, second): number {
-    const dif = Math.floor((new Date(second).getTime() - new Date(first).getTime()) / 1000);
-    return dif
   }
 
   secondsToArryTime(time): any {

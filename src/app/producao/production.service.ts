@@ -80,7 +80,7 @@ export class ProductionService {
         .then(() => this.saveLoteBreaks(productionBreaks, prodInfoHead.currentLote)
           .then(() => this.saveMovimentacao(prodInfoHead.currentLote, prodInfoItems)
             .then(() => this.updatePrecificacao()
-              .then(() => this.errorMessage('everything OK!!!'))
+              .then(() => this.errorMessage('Produção Finalizada!!!'))
               .catch((fromRejected) => this.errorMessage(fromRejected)))
             .catch((fromRejected) => this.errorMessage(fromRejected)))
           .catch((fromRejected) => this.errorMessage(fromRejected)))
@@ -135,62 +135,50 @@ export class ProductionService {
   saveLoteBreaks(productionBreaks, currentLote): Promise<string> {
     return new Promise((resolve, reject) => {
       const loteBreaksData = new FormData();
-      productionBreaks.forEach(item => {
-        loteBreaksData.append('num_lote', currentLote);
-        loteBreaksData.append('motivo', item.motivo);
-        loteBreaksData.append('sequencia', item.sequence);
-        loteBreaksData.append('iniciado', item.startTime);
-        loteBreaksData.append('finalizado', item.endTime);
-        loteBreaksData.append('tempo_total', item.total);
-        
-        this.createProduction('loteParadas', loteBreaksData).subscribe(response => {
-          resolve('Lote saved successfully');
-        }, err => {
-          reject('Not saveLoteBreaks');
-        }); 
-      });
+      if (productionBreaks) {
+        productionBreaks.forEach(item => {
+          loteBreaksData.append('num_lote', currentLote);
+          loteBreaksData.append('motivo', item.motivo);
+          loteBreaksData.append('sequencia', item.sequence);
+          loteBreaksData.append('iniciado', item.startTime);
+          loteBreaksData.append('finalizado', item.endTime);
+          loteBreaksData.append('tempo_total', item.total);
+          
+          this.createProduction('loteParadas', loteBreaksData).subscribe(response => {
+            resolve('Lote saved successfully');
+          }, err => {
+            reject('Not saveLoteBreaks');
+          }); 
+        });
+      }
+      resolve('No productions breaks to save');
     });
   }
 
   saveMovimentacao(currentLote, prodInfoItems): Promise<string> {
     return new Promise((resolve, reject) => {
-      console.log('saveMovimentacao')
       // Converte prodLoteItems do local storage e insere no banco        
       const loteItemsData = new FormData();
       let today = new Date();
 
-      this.getPrecificacao()
-      .then(() => {
+      this.getPrecificacao().then(() => {
         let precificacao = null;
         let saldoAtual = null;
 
         prodInfoItems.forEach(item => {
           precificacao = this.precificacoes.filter(resp => resp['id'] == item.product.precificacao_id)[0]
           
-          loteItemsData.append('data', String(new Date()));
+          loteItemsData.append('data', new Date().toISOString());
           loteItemsData.append('entrada_saida', 'E');
-          loteItemsData.append('tipo', item.product.precificacao_id);
-          loteItemsData.append('quantidade', 'triagem');
+          loteItemsData.append('tipo', 'triagem');
           loteItemsData.append('numero_tipo', currentLote);
           loteItemsData.append('cod_produto', item.product.precificacao_id);
           loteItemsData.append('saldo_anterior', precificacao.quantidade);
           saldoAtual = String(Number(precificacao.quantidade) + Number(item.qtn))
           saldoAtual = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
-          loteItemsData.append('saldo_atual', precificacao.quantidade + item.qtn);
+          loteItemsData.append('saldo_atual', saldoAtual);
           item.qtn = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
           loteItemsData.append('dif', item.qtn);
-
-          console.log('-------------------------------------')
-          console.log('aux', precificacao);
-          console.log('data', this.sharedVariableService.currentDate(today));
-          console.log('entrada_saida', 'E');
-          console.log('tipo', item.product.precificacao_id);
-          console.log('quantidade', 'triagem');
-          console.log('numero_tipo', currentLote);
-          console.log('cod_produto', item.product.precificacao_id);
-          console.log('saldo_anterior', precificacao.quantidade);
-          console.log('saldo_atual', saldoAtual);
-          console.log('dif', item.qtn);
   
           this.createProduction('movimentacoes', loteItemsData).subscribe(response => {
             resolve('Lote saved successfully');
@@ -202,24 +190,6 @@ export class ProductionService {
 
     });
   }
-
-  // saveMovimentacao(currentLote, prodInfoItems): Promise<string> {
-  //   return new Promise((resolve, reject) => {
-  //     console.log(prodInfoItems)
-  //     prodInfoItems.forEach(item => {
-  //       console.log(this.crudService.getItemById('precificacao', item.product.precificacao_id))
-  //       // this.http.get(`${environment.apiUrl}/precificacao/${item.product.precificacao_id}`).subscribe(resp => {
-  //       // });
-  //     });
-
-  //     let isDeleteed = true;
-  //     if(isDeleteed) {
-  //       resolve('updatePrecificacao');
-  //     } else {
-  //       reject('Not updatePrecificacao');
-  //     }
-  //   });
-  // }
 
   updatePrecificacao(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -255,7 +225,7 @@ export class ProductionService {
   }
 
   errorMessage(msg: any): void {
-    this.toastService.addToast(msg, 'darkred');
+    this.toastService.addToast(msg);
   }
 
   // caso querira chamar todas as promises ao mesmo tempo

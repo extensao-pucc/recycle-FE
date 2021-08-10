@@ -14,7 +14,7 @@ import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 @Component({
   selector: 'app-socios',
   templateUrl: './socios.component.html',
-  styleUrls: ['./socios.component.css', '../../app.component.css']
+  styleUrls: ['./socios.component.css', '../../app.component.css', '../table.css']
 })
 export class SociosComponent implements OnInit, IFormCanDeactivate {
   @ViewChild('eventForm') public eventListingForm: NgForm;

@@ -37,6 +37,14 @@ table td.td-pequeno, th.th-pequeno {
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 19%), 0 6px 20px 0 rgb(0 0 0 / 19%);
 }
 
+/* tr {
+    background-color: #fff;
+}
+
+.main {
+    background-color: #E5E1DD;
+} */
+
 /*Scrowbar =============================================================================== */
 ::-webkit-scrollbar {
     width: 10px;

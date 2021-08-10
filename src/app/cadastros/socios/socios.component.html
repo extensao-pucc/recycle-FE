@@ -10,38 +10,35 @@
       <tr>
         <th class="table-th th-pequeno"></th>
         <th class="table-th th-pequeno"></th>
-        <th class="table-th th-pequeno"></th>
-        <th class="table-th" (click)="sortTable(3)">ID</th>
-        <th class="table-th" (click)="sortTable(4)">Matrícula</th>
-        <th class="table-th" (click)="sortTable(5)">Nome</th>
-        <th class="table-th" (click)="sortTable(6)">Data de nascimento</th>
-        <th class="table-th" (click)="sortTable(7)">RG</th>
-        <th class="table-th" (click)="sortTable(8)">Data de emissão</th>
-        <th class="table-th" (click)="sortTable(9)">Local de emissão</th>
-        <th class="table-th" (click)="sortTable(10)">Orgão expedidor</th>
-        <th class="table-th" (click)="sortTable(11)">CPF</th>
-        <th class="table-th" (click)="sortTable(12)">Título de eleitor</th>
-        <th class="table-th" (click)="sortTable(13)">PIS/PASEP</th>
-        <th class="table-th" (click)="sortTable(14)">NIT</th>
-        <th class="table-th" (click)="sortTable(15)">Nome da Mãe</th>
-        <th class="table-th" (click)="sortTable(16)">Nome do Pai</th>
-        <th class="table-th" (click)="sortTable(17)">Endereço</th>
-        <th class="table-th" (click)="sortTable(18)">Número</th>
-        <th class="table-th" (click)="sortTable(19)">Complemento</th>
-        <th class="table-th" (click)="sortTable(20)">CEP</th>
-        <th class="table-th" (click)="sortTable(21)">UF</th>
-        <th class="table-th" (click)="sortTable(22)">Cidade</th>
-        <th class="table-th" (click)="sortTable(23)">Telefone</th>
-        <th class="table-th" (click)="sortTable(24)">Email</th>
-        <th class="table-th" (click)="sortTable(25)">Data de admissão</th>
-        <th class="table-th" (click)="sortTable(26)">Data de demissão</th>
+        <th class="table-th" (click)="sortTable(2)">ID</th>
+        <th class="table-th" (click)="sortTable(3)">Matrícula</th>
+        <th class="table-th" (click)="sortTable(4)">Nome</th>
+        <th class="table-th" (click)="sortTable(5)">Data de nascimento</th>
+        <th class="table-th" (click)="sortTable(6)">RG</th>
+        <th class="table-th" (click)="sortTable(7)">Data de emissão</th>
+        <th class="table-th" (click)="sortTable(8)">Local de emissão</th>
+        <th class="table-th" (click)="sortTable(9)">Orgão expedidor</th>
+        <th class="table-th" (click)="sortTable(10)">CPF</th>
+        <th class="table-th" (click)="sortTable(11)">Título de eleitor</th>
+        <th class="table-th" (click)="sortTable(12)">PIS/PASEP</th>
+        <th class="table-th" (click)="sortTable(13)">NIT</th>
+        <th class="table-th" (click)="sortTable(14)">Nome da Mãe</th>
+        <th class="table-th" (click)="sortTable(15)">Nome do Pai</th>
+        <th class="table-th" (click)="sortTable(16)">Endereço</th>
+        <th class="table-th" (click)="sortTable(17)">Número</th>
+        <th class="table-th" (click)="sortTable(18)">Complemento</th>
+        <th class="table-th" (click)="sortTable(19)">CEP</th>
+        <th class="table-th" (click)="sortTable(20)">UF</th>
+        <th class="table-th" (click)="sortTable(21)">Cidade</th>
+        <th class="table-th" (click)="sortTable(22)">Telefone</th>
+        <th class="table-th" (click)="sortTable(23)">Email</th>
+        <th class="table-th" (click)="sortTable(24)">Data de admissão</th>
+        <th class="table-th" (click)="sortTable(25)">Data de demissão</th>
         <th class="table-th"></th>
       </tr>
-    </thead>
-    
+    </thead>    
     <tbody class="table__tbody">
       <tr>
-        <td class="element-not-visible td-pequeno"></td>
         <td class="element-not-visible td-pequeno"></td>
         <td class="element-not-visible td-pequeno"></td>
         <td class="element-not-visible td-pequeno"><input class="form-control" maxlength="9" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
@@ -73,10 +70,6 @@
 
       <tr [ngClass]="item?.situacao === 'Ativo' ? 'table-row' : ' table-row table-row--red'" *ngFor="let item of tempItemsList">
         <td class="table-row-td td-pequeno">
-          <div *ngIf="item?.situacao === 'Inativo'" class="red-row"></div>
-          <input id="" type="checkbox" class="table-select-row">
-        </td>
-        <td class="table-row-td td-pequeno">
             <ngx-avatar class="my-avatar" *ngIf="!item?.foto" name="{{ item?.nome }}" initialsSize="2"></ngx-avatar>
             <img *ngIf="item?.foto" src="{{ item?.foto }}" alt="{{ item?.nome }}" (click)="showImage(item?.foto)">
         </td>
@@ -84,7 +77,7 @@
             <b [ngClass]="item?.situacao === 'Ativo' ? 'table-row--green status--green status' : 'table-row--red status--red status'">{{ item?.situacao }}</b>
         </td>
         <td data-column="ID" class="table-row-td element-not-visible">{{ item?.id }}</td>
-        <td data-column="Matricula" class="table-row-td ">{{ item?.matricula }}</td>
+        <td data-column="Matrícula" class="table-row-td">{{ item?.matricula }}</td>
         <td data-column="Nome" class="table-row-td">{{ item?.nome }}</td>
         <td data-column="Nascimento" class="table-row-td element-not-visible">{{ reverseStringDate(item?.data_de_nascimento) | mask: 'd0/M0/0000' }}</td>
         <td data-column="RG" class="table-row-td element-not-visible">{{ item?.RG | mask: '00.000.000-0'}}</td>
@@ -110,8 +103,8 @@
         <td class="table-row-td not-visible"><button type="button" class="btn btn-info shadow-button" (click)="updateItem(item)"><i class="fa fa-chevron-circle-down">Visualizar</i></button></td>
         <th class="table-row-td element-not-visible">
           <button type="button" class="btn btn-info mr-2 element-not-visible" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
-            <button type="button" class="btn btn-danger mr-2 element-not-visible" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
-            <button type="button" class="btn btn-light shadow-button element-not-visible" tooltip="Alterar senha Sócio"><i class="fa fa-unlock-alt center-icon"></i></button>           
+          <button type="button" class="btn btn-danger mr-2 element-not-visible" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
+          <button type="button" class="btn btn-light shadow-button element-not-visible" tooltip="Alterar senha Sócio"><i class="fa fa-unlock-alt center-icon"></i></button>           
         </th>
       </tr>
     </tbody>
@@ -325,11 +318,11 @@
   <h5>Endereço</h5>
   <hr>
   <div class="form-row">
-    <div class="form-group col-md-5">
-      <label>Logradouro: </label>
-      <input class="form-control" type="text" maxlength="100" formControlName="endereco">
-      <p class="error-msg" *ngIf="itemForm.controls.endereco.errors">
-        <i class="fa fa-times"></i> {{ itemForm.controls.endereco.errors.msgErro }}
+    <div class="form-group col-md-2">
+      <label>CEP: </label>
+      <app-pesquisa-cep (retornaPesquisaCep)="populaDados($event)" valor="{{ itemForm.controls.CEP.value }}"></app-pesquisa-cep>
+      <p class="error-msg" *ngIf="itemForm.controls.CEP.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.CEP.errors.msgErro }}
       </p>
     </div>
 
@@ -338,24 +331,6 @@
       <input class="form-control" type="text" maxlength="100" formControlName="numero">
       <p class="error-msg" *ngIf="itemForm.controls.numero.errors">
         <i class="fa fa-times"></i> {{ itemForm.controls.numero.errors.msgErro }}
-      </p>
-    </div>
-
-    <div class="form-group col-md-5">
-      <label>Complemento: </label>
-      <input class="form-control" type="text" maxlength="100" formControlName="complemento">
-      <p class="error-msg" *ngIf="itemForm.controls.complemento.errors">
-        <i class="fa fa-times"></i> {{ itemForm.controls.complemento.errors.msgErro }}
-      </p>
-    </div>
-  </div>
-
-  <div class="form-row">
-    <div class="form-group col-md-5">
-      <label>Cidade: </label>
-      <input class="form-control" type="text" maxlength="100" formControlName="cidade">
-      <p class="error-msg" *ngIf="itemForm.controls.cidade.errors">
-        <i class="fa fa-times"></i> {{ itemForm.controls.cidade.errors.msgErro }}
       </p>
     </div>
 
@@ -369,11 +344,29 @@
       </p>
     </div>
 
-    <div class="form-group col-md-2">
-      <label>CEP: </label>
-      <app-pesquisa-cep (retornaPesquisaCep)="populaDados($event)" valor="{{ itemForm.controls.CEP.value }}"></app-pesquisa-cep>
-      <p class="error-msg" *ngIf="itemForm.controls.CEP.errors">
-        <i class="fa fa-times"></i> {{ itemForm.controls.CEP.errors.msgErro }}
+    <div class="form-group col-md-6">
+      <label>Complemento: </label>
+      <input class="form-control" type="text" maxlength="100" formControlName="complemento">
+      <p class="error-msg" *ngIf="itemForm.controls.complemento.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.complemento.errors.msgErro }}
+      </p>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-5">
+      <label>Logradouro: </label>
+      <input class="form-control" type="text" maxlength="100" formControlName="endereco">
+      <p class="error-msg" *ngIf="itemForm.controls.endereco.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.endereco.errors.msgErro }}
+      </p>
+    </div>
+
+    <div class="form-group col-md-5">
+      <label>Cidade: </label>
+      <input class="form-control" type="text" maxlength="100" formControlName="cidade">
+      <p class="error-msg" *ngIf="itemForm.controls.cidade.errors">
+        <i class="fa fa-times"></i> {{ itemForm.controls.cidade.errors.msgErro }}
       </p>
     </div>
   </div>

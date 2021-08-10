@@ -323,18 +323,17 @@ export class TriagemComponent implements OnInit {
 
     this.statusProd = 'Iniciada'
 
-    
     let totalSec = 0;
     this.lotBreaks.forEach(item => {
       totalSec += item.total;
     });
     this.totalTimeBreak = this.sharedVariableService.secondsToArryTime(totalSec);
-    
+
     let triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead'));
     triagemInfoHead.status = 'Iniciada';
     triagemInfoHead.totalTimeBreak = this.totalTimeBreak;
     localStorage.setItem('triagemInfoHead', JSON.stringify(triagemInfoHead));
-    
+
     this.changeProductionStatus();
   }
 
@@ -349,7 +348,7 @@ export class TriagemComponent implements OnInit {
 
     if (triagemInfoItems) { // Verifica se existe itens na produção
       if (triagemInfoItems.filter(item => item.edit === true).length == 0) { // Verifica se nenhum item ainda não foi fechado  
-        
+
         let arrayUniqueByKey = [...new Map(triagemInfoItems.map(item => [item.product.precificacao_id, item.product])).values()];
         arrayUniqueByKey.forEach(item => {
           item['quantidade'] = 0;
