@@ -55,20 +55,6 @@ label {
     }
 }
 
-.background {
-    height: 100%;
-    width: 100%;
-    background-color: #E2EEF2;
-}
-
-.center {
-    margin: 0px;
-    background-color: white;
-    box-shadow: 0 4px 10px 0 rgb(0 0 0 / 20%);
-    height: 100%;
-    padding: 50px;
-}
-
 form {
     margin-top: 25px;
 }

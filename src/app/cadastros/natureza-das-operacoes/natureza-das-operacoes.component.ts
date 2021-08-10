@@ -6,6 +6,7 @@ import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.compo
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
+import { TaxationVariableService } from '../../shared/taxation-variable.service';
 import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 
 @Component({
@@ -24,15 +25,18 @@ export class NaturezaDasOperacoesComponent implements OnInit, IFormCanDeactivate
   public showYesNoMessage: boolean;
 
   public types: any;
+  public cfops: any;
 
   constructor(
     private crudService: CrudService,
     private toastService: ToastService,
     private formBuilder: FormBuilder,
     private formValidatorService: FormValidatorService,
-    private sharedVariableService: SharedVariableService
+    private sharedVariableService: SharedVariableService,
+    private taxationVariableService: TaxationVariableService,
   ) {
     this.types = this.sharedVariableService.getTypes();
+    this.cfops = this.taxationVariableService.getCFOP();
   }
 
   ngOnInit(): void {

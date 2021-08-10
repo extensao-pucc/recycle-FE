@@ -45,6 +45,7 @@ export class PrensaComponent implements OnInit {
   public statusProd = '';
   public observation = '';
   public selectedMotivo: any;
+  public selectedFornecedor: any;
   public totQtn: any;
   public lastPrensa: number;
 
@@ -57,7 +58,7 @@ export class PrensaComponent implements OnInit {
   constructor(
     private toastService: ToastService,
     private crudService: CrudService,
-    private ProductionService: ProductionService,
+    private productionService: ProductionService,
     private sharedVariableService: SharedVariableService,
     private formBuilder: FormBuilder,
     private modalService: BsModalService,
@@ -92,7 +93,7 @@ export class PrensaComponent implements OnInit {
         this.totalTimeBreak = prensaInfoHead['totalTimeBreak'];
         this.totalWeightProduction = prensaInfoHead['pesoProduzido'];
         this.unprocessed = prensaInfoHead['naoProcessado'];
-        
+
         setInterval(() => {
           this.getElapsedTime();
           this.currentTime = new Date();
@@ -128,7 +129,6 @@ export class PrensaComponent implements OnInit {
 
     this.loadLoteItemForm();
     this.changeDetector.detectChanges();
-
   }
 
   updateObs(): void {
@@ -184,7 +184,12 @@ export class PrensaComponent implements OnInit {
   getItems(): void{
     this.crudService.getItems('socios').subscribe(response => this.socios = response);
     this.crudService.getItems('motivosDeParada').subscribe(response => this.motivosDeParada = response);
-    this.crudService.getItems('produtos').subscribe(response => this.produtos = response);
+    this.crudService.getItems('precificacao').subscribe(response => this.produtos = response);
+    this.crudService.getItems('precificacao').subscribe(response => console.log(response[0].produto));
+
+    // if (this.selectedFornecedor) {
+    //   this.productionService.getProdByFornecedor(String(this.selectedFornecedor['id'])).subscribe(response => this.produtos = response );
+    // }
   }
 
   // Salva Item do lote
@@ -384,6 +389,7 @@ export class PrensaComponent implements OnInit {
     this.lotItems = this.lotItems.filter(obj => obj.numBag !== numBag)
     localStorage.setItem('prensaInfoItems', JSON.stringify(this.lotItems));
     this.totalWeight("soma");
+    this.totalWeight("subtrai");
     this.updateProductionSummary();
 
     let prensaInfoItems = JSON.parse(localStorage.getItem('prensaInfoItems'));
@@ -435,7 +441,7 @@ export class PrensaComponent implements OnInit {
       if (operacao == 'subtrai'){
         this.totalWeightProduction -= this.unprocessed;
       }
-      
+
       prensaInfoHead.pesoProduzido = this.totalWeightProduction;
       localStorage.setItem('prensaInfoHead', JSON.stringify(prensaInfoHead));
     }
