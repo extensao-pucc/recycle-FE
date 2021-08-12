@@ -11,7 +11,7 @@ import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 @Component({
   selector: 'app-motivos-de-parada',
   templateUrl: './motivos-de-parada.component.html',
-  styleUrls: ['./motivos-de-parada.component.css', '../../app.component.css']
+  styleUrls: ['./motivos-de-parada.component.css', '../../app.component.css', '../table.css']
 })
 export class MotivosDeParadaComponent implements OnInit, IFormCanDeactivate {
   @ViewChild('eventForm') public eventListingForm: NgForm;

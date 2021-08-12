@@ -4,59 +4,60 @@
 
 <!-- Tabela -->
 <div class="table-list">
+  <input class="form-control not-visible small-input-search" mask="CPF_CNPJ" type="search" placeholder="CPF/CNPJ" (input)="Search('CNPJ_CPF', $event.target.value)">
   <table id="myTable" class="table table-hover" *ngIf="!showForm">
-    <thead class="thead-dark">
+    <thead class="table-thead thead-dark">
       <tr>
-        <th scope="col" (click)="sortTable(0)">ID</th>
-        <th scope="col" (click)="sortTable(1)">CNPJ/CPF</th>
-        <th scope="col" (click)="sortTable(2)">Razão social/Nome</th>
-        <th scope="col" (click)="sortTable(3)">IE</th>
-        <th scope="col" (click)="sortTable(4)">Endereço</th>
-        <th scope="col" (click)="sortTable(5)">Número</th>
-        <th scope="col" (click)="sortTable(6)">Complemento</th>
-        <th scope="col" (click)="sortTable(7)">Bairro</th>
-        <th scope="col" (click)="sortTable(8)">CEP</th>
-        <th scope="col" (click)="sortTable(9)">UF</th>
-        <th scope="col" (click)="sortTable(10)">Cidade</th>
-        <th scope="col" (click)="sortTable(11)">Telefone</th>
-        <th scope="col" (click)="sortTable(12)">Email</th>
-        <th scope="col">Opções</th>
-      </tr>            
-    </thead>
-
-    <tbody>
+        <th class="table-th" (click)="sortTable(0)">ID</th>
+        <th class="table-th" (click)="sortTable(1)">CNPJ/CPF</th>
+        <th class="table-th" (click)="sortTable(2)">Razão social/Nome</th>
+        <th class="table-th" (click)="sortTable(3)">IE</th>
+        <th class="table-th" (click)="sortTable(4)">Endereço</th>
+        <th class="table-th" (click)="sortTable(5)">Numero</th>
+        <th class="table-th" (click)="sortTable(6)">Complemento</th>
+        <th class="table-th" (click)="sortTable(7)">Bairro</th>
+        <th class="table-th" (click)="sortTable(8)">CEP</th>
+        <th class="table-th" (click)="sortTable(9)">UF</th>
+        <th class="table-th" (click)="sortTable(10)">Cidade</th>
+        <th class="table-th" (click)="sortTable(11)">Telefone</th>
+        <th class="table-th" (click)="sortTable(12)">Email</th>
+        <th class="table-th">Opções</th>
+      </tr>
+    </thead>    
+    <tbody class="table__tbody">           
       <tr>
-        <td class="td-medio"><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
-        <td><input class="form-control" mask="CPF_CNPJ" type="search" placeholder="CPF/CNPJ" (input)="Search('CNPJ_CPF', $event.target.value)"></td>
-        <td><input class="form-control" type="search" placeholder="Razão/Nome" (input)="Search('razao_social_nome', $event.target.value)"></td>
-        <td><input class="form-control" type="search" placeholder="Inscrição" (input)="Search('IE', $event.target.value)"></td>
-        <td><input class="form-control" type="search" placeholder="Endereço" (input)="Search('endereco', $event.target.value)"></td>
-        <td class="td-medio"><input class="form-control" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
-        <td><input class="form-control" type="search" placeholder="Complemento" (input)="Search('complemento', $event.target.value)"></td>
-        <td><input class="form-control" type="search" placeholder="Bairro" (input)="Search('bairro', $event.target.value)"></td>
-        <td class="td-medio"><input class="form-control" mask="00000-000" type="search" placeholder="CEP" (input)="Search('CEP', $event.target.value)"></td>
-        <td class="td-medio"><input class="form-control" type="search" placeholder="UF" (input)="Search('UF', $event.target.value)"></td>
-        <td><input class="form-control" type="search" placeholder="Cidade" (input)="Search('cidade', $event.target.value)"></td>
-        <td><input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="search" placeholder="Telefone" (input)="Search('telefone', $event.target.value)"></td>
-        <td><input class="form-control" type="search" placeholder="Email" (input)="Search('email', $event.target.value)"></td>
+        <td class="element-not-visible td-medio"><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
+        <td class="element-not-visible"><input class="form-control" mask="CPF_CNPJ" type="search" placeholder="CPF/CNPJ" (input)="Search('CNPJ_CPF', $event.target.value)"></td>
+        <td class="element-not-visible"><input class="form-control" type="search" placeholder="Razao/Nome" (input)="Search('razao_social_nome', $event.target.value)"></td>
+        <td class="element-not-visible"><input class="form-control" type="search" placeholder="Inscrição" (input)="Search('IE', $event.target.value)"></td>
+        <td class="element-not-visible"><input class="form-control" type="search" placeholder="Endereço" (input)="Search('endereco', $event.target.value)"></td>
+        <td class="element-not-visible td-medio"><input class="form-control" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
+        <td class="element-not-visible"><input class="form-control" type="search" placeholder="Complemento" (input)="Search('complemento', $event.target.value)"></td>
+        <td class="element-not-visible"><input class="form-control" type="search" placeholder="Bairro" (input)="Search('bairro', $event.target.value)"></td>
+        <td class="element-not-visible td-medio"><input class="form-control" mask="00000-000" type="search" placeholder="CEP" (input)="Search('CEP', $event.target.value)"></td>
+        <td class="element-not-visible td-medio"><input class="form-control" type="search" placeholder="UF" (input)="Search('UF', $event.target.value)"></td>
+        <td class="element-not-visible"><input class="form-control" type="search" placeholder="Cidade" (input)="Search('cidade', $event.target.value)"></td>
+        <td class="element-not-visible"><input class="form-control" mask="(00) 0000-0000||(00) 00000-0000" type="search" placeholder="Telefone" (input)="Search('telefone', $event.target.value)"></td>
+        <td class="element-not-visible"><input class="form-control" type="search" placeholder="Email" (input)="Search('email', $event.target.value)"></td>
         <th></th>
       </tr>
 
-      <tr *ngFor="let item of tempItemsList">
-        <td class="td-medio">{{ item?.id }}</td>
-        <td>{{ item?.CNPJ_CPF | mask: 'CPF_CNPJ'}}</td>
-        <td>{{ item?.razao_social_nome }}</td>
-        <td>{{ item?.IE }}</td>
-        <td>{{ item?.endereco }}</td>
-        <td class="td-medio">{{ item?.numero }}</td>
-        <td>{{ item?.complemento }}</td>
-        <td>{{ item?.bairro }}</td>
-        <td class="td-medio">{{ item?.CEP | mask: '00000-000'}}</td>
-        <td class="td-medio">{{ item?.UF }}</td>
-        <td>{{ item?.cidade }}</td>
-        <td>{{ item?.telefone | mask: '(00) 0000-0000||(00) 00000-0000'}}</td>
-        <td>{{ item?.email }}</td>
-        <th>
+      <tr class="table-row" *ngFor="let item of tempItemsList">
+        <td data-column="ID" class="table-row-td td-medio">{{ item?.id }}</td>
+        <td data-column="CPF/CNPJ" class="table-row-td">{{ item?.CNPJ_CPF | mask: 'CPF_CNPJ'}}</td>
+        <td data-column="Razão/Nome" class="table-row-td element-not-visible">{{ item?.razao_social_nome }}</td>
+        <td data-column="IE" class="table-row-td">{{ item?.IE }}</td>
+        <td data-column="Endereço" class="table-row-td element-not-visible">{{ item?.endereco }}</td>
+        <td data-column="Numero" class="table-row-td td-medio element-not-visible">{{ item?.numero }}</td>
+        <td data-column="Complemento" class="table-row-td element-not-visible">{{ item?.complemento }}</td>
+        <td data-column="Bairro" class="table-row-td element-not-visible">{{ item?.bairro }}</td>
+        <td data-column="CEP" class="table-row-td td-medio">{{ item?.CEP | mask: '00000-000'}}</td>
+        <td data-column="UF" class="table-row-td td-medio element-not-visible">{{ item?.UF }}</td>
+        <td data-column="Cidade" class="table-row-td element-not-visible">{{ item?.cidade }}</td>
+        <td data-column="Telefone" class="table-row-td">{{ item?.telefone | mask: '(00) 0000-0000||(00) 00000-0000'}}</td>
+        <td data-column="E-mail" class="table-row-td">{{ item?.email }}</td>
+        <td class="table-row-td not-visible"><button type="button" class="btn btn-info shadow-button" (click)="updateItem(item)"><i class="fa fa-chevron-circle-down">Visualizar</i></button></td>
+        <th class="table-row-td element-not-visible">
             <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
             <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
         </th>

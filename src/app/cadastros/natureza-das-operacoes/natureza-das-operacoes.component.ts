@@ -12,7 +12,7 @@ import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 @Component({
   selector: 'app-natureza-das-operacoes',
   templateUrl: './natureza-das-operacoes.component.html',
-  styleUrls: ['./natureza-das-operacoes.component.css', '../../app.component.css']
+  styleUrls: ['./natureza-das-operacoes.component.css', '../../app.component.css', '../table.css']
 })
 export class NaturezaDasOperacoesComponent implements OnInit, IFormCanDeactivate {
   @ViewChild('eventForm') public eventListingForm: NgForm;
