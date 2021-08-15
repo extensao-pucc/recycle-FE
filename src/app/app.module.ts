@@ -46,6 +46,10 @@ import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/h
 import { crudDeactivateGuard } from './guards/crud.deactivate.guard';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { SidebarDirective } from './sidebar/sidebar.directive';
+import { ConfigScreenComponent } from './config-screen/config-screen.component';
+import { ClientesComponent } from './cadastros/clientes/clientes.component';
+import { VendasComponent } from './financeiro/vendas/vendas.component';
+import { ContasComponent } from './financeiro/contas/contas.component';
 
 const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
 @NgModule({
@@ -76,6 +80,10 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     HistoricoDeProdutoComponent,
     SidebarComponent,
     SidebarDirective,
+    ConfigScreenComponent,
+    ClientesComponent,
+    VendasComponent,
+    ContasComponent,
   ],
   imports: [
     BrowserModule,

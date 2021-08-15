@@ -1,0 +1,34 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 2fr));
+}
+
+.gallery img {
+    height: 50%;
+    width: 50%;
+}
+
+.image-profile {
+    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%);
+    margin-bottom: 30px;
+}
+
+.image-profile {
+  height: 90%; 
+  width: 90%;
+}
+
+/* .my-avatar-profile /deep/ .avatar-content {
+  height: 250px;
+  width: 250px;
+} */
+
+.image-upload > input {
+  display: none;
+}

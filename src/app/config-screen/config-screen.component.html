@@ -1,0 +1,23 @@
+<div class="gallery">
+
+  <div class="page-title">Logo
+    <div class="image-upload" tooltip="Clique para inserir uma nova imagem">
+      <label for="file-input">
+        <img [src]="imageInputView" *ngIf="imageInputView" class="rounded-circle z-depth-0 image-profile">
+        <img src="../../assets/img/perfil_sem_foto.png" *ngIf="!imageInputView"
+          class="rounded-circle z-depth-0 image-profile">
+      </label>
+
+      <input id="file-input" class="form-control" type="file" name="foto" (change)="onChange($event)" accept="image/*">
+    </div>
+  </div>
+
+  <div class="main-content">
+    <label>Tema </label>
+    <ng-select>
+      <ng-option *ngFor="let theme of themes" [value]="theme.value">{{theme.name}}</ng-option>
+    </ng-select>
+  </div>
+
+  <div class="main-content">configuracao de perfil</div>
+</div>
