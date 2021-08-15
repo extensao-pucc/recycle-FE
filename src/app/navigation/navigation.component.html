@@ -62,20 +62,20 @@
         </ul>
       </div>
 
-      <div class="log-sign" style="--i: 1.8s">
-        <li class="nav-link" style="--i: 1.1s">
+      <div class="log-sign">
+        <li class="nav-link">
           <a class="navbar-brand">
             <ngx-avatar *ngIf="!person.foto" name="{{ person.nome }}" initialsSize="2"></ngx-avatar>
             <img *ngIf="person.foto" src="{{ person.foto }}" class="rounded-circle z-depth-0" alt="avatar image" height="45" width="45">
           </a>
-          <div class="dropdown">
+          <div class="dropdown-profile">
             <ul>
-              <li class="dropdown-link"><a routerLink="/login" (click)="logOut()"><i class="fa fa-door"></i> Sair</a></li>
+              <li class="dropdown-link"><a routerLink="/login" (click)="logOut()">Sair</a></li>
               <li class="dropdown-link"><a routerLink="/home"><i class="fa fa-cog"></i> Configurações</a></li>
             </ul>
           </div>
         </li>      
-        </div>
+      </div>
     </div>
     
 
