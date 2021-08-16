@@ -1,3 +1,4 @@
+import { ContasComponent } from './financeiro/contas/contas.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { crudDeactivateGuard } from './guards/crud.deactivate.guard';
 import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
@@ -46,6 +47,7 @@ const routes: Routes = [
   { path: 'triagem', component: TriagemComponent, canActivate: [AuthGuard] },
   { path: 'prensa', component: PrensaComponent, canActivate: [AuthGuard] },
   { path: 'remanufatura', component: RemanufaturaComponent, canActivate: [AuthGuard] },
+  { path: 'contas', component: ContasComponent, canActivate: [AuthGuard] },
   { path: 'relatorios', component: RelatoriosComponent, canActivate: [AuthGuard] },
   { path: 'historicoDeProduto', component: HistoricoDeProdutoComponent, canActivate: [AuthGuard] }, 
   { path: 'configiScreen', component: ConfigScreenComponent, canActivate: [AuthGuard] }, 
