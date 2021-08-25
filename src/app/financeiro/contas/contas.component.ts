@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ModalContas } from '../contas/modal-contas/modal-contas.component';
 
 @Component({
   selector: 'app-contas',
@@ -6,16 +7,28 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./contas.component.css']
 })
 export class ContasComponent implements OnInit {
+  public modalContas: ModalContas = new ModalContas();
+  public showModalContas: boolean;
 
-  constructor() { 
-    // $(document).ready(function(){
-    //   $('.datepicker').datepicker({
-    //     prevText: '<i class="fa fa-fw fa-angle-left"></i>',
-    //     nextText: '<i class="fa fa-fw fa-angle-right"></i>'
-    //   });
-    // });
-  }
+  constructor() { }
 
   ngOnInit(): void {
+  }
+
+  showModal(title: string, items: any): void {
+
+    this.modalContas = {
+      title,
+      mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
+      items: [items],
+      fontAwesomeClass: 'fa-ban',
+      action: {
+        onClickYes: () => {
+          console.log('Cliquei no sim');
+        },
+        onClickNo: () => { }
+      }
+    };
+    this.showModalContas = true;
   }
 }

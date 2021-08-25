@@ -1,5 +1,4 @@
 import { ContasComponent } from './financeiro/contas/contas.component';
-import { SidebarComponent } from './sidebar/sidebar.component';
 import { crudDeactivateGuard } from './guards/crud.deactivate.guard';
 import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
 import { NgModule } from '@angular/core';
@@ -52,7 +51,6 @@ const routes: Routes = [
   { path: 'historicoDeProduto', component: HistoricoDeProdutoComponent, canActivate: [AuthGuard] }, 
   { path: 'configiScreen', component: ConfigScreenComponent, canActivate: [AuthGuard] }, 
   { path: 'login', component: LoginComponent},
-  { path: 'sidebar', component: SidebarComponent},
   { path: '**', redirectTo: '' }
 ];
 

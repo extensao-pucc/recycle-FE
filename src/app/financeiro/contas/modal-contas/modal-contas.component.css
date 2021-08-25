@@ -1,0 +1,17 @@
+.warning-icon {
+    font-size: 90px;
+    vertical-align: middle;
+}
+
+.yes-no-body {
+    max-height: 350px;
+    overflow: auto;
+}
+
+ul {
+    list-style-type: none;
+}
+
+i {
+    margin-right: 10px;
+}
