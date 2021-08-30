@@ -1,1 +1,104 @@
-<p>contas works!</p>
+<div class="cards">
+  <div class="card-single">
+    <div>
+      <h1>5</h1>
+      <span>Contas a pagar</span>
+    </div>
+    <div>
+      <span class="las la-users"></span>
+    </div>
+  </div>
+
+  <div class="card-single">
+    <div>
+      <h1>12</h1>
+      <span>Contas a receber</span>
+    </div>
+    <div>
+      <span class="las la-stethoscope"></span>
+    </div>
+  </div>
+
+  <div class="card-single">
+    <div>
+      <h1>18</h1>
+      <span>Contas no total</span>
+    </div>
+    <div>
+      <span class="las la-wheelchair"></span>
+    </div>
+  </div>
+
+</div>
+
+<!-- Tabela -->
+<div class="recent-grid">
+  <div class="projects">
+    <div class="card">
+      <div class="card-header">
+        <h3>Contas a pagar e receber</h3>
+
+        <button type="button" (click)="showModal('Deletar', 'item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right">
+        </span></button>
+      </div>
+
+      <div class="card-body">
+        <div class="table-responsive">
+          <table width="100%">
+            <thead>
+              <tr>
+                <td><i class="fa fa-file"></i>Descrição</td>
+                <td><i class="fa fa-calendar"></i>Data</td>
+                <td><i class="fa fa-marker"></i>Tipo</td>
+                <td><i class="fa fa-money"></i>Valor</td>
+                <td>Situação</td>
+                <td>Opções</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                  <td>Salario de funcionario</td>
+                  <td>07/08/2021</td>
+                  <td>A pagar</td>
+                  <td>R$ 7.000,00</td>
+                  <td><span class="status green"></span> Pago </td>
+                  <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
+                  <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>              
+              </tr>
+              <tr>
+                <td>Recebimento de Fornecedor</td>
+                <td>08/10/2021</td>
+                <td>A receber</td>
+                <td>R$ 500,00</td>
+                <td><span class="status red"></span> Pendente</td>
+                <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
+                <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+              </tr>
+              <tr>
+                <td>Conta de luz</td>
+                <td>21/08/2021</td>
+                <td>A pagar</td>
+                <td>R$ 900,00</td>
+                <td><span class="status yellow"></span> Próximo ao vencimento </td>
+                <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
+                <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+              </tr>
+              <tr>
+                <td>Conta de agua</td>
+                <td>21/06/2021</td>
+                <td>A receber</td>
+                <td>R$ 1.100,00</td>
+                <td><span class="status green"></span>Recebido</td>
+                <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
+                <button type="button" class="btn btn-danger"><i class="fa fa-trash"></i></button>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ========== -->
+
+<app-modal-contas [modalContas]="modalContas" *ngIf="showModalContas"></app-modal-contas>
