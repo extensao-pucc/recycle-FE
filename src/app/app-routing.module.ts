@@ -19,6 +19,9 @@ import { PrensasComponent } from './cadastros/prensas/prensas.component';
 import { ProdutosComponent } from './cadastros/produtos/produtos.component';
 import { QualidadesComponent } from './cadastros/qualidades/qualidades.component';
 import { SociosComponent } from './cadastros/socios/socios.component';
+
+import { VendasComponent } from './financeiro/vendas/vendas.component';
+
 import { TransportadorasComponent } from './cadastros/transportadoras/transportadoras.component';
 import { TriagemComponent } from './producao/triagem/triagem.component';
 import { PrensaComponent } from './producao/prensa/prensa.component';
@@ -42,6 +45,7 @@ const routes: Routes = [
   { path: 'produtos', component: ProdutosComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'qualidades', component: QualidadesComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'socios', component: SociosComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'vendas', component: VendasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'transportadoras', component: TransportadorasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'triagem', component: TriagemComponent, canActivate: [AuthGuard] },
   { path: 'prensa', component: PrensaComponent, canActivate: [AuthGuard] },

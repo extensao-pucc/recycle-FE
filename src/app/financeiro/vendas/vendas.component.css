@@ -1,0 +1,96 @@
+.image-profile, .my-avatar-profile /deep/ .avatar-content {
+    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%);
+    margin-bottom: 30px;
+}
+
+.image-profile {
+  height: 90%; 
+  width: 90%;
+}
+
+/* .my-avatar-profile /deep/ .avatar-content {
+  height: 250px;
+  width: 250px;
+} */
+
+.image-upload > input {
+  display: none;
+}
+
+img {
+  cursor: pointer;
+}
+
+h5 {
+    padding-top: 30px;
+}
+
+.center-icon {
+    margin-right: 1px;
+}
+
+.shadow-button {
+    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 30%);
+}
+
+/* Status do Sócio ====================== */
+.table-row--red {
+  box-shadow: 0 2px 7px 0 rgb(0 0 0 / 20%);
+  background-color: #f7000029;
+  border-radius: 20px;
+  padding: 10px 15px;
+}
+
+.table-row--green {
+  box-shadow: 0 2px 7px 0 rgb(0 0 0 / 20%);
+  background-color:  #ecfaeb;
+  border-radius: 20px;
+  padding: 10px 20px;
+}
+
+.status:before {
+  content: '';
+  margin-bottom: 0;
+  width: 9px;
+  height: 9px;
+  display: inline-block;
+  margin-right: 7px;
+  border-radius: 50%; 
+}
+
+.status--red:before {
+  background-color: #dc3545;
+}
+  
+.status--red {
+  color:#dc3545;
+}
+  
+.status--green:before{
+  background-color: #37c93a;
+}
+.status--green {
+  color: #37c93a;
+}
+
+/* Perfil Socio ========================================= */
+.profile-blue {
+    background-color: #4e67f1;
+    color: white;
+    border-radius: 20px;
+    padding: 1px 15px;
+}
+
+.profile-orange {
+    background-color:  #f1a54e;
+    color: white;
+    border-radius: 20px;
+    padding: 1px 15px;
+}
+
+.profile-red {
+    background-color:  #fa4068;
+    color: white;
+    border-radius: 20px;
+    padding: 1px 15px;
+}
