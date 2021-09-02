@@ -57,11 +57,11 @@ export class TriagemComponent implements OnInit {
   public observation = '';
 
   public totalTimeProduction: any;
-  public totalTimeBreak: any
-  public currentTime: any
+  public totalTimeBreak: any;
+  public currentTime: any;
 
   public disableAddButton: false;
-  
+
   constructor(
     private toastService: ToastService,
     private crudService: CrudService,
@@ -208,7 +208,7 @@ export class TriagemComponent implements OnInit {
         this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(new Date()));
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(new Date()));
         this.headForm.controls.situacao.setValue('Iniciada');
-        
+
         const triagemInfoHead = {
           currentLote: this.lastTriagem + 1,
           fornecedor: this.headForm.get('fornecedor').value,
