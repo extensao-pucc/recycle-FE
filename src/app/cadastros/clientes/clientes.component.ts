@@ -125,7 +125,7 @@ export class ClientesComponent implements OnInit, IFormCanDeactivate {
         this.crudService.updateItem('clientes', formValues, formValues.id).subscribe(response => {
           this.getItems();
           this.loadForm();
-                    
+
           this.showForm = false;
           this.toastService.addToast('Atualizado com sucesso!');
 

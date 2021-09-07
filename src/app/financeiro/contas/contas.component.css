@@ -52,17 +52,40 @@
     background: #1F8FC3;
     border-radius: 10px;
     color: #fff;
-    font-size: .8rem;
     padding: .5rem 1rem;
     border: 1px solid #1F8FC3;
+    cursor: pointer;
 }
 
-i {
+/* .filters button {
+    border: 1px solid #1F8FC3;
+    border-radius: 10px;
+    padding: 3px;
+    background: none;
+} */
+
+tr button i {
     margin-right: 1px;
+}
+
+tr button:last-child i{
+    margin-right: 8px;
 }
 
 table {
     border-collapse: collapse;
+}
+
+table th {
+    cursor: pointer;
+}
+
+table th:hover{
+    color: #1F8FC3;
+}
+
+table th:last-child:hover{
+    color: #000;
 }
 
 thead tr {
@@ -70,7 +93,7 @@ thead tr {
     border-bottom: 2px solid #f0f0f0;
 }
 
-thead td {
+thead th {
     font-weight: 700;
 }
 
@@ -93,6 +116,10 @@ tr td:last-child {
     align-items: center;
 }
 
+table td:last-child{
+    background-color: #fff;
+}
+
 .status.green {
     background: rgb(6, 192, 6);
 }
@@ -110,4 +137,9 @@ tr td:last-child {
     overflow-x: auto;
 }
 
+.table-row--red {
+    background-color: #fdeaea;
+    border-radius: 20px;
+    padding: 10px 15px;
+  }
 /* -------------------------- */

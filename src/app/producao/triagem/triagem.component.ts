@@ -82,7 +82,7 @@ export class TriagemComponent implements OnInit {
 
   ngOnInit(): void {
     const triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead'));
-    
+
     if (triagemInfoHead) {
       this.loadHeadForm();
       if(triagemInfoHead['status']){
@@ -95,7 +95,7 @@ export class TriagemComponent implements OnInit {
         this.headForm.controls.materia_prima.setValue(triagemInfoHead.materia.nome);
         this.statusProd = triagemInfoHead['status'];
         this.totalTimeBreak = triagemInfoHead['totalTimeBreak'];
-        
+
         setInterval(() => {
           this.getElapsedTime();
           this.currentTime = new Date();
@@ -111,14 +111,14 @@ export class TriagemComponent implements OnInit {
     } else {
       this.loadHeadForm();
       this.changeProductionStatus();
-      this.crudService.getItems('parametros').subscribe(response => {
-        this.lastTriagem =  Number(response[0].triagem);
-      });
+      this.crudService.getItems('parametros').subscribe(response =>
+        response.triagem != undefined ? this.lastTriagem = Number(response[0].triagem) : this.lastTriagem = 0
+      );
     }
     this.getItems();
 
     const triagemInfoItems = JSON.parse(localStorage.getItem('triagemInfoItems'));
-    if(triagemInfoItems) {
+    if (triagemInfoItems) {
       this.lotItems = triagemInfoItems;
     }
     const triagemBreaks = JSON.parse(localStorage.getItem('triagemBreaks'));
@@ -138,8 +138,8 @@ export class TriagemComponent implements OnInit {
 
   // Calculo de tempo do TOTAL da triagem
   getElapsedTime(): void {
-    const prodInfo = JSON.parse(localStorage.triagemInfoHead)
-    const start = new Date(prodInfo.start)
+    const prodInfo = JSON.parse(localStorage.triagemInfoHead);
+    const start = new Date(prodInfo.start);
     let totalSeconds = this.sharedVariableService.difTime(start, new Date());
     this.totalTimeProduction = (this.sharedVariableService.secondsToArryTime(totalSeconds));
   }
@@ -195,15 +195,18 @@ export class TriagemComponent implements OnInit {
   startProduction(): void {
     if (this.headForm.get('socio').value && this.headForm.get('fornecedor').value && this.headForm.get('materia_prima').value) {
       if (this.statusProd === '') {
-        const nextTriagem = this.lastTriagem + 1;
-        const numLote = new FormData();
-        numLote.append('numero_proxima_NFE', this.motivosDeParada.numero_proxima_NFE);
-        numLote.append('numero_proxima_NFS', this.motivosDeParada.numero_proxima_NFS);
-        numLote.append('prensa', this.motivosDeParada.prensa);
-        numLote.append('remanufatura', this.motivosDeParada.remanufatura);
-        numLote.append('triagem', nextTriagem.toString());
-        this.crudService.updateItem('parametros', numLote, '1').subscribe(response => {}, err => {});
 
+        // Reserva o proximo numero da triagem na tabela de parametros
+        const nextTriagem = this.lastTriagem + 1;
+        const parametros = new FormData();
+        parametros.append('numero_proxima_NFE', this.motivosDeParada.numero_proxima_NFE);
+        parametros.append('numero_proxima_NFS', this.motivosDeParada.numero_proxima_NFS);
+        parametros.append('prensa', this.motivosDeParada.prensa);
+        parametros.append('remanufatura', this.motivosDeParada.remanufatura);
+        parametros.append('triagem', nextTriagem.toString());
+        this.crudService.updateItem('parametros', parametros, '1').subscribe(response => {}, err => {});
+
+        // Defini os valores para o head
         this.headForm.controls.lote.setValue(this.lastTriagem + 1);
         this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(new Date()));
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(new Date()));
@@ -339,15 +342,15 @@ export class TriagemComponent implements OnInit {
 
   // Finaliza produção
   stopProduction(): void {
-    let triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead')); 
-    let triagemInfoItems = JSON.parse(localStorage.getItem('triagemInfoItems'));
-    let triagemBreaks = JSON.parse(localStorage.getItem('triagemBreaks'));
+    let triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead')); // Recupera as informações da triagem
+    let triagemInfoItems = JSON.parse(localStorage.getItem('triagemInfoItems')); // Recupera os itens da triagem
+    let triagemBreaks = JSON.parse(localStorage.getItem('triagemBreaks')); // Recupera as paradas da triagem
 
     triagemInfoHead.totalTimeProduction = this.sharedVariableService.difTime(triagemInfoHead.start, new Date());
     triagemInfoHead.end = new Date().toISOString();
 
     if (triagemInfoItems) { // Verifica se existe itens na produção
-      if (triagemInfoItems.filter(item => item.edit === true).length == 0) { // Verifica se nenhum item ainda não foi fechado  
+      if (triagemInfoItems.filter(item => item.edit === true).length === 0) { // Verifica se nenhum item ainda não foi fechado
 
         let arrayUniqueByKey = [...new Map(triagemInfoItems.map(item => [item.product.precificacao_id, item.product])).values()];
         arrayUniqueByKey.forEach(item => {
@@ -358,7 +361,8 @@ export class TriagemComponent implements OnInit {
             }
           });
         });
-        this.productionService.stopTriagem(triagemInfoHead, triagemInfoItems, triagemBreaks, arrayUniqueByKey);        
+
+        this.productionService.stopTriagem(triagemInfoHead, triagemInfoItems, triagemBreaks, arrayUniqueByKey);
       } else {
         this.toastService.addToast('Feche todos os Tambores/Bags para Finalizar', 'darkred');
       }
@@ -387,7 +391,7 @@ export class TriagemComponent implements OnInit {
       this.lotItems.forEach(item => {
         auxBag.push(item.numBag)
       })
-     
+
       this.lotItems.push({
         numBag: this.lotItems.length > 0 ? Math.max(...auxBag) + 1 : 1,
         product: this.loteItemForm.get('product').value,
@@ -481,7 +485,7 @@ export class TriagemComponent implements OnInit {
     };
     this.showYesNoMessage = true;
   }
-  
+
   // Expande imagem de cada socio na lista de itens do lote
   showImage(image: any): void{
     this.showModalImage = true;
