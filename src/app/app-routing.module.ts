@@ -2,7 +2,7 @@ import { ContasComponent } from './financeiro/contas/contas.component';
 import { crudDeactivateGuard } from './guards/crud.deactivate.guard';
 import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 
 import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './login/login.component';

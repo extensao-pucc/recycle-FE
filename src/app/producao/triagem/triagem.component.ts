@@ -69,7 +69,7 @@ export class TriagemComponent implements OnInit {
     private sharedVariableService: SharedVariableService,
     private formBuilder: FormBuilder,
     private modalService: BsModalService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
   ) {
     interval(1000).subscribe(() => {
       if (!this.changeDetector['destroyed']) {
@@ -81,8 +81,9 @@ export class TriagemComponent implements OnInit {
   private destroyed$ = new Subject();
 
   ngOnInit(): void {
-    const triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead'));
+    this.goTo(''); // Caso recarregue a pagina, mensagem de sucesso é removida
 
+    const triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead'));
     if (triagemInfoHead) {
       this.loadHeadForm();
       if(triagemInfoHead['status']){
@@ -135,6 +136,15 @@ export class TriagemComponent implements OnInit {
     this.destroyed$.next();
     this.destroyed$.complete();
   }
+
+  // Funciona como um navegador por ancora para o Angular
+  goTo(location: string): void {
+    setTimeout(() => {
+      window.location.hash = '';
+      window.location.hash = location;
+    }, 3000);
+    window.location.hash = '';
+}
 
   // Calculo de tempo do TOTAL da triagem
   getElapsedTime(): void {
@@ -350,14 +360,14 @@ export class TriagemComponent implements OnInit {
     triagemInfoHead.end = new Date().toISOString();
 
     if (triagemInfoItems) { // Verifica se existe itens na produção
-      if (triagemInfoItems.filter(item => item.edit === true).length === 0) { // Verifica se nenhum item ainda não foi fechado
+      if (triagemInfoItems.filter(item => item.edit === true).length === 0) { // Verifica se algum item ainda não foi fechado
 
         let arrayUniqueByKey = [...new Map(triagemInfoItems.map(item => [item.product.precificacao_id, item.product])).values()];
         arrayUniqueByKey.forEach(item => {
           item['quantidade'] = 0;
           triagemInfoItems.forEach(element => {
             if (element.product.precificacao_id === item['precificacao_id']) {
-              item['quantidade'] += Number(element.qtn)
+              item['quantidade'] += Number(element.qtn);
             }
           });
         });
@@ -367,7 +377,7 @@ export class TriagemComponent implements OnInit {
         this.toastService.addToast('Feche todos os Tambores/Bags para Finalizar', 'darkred');
       }
     } else {
-      this.toastService.addToast('Esta produção ainda não possui itens', 'darkred')
+      this.toastService.addToast('Esta produção ainda não possui itens', 'darkred');
     }
   }
 

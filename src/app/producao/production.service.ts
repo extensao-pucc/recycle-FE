@@ -25,6 +25,7 @@ export class ProductionService {
     return this.http.post(`${environment.apiUrl}/${component}/`, item);
   }
 
+  // Aciona a URL para navegação
   createTriagem(item: any): Observable<any>{
     return this.http.post(`${environment.apiUrl}/procedure/`, item);
   }
@@ -41,7 +42,8 @@ export class ProductionService {
     this.createTriagem(triagem).subscribe(response => {
       this.toastService.addToast('Triagem salva com sucesso');
     }, err => {
-      this.toastService.addToast(err['message'], 'darkred');
+      this.toastService.addToast('Algo inesperado aconteceu, verifique sua conexão com a rede e tente novamente!', 'darkred');
+      console.log(err['message'])
     });
   }
 
