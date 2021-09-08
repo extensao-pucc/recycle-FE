@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { SharedVariableService } from '../shared/shared-variable.service';
-import { CrudService } from '../cadastros/crud.service'
+import { CrudService } from '../cadastros/crud.service';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { from, Observable } from 'rxjs';
 
@@ -37,14 +37,10 @@ export class ProductionService {
       'lote_parada': this.productionBreaksToJson(productionBreaks, prodInfoHead.currentLote),
       'lote_itens': this.prodInfoItemsToJson(prodInfoItems, prodInfoHead.currentLote),
       'movimentacoes': this.movimentacoesToJson(prodInfoItems, prodInfoHead.currentLote),
+      'precificacao': this.precificacaoToJson(arrayUniqueByKey)
     };
 
-    this.createTriagem(triagem).subscribe(response => {
-      this.toastService.addToast('Triagem salva com sucesso');
-    }, err => {
-      this.toastService.addToast('Algo inesperado aconteceu, verifique sua conexão com a rede e tente novamente!', 'darkred');
-      console.log(err['message'])
-    });
+    return triagem;
   }
 
   // Cabeçalho da triagem para insert no banco
@@ -113,6 +109,8 @@ export class ProductionService {
       let saldoAtual = String(Number(precificacao.quantidade) + Number(item.qtn));
       saldoAtual = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
       item.qtn = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
+      let diferenca =  String(Number(saldoAtual) - Number(precificacao.quantidade));
+      diferenca =  diferenca.includes('.') ? diferenca : diferenca + '.00';
 
       const monvimento = {
         'id': '',
@@ -123,12 +121,31 @@ export class ProductionService {
         'cod_produto': item.product.precificacao_id,
         'saldo_anterior': Number(precificacao.quantidade),
         'saldo_atual': Number(saldoAtual),
-        'dif': Number(item.qtn)
+        'dif': Number(diferenca)
       };
 
       movimentacoes.push(monvimento);
     });
     return movimentacoes;
+  }
+
+  // Recupera os dados para atualizar a tabela de precificação
+  precificacaoToJson(produtos): any {
+    let precificacao = []
+    let position = 0;
+
+    produtos.forEach(item => {
+      const produto = {
+        'produto_id': produtos[position].prod_id,
+        'qualidade_id': produtos[position].qual_id,
+        'fornecedor_id': produtos[position].fornecedor_id,
+        'quantidade': produtos[position].quantidade
+      }
+
+      precificacao.push(produto);
+      position++;
+    });
+    return precificacao;
   }
 
   updatePrecificacao(): Promise<string> {

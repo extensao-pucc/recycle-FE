@@ -71,6 +71,8 @@ export class TriagemComponent implements OnInit {
     private modalService: BsModalService,
     private changeDetector: ChangeDetectorRef,
   ) {
+    this.goTo('triagem'); // Caso recarregue a pagina, mensagem de sucesso é removida
+
     interval(1000).subscribe(() => {
       if (!this.changeDetector['destroyed']) {
         this.changeDetector.detectChanges();
@@ -81,8 +83,6 @@ export class TriagemComponent implements OnInit {
   private destroyed$ = new Subject();
 
   ngOnInit(): void {
-    this.goTo(''); // Caso recarregue a pagina, mensagem de sucesso é removida
-
     const triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead'));
     if (triagemInfoHead) {
       this.loadHeadForm();
@@ -139,19 +139,29 @@ export class TriagemComponent implements OnInit {
 
   // Funciona como um navegador por ancora para o Angular
   goTo(location: string): void {
-    setTimeout(() => {
+    if (location === 'success'){
       window.location.hash = '';
       window.location.hash = location;
-    }, 3000);
-    window.location.hash = '';
-}
+
+      setTimeout(() => {
+        window.location.hash = '';
+      }, 3000);
+
+    } else if (location === 'triagem'){
+      window.location.hash = '';
+    }
+  }
 
   // Calculo de tempo do TOTAL da triagem
   getElapsedTime(): void {
-    const prodInfo = JSON.parse(localStorage.triagemInfoHead);
-    const start = new Date(prodInfo.start);
-    let totalSeconds = this.sharedVariableService.difTime(start, new Date());
-    this.totalTimeProduction = (this.sharedVariableService.secondsToArryTime(totalSeconds));
+    try {
+      const prodInfo = JSON.parse(localStorage.triagemInfoHead);
+      if (prodInfo) {
+        const start = new Date(prodInfo.start);
+        let totalSeconds = this.sharedVariableService.difTime(start, new Date());
+        this.totalTimeProduction = (this.sharedVariableService.secondsToArryTime(totalSeconds));
+      }
+    } catch {}
   }
 
   // Build do form cabeçalho (Informações do lote)
@@ -237,6 +247,7 @@ export class TriagemComponent implements OnInit {
         let triagemInfoItems = JSON.parse(localStorage.getItem('triagemInfoItems'));
         if (triagemInfoItems){
           triagemInfoItems.forEach(element => {
+            console.log(element)
             element.start = new Date();
           });
         }
@@ -368,25 +379,48 @@ export class TriagemComponent implements OnInit {
           triagemInfoItems.forEach(element => {
             if (element.product.precificacao_id === item['precificacao_id']) {
               item['quantidade'] += Number(element.qtn);
+              item['fornecedor_id'] = triagemInfoHead.fornecedor.id;
             }
           });
         });
 
-        this.productionService.stopTriagem(triagemInfoHead, triagemInfoItems, triagemBreaks, arrayUniqueByKey);
-      } else {
+        // Faz a submissão da triagem no fomato da procedure
+        const triagem = this.productionService.stopTriagem(triagemInfoHead, triagemInfoItems, triagemBreaks, arrayUniqueByKey);
+        this.productionService.createTriagem(triagem).subscribe(response => {
+          this.goTo('success');
+          this.clearProduction();
+        }, err => {
+          this.toastService.addToast('Algo inesperado aconteceu, verifique sua conexão com a rede e tente novamente!', 'darkred');
+          console.log(err['message']);
+        });
+
+      } else { // Caso ainda exista tambores com o valor em aberto, o usuario é notificado para que feche-os antes de dar andamento
         this.toastService.addToast('Feche todos os Tambores/Bags para Finalizar', 'darkred');
       }
-    } else {
+    } else { // Notifica o usuario caso tente finalizar uma triagem sem itens
       this.toastService.addToast('Esta produção ainda não possui itens', 'darkred');
     }
   }
+  
+  clearProduction(): void {
+    localStorage.removeItem('triagemInfoHead');
+    localStorage.removeItem('triagemInfoItems');
+    localStorage.removeItem('triagemBreaks');
 
+    this.selectedFornecedor = false;
+    this.statusProd = '';
+    this.lotItems = [];
+    this. lotBreaks = [];
+    this.totalTimeProduction = '';
+
+    this.ngOnInit();
+  }
   // Adiciona item no lote (Item escolhido no LoteItemModal)
   addLoteItem(): void {
     let triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead'));
     if (!triagemInfoHead){
-      const produto = this.loteItemForm.get('product').value
-      this.selectedFornecedor = produto.fornecedor
+      const produto = this.loteItemForm.get('product').value;
+      this.selectedFornecedor = produto.fornecedor;
       this.headForm.controls.fornecedor.setValue(this.selectedFornecedor);
       // this.headForm.controls.fornecedor.setText(this.selectedFornecedor.razao_social_nome);
 
@@ -429,7 +463,6 @@ export class TriagemComponent implements OnInit {
   }
 
   removeLoteItem(numBag): void {
-    
     this.lotItems = this.lotItems.filter(obj => obj.numBag !== numBag)
     localStorage.setItem('triagemInfoItems', JSON.stringify(this.lotItems));
     this.updateProductionSummary();
