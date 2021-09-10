@@ -2,7 +2,7 @@
 <div class="cards">
   <div class="card-single">
     <div>
-      <h1>R$ 1.500,00</h1>
+      <h1>R$ 7.900,00</h1>
       <span>Em 5 contas a pagar</span>
     </div>
     <div>
@@ -12,7 +12,7 @@
 
   <div class="card-single">
     <div>
-      <h1>R$ 450,56</h1>
+      <h1>R$ 1.100,00</h1>
       <span>Em 12 contas a receber</span>
     </div>
     <div>
@@ -22,7 +22,7 @@
 
   <div class="card-single">
     <div>
-      <h1>R$ 18.000,90</h1>
+      <h1>R$ 500,00</h1>
       <span>Em 18 contas em aberto</span>
     </div>
     <div>
@@ -37,84 +37,115 @@
   <button>Situação</button>
 </div> -->
 
-<div class="recent-grid">
-  <div class="projects">
-    <div class="card">
-      <div class="card-header">
-        <h3>Contas a pagar e receber</h3>
-        <button type="button" (click)="showModal('Deletar', 'item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
-      </div>
+<div class="tabset">
+  <!-- Contas a pagar -->
+  <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
+  <label for="tab1">Todas as contas</label>
 
-      <!-- Tabela -->
-      <div class="card-body">
-        <div class="table-responsive">
-          <table  id="myTable" width="100%">
-            <thead>
-              <tr>
-                <th (click)="sortTable(0)"><i class="fa fa-file"></i>Descrição</th>
-                <th (click)="sortTable(1)"><i class="fa fa-calendar"></i>Data</th>
-                <th (click)="sortTable(2)"><i class="fa fa-marker"></i>Tipo</th>
-                <th (click)="sortTable(3)"><i class="fa fa-money"></i>Valor</th>
-                <th (click)="sortTable(4)">Situação</th>
-                <th>Opções</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                  <td>Salario de funcionario</td>
-                  <td>07/08/2021</td>
-                  <td>A pagar</td>
-                  <td>R$ 7.000,00</td>
-                  <td><span class="status green"></span> Pago </td>
-                  <td>
-                    <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                    <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                    <button type="button" class="btn btn-light shadow-button">Pagar</button>            
-                  </td>
-              </tr>
-              <tr class="table-row--red">
-                <td>Recebimento de Fornecedor</td>
-                <td>08/10/2021</td>
-                <td>A receber</td>
-                <td>R$ 500,00</td>
-                <td><span class="status red"></span> Pendente</td>
-                <td>
-                  <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                  <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                  <button type="button" class="btn btn-light shadow-button">Pagar</button>            
-                </td>
-              </tr>
-              <tr>
-                <td>Conta de luz</td>
-                <td>21/08/2021</td>
-                <td>A pagar</td>
-                <td>R$ 900,00</td>
-                <td><span class="status yellow"></span> Próximo ao vencimento </td>
-                <td>
-                  <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                  <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                  <button type="button" class="btn btn-light shadow-button">Pagar</button>            
-                </td>
-              </tr>
-              <tr>
-                <td>Conta de agua</td>
-                <td>21/06/2021</td>
-                <td>A receber</td>
-                <td>R$ 1.100,00</td>
-                <td><span class="status green"></span>Recebido</td>
-                <td>
-                  <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                  <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                  <button type="button" class="btn btn-light shadow-button">Pagar</button>            
-                </td>
-              </tr>
-            </tbody>
-          </table>
+  <!-- Contas a receber -->
+  <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
+  <label for="tab2">A receber</label>
+
+  <!-- Todas -->
+  <input type="radio" name="tabset" id="tab3" aria-controls="dunkles">
+  <label for="tab3">A pagar</label>
+  
+  <div class="tab-panels">
+    <section id="todas-contas" class="tab-panel">
+      <div class="recent-grid">
+        <div class="projects">
+          <div class="card">
+            <div class="card-header">
+              <h3>Contas a pagar e receber</h3>
+              <button type="button" (click)="showModal('Deletar', 'item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
+            </div>
+      
+            <!-- Tabela -->
+            <div class="card-body">
+              <div class="table-responsive">
+                <table  id="myTable" width="100%" #filteredTable>
+                  <thead>
+                    <tr>
+                      <th (click)="sortTable(0)"><i class="fa fa-file"></i>Descrição</th>
+                      <th (click)="sortTable(1)"><i class="fa fa-calendar"></i>Data</th>
+                      <th (click)="sortTable(2)"><i class="fa fa-marker"></i>Tipo</th>
+                      <th (click)="sortTable(3)"><i class="fa fa-money"></i>Valor</th>
+                      <th (click)="sortTable(4)">Situação</th>
+                      <th>Opções</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                        <td>Salario de funcionario</td>
+                        <td>07/08/2021</td>
+                        <td>A pagar</td>
+                        <td>R$ 7.000,00</td>
+                        <td><span class="status green"></span> Pago </td>
+                        <td>
+                          <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
+                          <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
+                          <button type="button" class="btn btn-light shadow-button">Pagar</button>            
+                        </td>
+                    </tr>
+                    <tr class="table-row--red">
+                      <td>Recebimento de Fornecedor</td>
+                      <td>08/10/2021</td>
+                      <td>A receber</td>
+                      <td>R$ 500,00</td>
+                      <td><span class="status red"></span> Pendente</td>
+                      <td>
+                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
+                        <button type="button" class="btn btn-light shadow-button">Pagar</button>            
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Conta de luz</td>
+                      <td>21/08/2021</td>
+                      <td>A pagar</td>
+                      <td>R$ 900,00</td>
+                      <td><span class="status green"></span>Pago</td>
+                      <td>
+                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
+                        <button type="button" class="btn btn-light shadow-button">Pagar</button>            
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Conta de agua</td>
+                      <td>21/06/2021</td>
+                      <td>A receber</td>
+                      <td>R$ 1.100,00</td>
+                      <td><span class="status green"></span>Recebido</td>
+                      <td>
+                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
+                        <button type="button" class="btn btn-light shadow-button">Pagar</button>            
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!-- ------ -->
+          </div>
         </div>
       </div>
-      <!-- ------ -->
-    </div>
+    </section>
+
+    <section id="a-receber" class="tab-panel">
+      <h2>6A. Märzen</h2>
+      <p><strong>Overall Impression:</strong> An elegant, malty German amber lager with a clean, rich, toasty and bready malt flavor, restrained bitterness, and a dry finish that encourages another drink. The overall malt impression is soft, elegant, and complex, with a rich aftertaste that is never cloying or heavy.</p>
+      <p><strong>History:</strong> As the name suggests, brewed as a stronger “March beer” in March and lagered in cold caves over the summer. Modern versions trace back to the lager developed by Spaten in 1841, contemporaneous to the development of Vienna lager. However, the Märzen name is much older than 1841; the early ones were dark brown, and in Austria the name implied a strength band (14 °P) rather than a style. The German amber lager version (in the Viennese style of the time) was first served at Oktoberfest in 1872, a tradition that lasted until 1990 when the golden Festbier was adopted as the standard festival beer.</p>
+    </section>
+
+    <section id="a-pagar" class="tab-panel">
+      <h2>6B. Rauchbier</h2>
+      <p><strong>Overall Impression:</strong>  An elegant, malty German amber lager with a balanced, complementary beechwood smoke character. Toasty-rich malt in aroma and flavor, restrained bitterness, low to high smoke flavor, clean fermentation profile, and an attenuated finish are characteristic.</p>
+      <p><strong>History:</strong> A historical specialty of the city of Bamberg, in the Franconian region of Bavaria in Germany. Beechwood-smoked malt is used to make a Märzen-style amber lager. The smoke character of the malt varies by maltster; some breweries produce their own smoked malt (rauchmalz).</p>
+    </section>
   </div>
+  
 </div>
 <!-- ========== -->
 

@@ -19,6 +19,11 @@ export class ConfigScreenComponent implements OnInit {
     ]
   }
 
+  goTo(location: string): void {
+    window.location.hash = '';
+    window.location.hash = location;
+  }
+
   onChange(fileInput): void {
     this.imageInput = fileInput.target.files[0];
     const reader = new FileReader();
@@ -27,7 +32,7 @@ export class ConfigScreenComponent implements OnInit {
     reader.onload = (e: any) => {
       this.imageInput = e.target.result;
     };
-    
+
     // Exibe imagem na tela dando um preview para o usuario
     this.imageInputView = fileInput.target.files[0];
     const readerImage = new FileReader();

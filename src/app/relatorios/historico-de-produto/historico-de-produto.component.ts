@@ -9,16 +9,17 @@ import { SharedVariableService } from '../../shared/shared-variable.service';
   styleUrls: ['./historico-de-produto.component.css']
 })
 export class HistoricoDeProdutoComponent implements OnInit {
-  produtos: any;
-  movimentacoes: any;
+  public produtos: any;
+  public movimentacoes: any;
+  public socios: any;
+  public headForm;
 
   constructor(
     private crudService: CrudService,
     private formBuilder: FormBuilder,
     private sharedVariableService: SharedVariableService,
   ) { }
-  public headForm;
-  public socios;
+
 
   ngOnInit(): void {
     this.getItems();
@@ -35,7 +36,7 @@ export class HistoricoDeProdutoComponent implements OnInit {
       product: [null],
       inicio: [null],
       fim: [null]
-    })
+    });
   }
 
 }

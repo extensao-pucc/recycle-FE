@@ -36,7 +36,7 @@ export class ProductionService {
       'lote': this.prodInfoHeadToJson(prodInfoHead),
       'lote_parada': this.productionBreaksToJson(productionBreaks, prodInfoHead.currentLote),
       'lote_itens': this.prodInfoItemsToJson(prodInfoItems, prodInfoHead.currentLote),
-      'movimentacoes': this.movimentacoesToJson(prodInfoItems, prodInfoHead.currentLote),
+      'movimentacoes': this.movimentacoesToJson(arrayUniqueByKey, prodInfoHead.currentLote),
       'precificacao': this.precificacaoToJson(arrayUniqueByKey)
     };
 
@@ -101,14 +101,15 @@ export class ProductionService {
   }
 
   // Atualiza as movimentações do Item
-  movimentacoesToJson(prodInfoItems, currentLote): any{
+  movimentacoesToJson(arrayUniqueByKey, currentLote): any{
     let movimentacoes = [];
 
-    prodInfoItems.forEach(item => {
-      const precificacao = this.precificacoes.filter(resp => resp['id'] == item.product.precificacao_id)[0];
-      let saldoAtual = String(Number(precificacao.quantidade) + Number(item.qtn));
+    arrayUniqueByKey.forEach(item => {
+      const precificacao = this.precificacoes.filter(resp => resp['id'] == item.prod_id)[0];
+
+      let saldoAtual = String(Number(precificacao.quantidade) + Number(item.quantidade));
       saldoAtual = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
-      item.qtn = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
+      item.quantidade = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
       let diferenca =  String(Number(saldoAtual) - Number(precificacao.quantidade));
       diferenca =  diferenca.includes('.') ? diferenca : diferenca + '.00';
 
@@ -118,7 +119,7 @@ export class ProductionService {
         'entrada_saida': 'E',
         'tipo': 'Triagem',
         'numero_tipo': currentLote,
-        'cod_produto': item.product.precificacao_id,
+        'cod_produto': item.prod_id,
         'saldo_anterior': Number(precificacao.quantidade),
         'saldo_atual': Number(saldoAtual),
         'dif': Number(diferenca)
