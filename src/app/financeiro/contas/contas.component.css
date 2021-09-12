@@ -1,0 +1,189 @@
+.cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.card-single {
+    display: flex;
+    justify-content: space-between;
+    background: #F7F7F7;
+    /* background: #fff; */
+    padding: 2rem;
+    border-radius: 2px;
+}
+
+.card-single div:last-child span {
+    font-size: 3rem;
+    color: #fff;
+}
+
+.card-single div:first-child span {
+    color: #222;
+}
+
+.card {
+    background: #fff;
+}
+
+.card-header {
+    padding: 1rem;
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.card-header button {
+    background: #1F8FC3;
+    border-radius: 10px;
+    color: #fff;
+    padding: .5rem 1rem;
+    border: 1px solid #1F8FC3;
+    cursor: pointer;
+}
+
+tr button i {
+    margin-right: 1px;
+}
+
+tr button:last-child i{
+    margin-right: 8px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table th {
+    cursor: pointer;
+}
+
+table th:hover{
+    color: #1F8FC3;
+}
+
+table th:last-child:hover{
+    color: #000;
+}
+
+thead tr {
+    border-top: 1px solid #f0f0f0;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+thead th {
+    font-weight: 700;
+}
+
+td {
+    padding: .6rem 1rem;
+    font-size: .9rem;
+    color: #222;
+}
+
+td .status {
+    display: inline-block;
+    height: 10px;
+    width: 10px;
+    border-radius: 50%;
+    margin-right: 1rem;
+}
+
+tr td:last-child {
+    display: flex;
+    align-items: center;
+}
+
+table td:last-child{
+    background-color: #fff;
+}
+
+.status.green {
+    background: rgb(6, 192, 6);
+}
+
+.status.yellow {
+    background: #ffc107;
+}
+
+.status.red {
+    background: red;
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-row--red {
+    background-color: #fdeaea;
+    border-radius: 20px;
+    padding: 10px 15px;
+  }
+/* -------------------------- */
+
+.tabset > input[type="radio"] {
+  position: absolute;
+  left: -200vw;
+}
+
+.tabset .tab-panel {
+  display: none;
+}
+
+.tabset > input:first-child:checked ~ .tab-panels > .tab-panel:first-child,
+.tabset > input:nth-child(3):checked ~ .tab-panels > .tab-panel:nth-child(2),
+.tabset > input:nth-child(5):checked ~ .tab-panels > .tab-panel:nth-child(3),
+.tabset > input:nth-child(7):checked ~ .tab-panels > .tab-panel:nth-child(4),
+.tabset > input:nth-child(9):checked ~ .tab-panels > .tab-panel:nth-child(5),
+.tabset > input:nth-child(11):checked ~ .tab-panels > .tab-panel:nth-child(6) {
+  display: block;
+}
+
+.tabset > label {
+  position: relative;
+  display: inline-block;
+  padding: 15px 15px 25px;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.tabset > label::after {
+  content: "";
+  position: absolute;
+  left: 15px;
+  bottom: 10px;
+  width: 22px;
+  height: 4px;
+  background: #8d8d8d;
+}
+
+.tabset > label:hover,
+.tabset > input:focus + label {
+  color: #06c;
+}
+
+.tabset > label:hover::after,
+.tabset > input:focus + label::after,
+.tabset > input:checked + label::after {
+  background: #06c;
+}
+
+.tabset > input:checked + label {
+  border-color: #ccc;
+  border-bottom: 1px solid #fff;
+  margin-bottom: -1px;
+}
+
+.tab-panel {
+  padding: 30px 0;
+  border-top: 1px solid #ccc;
+}
+

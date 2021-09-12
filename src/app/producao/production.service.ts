@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { SharedVariableService } from '../shared/shared-variable.service';
-import { CrudService } from '../cadastros/crud.service'
+import { CrudService } from '../cadastros/crud.service';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { from, Observable } from 'rxjs';
 
@@ -17,178 +17,136 @@ export class ProductionService {
     private toastService: ToastService,
     private sharedVariableService: SharedVariableService,
     private crudService: CrudService
-  ){}
+  ){
+    this.getPrecificacao();
+  }
 
   createProduction(component: string, item: any): Observable<any> {
     return this.http.post(`${environment.apiUrl}/${component}/`, item);
   }
 
-  createTriagem (prodInfoHead, prodInfoItems, productionBreaks){
-    // Converte prodInfoHead do local storage e insere no banco
-    const loteData = new FormData();
-    loteData.append('num_lote', prodInfoHead.currentLote);
-    loteData.append('finalizado', prodInfoHead.end);
-    loteData.append('fornecedor', prodInfoHead.fornecedor.id);
-    loteData.append('iniciado', prodInfoHead.start);
-    loteData.append('socio', prodInfoHead.socio.id);
-    loteData.append('tempo_total', prodInfoHead.totalTimeProduction);
-    loteData.append('observacao', prodInfoHead.observacao);
-
-    this.createProduction('lote', loteData).subscribe(response => {
-        // Converte prodLoteItems do local storage e insere no banco        
-        const loteItemsData = new FormData();
-        prodInfoItems.forEach(item => {
-          let totalTimeItem = this.sharedVariableService.difTime(item.start, item.end);
-          
-          loteItemsData.append('finalizado', item.end);
-          loteItemsData.append('iniciado', item.start);
-          loteItemsData.append('num_lote', prodInfoHead.currentLote);
-          loteItemsData.append('num_recipiente', item.numBag);
-          loteItemsData.append('produto', item.product.id);
-          loteItemsData.append('quantidade', item.qtn);
-          loteItemsData.append('socio', item.socio.id);
-          loteItemsData.append('tempo_total', totalTimeItem.toString());
-  
-          this.createProduction('loteItens', loteItemsData).subscribe(response => {
-          }, err => {});
-        });
-  
-        // Converte productionBreaks do local storage e insere no banco
-        const loteBreaksData = new FormData();
-        productionBreaks.forEach(item => {
-          loteBreaksData.append('finalizado', item.endTime);
-          loteBreaksData.append('iniciado', item.startTime);
-          loteBreaksData.append('motivo', item.motivo);
-          loteBreaksData.append('num_lote', prodInfoHead.currentLote);
-          loteBreaksData.append('sequencia', item.sequence);
-          loteBreaksData.append('tempo_total', item.total);
-          
-          this.createProduction('loteParadas', loteBreaksData).subscribe(response => {
-          }, err => {});
-        });
-    
-    }, err => {
-      this.toastService.addToast('Não foi possivel salvar a produção', 'darkred');
-    });
-    this.toastService.addToast('Produção salva com sucesso');
+  // Aciona a URL para navegação
+  createTriagem(item: any): Observable<any>{
+    return this.http.post(`${environment.apiUrl}/procedure/`, item);
   }
 
-  // encerra a produção
+  // Encerra a produção chamando a procedure para fazer os inserts no banco de dados
   stopTriagem(prodInfoHead, prodInfoItems, productionBreaks, arrayUniqueByKey) {
-    this.saveLote(prodInfoHead)
-      .then(() => this.saveLoteItems(prodInfoItems, prodInfoHead.currentLote)
-        .then(() => this.saveLoteBreaks(productionBreaks, prodInfoHead.currentLote)
-          .then(() => this.saveMovimentacao(prodInfoHead.currentLote, prodInfoItems)
-            .then(() => this.updatePrecificacao()
-              .then(() => this.errorMessage('Produção Finalizada!!!'))
-              .catch((fromRejected) => this.errorMessage(fromRejected)))
-            .catch((fromRejected) => this.errorMessage(fromRejected)))
-          .catch((fromRejected) => this.errorMessage(fromRejected)))
-        .catch((fromRejected) => this.errorMessage(fromRejected)))
-      .catch((fromRejected) => this.errorMessage(fromRejected));
+    const triagem = {
+      'lote': this.prodInfoHeadToJson(prodInfoHead),
+      'lote_parada': this.productionBreaksToJson(productionBreaks, prodInfoHead.currentLote),
+      'lote_itens': this.prodInfoItemsToJson(prodInfoItems, prodInfoHead.currentLote),
+      'movimentacoes': this.movimentacoesToJson(arrayUniqueByKey, prodInfoHead.currentLote),
+      'precificacao': this.precificacaoToJson(arrayUniqueByKey)
+    };
+
+    return triagem;
   }
 
-  saveLote(prodInfoHead): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const loteData = new FormData();
-      loteData.append('num_lote', prodInfoHead.currentLote);
-      loteData.append('iniciado', prodInfoHead.start);
-      loteData.append('finalizado', prodInfoHead.end);
-      loteData.append('tempo_total', prodInfoHead.totalTimeProduction);
-      loteData.append('socio', prodInfoHead.socio.id);
-      loteData.append('fornecedor', prodInfoHead.fornecedor.id);
-      loteData.append('observacao', prodInfoHead.observacao ? prodInfoHead.observacao : "Sem observações");
-  
-      this.createProduction('lote', loteData).subscribe(response => {
-        resolve('Lote saved successfully');
-      }, err => {
-        reject('failed to save Lote');
-      })
-    });
+  // Cabeçalho da triagem para insert no banco
+  prodInfoHeadToJson(prodInfoHead): any {
+    const lote = {
+      'num_lote': prodInfoHead.currentLote,
+      'iniciado': prodInfoHead.start,
+      'finalizado': prodInfoHead.end,
+      'tempo_total': prodInfoHead.totalTimeProduction,
+      'socio': prodInfoHead.socio.id,
+      'fornecedor': prodInfoHead.fornecedor.id,
+      'observacao': prodInfoHead.observacao ? prodInfoHead.observacao : 'Sem observações'
+    };
+    return lote;
   }
 
-  saveLoteItems(prodInfoItems, currentLote): Promise<string> {
-    return new Promise((resolve, reject) => {
+  // Paradas da triagem para insert no banco
+  productionBreaksToJson(productionBreaks, currentLote): any {
+    let lote_parada = [];
+    if (productionBreaks){
+      productionBreaks.forEach(item => {
+        let paradas = {
+          'id': '',
+          'num_lote': currentLote,
+          'motivo': item.motivo,
+          'sequencia': item.sequence,
+          'iniciado': item.startTime,
+          'finalizado': item.endTime,
+          'tempo_total': item.total,
+        }
 
-      // Converte prodLoteItems do local storage e insere no banco        
-      const loteItemsData = new FormData();
-      prodInfoItems.forEach(item => {
-        let totalTimeItem = this.sharedVariableService.difTime(item.start, item.end);
-        loteItemsData.append('num_lote', currentLote);
-        loteItemsData.append('num_recipiente', item.numBag);
-        loteItemsData.append('produto', item.product.precificacao_id);
-        loteItemsData.append('quantidade', item.qtn);
-        loteItemsData.append('socio', item.socio.id);
-        loteItemsData.append('iniciado', item.start);
-        loteItemsData.append('finalizado', item.end);
-        loteItemsData.append('tempo_total', totalTimeItem.toString());
-
-        this.createProduction('loteItens', loteItemsData).subscribe(response => {
-          resolve('Lote saved successfully');
-        }, err => {
-          reject('failed to save Lote');
-        });
-      });    
-    });
+        lote_parada.push(paradas);
+      });
+    }
+    return lote_parada.length > 0 ? lote_parada : 'vazio';
   }
 
-  saveLoteBreaks(productionBreaks, currentLote): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const loteBreaksData = new FormData();
-      if (productionBreaks) {
-        productionBreaks.forEach(item => {
-          loteBreaksData.append('num_lote', currentLote);
-          loteBreaksData.append('motivo', item.motivo);
-          loteBreaksData.append('sequencia', item.sequence);
-          loteBreaksData.append('iniciado', item.startTime);
-          loteBreaksData.append('finalizado', item.endTime);
-          loteBreaksData.append('tempo_total', item.total);
-          
-          this.createProduction('loteParadas', loteBreaksData).subscribe(response => {
-            resolve('Lote saved successfully');
-          }, err => {
-            reject('Not saveLoteBreaks');
-          }); 
-        });
+  // Itens da triagem para insert no banco
+  prodInfoItemsToJson(prodInfoItems, currentLote): any {
+    let lote_itens = [];
+    prodInfoItems.forEach(item => {
+      const totalTimeItem = this.sharedVariableService.difTime(item.start, item.end);
+      const paradas = {
+        'id': '',
+        'num_lote': currentLote,
+        'num_recipiente': item.numBag,
+        'produto': item.product.precificacao_id,
+        'quantidade': item.qtn,
+        'socio': item.socio.id,
+        'iniciado': item.start,
+        'finalizado': item.end,
+        'tempo_total': totalTimeItem.toString(),
       }
-      resolve('No productions breaks to save');
+
+      lote_itens.push(paradas);
     });
+    return lote_itens;
   }
 
-  saveMovimentacao(currentLote, prodInfoItems): Promise<string> {
-    return new Promise((resolve, reject) => {
-      // Converte prodLoteItems do local storage e insere no banco        
-      const loteItemsData = new FormData();
-      let today = new Date();
+  // Atualiza as movimentações do Item
+  movimentacoesToJson(arrayUniqueByKey, currentLote): any{
+    let movimentacoes = [];
 
-      this.getPrecificacao().then(() => {
-        let precificacao = null;
-        let saldoAtual = null;
+    arrayUniqueByKey.forEach(item => {
+      const precificacao = this.precificacoes.filter(resp => resp['id'] == item.prod_id)[0];
 
-        prodInfoItems.forEach(item => {
-          precificacao = this.precificacoes.filter(resp => resp['id'] == item.product.precificacao_id)[0]
-          
-          loteItemsData.append('data', new Date().toISOString());
-          loteItemsData.append('entrada_saida', 'E');
-          loteItemsData.append('tipo', 'triagem');
-          loteItemsData.append('numero_tipo', currentLote);
-          loteItemsData.append('cod_produto', item.product.precificacao_id);
-          loteItemsData.append('saldo_anterior', precificacao.quantidade);
-          saldoAtual = String(Number(precificacao.quantidade) + Number(item.qtn))
-          saldoAtual = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
-          loteItemsData.append('saldo_atual', saldoAtual);
-          item.qtn = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
-          loteItemsData.append('dif', item.qtn);
-  
-          this.createProduction('movimentacoes', loteItemsData).subscribe(response => {
-            resolve('Lote saved successfully');
-          }, err => {
-            reject('failed to save Lote');
-          });
-        });    
-      }).catch((fromRejected) => this.errorMessage(fromRejected));
+      let saldoAtual = String(Number(precificacao.quantidade) + Number(item.quantidade));
+      saldoAtual = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
+      item.quantidade = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
+      let diferenca =  String(Number(saldoAtual) - Number(precificacao.quantidade));
+      diferenca =  diferenca.includes('.') ? diferenca : diferenca + '.00';
 
+      const monvimento = {
+        'id': '',
+        'data': new Date().toISOString(),
+        'entrada_saida': 'E',
+        'tipo': 'Triagem',
+        'numero_tipo': currentLote,
+        'cod_produto': item.prod_id,
+        'saldo_anterior': Number(precificacao.quantidade),
+        'saldo_atual': Number(saldoAtual),
+        'dif': Number(diferenca)
+      };
+
+      movimentacoes.push(monvimento);
     });
+    return movimentacoes;
+  }
+
+  // Recupera os dados para atualizar a tabela de precificação
+  precificacaoToJson(produtos): any {
+    let precificacao = []
+    let position = 0;
+
+    produtos.forEach(item => {
+      const produto = {
+        'produto_id': produtos[position].prod_id,
+        'qualidade_id': produtos[position].qual_id,
+        'fornecedor_id': produtos[position].fornecedor_id,
+        'quantidade': produtos[position].quantidade
+      }
+
+      precificacao.push(produto);
+      position++;
+    });
+    return precificacao;
   }
 
   updatePrecificacao(): Promise<string> {
@@ -203,21 +161,10 @@ export class ProductionService {
   }
 
   // Metodos auxiliares =====================================================================================
-  
-  getPrecificacao(): Promise<string> {
-    return new Promise((resolve, reject) => {
-      //gambiarra
-      this.crudService.getItems('precificacao').subscribe(response => {
-        this.precificacoes = response;
-        if(response) {
-          resolve('updatePrecificacao');
-        } else {
-          reject('Not updatePrecificacao');
-        }
-      });
-    });
-  }
 
+  getPrecificacao(): any{
+    this.crudService.getItems('precificacao').subscribe(response => {this.precificacoes = response; });
+  }
 
   getProdByFornecedor(fornecedor: string): Observable<any> {
     const obj = {"fornecedor": fornecedor};

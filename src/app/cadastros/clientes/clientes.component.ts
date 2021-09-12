@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit,  Output, EventEmitter, ViewChild } from '@angular/core';
 import { FormBuilder, NgForm, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
 import * as _ from 'lodash';
@@ -6,15 +6,15 @@ import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.compo
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
-import { TaxationVariableService } from '../../shared/taxation-variable.service';
+import { PesquisaCepService } from '../../shared/pesquisa-cep/pesquisa-cep.service';
 import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 
 @Component({
-  selector: 'app-natureza-das-operacoes',
-  templateUrl: './natureza-das-operacoes.component.html',
-  styleUrls: ['./natureza-das-operacoes.component.css', '../../app.component.css', '../table.css']
+  selector: 'app-clientes',
+  templateUrl: './clientes.component.html',
+  styleUrls: ['./clientes.component.css', '../../app.component.css', '../table.css']
 })
-export class NaturezaDasOperacoesComponent implements OnInit, IFormCanDeactivate {
+export class ClientesComponent implements OnInit, IFormCanDeactivate {
   @ViewChild('eventForm') public eventListingForm: NgForm;
 
   public tempItemsList: any;
@@ -24,8 +24,7 @@ export class NaturezaDasOperacoesComponent implements OnInit, IFormCanDeactivate
   public yesNoMessage: YesNoMessage = new YesNoMessage();
   public showYesNoMessage: boolean;
 
-  public types: any;
-  public cfops: any;
+  public states: any;
 
   constructor(
     private crudService: CrudService,
@@ -33,11 +32,7 @@ export class NaturezaDasOperacoesComponent implements OnInit, IFormCanDeactivate
     private formBuilder: FormBuilder,
     private formValidatorService: FormValidatorService,
     private sharedVariableService: SharedVariableService,
-    private taxationVariableService: TaxationVariableService,
-  ) {
-    this.types = this.sharedVariableService.getTypes();
-    this.cfops = this.taxationVariableService.getCFOP();
-  }
+  ) {this.states = this.sharedVariableService.getStates()}
 
   ngOnInit(): void {
     this.getItems();
@@ -56,27 +51,35 @@ export class NaturezaDasOperacoesComponent implements OnInit, IFormCanDeactivate
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
       id: [null],
-      codigo: ['', [this.formValidatorService.isEmpty]],
-      descricao: ['', [this.formValidatorService.isEmpty]],
-      tipo: ['', [this.formValidatorService.isEmpty]]
+      CNPJ_CPF: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validCPF_CNPJ]],
+      razao_social_nome: ['', [this.formValidatorService.isEmpty]],
+      endereco: ['', [this.formValidatorService.isEmpty]],
+      numero: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
+      complemento: [''],
+      bairro: ['', [this.formValidatorService.isEmpty]],
+      CEP: ['', [this.formValidatorService.validCEP]],
+      UF: ['', [this.formValidatorService.isEmpty]],
+      cidade: ['', [this.formValidatorService.isEmpty]],
+      telefone: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validTelefone]],
+      email: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validEmail]]
     });
   }
 
   getItems(): void {
-    this.crudService.getItems('naturezaDasOperacoes').subscribe(response => {
+    this.crudService.getItems('clientes').subscribe(response => {
       this.itemsList = response;
       this.tempItemsList = _.clone(this.itemsList);
     });
   }
 
    // =========== Busca personalizada ====================================================
-  Search(campo: any, valor: any): any{
+   Search(campo: any, valor: any): any{
     this.tempItemsList = _.clone(this.tempItemsList);
 
     if (valor !== ''){
       this.tempItemsList = this.itemsList.filter(res => {
-        return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
-               valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
+        return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f-\.|\-\(\) '\/]/g, '').match(
+               valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f-\.|\-\(\) '\/]/g, ''
               ));
       });
     } else if (valor === '') {
@@ -85,9 +88,8 @@ export class NaturezaDasOperacoesComponent implements OnInit, IFormCanDeactivate
   }
   // ===================================================================================
 
-
   deleteItem(id): void {
-    this.crudService.deleteItem('naturezaDasOperacoes', id).subscribe(response => {
+    this.crudService.deleteItem('clientes', id).subscribe(response => {
       this.getItems();
       this.toastService.addToast('Deletado com sucesso');
     }, err => {
@@ -101,46 +103,64 @@ export class NaturezaDasOperacoesComponent implements OnInit, IFormCanDeactivate
     this.showForm = true;
 
     this.itemForm.controls.id.setValue(item.id);
-    this.itemForm.controls.codigo.setValue(item.codigo);
-    this.itemForm.controls.descricao.setValue(item.descricao);
-    this.itemForm.controls.tipo.setValue(item.tipo);
+    this.itemForm.controls.CNPJ_CPF.setValue(item.CNPJ_CPF);
+    this.itemForm.controls.razao_social_nome.setValue(item.razao_social_nome);
+    this.itemForm.controls.endereco.setValue(item.endereco);
+    this.itemForm.controls.numero.setValue(item.numero);
+    this.itemForm.controls.complemento.setValue(item.complemento);
+    this.itemForm.controls.bairro.setValue(item.bairro);
+    this.itemForm.controls.CEP.setValue(item.CEP);
+    this.itemForm.controls.UF.setValue(item.UF);
+    this.itemForm.controls.cidade.setValue(item.cidade);
+    this.itemForm.controls.telefone.setValue(item.telefone);
+    this.itemForm.controls.email.setValue(item.email);
   }
 
   createUpdateItem(): void {
     const formValues = this.itemForm.value;
 
     if (this.itemForm.status === 'VALID'){
+
       if (formValues.id) {
-        this.crudService.updateItem('naturezaDasOperacoes', formValues, formValues.id).subscribe(response => {
+        this.crudService.updateItem('clientes', formValues, formValues.id).subscribe(response => {
           this.getItems();
           this.loadForm();
 
           this.showForm = false;
           this.toastService.addToast('Atualizado com sucesso!');
-        }, err => {
-          if (err.error.codigo){
-            this.itemForm.controls.codigo.errors = {'msgErro': 'Natureza das operações com esse código já existe'};
-            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
-          }else {
-            this.toastService.addToast(err['message'], 'darkred');
+
+          // Atualiza fornecedor da triagem no localstorage
+          var triagem = JSON.parse(localStorage.prodInfoHead);
+          if (formValues.id == triagem.fornecedor.id){
+            triagem.fornecedor = formValues;
+            localStorage.removeItem('prodInfoHead')
+            JSON.stringify(triagem)
+            localStorage.setItem('prodInfoHead', JSON.stringify(triagem));
           }
+        }, err => {
+        if (err.error.CNPJ_CPF){
+          this.itemForm.controls.CNPJ_CPF.errors = {'msgErro': 'Fornecedor com essa CNPJ ou CPF já existe'};
+          this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
+        }else {
+          this.toastService.addToast(err['message'], 'darkred');
+        }
         });
       } else {
-        this.crudService.createItem('naturezaDasOperacoes', formValues).subscribe(response => {
+        this.crudService.createItem('clientes', formValues).subscribe(response => {
           this.getItems();
           this.loadForm();
 
           this.showForm = false;
           this.toastService.addToast('Cadastrado com sucesso');
         }, err => {
-          if (err.error.codigo){
-            this.itemForm.controls.codigo.errors = {'msgErro': 'Natureza das operações com esse código já existe'};
-            this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
-          }else {
-            this.toastService.addToast(err['message'], 'darkred');
-          }
+        if (err.error.CNPJ_CPF){
+          this.itemForm.controls.CNPJ_CPF.errors = {'msgErro': 'Fornecedor com essa CNPJ ou CPF já existe'};
+          this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
+        }else {
+          this.toastService.addToast(err['message'], 'darkred');
+        }
         });
-      }
+      }     
     } else {
       this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
@@ -152,7 +172,7 @@ export class NaturezaDasOperacoesComponent implements OnInit, IFormCanDeactivate
     this.yesNoMessage = {
       title,
       mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
-      items: [title === 'Deletar' ? items.descricao : formValues.descricao],
+      items: [title === 'Deletar' ? items.razao_social_nome : formValues.razao_social_nome],
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {
@@ -169,6 +189,16 @@ export class NaturezaDasOperacoesComponent implements OnInit, IFormCanDeactivate
       }
     };
     this.showYesNoMessage = true;
+  }
+
+  populaDados(item: any): any {
+    if (item.logradouro || item.bairro || item.estado){
+      this.itemForm.controls.endereco.setValue(item.logradouro);
+      this.itemForm.controls.bairro.setValue(item.bairro);
+      this.itemForm.controls.cidade.setValue(item.cidade);
+      this.itemForm.controls.UF.setValue(item.estado);
+    }
+    this.itemForm.controls.CEP.setValue(item.cep);
   }
 
   sortTable(n) {
@@ -217,4 +247,5 @@ export class NaturezaDasOperacoesComponent implements OnInit, IFormCanDeactivate
       }
     }
   }
+
 }
