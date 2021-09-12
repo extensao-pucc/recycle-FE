@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalContas } from '../contas/modal-contas/modal-contas.component';
+// import { DateRange } from 'igniteui-angular';
 
 @Component({
   selector: 'app-contas',

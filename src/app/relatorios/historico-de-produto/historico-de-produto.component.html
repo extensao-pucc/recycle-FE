@@ -71,7 +71,10 @@
                 <td>{{ movimentacao.tipo }}</td>
                 <td>{{ movimentacao.numero_tipo }}</td>
                 <td>{{ movimentacao.saldo_anterior }}</td>
-                <td>{{ movimentacao.dif }}</td>
+                <td>
+                    <div *ngIf="movimentacao.entrada_saida === 'S'">- {{ movimentacao.dif }}</div>
+                    <div *ngIf="movimentacao.entrada_saida === 'E'">+ {{ movimentacao.dif }}</div>
+                    </td>
                 <td>{{ movimentacao.saldo_atual }}</td>
             </tr>
         </tbody>

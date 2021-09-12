@@ -18,6 +18,7 @@ import { from, interval, Subject } from 'rxjs';
 export class PrensaComponent implements OnInit {
   @ViewChild('pauseScreen', { static: true }) pauseScreen: ElementRef;
   @ViewChild('loteItemScreen', { static: true }) loteItemScreen: ElementRef;
+  @ViewChild('loteProduzidoScreen', { static: true }) loteProduzidoScreen: ElementRef;
   @ViewChild('startBtn', { static: true }) startBtn: ElementRef;
   @ViewChild('pausetBtn', { static: true }) pausetBtn: ElementRef;
   @ViewChild('stopBtn', { static: true }) stopBtn: ElementRef;
@@ -34,14 +35,18 @@ export class PrensaComponent implements OnInit {
   // selects
   public motivosDeParada: any;
   public produtos: any;
+  public fornecedores: any;
   public socios: any;
+  public qualidades: any;
 
   //forms
   public headForm: any;
   public loteItemForm: any;
+  public loteProduzido: any;
 
   public lotItems = [];
   public lotBreaks = [];
+  public lotHead = [];
   public statusProd = '';
   public observation = '';
   public selectedMotivo: any;
@@ -54,6 +59,8 @@ export class PrensaComponent implements OnInit {
   public currentTime: any
   public totalWeightProduction: number = 0;
   public unprocessed: number = 0;
+  public verificaProdutoProduzido: boolean = false;
+  public produtoProduzidoPrensa: any;
 
   constructor(
     private toastService: ToastService,
@@ -72,7 +79,6 @@ export class PrensaComponent implements OnInit {
   }
 
   private destroyed$ = new Subject();
-
   ngOnDestroy() {
     this.destroyed$.next();
     this.destroyed$.complete();
@@ -82,7 +88,15 @@ export class PrensaComponent implements OnInit {
     const prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead'));
     this.getItems();
     if (prensaInfoHead) {
+      this.lotHead = prensaInfoHead;
       this.loadHeadForm();
+
+      if (prensaInfoHead['produtoProduzido'] !== ''){
+        this.verificaProdutoProduzido = true;
+        this.produtoProduzidoPrensa = prensaInfoHead['produtoProduzido'];
+        console.log(this.produtoProduzidoPrensa)
+      }
+
       if(prensaInfoHead['status']){
         this.headForm.controls.lote.setValue(prensaInfoHead['currentLote']);
         this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(prensaInfoHead['start']));
@@ -143,30 +157,34 @@ export class PrensaComponent implements OnInit {
     this.modalRef = this.modalService.show(this.loteItemScreen);
   }
 
+  showLoteProduzidoModal(): void {
+    this.loadLoteProduzido();
+    this.modalRef = this.modalService.show(this.loteProduzidoScreen);
+  }
+
   // Atualiza o resumo da produção
   updateProductionSummary(): void {
       this.totQtn = 0
       this.lotItems.map(item => {
-      this.totQtn += Number(item.qtn)
-    })
+      this.totQtn += Number(item.qtn);
+    });
   }
 
    // Atualiza a quantidade do item do lote
    updateQtn(idx, value): void {
     this.lotItems[idx].qtn = value;
     localStorage.setItem('prensaInfoItems', JSON.stringify(this.lotItems));
-    this.totalWeight("soma");
+    this.totalWeight('soma');
     this.updateProductionSummary();
   }
 
   updateQtnUnprocessed(value): void {
-    if (value == "" || value == null){
+    if (value == '' || value == null){
       value = 0;
     }
 
     this.unprocessed = value;
     this.totalWeight('subtrai');
-
 
     let prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead'));
     prensaInfoHead.naoProcessado = Number(this.unprocessed);
@@ -185,8 +203,8 @@ export class PrensaComponent implements OnInit {
     this.crudService.getItems('socios').subscribe(response => this.socios = response);
     this.crudService.getItems('motivosDeParada').subscribe(response => this.motivosDeParada = response);
     this.crudService.getItems('precificacao').subscribe(response => this.produtos = response);
-    this.crudService.getItems('precificacao').subscribe(response => console.log(response[0].produto));
-
+    this.crudService.getItems('fornecedores').subscribe(response => this.fornecedores = response);
+    this.crudService.getItems('qualidades').subscribe(response => this.qualidades = response);
     // if (this.selectedFornecedor) {
     //   this.productionService.getProdByFornecedor(String(this.selectedFornecedor['id'])).subscribe(response => this.produtos = response );
     // }
@@ -214,6 +232,18 @@ export class PrensaComponent implements OnInit {
     this.loteItemForm = this.formBuilder.group({
       numBag: [null],
       product: [null],
+      fornecedor: [null],
+      qualidade: [null],
+      qtn: [null],
+    });
+   }
+
+   loadLoteProduzido(): void{
+    this.loteProduzido = this.formBuilder.group({
+      numBag: [null],
+      product: [null],
+      fornecedor: [null],
+      qualidade: [null],
       qtn: [null],
     });
    }
@@ -235,7 +265,7 @@ export class PrensaComponent implements OnInit {
       this.headForm.controls.situacao.setValue('Iniciada');
       this.headForm.get('socio').disable();
       this.pausetBtn.nativeElement.innerHTML = '<i class="fa fa-pause-circle"></i> Pausar Produção'
-    
+
     } else if (this.statusProd === 'Pausada') {
       // this.itemsLoteTable.nativeElement.disabled = true;
       this.headForm.controls.situacao.setValue('Pausada');
@@ -265,7 +295,7 @@ export class PrensaComponent implements OnInit {
         this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(new Date()));
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(new Date()));
         this.headForm.controls.situacao.setValue('Iniciada');
-        
+
         const prensaInfoHead = {
           currentLote: this.lastPrensa + 1,
           start: new Date(),
@@ -275,6 +305,8 @@ export class PrensaComponent implements OnInit {
           socio: this.headForm.get('socio').value,
           observacao: this.observation,
           pesoProduzido: 0,
+          produtoProduzido: '',
+          editProdutoProduzido: true,
           naoProcessado: 0
         };
 
@@ -300,8 +332,8 @@ export class PrensaComponent implements OnInit {
       if (prensaBreaks) {
         this.lotBreaks = prensaBreaks;
         this.lotBreaks.forEach(item => {
-          auxSequence.push(item.sequence)
-        })
+          auxSequence.push(item.sequence);
+        });
       }
 
       this.lotBreaks.push({
@@ -315,7 +347,7 @@ export class PrensaComponent implements OnInit {
       localStorage.setItem('prensaBreaks', JSON.stringify(this.lotBreaks));
       this.modalRef.hide();
       this.selectedMotivo = null;
-      this.statusProd = 'Pausada'
+      this.statusProd = 'Pausada';
 
       let prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead'));
       prensaInfoHead.status = 'Pausada';
@@ -324,30 +356,29 @@ export class PrensaComponent implements OnInit {
       this.changeProductionStatus();
     }
   }
-  
+
   continueProduction(): void {
     this.lotBreaks = JSON.parse(localStorage.getItem('prensaBreaks'));
     this.lotBreaks[this.lotBreaks.length - 1].endTime = new Date();
     this.lotBreaks[this.lotBreaks.length - 1].total = this.sharedVariableService.difTime(
       this.lotBreaks[this.lotBreaks.length - 1].startTime,
       this.lotBreaks[this.lotBreaks.length - 1].endTime
-    )
+    );
     localStorage.setItem('prensaBreaks', JSON.stringify(this.lotBreaks));
 
-    this.statusProd = 'Iniciada'
+    this.statusProd = 'Iniciada';
 
-    
     let totalSec = 0;
     this.lotBreaks.forEach(item => {
       totalSec += item.total;
     });
     this.totalTimeBreak = this.sharedVariableService.secondsToArryTime(totalSec);
-    
+
     let prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead'));
     prensaInfoHead.status = 'Iniciada';
     prensaInfoHead.totalTimeBreak = this.totalTimeBreak;
     localStorage.setItem('prensaInfoHead', JSON.stringify(prensaInfoHead));
-    
+
     this.changeProductionStatus();
   }
 
@@ -359,14 +390,14 @@ export class PrensaComponent implements OnInit {
   addLoteItem(): void {
     let prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead'));
     if (!prensaInfoHead){
-      const produto = this.loteItemForm.get('product').value
+      const produto = this.loteItemForm.get('product').value;
       localStorage.setItem('prensaInfoHead', JSON.stringify(prensaInfoHead));
     }
 
     if (this.loteItemForm.get('product').value) {
       let auxBag = [];
       this.lotItems.forEach(item => {
-        auxBag.push(item.numBag)
+        auxBag.push(item.numBag);
       })
 
       this.lotItems.push({
@@ -383,6 +414,21 @@ export class PrensaComponent implements OnInit {
     } else {
       this.toastService.addToast('Selecione o produto para continuar', 'darkred');
     }
+  }
+
+  addProdutoProduzido(): void{
+    let prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead'));
+
+    if (this.loteProduzido.get('product').value) {
+      prensaInfoHead['produtoProduzido'] = this.loteProduzido.get('product').value;
+      this.produtoProduzidoPrensa = this.loteProduzido.get('product').value;
+      this.loadLoteProduzido();
+      this.modalRef.hide();
+    } else {
+      this.toastService.addToast('Selecione o produto para continuar', 'darkred');
+    }
+
+    localStorage.setItem('prensaInfoHead', JSON.stringify(prensaInfoHead));
   }
 
   removeLoteItem(numBag): void { 
@@ -423,8 +469,8 @@ export class PrensaComponent implements OnInit {
       }
     };
     this.showYesNoMessage = true;
-  }       
-  
+  }
+
   totalWeight(operacao: string){
     if (localStorage['prensaInfoItems'] != null){
       let prensaInfoItems = JSON.parse(localStorage.getItem('prensaInfoItems'));
@@ -446,22 +492,5 @@ export class PrensaComponent implements OnInit {
       localStorage.setItem('prensaInfoHead', JSON.stringify(prensaInfoHead));
     }
   }
-  
-  adicionarTR(){
-    // var qtdRows = document.getElementById("tblListaProduto").rows.length;
-    // var table = document.getElementById("tblListaProduto");
-    // var newRow = table.insertRow(qtdRows);
-    // var chave = "composto_" + qtdRows
-    // newRow.id = chave;
 
-    // // add cells to the row
-    // var cel1 = newRow.insertCell(0);
-    // var cel2 = newRow.insertCell(1);
-    // var cel3 = newRow.insertCell(2);
-
-    // // add values to the cells
-    // cel1.innerHTML = "aa"
-    // cel2.innerHTML = "bbb";
-    // cel3.innerHTML = "<input class='form-control' type='number' (keyup)='updateQtn(idx, $event.target.value)' [disabled]='statusProd != 'Iniciada''>";
-  }
 }
