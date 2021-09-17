@@ -160,7 +160,7 @@ export class ClientesComponent implements OnInit, IFormCanDeactivate {
           this.toastService.addToast(err['message'], 'darkred');
         }
         });
-      }     
+      }
     } else {
       this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }

@@ -152,6 +152,35 @@ export class TriagemComponent implements OnInit {
     }
   }
 
+  // Ao alterar o fornecedor da triagem, ele varre a lista e elimina os produtos não pertencentes a este fornecedor
+  changeFornecedor(val: any): any {
+    const triagemInfoItems = JSON.parse(localStorage.getItem('triagemInfoItems'));
+    const triagemInfoHead = JSON.parse(localStorage.getItem('triagemInfoHead'));
+    let count = 0;
+    if (triagemInfoItems && !triagemInfoHead) {
+      this.lotItems = [];
+      this.crudService.getItems('precificacao').subscribe(response => {
+        triagemInfoItems.forEach((itemTriagem, index) => {
+          response.forEach(elementPrecificacao => {
+            if ((val.id === elementPrecificacao.fornecedor.id) &&
+                (itemTriagem.product.prod_id === elementPrecificacao.produto.id) &&
+                (itemTriagem.product.qual_id === elementPrecificacao.qualidade.id)){
+                  itemTriagem.product.precificacao_id = elementPrecificacao.id;
+                  this.lotItems.push(itemTriagem);
+                  return count++;
+            }
+          });
+          if (count === 0){
+            triagemInfoItems.splice(index, 1);
+          }
+          count = 0;
+        });
+        this.lotItems = triagemInfoItems;
+        localStorage.setItem('triagemInfoItems', JSON.stringify(triagemInfoItems));
+      });
+    }
+  }
+
   // Calculo de tempo do TOTAL da triagem
   getElapsedTime(): void {
     try {
@@ -198,17 +227,10 @@ export class TriagemComponent implements OnInit {
     this.crudService.getItems('fornecedores').subscribe(response => this.fornecedores = response);
     this.crudService.getItems('motivosDeParada').subscribe(response => this.motivosDeParada = response);
     this.crudService.getItems('materiasPrimas').subscribe(response => this.materiasPrimas = response);
-    // this.crudService.getItems('produtos').subscribe(response => this.produtos = response);
 
     if (this.selectedFornecedor) {
       this.productionService.getProdByFornecedor(String(this.selectedFornecedor['id'])).subscribe(response => this.produtos = response );
     }
-    // this.crudService.getItems('precificacao').subscribe(response => {
-    //   this.produtos = response.filter(resp => resp['fornecedor']['id'] == this.selectedFornecedor.id)
-    //   this.produtos = this.produtos.map(item => {
-    //     item.produto
-    //   });
-    // });
   }
 
   // Inicia a Produção
@@ -386,8 +408,8 @@ export class TriagemComponent implements OnInit {
         // Faz a submissão da triagem no fomato da procedure
         const triagem = this.productionService.stopTriagem(triagemInfoHead, triagemInfoItems, triagemBreaks, arrayUniqueByKey);
         this.productionService.createTriagem(triagem).subscribe(response => {
-          this.goTo('success');
-          this.clearProduction();
+          this.goTo('success'); // Chama a transição de sucesso
+          this.clearProduction(); // Limpa a tela de produção para o usuario
         }, err => {
           this.toastService.addToast('Algo inesperado aconteceu, verifique sua conexão com a rede e tente novamente!', 'darkred');
           console.log(err['message']);
@@ -402,14 +424,33 @@ export class TriagemComponent implements OnInit {
   }
 
   clearProduction(): void {
+    this.lotItems = [];
+    let triagemInfoItems = JSON.parse(localStorage.getItem('triagemInfoItems'));
+    triagemInfoItems.forEach(triagemElement => {
+        triagemElement.end = null;
+        triagemElement.start = null;
+        triagemElement.edit = true;
+        triagemElement.qtn = 0;
+
+        this.lotItems.push(triagemElement);
+    });
+    console.log(triagemInfoItems);
+    localStorage.setItem('triagemInfoItems', JSON.stringify(this.lotItems));
+
     localStorage.removeItem('triagemInfoHead');
-    localStorage.removeItem('triagemInfoItems');
     localStorage.removeItem('triagemBreaks');
+
+    // Habilita novamente os botões
+    this.statusProd = '';
+    this.changeProductionStatus();
+    this.headForm.get('socio').enable();
+    this.headForm.get('fornecedor').enable();
+    this.headForm.get('materia_prima').enable();
+
 
     this.selectedFornecedor = false;
     this.statusProd = '';
-    this.lotItems = [];
-    this. lotBreaks = [];
+    this.lotBreaks = [];
     this.totalTimeProduction = '';
 
     this.ngOnInit();
@@ -421,7 +462,7 @@ export class TriagemComponent implements OnInit {
       const produto = this.loteItemForm.get('product').value;
       this.selectedFornecedor = produto.fornecedor;
       this.headForm.controls.fornecedor.setValue(this.selectedFornecedor);
-      // this.headForm.controls.fornecedor.setText(this.selectedFornecedor.razao_social_nome);
+      this.headForm.controls.fornecedor.setText(this.selectedFornecedor.razao_social_nome);
 
       triagemInfoHead = {
         fornecedor: this.headForm.get('fornecedor').value,
@@ -462,7 +503,7 @@ export class TriagemComponent implements OnInit {
   }
 
   removeLoteItem(numBag): void {
-    this.lotItems = this.lotItems.filter(obj => obj.numBag !== numBag)
+    this.lotItems = this.lotItems.filter(obj => obj.numBag !== numBag);
     localStorage.setItem('triagemInfoItems', JSON.stringify(this.lotItems));
     this.updateProductionSummary();
 
@@ -490,11 +531,11 @@ export class TriagemComponent implements OnInit {
 
   // Atualiza o resumo da produção
   updateProductionSummary(): void {
-    this.totQtn = 0
+    this.totQtn = 0;
     this.totBag = this.lotItems.map(item => item.numBag).length;
     this.lotItems.map(item => {
-      this.totQtn += Number(item.qtn)
-    })
+      this.totQtn += Number(item.qtn);
+    });
   }
 
   // Mostra modal para adicionar novo item no lote
@@ -504,11 +545,12 @@ export class TriagemComponent implements OnInit {
   }
 
   // Mostra uma modal diferente dependendo de qual das 4 ações selecionar
-  showModal(title: string): void {
+  showModal(title: any): void {
     this.yesNoMessage = {
       title,
-      mainText: 'Tem certeza que deseja ' + title.toLowerCase() + ' a prdução?',
-      items: ['Após a confirmação a produção vai ser ' + title.toLowerCase() ],
+      mainText: (title === 'Iniciar') ? ('Tem certeza que deseja ' + title.toUpperCase() + ' a produção? ESTA AÇÃO É IRREVERSÍVEL')
+                                      : ('Tem certeza que deseja ' + title.toLowerCase() + ' a prdução?'),
+      items: ['Após a confirmação a produção vai ser ' + title.toLowerCase()],
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {
@@ -518,8 +560,10 @@ export class TriagemComponent implements OnInit {
             this.statusProd === 'Pausada' ? this.continueProduction() : this.modalRef = this.modalService.show(this.pauseScreen);
           } else if (title === 'Finalizar') {
             this.stopProduction();
-          } else {
+          } else if (title === 'Etiquetas'){
             this.toastService.addToast('Desculpa, ainda não temos essa funcionalidade', 'darkred');
+          } else {
+
           }
         },
         onClickNo: () => { }

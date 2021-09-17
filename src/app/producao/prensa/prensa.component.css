@@ -27,7 +27,7 @@ i {
 table {
     box-shadow: 0 4px 8px 0 rgb(0 0 0 / 19%), 0 6px 20px 0 rgb(0 0 0 / 19%);
     text-align: center;
-    width:  60%;
+    width:  80%;
 }
 
 .table-items{
@@ -89,4 +89,113 @@ label {
 
 .companySelection {
     background-color:  #397cc2;
+}
+
+/* Common panel style  para sucesso al salvar Triagem*/
+.panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    z-index: 999;
+    color: #000;
+    box-sizing: border-box;
+    background-color: #ECEFF1; 
+}
+    
+    
+/* panel content (only for animation delay after open) */
+.panel__content {
+    opacity: 0;
+    will-change: margin-top;
+    transition: all 700ms; 
+    transition-delay: 600ms;
+    padding: 100px 200px;
+    margin-top: -5%; 
+}
+
+/* Panel content animation after open */
+.panel:target .panel__content {
+    opacity: 1;
+    margin-top: 0; 
+}
+
+/*  Specific panel "success" effect */
+/* •••••••••••••••••••••••••••••••• */
+.panel#success {
+    background-color: #00C853;
+    opacity: 0;
+    transition: all 800ms;
+    pointer-events: none; 
+}
+
+.panel#success:target {
+    opacity: 1;
+    pointer-events: auto; 
+}
+
+.panel a {
+    color: #fff;
+    font-size: x-large;
+}
+
+
+/* Success check */
+.success-animation {
+    margin-bottom: 20px;
+}
+
+.checkmark {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    display: block;
+    stroke-width: 2;
+    stroke: #fff;
+    stroke-miterlimit: 10;
+    box-shadow: inset 0px 0px 0px #19d065;
+    animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s both;
+    position:relative;
+    top: 5px;
+    right: 5px;
+    margin: 0 auto;
+}
+.checkmark__circle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    stroke-width: 2;
+    stroke-miterlimit: 10;
+    stroke: #fff;
+    fill: transparent;
+    animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+ 
+}
+
+.checkmark__check {
+    transform-origin: 50% 50%;
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+}
+
+@keyframes stroke {
+    100% {
+        stroke-dashoffset: 0;
+    }
+}
+
+@keyframes scale {
+    0%, 100% {
+        transform: none;
+    }
+
+    50% {
+        transform: scale3d(1.1, 1.1, 1);
+    }
 }

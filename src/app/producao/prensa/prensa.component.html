@@ -60,6 +60,7 @@
                 <th scope="col">Qualidade</th>
                 <th scope="col">Fornecedor</th>
                 <th scope="col">Peso</th>
+                <th scope="col">Sócio</th>
                 <th class="text-right">
                     <button class="btn btn-success" (click)="showLoteItemModal()" tooltip="Adicionar item ao lote" #itemsLoteTable>
                     <i class="fa fa-plus"></i>Adicionar</button>
@@ -81,6 +82,14 @@
                 <td class="qtn td-medio">
                     <span *ngIf="!item.edit">{{ item.qtn }} kg</span>
                     <input *ngIf="item?.edit" class="form-control" type="number" [value]="item.qtn" (keyup)="updateQtn(idx, $event.target.value)" [disabled]="statusProd != 'Iniciada'">
+                </td>
+                <td class="provider">
+                    <span>
+                        <ngx-avatar *ngIf="!item.socio.foto" name="{{ item.socio.nome }}" initialsSize="2" size="40" class="my-avatar"></ngx-avatar>
+                        <img [src]="item.socio.foto" *ngIf="item.socio.foto" style="height: 40px; width:40px" 
+                        class="rounded-circle z-depth-0 image-profile foto-socio" (click)="showImage(item.socio.foto)">
+                        {{ item.socio.nome }}
+                    </span>
                 </td>
                 <td class="options">
                     <button *ngIf="item?.edit" class="btn btn-success mr-2" tooltip="Encerrar pesagem e salvar" (click)="saveLoteItem(idx)" [disabled]="statusProd != 'Iniciada'"> <i class="fa fa-save"></i>Salvar</button>
@@ -110,7 +119,7 @@
             <td> 
                 <button class="btn btn-success mr-2" tooltip="Adicionar qual produto foi produzido" [disabled]="statusProd != 'Iniciada'" (click)="showLoteProduzidoModal()" *ngIf="!verificaProdutoProduzido"><i class="fa fa-plus"></i>Adicionar produto produzido</button>
 
-                <button class="btn btn-info ml-4" tooltip="Remover produto produzido" (click)="showLoteProduzidoModal()" *ngIf="verificaProdutoProduzido"><i class="fa fa-edit"></i>Alterar produto</button>
+                <button class="btn btn-info ml-4" tooltip="Editar produto produzido" (click)="showLoteProduzidoModal()" *ngIf="verificaProdutoProduzido"><i class="fa fa-edit"></i>Alterar produto</button>
             </td>
         </tr>
         
@@ -198,7 +207,7 @@
 </ng-template>
 
 
-<ng-template #loteItemScreen>
+<!-- <ng-template #loteItemScreen>
     <div class="modal-header modal-header text-dark">
         <h4 class="modal-title pull-left"> Item do Lote</h4>
         <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
@@ -225,6 +234,55 @@
                     </ng-select>
                     </form>
                 </div>               
+            </div>
+        </div>
+        <div class="mt-3 text-center">
+            <button type="button" class="btn btn btn-danger mr-2 yesNoButton" id="btn-no" (click)="modalRef.hide()"><i class="fa fa-times-circle"></i>Cancelar</button>
+            <button type="button" class="btn btn btn-success mr-2 yesNoButton" id="btn-yes" (click)="addLoteItem()"><i class="fa fa-check-circle"></i>Salvar</button>
+        </div>
+    </div>
+</ng-template> -->
+
+<ng-template #loteItemScreen>
+    <div class="modal-header modal-header text-dark">
+        <h4 class="modal-title pull-left"> Item do Lote</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="row pause-screen-body">
+            <div class="col pt-2">
+                <p class="font-weight-bold">Selecione os seguintes campos para adicionar um item ao lote:</p>
+                <div class="form-group col">
+                  <form [formGroup]="loteItemForm" *ngIf="loteItemForm">
+                    <p for="product"> Produto:
+                      <i class="fa fa-question-circle" tooltip="Apenas produtos pertencentes ao fornecedor dessa triagem"></i>
+                    </p>
+                    <ng-select formControlName="product" name="product">
+                        <ng-component *ngFor="let produto of produtos">
+                            <ng-option [value]="produto"> 
+                                <span class="productOption productSelection selesctionItem"> {{ produto.produto.descricao }} </span> 
+                                <span class="productOption reasonSelection selesctionItem"> {{ produto.qualidade.nome }} </span>    
+                                <span class="productOption companySelection selesctionItem"> {{ produto.fornecedor.razao_social_nome }} </span>                   
+                            </ng-option>
+                        </ng-component>
+                    </ng-select>
+  
+                    <p for="fornecedor">Socio:
+                      <i class="fa fa-question-circle" tooltip="Apenas sócios ativos aparecem aqui"></i>
+                    </p>
+                    <ng-select formControlName="socio" name="socio">
+                      <ng-component  *ngFor="let socio of socios" >
+                        <ng-option *ngIf="socio?.situacao === 'Ativo'" [value]="socio">
+                          <ngx-avatar *ngIf="!socio?.foto" name="{{ socio?.nome }}" initialsSize="2" size="30"></ngx-avatar>
+                          <img *ngIf="socio?.foto" src="{{ socio?.foto }}" class="rounded-circle z-depth-0 foto-socio" height="30" width="30" alt="">
+                          {{socio.nome}}
+                        </ng-option>
+                      </ng-component>
+                    </ng-select>
+                  </form>
+              </div>               
             </div>
         </div>
         <div class="mt-3 text-center">
@@ -272,3 +330,15 @@
   
 <app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>
 <app-view-image [viewImage]="viewImage" *ngIf="showModalImage"></app-view-image>
+
+<!-- Sucesso em salvar triagem -->
+<div class="panel" id="success">
+    <div class="panel__content">
+      <div class="success-animation">
+        <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+      </div>
+      <a>
+        Finalizado com sucesso.
+      </a>
+    </div>
+  </div>

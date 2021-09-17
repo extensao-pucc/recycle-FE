@@ -132,19 +132,17 @@ export class ProductionService {
 
   // Recupera os dados para atualizar a tabela de precificação
   precificacaoToJson(produtos): any {
-    let precificacao = []
-    let position = 0;
+    let precificacao = [];
 
-    produtos.forEach(item => {
+    produtos.forEach((item, index) => {
       const produto = {
-        'produto_id': produtos[position].prod_id,
-        'qualidade_id': produtos[position].qual_id,
-        'fornecedor_id': produtos[position].fornecedor_id,
-        'quantidade': produtos[position].quantidade
-      }
+        'produto_id': produtos[index].prod_id,
+        'qualidade_id': produtos[index].qual_id,
+        'fornecedor_id': produtos[index].fornecedor_id,
+        'quantidade': produtos[index].quantidade
+      };
 
       precificacao.push(produto);
-      position++;
     });
     return precificacao;
   }

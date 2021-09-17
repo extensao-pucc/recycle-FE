@@ -71,6 +71,14 @@ export class PrensaComponent implements OnInit {
     private modalService: BsModalService,
     private changeDetector: ChangeDetectorRef
   ) {
+    this.goTo('triagem'); // Caso recarregue a pagina, mensagem de sucesso é removida
+
+    interval(1000).subscribe(() => {
+      if (!this.changeDetector['destroyed']) {
+        this.changeDetector.detectChanges();
+      }
+    });
+
     interval(1000).subscribe(() => {
       if (!this.changeDetector['destroyed']) {
         this.changeDetector.detectChanges();
@@ -84,6 +92,21 @@ export class PrensaComponent implements OnInit {
     this.destroyed$.complete();
   }
 
+   // Funciona como um navegador por ancora para o Angular
+   goTo(location: string): void {
+    if (location === 'success'){
+      window.location.hash = '';
+      window.location.hash = location;
+
+      setTimeout(() => {
+        window.location.hash = '';
+      }, 3000);
+
+    } else if (location === 'triagem'){
+      window.location.hash = '';
+    }
+  }
+
   ngOnInit(): void {
     const prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead'));
     this.getItems();
@@ -94,7 +117,6 @@ export class PrensaComponent implements OnInit {
       if (prensaInfoHead['produtoProduzido'] !== ''){
         this.verificaProdutoProduzido = true;
         this.produtoProduzidoPrensa = prensaInfoHead['produtoProduzido'];
-        console.log(this.produtoProduzidoPrensa)
       }
 
       if(prensaInfoHead['status']){
@@ -164,7 +186,7 @@ export class PrensaComponent implements OnInit {
 
   // Atualiza o resumo da produção
   updateProductionSummary(): void {
-      this.totQtn = 0
+      this.totQtn = 0;
       this.lotItems.map(item => {
       this.totQtn += Number(item.qtn);
     });
@@ -235,6 +257,7 @@ export class PrensaComponent implements OnInit {
       fornecedor: [null],
       qualidade: [null],
       qtn: [null],
+      socio: [null],
     });
    }
 
@@ -383,7 +406,45 @@ export class PrensaComponent implements OnInit {
   }
 
   stopProduction(): void {
+    let prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead')); // Recupera as informações da triagem
+    let prensaInfoItems = JSON.parse(localStorage.getItem('prensaInfoItems')); // Recupera os itens da triagem
+    let prensaBreaks = JSON.parse(localStorage.getItem('prensaBreaks')); // Recupera as paradas da triagem
 
+    prensaInfoHead.totalTimeProduction = this.sharedVariableService.difTime(prensaInfoHead.start, new Date());
+    prensaInfoHead.end = new Date().toISOString();
+
+    if (prensaInfoItems) { // Verifica se existe itens na produção
+      if (prensaInfoItems.filter(item => item.edit === true).length === 0) { // Verifica se algum item ainda não foi fechado
+        let arrayUniqueByKey = [...new Map(prensaInfoItems.map(item => [item.product.id, item.product])).values()];
+
+        arrayUniqueByKey.forEach(item => {
+          item['quantidade'] = 0;
+          prensaInfoItems.forEach(element => {
+            // tslint:disable-next-line: max-line-length
+            if ((element.product.produto.id === item['produto'].id)  && (element.product.fornecedor.id === item['fornecedor'].id) && (element.product.qualidade.id === item['qualidade'].id)) {
+              item['quantidade'] += Number(element.qtn);
+              item['fornecedor_id'] = element.product.fornecedor.id;
+            }
+          });
+        });
+
+        // Faz a submissão da triagem no fomato da procedure
+        const prensa = this.productionService.stopTriagem(prensaInfoHead, prensaInfoItems, prensaBreaks, arrayUniqueByKey);
+        console.log(prensa)
+        this.productionService.createTriagem(prensa).subscribe(response => {
+          this.goTo('success');
+          // this.clearProduction();
+        }, err => {
+          this.toastService.addToast('Algo inesperado aconteceu, verifique sua conexão com a rede e tente novamente!', 'darkred');
+          console.log(err['message']);
+        });
+
+      } else { // Caso ainda exista tambores com o valor em aberto, o usuario é notificado para que feche-os antes de dar andamento
+        this.toastService.addToast('Feche todos os Tambores/Bags para Finalizar', 'darkred');
+      }
+    } else { // Notifica o usuario caso tente finalizar uma triagem sem itens
+      this.toastService.addToast('Esta produção ainda não possui itens', 'darkred');
+    }
   }
 
   // Adiciona item no lote (Item escolhido no LoteItemModal)
@@ -403,6 +464,7 @@ export class PrensaComponent implements OnInit {
       this.lotItems.push({
         numBag: this.lotItems.length > 0 ? Math.max(...auxBag) + 1 : 1,
         product: this.loteItemForm.get('product').value,
+        socio: this.loteItemForm.get('socio').value,
         qtn: 0,
         edit: true
       });
