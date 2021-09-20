@@ -36,7 +36,7 @@
 
       <div class="form-group col-md-4">
           <label for="fornecedor">Fornecedor</label>
-          <ng-select (change)="changeFornecedor($event)" formControlName="fornecedor" name="fornecedor" *ngIf="!selectedFornecedor">
+          <ng-select (change)="preChangeFornecedor($event)" formControlName="fornecedor" name="fornecedor" *ngIf="!selectedFornecedor">
             <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor">{{ fornecedor.razao_social_nome }}</ng-option>
           </ng-select>
           <input id="fornecedor-triagem" type="text" *ngIf="selectedFornecedor" value="{{ selectedFornecedor.razao_social_nome }}" tooltip="Não pode ser alterado. Remova os produtos para liberar a edição deste campo" readonly>

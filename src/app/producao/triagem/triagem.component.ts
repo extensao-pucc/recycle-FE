@@ -152,6 +152,15 @@ export class TriagemComponent implements OnInit {
     }
   }
 
+  preChangeFornecedor(event: any): any {
+    const triagemInfoItems = JSON.parse(localStorage.getItem('triagemInfoItems'));
+    if (triagemInfoItems.length >= 1){
+      const alterCheck: boolean = this.showModal('Fornecedor');
+      if (alterCheck){
+        this.changeFornecedor(event);
+      }
+    }
+  }
   // Ao alterar o fornecedor da triagem, ele varre a lista e elimina os produtos não pertencentes a este fornecedor
   changeFornecedor(val: any): any {
     const triagemInfoItems = JSON.parse(localStorage.getItem('triagemInfoItems'));
@@ -474,7 +483,7 @@ export class TriagemComponent implements OnInit {
       let auxBag = [];
       this.lotItems.forEach(item => {
         auxBag.push(item.numBag);
-      })
+      });
 
       this.lotItems.push({
         numBag: this.lotItems.length > 0 ? Math.max(...auxBag) + 1 : 1,
@@ -545,12 +554,15 @@ export class TriagemComponent implements OnInit {
   }
 
   // Mostra uma modal diferente dependendo de qual das 4 ações selecionar
-  showModal(title: any): void {
+  showModal(title: any): any {
     this.yesNoMessage = {
       title,
       mainText: (title === 'Iniciar') ? ('Tem certeza que deseja ' + title.toUpperCase() + ' a produção? ESTA AÇÃO É IRREVERSÍVEL')
-                                      : ('Tem certeza que deseja ' + title.toLowerCase() + ' a prdução?'),
-      items: ['Após a confirmação a produção vai ser ' + title.toLowerCase()],
+                                      : (title === 'Fornecedor') ? ('Tem certeza que deseja alterar o ' + title.toLowerCase() + ' desta prdução?')
+                                                                 : ('Tem certeza que deseja ' + title.toLowerCase() + ' a prdução?'),
+      items: (title === 'Fornecedor') ? ['Após a confirmação, a lista de produtos será atualizada mantendo apenas aqueles pertencentes ao '
+                                          + title.toLowerCase() + ' selecionado.']
+                                      : ['Após a confirmação a produção vai ser ' + title.toLowerCase()],
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {
@@ -563,7 +575,7 @@ export class TriagemComponent implements OnInit {
           } else if (title === 'Etiquetas'){
             this.toastService.addToast('Desculpa, ainda não temos essa funcionalidade', 'darkred');
           } else {
-
+            return true;
           }
         },
         onClickNo: () => { }

@@ -19,6 +19,7 @@ export class PrensaComponent implements OnInit {
   @ViewChild('pauseScreen', { static: true }) pauseScreen: ElementRef;
   @ViewChild('loteItemScreen', { static: true }) loteItemScreen: ElementRef;
   @ViewChild('loteProduzidoScreen', { static: true }) loteProduzidoScreen: ElementRef;
+  @ViewChild('socioProduzidoScreen', { static: true }) socioProduzidoScreen: ElementRef;
   @ViewChild('startBtn', { static: true }) startBtn: ElementRef;
   @ViewChild('pausetBtn', { static: true }) pausetBtn: ElementRef;
   @ViewChild('stopBtn', { static: true }) stopBtn: ElementRef;
@@ -38,11 +39,13 @@ export class PrensaComponent implements OnInit {
   public fornecedores: any;
   public socios: any;
   public qualidades: any;
+  public prensas: any;
 
   //forms
   public headForm: any;
   public loteItemForm: any;
   public loteProduzido: any;
+  public socioProduzido: any;
 
   public lotItems = [];
   public lotBreaks = [];
@@ -60,7 +63,9 @@ export class PrensaComponent implements OnInit {
   public totalWeightProduction: number = 0;
   public unprocessed: number = 0;
   public verificaProdutoProduzido: boolean = false;
+  public verificaSocioProduzido: boolean = false;
   public produtoProduzidoPrensa: any;
+  public socioProduzidoPrensa: any = null;
 
   constructor(
     private toastService: ToastService,
@@ -109,6 +114,7 @@ export class PrensaComponent implements OnInit {
 
   ngOnInit(): void {
     const prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead'));
+
     this.getItems();
     if (prensaInfoHead) {
       this.lotHead = prensaInfoHead;
@@ -119,12 +125,18 @@ export class PrensaComponent implements OnInit {
         this.produtoProduzidoPrensa = prensaInfoHead['produtoProduzido'];
       }
 
-      if(prensaInfoHead['status']){
+      if ((prensaInfoHead['socioProduzido']) && (prensaInfoHead['socioProduzido'] !== '')){
+        this.verificaSocioProduzido = true;
+        this.socioProduzidoPrensa = prensaInfoHead.socioProduzido;
+      }
+
+      if (prensaInfoHead['status']){
         this.headForm.controls.lote.setValue(prensaInfoHead['currentLote']);
         this.headForm.controls.data.setValue(this.sharedVariableService.currentDate(prensaInfoHead['start']));
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(prensaInfoHead['start']));
         this.headForm.controls.situacao.setValue(prensaInfoHead['status']);
         this.headForm.controls.socio.setValue(prensaInfoHead.socio.nome);
+        this.headForm.controls.prensa.setValue(prensaInfoHead.numeroPrensa.numero + ' - ' + prensaInfoHead.numeroPrensa.descricao);
         this.statusProd = prensaInfoHead['status'];
         this.totalTimeBreak = prensaInfoHead['totalTimeBreak'];
         this.totalWeightProduction = prensaInfoHead['pesoProduzido'];
@@ -184,6 +196,11 @@ export class PrensaComponent implements OnInit {
     this.modalRef = this.modalService.show(this.loteProduzidoScreen);
   }
 
+  showSocioProduzidModal(): void {
+    this.loadSocioProduzido();
+    this.modalRef = this.modalService.show(this.socioProduzidoScreen);
+  }
+
   // Atualiza o resumo da produção
   updateProductionSummary(): void {
       this.totQtn = 0;
@@ -227,9 +244,7 @@ export class PrensaComponent implements OnInit {
     this.crudService.getItems('precificacao').subscribe(response => this.produtos = response);
     this.crudService.getItems('fornecedores').subscribe(response => this.fornecedores = response);
     this.crudService.getItems('qualidades').subscribe(response => this.qualidades = response);
-    // if (this.selectedFornecedor) {
-    //   this.productionService.getProdByFornecedor(String(this.selectedFornecedor['id'])).subscribe(response => this.produtos = response );
-    // }
+    this.crudService.getItems('prensas').subscribe(response => this.prensas = response);
   }
 
   // Salva Item do lote
@@ -244,9 +259,10 @@ export class PrensaComponent implements OnInit {
       lote: [null],
       data: [null],
       inicio: [null],
-      termino: [null],
+      prensa: [null],
       socio: [null],
       situacao: [null],
+      socioProduzido: [null]
     });
   }
 
@@ -257,7 +273,6 @@ export class PrensaComponent implements OnInit {
       fornecedor: [null],
       qualidade: [null],
       qtn: [null],
-      socio: [null],
     });
    }
 
@@ -268,6 +283,12 @@ export class PrensaComponent implements OnInit {
       fornecedor: [null],
       qualidade: [null],
       qtn: [null],
+    });
+   }
+
+   loadSocioProduzido(): void{
+    this.socioProduzido = this.formBuilder.group({
+      socio: [null],
     });
    }
 
@@ -287,6 +308,7 @@ export class PrensaComponent implements OnInit {
       this.printBtn.nativeElement.disabled = true;
       this.headForm.controls.situacao.setValue('Iniciada');
       this.headForm.get('socio').disable();
+      this.headForm.get('prensa').disable();
       this.pausetBtn.nativeElement.innerHTML = '<i class="fa fa-pause-circle"></i> Pausar Produção'
 
     } else if (this.statusProd === 'Pausada') {
@@ -297,13 +319,14 @@ export class PrensaComponent implements OnInit {
       this.stopBtn.nativeElement.disabled = true;
       this.printBtn.nativeElement.disabled = true;
       this.headForm.get('socio').disable();
+      this.headForm.get('prensa').disable();
       this.pausetBtn.nativeElement.innerHTML = '<i class="fa fa-play-circle"></i> Continuar Produção'
     }
   }
 
   // Inicia a Produção
   startProduction(): void {
-    if (this.headForm.get('socio').value) {
+    if (this.headForm.get('socio').value && this.headForm.get('prensa').value) {
       if (this.statusProd === '') {
         const nextPrensa = this.lastPrensa + 1;
         const numLote = new FormData();
@@ -319,6 +342,8 @@ export class PrensaComponent implements OnInit {
         this.headForm.controls.inicio.setValue(this.sharedVariableService.currentTime(new Date()));
         this.headForm.controls.situacao.setValue('Iniciada');
 
+        console.log(this.headForm.get('prensa').value)
+
         const prensaInfoHead = {
           currentLote: this.lastPrensa + 1,
           start: new Date(),
@@ -326,6 +351,7 @@ export class PrensaComponent implements OnInit {
           totalTimeBreak: null,
           status: 'Iniciada',
           socio: this.headForm.get('socio').value,
+          numeroPrensa: this.headForm.get('prensa').value,
           observacao: this.observation,
           pesoProduzido: 0,
           produtoProduzido: '',
@@ -342,7 +368,7 @@ export class PrensaComponent implements OnInit {
         this.toastService.addToast('Adicione pelo menos um item na produção para inicia-la', 'darkred');
       }
     } else {
-      this.toastService.addToast('Selecione um SÓCIO para iniciar', 'darkred');
+      this.toastService.addToast('Selecione um SÓCIO ou PRENSA para iniciar', 'darkred');
     }
   }
 
@@ -411,40 +437,65 @@ export class PrensaComponent implements OnInit {
     let prensaBreaks = JSON.parse(localStorage.getItem('prensaBreaks')); // Recupera as paradas da triagem
 
     prensaInfoHead.totalTimeProduction = this.sharedVariableService.difTime(prensaInfoHead.start, new Date());
+    prensaInfoHead.produtoProduzido.quantidade = this.totalWeightProduction;
     prensaInfoHead.end = new Date().toISOString();
 
     if (prensaInfoItems) { // Verifica se existe itens na produção
       if (prensaInfoItems.filter(item => item.edit === true).length === 0) { // Verifica se algum item ainda não foi fechado
-        let arrayUniqueByKey = [...new Map(prensaInfoItems.map(item => [item.product.id, item.product])).values()];
 
-        arrayUniqueByKey.forEach(item => {
-          item['quantidade'] = 0;
-          prensaInfoItems.forEach(element => {
-            // tslint:disable-next-line: max-line-length
-            if ((element.product.produto.id === item['produto'].id)  && (element.product.fornecedor.id === item['fornecedor'].id) && (element.product.qualidade.id === item['qualidade'].id)) {
-              item['quantidade'] += Number(element.qtn);
-              item['fornecedor_id'] = element.product.fornecedor.id;
-            }
+        if (prensaInfoHead.socioProduzido && prensaInfoHead.produtoProduzido) {
+          let arrayUniqueByKey = [...new Map(prensaInfoItems.map(item => [item.product.id, item.product])).values()];
+
+          arrayUniqueByKey.forEach(item => {
+            item['quantidade'] = 0;
+            prensaInfoItems.forEach(element => {
+              // tslint:disable-next-line: max-line-length
+              if ((element.product.produto.id === item['produto'].id)  && (element.product.fornecedor.id === item['fornecedor'].id) && (element.product.qualidade.id === item['qualidade'].id)) {
+                item['quantidade'] += Number(element.qtn);
+                item['fornecedor_id'] = element.product.fornecedor.id;
+              }
+            });
           });
-        });
 
-        // Faz a submissão da triagem no fomato da procedure
-        const prensa = this.productionService.stopTriagem(prensaInfoHead, prensaInfoItems, prensaBreaks, arrayUniqueByKey);
-        console.log(prensa)
-        this.productionService.createTriagem(prensa).subscribe(response => {
-          this.goTo('success');
-          // this.clearProduction();
-        }, err => {
-          this.toastService.addToast('Algo inesperado aconteceu, verifique sua conexão com a rede e tente novamente!', 'darkred');
-          console.log(err['message']);
-        });
-
+          // Faz a submissão da triagem no fomato da procedure
+          const prensa = this.productionService.stopPrensa(prensaInfoHead, prensaInfoItems, prensaBreaks, arrayUniqueByKey);
+          this.productionService.createTriagem(prensa).subscribe(response => {
+            this.goTo('success');
+            this.clearProduction();
+          }, err => {
+            this.toastService.addToast('Algo inesperado aconteceu, verifique sua conexão com a rede e tente novamente!', 'darkred');
+            console.log(err['message']);
+          });
+        } else {
+          this.toastService.addToast('Verifique se o PRODUTO produzido e/ou SÓCIO foram preenchidos para Finalizar', 'darkred');
+        }
       } else { // Caso ainda exista tambores com o valor em aberto, o usuario é notificado para que feche-os antes de dar andamento
         this.toastService.addToast('Feche todos os Tambores/Bags para Finalizar', 'darkred');
       }
     } else { // Notifica o usuario caso tente finalizar uma triagem sem itens
       this.toastService.addToast('Esta produção ainda não possui itens', 'darkred');
     }
+  }
+
+  clearProduction(): void {
+    this.lotItems = [];
+    localStorage.removeItem('prensaInfoHead');
+    localStorage.removeItem('prensaInfoItems');
+    localStorage.removeItem('prensaBreaks');
+
+    this.selectedFornecedor = false;
+    this.statusProd = '';
+    this.lotBreaks = [];
+    this.totalTimeProduction = '';
+    this.verificaSocioProduzido = false;
+    this.socioProduzidoPrensa = '';
+
+    this.totalWeightProduction  = 0;
+    this.unprocessed = 0;
+    this.verificaProdutoProduzido = false;
+    this.produtoProduzidoPrensa = '';
+
+    this.ngOnInit();
   }
 
   // Adiciona item no lote (Item escolhido no LoteItemModal)
@@ -459,12 +510,11 @@ export class PrensaComponent implements OnInit {
       let auxBag = [];
       this.lotItems.forEach(item => {
         auxBag.push(item.numBag);
-      })
+      });
 
       this.lotItems.push({
-        numBag: this.lotItems.length > 0 ? Math.max(...auxBag) + 1 : 1,
+        numBag: this.headForm.get('prensa').value,
         product: this.loteItemForm.get('product').value,
-        socio: this.loteItemForm.get('socio').value,
         qtn: 0,
         edit: true
       });
@@ -480,14 +530,42 @@ export class PrensaComponent implements OnInit {
 
   addProdutoProduzido(): void{
     let prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead'));
+    let prensaInfoItems = JSON.parse(localStorage.getItem('prensaInfoItems'));
 
     if (this.loteProduzido.get('product').value) {
-      prensaInfoHead['produtoProduzido'] = this.loteProduzido.get('product').value;
-      this.produtoProduzidoPrensa = this.loteProduzido.get('product').value;
-      this.loadLoteProduzido();
-      this.modalRef.hide();
+      const compara = prensaInfoItems.filter(resp => resp.product.id === this.loteProduzido.get('product').value.id)[0];
+      if (compara === undefined){
+        prensaInfoHead['produtoProduzido'] = this.loteProduzido.get('product').value;
+        this.produtoProduzidoPrensa = this.loteProduzido.get('product').value;
+
+        this.verificaProdutoProduzido = true;
+        this.produtoProduzidoPrensa = prensaInfoHead['produtoProduzido'];
+        
+        this.loadLoteProduzido();
+        this.modalRef.hide();
+      } else {
+        this.toastService.addToast('Este produto já esta na lista de materias primas', 'darkred');
+      }
     } else {
       this.toastService.addToast('Selecione o produto para continuar', 'darkred');
+    }
+
+    localStorage.setItem('prensaInfoHead', JSON.stringify(prensaInfoHead));
+  }
+
+  addSocioProduzido(): void{
+    let prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead'));
+
+    if (this.socioProduzido.get('socio').value) {
+      prensaInfoHead['socioProduzido'] = this.socioProduzido.get('socio').value;
+
+      this.verificaSocioProduzido = true;
+      this.socioProduzidoPrensa = prensaInfoHead.socioProduzido;
+
+      this.loadSocioProduzido();
+      this.modalRef.hide();
+    } else {
+      this.toastService.addToast('Selecione o sócio para continuar', 'darkred');
     }
 
     localStorage.setItem('prensaInfoHead', JSON.stringify(prensaInfoHead));
