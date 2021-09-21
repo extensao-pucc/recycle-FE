@@ -552,7 +552,7 @@ export class PrensaComponent implements OnInit {
 
     localStorage.setItem('prensaInfoHead', JSON.stringify(prensaInfoHead));
   }
-
+  
   addSocioProduzido(): void{
     let prensaInfoHead = JSON.parse(localStorage.getItem('prensaInfoHead'));
 

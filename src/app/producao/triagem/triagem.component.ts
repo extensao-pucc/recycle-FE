@@ -113,7 +113,7 @@ export class TriagemComponent implements OnInit {
       this.loadHeadForm();
       this.changeProductionStatus();
       this.crudService.getItems('parametros').subscribe(response =>
-        response.triagem != undefined ? this.lastTriagem = Number(response[0].triagem) : this.lastTriagem = 0
+        response.triagem !== undefined ? this.lastTriagem = Number(response[0].triagem) : this.lastTriagem = 0
       );
     }
     this.getItems();
