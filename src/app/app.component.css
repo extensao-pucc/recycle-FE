@@ -12,7 +12,6 @@
     justify-items: center; /* alinha horizontalmente */
     padding: 30px;
     height: calc(100vh - 80px);
-    /* border: 10px solid #F7F7F8; */
     overflow-x: auto;
     overflow-y: auto;
 }
@@ -21,7 +20,6 @@ label {
     white-space: nowrap;
 }
   
-
 /* Extra small devices (phones, 600px and down) */
 /* Small devices (portrait tablets and large phones, 600px and up) */
 /* Medium devices (landscape tablets, 768px and up) */

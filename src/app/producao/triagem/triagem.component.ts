@@ -250,10 +250,6 @@ export class TriagemComponent implements OnInit {
         // Reserva o proximo numero da triagem na tabela de parametros
         const nextTriagem = this.lastTriagem + 1;
         const parametros = new FormData();
-        parametros.append('numero_proxima_NFE', this.motivosDeParada.numero_proxima_NFE);
-        parametros.append('numero_proxima_NFS', this.motivosDeParada.numero_proxima_NFS);
-        parametros.append('prensa', this.motivosDeParada.prensa);
-        parametros.append('remanufatura', this.motivosDeParada.remanufatura);
         parametros.append('triagem', nextTriagem.toString());
         this.crudService.updateItem('parametros', parametros, '1').subscribe(response => {}, err => {});
 
