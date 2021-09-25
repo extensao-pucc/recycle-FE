@@ -11,14 +11,18 @@ import { UserService } from '../shared/user.service';
   styleUrls: ['./login.component.css']
 })
 export class LoginComponent implements OnInit {
-  
-  public  person: Usuario = new Usuario;
+  public showPassWord = false;
+  public  person: Usuario = new Usuario();
 
   constructor(private AuthService: AuthService) {}
- 
+
   ngOnInit(): void {}
 
   LogIn(): void {
     this.AuthService.Login(this.person);
   }
+
+  password(): void {
+    this.showPassWord = !this.showPassWord;
+}
 }
