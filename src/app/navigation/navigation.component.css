@@ -1,14 +1,18 @@
 /* =============== CSS RESPONSIVE NAVBAR ====================== */
 
-ul{
+ul {
     list-style: none;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-header{
+a:hover {
+    cursor: pointer;
+}
+
+header {
     position: sticky;
     top: 0px;
     background-color: #1A1E22;

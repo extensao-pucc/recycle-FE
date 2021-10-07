@@ -47,6 +47,9 @@
     cursor: pointer;
 }
 
+/* Filtros */
+/* ======= */
+
 tr button i {
     margin-right: 1px;
 }
