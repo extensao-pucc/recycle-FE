@@ -12,6 +12,8 @@ import { SnackbarModule } from 'ngx-snackbar';
 import { NgxMaskModule } from 'ngx-mask';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AvatarModule } from 'ngx-avatar';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { ChartsModule } from 'ng2-charts';
 
 // components
 import { AppRoutingModule } from './app-routing.module';
@@ -94,8 +96,10 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     SnackbarModule.forRoot(),
     NgxMaskModule.forRoot(),
     FormsModule,
+    NgxDaterangepickerMd.forRoot(),
     ReactiveFormsModule,
     NgSelectModule,
+    ChartsModule,
     AvatarModule.forRoot({
       colors: avatarColors
     }),
