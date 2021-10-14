@@ -17,7 +17,7 @@ import { from, interval, Subject } from 'rxjs';
 })
 
 export class TriagemComponent implements OnInit {
-  @ViewChild ('pauseScreen', { static: true }) pauseScreen: ElementRef;
+  @ViewChild('pauseScreen', { static: true }) pauseScreen: ElementRef;
   @ViewChild('loteItemScreen', { static: true }) loteItemScreen: ElementRef;
   @ViewChild('startBtn', { static: true }) startBtn: ElementRef;
   @ViewChild('pausetBtn', { static: true }) pausetBtn: ElementRef;

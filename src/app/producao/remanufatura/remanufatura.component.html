@@ -21,11 +21,11 @@
       <div class="form-group col-md-4">
             <label for="situacao">Situação</label>
             <input class="form-control" formControlName="situacao" type="text" name="situacao" [attr.disabled]="true">
-        </div>
+      </div>
   </div>
 
   <div class="form-row">                                                  
-      <div class="form-group col-md-12">
+      <div class="form-group col-md-6">
           <label for="socio">Sócio Responsável</label>
           <ng-select formControlName="socio" name="socio">
             <ng-component  *ngFor="let socio of socios" >
@@ -33,6 +33,15 @@
           </ng-component>
           </ng-select>
       </div>
+
+      <div class="form-group col-md-6">
+          <label for="fornecedor">Fornecedor</label>
+          <ng-select (change)="preChangeFornecedor($event)" formControlName="fornecedor" name="fornecedor" *ngIf="!selectedFornecedor">
+            <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor">{{ fornecedor.razao_social_nome }}</ng-option>
+          </ng-select>
+          <input id="fornecedor-remanufatura" type="text" *ngIf="selectedFornecedor" value="{{ selectedFornecedor.razao_social_nome }}" tooltip="Não pode ser alterado. Remova os produtos para liberar a edição deste campo" readonly>
+      </div>
+
   </div>
 </form>
   
@@ -44,10 +53,11 @@
     <button #printBtn type="button" class="btn btn-success btn-lg" (click)="showModal('Imprimir')"><i class="fa fa-print"></i>Imprimir Etiquetas</button>
 </div>
 
-<!-- Lote items -->
+<!-- Lote items Inicial -->
 <div class="table-list table-shadow">
+  <h3>Produtos Iniciais</h3>
   <table class="table table-hover">
-      <thead class="thead-dark">
+    <thead class="thead-dark">
         <tr>
           <th>Tambor/Bag</th>
           <th>Produto</th>
@@ -58,25 +68,25 @@
           <th>Término</th>
           <!-- <th>Status</th> -->
           <th class="text-right">
-            <button class="btn btn-success" (click)="showLoteItemModal()" tooltip="Adicionar item ao lote" [disabled]="statusProd != 'Iniciada'" #itemsLoteTable>
+            <button class="btn btn-success" (click)="showLoteItemModal('inicial')" tooltip="Adicionar item ao lote" [disabled]="statusProd != 'Iniciada'" #itemsLoteTable>
               <i class="fa fa-plus"></i>Adicionar</button>
           </th>
         </tr>
       </thead>
       <tbody #itemsLoteTable>
-        <tr *ngFor="let item of lotItems; let idx=index;">
+        <tr *ngFor="let item of lotItemsInicial; let idx=index;">
           <td class="numBag td-medio" id="numBag-{{idx}}">
             <span>{{ item.numBag }}</span>
           </td>
           <td class="product">
-            <span tooltip="Descrição: {{ item.product.descricao }}">{{ item.product.descricao }}</span>
+            <span tooltip="Descrição: {{ item.product.prod_desc }}">{{ item.product.prod_desc }}</span>
           </td>
           <td class="quality td-medio">
-            <span>{{ item.product.qualidade.nome }}</span>
+            <span>{{ item.product.qual_nome }}</span>
           </td>
           <td class="qtn td-medio">
             <span *ngIf="!item.edit">{{ item.qtn }} kg</span>
-            <input *ngIf="item?.edit" class="form-control" type="number" [value]="item.qtn" (keyup)="updateQtn(idx, $event.target.value)" [disabled]="statusProd != 'Iniciada'">
+            <input *ngIf="item?.edit" class="form-control" type="number" [value]="item.qtn" (keyup)="updateQtn('inicial', idx, $event.target.value)" [disabled]="statusProd != 'Iniciada'">
           </td>
           <td class="socio">
             <span tooltip="Nome completo: {{ item.socio.nome }}"> 
@@ -93,10 +103,70 @@
           <td class="time" *ngIf="!item.end && item.start"> Dia {{ currentTime | date:"dd" }} às {{ currentTime | date:"HH:mm:ss" }}</td>
           
           <td class="options">
-            <button *ngIf="item?.edit" class="btn btn-success mr-2" tooltip="Encerrar pesagem e salvar" (click)="saveLoteItem(idx)" [disabled]="statusProd != 'Iniciada'">
+            <button *ngIf="item?.edit" class="btn btn-success mr-2" tooltip="Encerrar pesagem e salvar" (click)="saveLoteItem('inicial', idx)" [disabled]="statusProd != 'Iniciada'">
               <i class="fa fa-save"></i>Fechar Tambor/Bag
             </button>
-            <button class="btn btn-danger" tooltip="Remover item do lote" (click)="removeLoteItem(item.numBag)" [disabled]="statusProd === 'Pausada'"><i class="fa fa-trash"></i>Remover</button>
+            <button class="btn btn-danger" tooltip="Remover item do lote" (click)="removeLoteItem('inicial', item.numBag)" [disabled]="statusProd === 'Pausada'"><i class="fa fa-trash"></i>Remover</button>
+          </td>
+        </tr>
+      </tbody>
+  </table>
+</div>
+
+<!-- Lote items Final -->
+<div class="table-list table-shadow">
+  <h3>Produtos Final</h3>
+  <table class="table table-hover">
+    <thead class="thead-dark">
+        <tr>
+          <th>Tambor/Bag</th>
+          <th>Produto</th>
+          <th>Qualidade</th>
+          <th>Quantidade</th>
+          <th>Sócio</th>
+          <th>Início</th>
+          <th>Término</th>
+          <!-- <th>Status</th> -->
+          <th class="text-right">
+            <button class="btn btn-success" (click)="showLoteItemModal('final')" tooltip="Adicionar item ao lote" [disabled]="statusProd != 'Iniciada'" #itemsLoteTable>
+              <i class="fa fa-plus"></i>Adicionar</button>
+          </th>
+        </tr>
+      </thead>
+      <tbody #itemsLoteTable>
+        <tr *ngFor="let item of lotItemsFinal; let idx=index;">
+          <td class="numBag td-medio" id="numBag-{{idx}}">
+            <span>{{ item.numBag }}</span>
+          </td>
+          <td class="product">
+            <span tooltip="Descrição: {{ item.product.prod_desc }}">{{ item.product.prod_desc }}</span>
+          </td>
+          <td class="quality td-medio">
+            <span>{{ item.product.qual_nome }}</span>
+          </td>
+          <td class="qtn td-medio">
+            <span *ngIf="!item.edit">{{ item.qtn }} kg</span>
+            <input *ngIf="item?.edit" class="form-control" type="number" [value]="item.qtn" (keyup)="updateQtn('final', idx, $event.target.value)" [disabled]="statusProd != 'Iniciada'">
+          </td>
+          <td class="socio">
+            <span tooltip="Nome completo: {{ item.socio.nome }}"> 
+              <ngx-avatar *ngIf="!item.socio.foto" name="{{ item.socio.nome }}" initialsSize="2" size="40" class="my-avatar"></ngx-avatar>
+              <img [src]="item.socio.foto" *ngIf="item.socio.foto" style="height: 40px; width:40px" 
+              class="rounded-circle z-depth-0 image-profile foto-socio" (click)="showImage(item.socio.foto)">
+              {{ item.socio.nome }}
+            </span>
+          </td>
+          <td class="time" *ngIf="item.start"> Dia {{ item.start | date:"dd" }} às {{ item.start | date:"HH:mm:ss" }}</td>
+          <td class="time" *ngIf="!item.start"></td>
+          <td class="time" *ngIf="!item.start"></td>
+          <td class="time" *ngIf="item.end && item.start"> Dia {{ item.end | date:"dd" }} às {{ item.end | date:"HH:mm:ss" }}</td>
+          <td class="time" *ngIf="!item.end && item.start"> Dia {{ currentTime | date:"dd" }} às {{ currentTime | date:"HH:mm:ss" }}</td>
+          
+          <td class="options">
+            <button *ngIf="item?.edit" class="btn btn-success mr-2" tooltip="Encerrar pesagem e salvar" (click)="saveLoteItem('final',idx)" [disabled]="statusProd != 'Iniciada'">
+              <i class="fa fa-save"></i>Fechar Tambor/Bag
+            </button>
+            <button class="btn btn-danger" tooltip="Remover item do lote" (click)="removeLoteItem('final', item.numBag)" [disabled]="statusProd === 'Pausada'"><i class="fa fa-trash"></i>Remover</button>
           </td>
         </tr>
       </tbody>
@@ -121,7 +191,7 @@
           <span *ngIf="totalTimeBreak && statusProd !== 'Pausada' ">{{totalTimeBreak.hours + ':' + totalTimeBreak.minutes + ':' + totalTimeBreak.seconds
             }}</span>
           <span *ngIf="!totalTimeBreak && statusProd !== 'Pausada'">Não ocorreram pausas</span>
-          <span *ngIf="statusProd === 'Pausada'">Remanufarura pausada</span>
+          <span *ngIf="statusProd === 'Pausada'">Remanufatura pausada</span>
         </td>
         <td>
           <span *ngIf="totalTimeProduction">{{totalTimeProduction.hours + ':' + totalTimeProduction.minutes + ':' + totalTimeProduction.seconds
@@ -140,11 +210,12 @@
     <tbody>
       <tr>
         <td>
-          <textarea class="form-control" name="observation" rows="3" [(ngModel)]="observation" (keyup)="updateObs()" placeholder="Digite suas observações sobre a remanufarura...."></textarea>
+          <textarea class="form-control" name="observation" rows="3" [(ngModel)]="observation" (keyup)="updateObs()" placeholder="Digite suas observações sobre a remanufatura...."></textarea>
         </td>
       </tr>
     </tbody>
 </table>
+
 
 <app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>
 
@@ -191,21 +262,21 @@
               <div class="form-group col">
                 <form [formGroup]="loteItemForm" *ngIf="loteItemForm">
                   <p for="product"> Produto:
-                    <i class="fa fa-question-circle" tooltip="Apenas produtos pertencentes ao fornecedor dessa remanufarura"></i>
+                    <i class="fa fa-question-circle" tooltip="Apenas produtos pertencentes ao fornecedor dessa remanufatura"></i>
                   </p>
                   <ng-select formControlName="product" name="product">
                     <ng-component *ngFor="let produto of produtos">
                       <ng-component *ngIf="!selectedFornecedor">  
                         <ng-option [value]="produto"> 
-                          <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
-                          <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span> 
+                          <span class="productOption productSelection selesctionItem"> {{produto.prod_desc}} </span> 
+                          <span class="productOption reasonSelection selesctionItem"> {{produto.qual_nome}} </span> 
                           <!-- <span class="productOption companySelection selesctionItem"> {{ produto.fornecedor.razao_social_nome }} </span> -->
                         </ng-option>
                       </ng-component>
 
                      <ng-option *ngIf="selectedFornecedor" [value]="produto">
-                      <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
-                      <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span>                       
+                      <span class="productOption productSelection selesctionItem"> {{produto.prod_desc}} </span> 
+                      <span class="productOption reasonSelection selesctionItem"> {{produto.qual_nome}} </span>                       
                      </ng-option>
                    </ng-component>
                   </ng-select>
@@ -223,7 +294,7 @@
                     </ng-component>
                   </ng-select>
                 </form>
-            </div>              
+            </div>               
           </div>
       </div>
       <div class="mt-3 text-center">
@@ -233,4 +304,21 @@
   </div>
 </ng-template>
 
+<!-- Modal de imagem -->
 <app-view-image [viewImage]="viewImage" *ngIf="showModalImage"></app-view-image>
+
+<!-- Sucesso em salvar remanufatura -->
+<div class="panel" id="success">
+  <div class="panel__content">
+    <div class="success-animation">
+      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+    </div>
+    <a>
+      Finalizado com sucesso.
+    </a>
+  </div>
+</div>
+
+<!-- <div>
+  <a (click)="teste()">Sucesso</a> 
+</div> -->
