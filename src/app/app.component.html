@@ -8,7 +8,7 @@
   <div class="navigation" *ngIf="viewNavBar">
     <app-navigation></app-navigation>
   </div>
-  <div class="main">
+  <div [ngClass]="viewNavBar ? 'main' : ' '">
     <router-outlet></router-outlet>
   </div>
 </div>  

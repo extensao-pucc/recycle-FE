@@ -11,7 +11,7 @@ import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 @Component({
   selector: 'app-transportadoras',
   templateUrl: './transportadoras.component.html',
-  styleUrls: ['./transportadoras.component.css', '../../app.component.css']
+  styleUrls: ['./transportadoras.component.css', '../../app.component.css', '../table.css']
 })
 export class TransportadorasComponent implements OnInit, IFormCanDeactivate {
   @ViewChild('eventForm') public eventListingForm: NgForm;

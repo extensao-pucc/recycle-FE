@@ -52,9 +52,8 @@
 	<input formControlName="id" hidden="true">
 
 	<!-- <div class="form-row"> -->
-
 	<div class="form-row">
-		<div class="form-group col-md-4">
+		<div class="form-group col-md-5">
 			<label>Produto: </label>
 			<ng-select *ngIf="produtos" formControlName="produto" name="produto">
 				<ng-option *ngFor="let produto of produtos" [value]="produto?.id">{{produto.descricao}}</ng-option>
@@ -74,6 +73,19 @@
 			</p>             
 		</div>
 
+	</div>
+	
+	<div class="form-row">
+		<div class="form-group col-md-4">
+		<label>Qualidade: </label>
+		<ng-select *ngIf="qualidades" formControlName="qualidade" name="qualidade">
+			<ng-option *ngFor="let qualidade of qualidades" [value]="qualidade?.id">{{qualidade.nome}}</ng-option>
+		</ng-select>
+		<p class="error-msg" *ngIf="itemForm.controls.qualidade.errors">
+			<i class="fa fa-times"></i> {{ itemForm.controls.qualidade.errors.msgErro }}
+		</p>             
+		</div>
+
 		<div class="form-group col-md-3">
 			<label>Preço de compra: </label>
 			<input class="form-control" prefix="R$ " mask="separator.2" type="text" maxlength="12" formControlName="preco_compra">
@@ -89,19 +101,6 @@
 			<i class="fa fa-times"></i> {{ itemForm.controls.preco_venda.errors.msgErro }}
 			</p>
 		</div>
-	</div>
-
-	<div class="form-row">
-		<div class="form-group col-md-4">
-		<label>Qualidade: </label>
-		<ng-select *ngIf="qualidades" formControlName="qualidade" name="qualidade">
-			<ng-option *ngFor="let qualidade of qualidades" [value]="qualidade?.id">{{qualidade.nome}}</ng-option>
-		</ng-select>
-		<p class="error-msg" *ngIf="itemForm.controls.qualidade.errors">
-			<i class="fa fa-times"></i> {{ itemForm.controls.qualidade.errors.msgErro }}
-		</p>             
-		</div>
-		
 	</div>
 
 	<div class="row align-items-end">

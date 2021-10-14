@@ -124,10 +124,13 @@ export class PrecificacaoComponent implements OnInit, IFormCanDeactivate {
           this.showForm = false;
           this.toastService.addToast('Atualizado com sucesso!');
         }, err => {
+          console.log(err)
           if (err.error.codigo){
-            this.itemForm.controls.codigo.errors = {'msgErro': 'Produto com esse código já existe'};
+            this.itemForm.controls.codigo.errors = {'msgErro': 'Precificacao com esse código já existe'};
             this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
-          }else {
+          } else if (err.error.non_field_errors){
+            this.toastService.addToast('Uma precificação com este conjunto de FORNECEDOR, QUALIDADE e PRODUTO já existe', 'darkred');
+          } else {
             this.toastService.addToast(err['message'], 'darkred');
           }
         });
@@ -142,7 +145,9 @@ export class PrecificacaoComponent implements OnInit, IFormCanDeactivate {
           if (err.error.codigo){
             this.itemForm.controls.codigo.errors = {'msgErro': 'Produto com esse código já existe'};
             this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
-          }else {
+          } else if (err.error.non_field_errors){
+            this.toastService.addToast('Uma precificação com este conjunto de FORNECEDOR, QUALIDADE e PRODUTO já existe', 'darkred');
+          } else {
             this.toastService.addToast(err['message'], 'darkred');
           }
         });
@@ -177,11 +182,11 @@ export class PrecificacaoComponent implements OnInit, IFormCanDeactivate {
     this.showYesNoMessage = true;
   }
 
-  sortTable(n) {
+  sortTable(n: any): any {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById("myTable");
+    table = document.getElementById('myTable');
     switching = true;
-    dir = "asc"; 
+    dir = 'asc';
 
     while (switching) {
       switching = false;
@@ -190,27 +195,24 @@ export class PrecificacaoComponent implements OnInit, IFormCanDeactivate {
       for (i = 2; i < (rows.length - 1); i++) {
         shouldSwitch = false;
 
-        x = rows[i].getElementsByTagName("TD")[n];
-        y = rows[i + 1].getElementsByTagName("TD")[n];
-        
+        x = rows[i].getElementsByTagName('TD')[n];
+        y = rows[i + 1].getElementsByTagName('TD')[n];
+
         var cmpX = isNaN(parseInt(x.innerHTML)) ? x.innerHTML.toLowerCase() : parseInt(x.innerHTML);
         var cmpY = isNaN(parseInt(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseInt(y.innerHTML);
         cmpX = (cmpX == '-') ? 0 : cmpX;
         cmpY = (cmpY == '-') ? 0 : cmpY;
 
-        console.log(cmpX)
-        console.log(cmpY)
-
-        if (dir == "asc") {
-            if (cmpX > cmpY) {
-                shouldSwitch= true;
-                break;
-            }
-        } else if (dir == "desc") {
-            if (cmpX < cmpY) {
-                shouldSwitch= true;
-                break;
-            }
+        if (dir == 'asc') {
+          if (cmpX > cmpY) {
+              shouldSwitch= true;
+              break;
+          }
+        } else if (dir == 'desc') {
+          if (cmpX < cmpY) {
+              shouldSwitch= true;
+              break;
+          }
         }
       }
 

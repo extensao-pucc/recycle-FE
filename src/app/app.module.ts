@@ -1,4 +1,3 @@
-import { HelloComponent } from './sidebar/hello.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
@@ -13,6 +12,8 @@ import { SnackbarModule } from 'ngx-snackbar';
 import { NgxMaskModule } from 'ngx-mask';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AvatarModule } from 'ngx-avatar';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { ChartsModule } from 'ng2-charts';
 
 // components
 import { AppRoutingModule } from './app-routing.module';
@@ -45,8 +46,11 @@ import { MateriasPrimasComponent } from './cadastros/materias-primas/materias-pr
 import { RelatoriosComponent } from './relatorios/relatorios.component';
 import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
 import { crudDeactivateGuard } from './guards/crud.deactivate.guard';
-import { SidebarComponent } from './sidebar/sidebar.component';
-import { SidebarDirective } from './sidebar/sidebar.directive';
+import { ConfigScreenComponent } from './config-screen/config-screen.component';
+import { ClientesComponent } from './cadastros/clientes/clientes.component';
+import { VendasComponent } from './financeiro/vendas/vendas.component';
+import { ContasComponent } from './financeiro/contas/contas.component';
+import { ModalContasComponent } from './financeiro/contas/modal-contas/modal-contas.component';
 
 const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
 @NgModule({
@@ -75,8 +79,11 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     MateriasPrimasComponent,
     RelatoriosComponent,
     HistoricoDeProdutoComponent,
-    SidebarComponent,
-    SidebarDirective,
+    ConfigScreenComponent,
+    ClientesComponent,
+    VendasComponent,
+    ContasComponent,
+    ModalContasComponent,
   ],
   imports: [
     BrowserModule,
@@ -89,8 +96,10 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     SnackbarModule.forRoot(),
     NgxMaskModule.forRoot(),
     FormsModule,
+    NgxDaterangepickerMd.forRoot(),
     ReactiveFormsModule,
     NgSelectModule,
+    ChartsModule,
     AvatarModule.forRoot({
       colors: avatarColors
     }),

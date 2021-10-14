@@ -34,7 +34,7 @@ export class AuthService {
         this.hiddenNavBar.emit(false);
       }
     }, err => {
-      this.toastService.addToast(err, 'darkred');
+      this.toastService.addToast('Usuario e/ou senha inválido', 'darkred');
       console.log('Deu erro nisso aqui: \n', err);
     });
   }

@@ -1,19 +1,30 @@
 .login-background {
-    background-image: url("../../assets/img/login-background.jpg");
+    /* background-image: url("../../assets/img/login-background.jpg"); */
+    background-image: url("../../assets/img/login-background.png");
     background-size: cover;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 80rem;
+    min-height: 100vh;
+    width: 100%;
+    padding: 0 2rem;
+    margin: 0 auto;
 }
 
 .center {
+    max-width: 28rem;
+    width: 100%;
     margin: auto;
-    width: 50%;
-    padding: 10px;
-    text-align: center;
-    background-color: #e1e1e1;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    max-width: 600px;
-    min-height: 600px;
-    max-height: 600px;
-    padding: 60px;
+    padding: 4rem 2.5rem;
+    border: none;
+    outline: none;
+    border-radius: 0.25rem;
+    background-color: #dddddd;
 }
 
 label {
@@ -23,8 +34,34 @@ label {
 }
 
 input {
-    height: 50px;
-    font-size:34px;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: inherit;
+    width: 100%;
+    height: auto;
+    padding: 0.75rem 1.25rem;
+    border: none;
+    outline: none;
+    border-radius: 2rem;
+    color: #121212;
+    background: #f1f5f9;
+    text-transform: unset;
+    text-rendering: optimizeLegibility;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+textarea:focus, input:focus {
+    box-shadow: 0 1px 3px -1px #28A745;
+  }
+
+.password {
+    float: right;
+    margin-right: 6px;
+    margin-top: -34px;
+    position: relative;
+    z-index: 2;
+    color: #6C8990;
 }
 
 img {
@@ -37,7 +74,19 @@ img {
 }
 
 button {
-    font-size: 25px;
-    color: black;
-    background-color: #54a900;
+    font-size: 1rem;
+    font-weight: 500;
+    line-height: inherit;
+    cursor: pointer;
+    min-width: 40%;
+    height: auto;
+    padding: 0.65rem 1.25rem;
+    border: none;
+    outline: none;
+    border-radius: 2rem;
+    color:  #ffffff;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    text-transform: capitalize;
+    text-rendering: optimizeLegibility;
 }

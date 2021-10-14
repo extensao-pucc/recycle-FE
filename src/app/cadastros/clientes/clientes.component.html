@@ -1,4 +1,4 @@
-<h2 class="d-flex justify-content-between">Fornecedores    
+<h2 class="d-flex justify-content-between">Clientes    
     <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"><i class="fa fa-plus"></i>Cadastrar</button>
 </h2>
 
@@ -11,7 +11,6 @@
         <th class="table-th" (click)="sortTable(0)">ID</th>
         <th class="table-th" (click)="sortTable(1)">CNPJ/CPF</th>
         <th class="table-th" (click)="sortTable(2)">Razão social/Nome</th>
-        <th class="table-th" (click)="sortTable(3)">IE</th>
         <th class="table-th" (click)="sortTable(4)">Endereço</th>
         <th class="table-th" (click)="sortTable(5)">Numero</th>
         <th class="table-th" (click)="sortTable(6)">Complemento</th>
@@ -29,7 +28,6 @@
         <td class="element-not-visible td-medio"><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
         <td class="element-not-visible"><input class="form-control" mask="CPF_CNPJ" type="search" placeholder="CPF/CNPJ" (input)="Search('CNPJ_CPF', $event.target.value)"></td>
         <td class="element-not-visible"><input class="form-control" type="search" placeholder="Razao/Nome" (input)="Search('razao_social_nome', $event.target.value)"></td>
-        <td class="element-not-visible"><input class="form-control" type="search" placeholder="Inscrição" (input)="Search('IE', $event.target.value)"></td>
         <td class="element-not-visible"><input class="form-control" type="search" placeholder="Endereço" (input)="Search('endereco', $event.target.value)"></td>
         <td class="element-not-visible td-medio"><input class="form-control" type="search" placeholder="Numero" (input)="Search('numero', $event.target.value)"></td>
         <td class="element-not-visible"><input class="form-control" type="search" placeholder="Complemento" (input)="Search('complemento', $event.target.value)"></td>
@@ -46,7 +44,6 @@
         <td data-column="ID" class="table-row-td td-medio">{{ item?.id }}</td>
         <td data-column="CPF/CNPJ" class="table-row-td">{{ item?.CNPJ_CPF | mask: 'CPF_CNPJ'}}</td>
         <td data-column="Razão/Nome" class="table-row-td element-not-visible">{{ item?.razao_social_nome }}</td>
-        <td data-column="IE" class="table-row-td">{{ item?.IE }}</td>
         <td data-column="Endereço" class="table-row-td element-not-visible">{{ item?.endereco }}</td>
         <td data-column="Numero" class="table-row-td td-medio element-not-visible">{{ item?.numero }}</td>
         <td data-column="Complemento" class="table-row-td element-not-visible">{{ item?.complemento }}</td>
@@ -104,14 +101,6 @@
       <input class="form-control" type="email" maxlength="100" formControlName="email" placeholder="Ex: exemplo@email.com">
       <p class="error-msg" *ngIf="itemForm.controls.email.errors">
         <i class="fa fa-times"></i> {{ itemForm.controls.email.errors.msgErro }}
-      </p>
-    </div>
-
-    <div class="form-group col-md-3">
-      <label>IE: <i class="fa fa-question-circle" tooltip="Inscrição Estadual"></i></label>
-      <input class="form-control" type="text" maxlength="100" formControlName="IE">
-      <p class="error-msg" *ngIf="itemForm.controls.IE.errors">
-        <i class="fa fa-times"></i> {{ itemForm.controls.IE.errors.msgErro }}
       </p>
     </div>
   </div>
@@ -201,7 +190,6 @@
   <p>Nenhum resultado foi encontrado.</p>
 </div>
 <!-- =============== -->
-
 
 
 <app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>

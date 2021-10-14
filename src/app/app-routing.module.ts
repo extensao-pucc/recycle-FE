@@ -1,12 +1,13 @@
-import { SidebarComponent } from './sidebar/sidebar.component';
+import { ContasComponent } from './financeiro/contas/contas.component';
 import { crudDeactivateGuard } from './guards/crud.deactivate.guard';
 import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, ExtraOptions } from '@angular/router';
 
 import { AuthGuard } from './guards/auth.guard';
 import { LoginComponent } from './login/login.component';
 import { HomeComponent } from './home/home.component';
+import { ClientesComponent } from './cadastros/clientes/clientes.component';
 import { CondicoesDePagamentoComponent } from './cadastros/condicoes-de-pagamento/condicoes-de-pagamento.component';
 import { FamiliasComponent } from './cadastros/familias/familias.component';
 import { FornecedoresComponent } from './cadastros/fornecedores/fornecedores.component';
@@ -18,16 +19,21 @@ import { PrensasComponent } from './cadastros/prensas/prensas.component';
 import { ProdutosComponent } from './cadastros/produtos/produtos.component';
 import { QualidadesComponent } from './cadastros/qualidades/qualidades.component';
 import { SociosComponent } from './cadastros/socios/socios.component';
+
+import { VendasComponent } from './financeiro/vendas/vendas.component';
+
 import { TransportadorasComponent } from './cadastros/transportadoras/transportadoras.component';
 import { TriagemComponent } from './producao/triagem/triagem.component';
 import { PrensaComponent } from './producao/prensa/prensa.component';
 import { RemanufaturaComponent } from './producao/remanufatura/remanufatura.component';
 import { RelatoriosComponent } from './relatorios/relatorios.component';
+import { ConfigScreenComponent } from './config-screen/config-screen.component';
 import { from } from 'rxjs';
 
 
 const routes: Routes = [
   { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+  { path: 'clientes', component: ClientesComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'condicoesDePagamento', component: CondicoesDePagamentoComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'familias', component: FamiliasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'fornecedores', component: FornecedoresComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
@@ -39,14 +45,16 @@ const routes: Routes = [
   { path: 'produtos', component: ProdutosComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'qualidades', component: QualidadesComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'socios', component: SociosComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'vendas', component: VendasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'transportadoras', component: TransportadorasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'triagem', component: TriagemComponent, canActivate: [AuthGuard] },
   { path: 'prensa', component: PrensaComponent, canActivate: [AuthGuard] },
   { path: 'remanufatura', component: RemanufaturaComponent, canActivate: [AuthGuard] },
+  { path: 'contas', component: ContasComponent, canActivate: [AuthGuard] },
   { path: 'relatorios', component: RelatoriosComponent, canActivate: [AuthGuard] },
   { path: 'historicoDeProduto', component: HistoricoDeProdutoComponent, canActivate: [AuthGuard] }, 
+  { path: 'configiScreen', component: ConfigScreenComponent, canActivate: [AuthGuard] }, 
   { path: 'login', component: LoginComponent},
-  { path: 'sidebar', component: SidebarComponent},
   { path: '**', redirectTo: '' }
 ];
 
