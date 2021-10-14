@@ -1,6 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ModalContas } from '../contas/modal-contas/modal-contas.component';
-// import { DateRange } from 'igniteui-angular';
+import { Moment } from 'moment';
+import * as moment from 'moment';
+
+import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
+import { Label } from 'ng2-charts';
 
 @Component({
   selector: 'app-contas',
@@ -10,17 +14,71 @@ import { ModalContas } from '../contas/modal-contas/modal-contas.component';
 export class ContasComponent implements OnInit {
   public modalContas: ModalContas = new ModalContas();
   public showModalContas: boolean;
+  // Data ranger variables ==================================================================
+  public selected: {
+    startDate: Moment,
+    endDate: Moment
+  };
+
+  ranges: any = {
+    'Hoje': [moment(), moment()],
+    'Ultimos 7 dias': [moment().subtract(6, 'days'), moment()],
+    'Ultimos 30 dias': [moment().subtract(29, 'days'), moment()],
+    'Este mês': [moment().startOf('month'), moment().endOf('month')],
+    'Mês anterior': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+    'Este ano': [moment().startOf('year'), moment().endOf('year')]
+  };
+  // ========================================================================================
+
+  // Chart variables ==================================================================
+  // Bar
+  public barChartOptions: ChartOptions = {
+    responsive: true,
+    // We use these empty structures as placeholders for dynamic theming.
+    scales: { xAxes: [{}], yAxes: [{}] },
+    plugins: {
+      datalabels: {
+        anchor: 'end',
+        align: 'end',
+      }
+    }
+  };
+
+  public barChartLabels: Label[] = ['Jnaeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  public barChartType: ChartType = 'bar';
+  public barChartLegend = true;
+  // public barChartPlugins = [pluginDataLabels];
+
+  public barChartData: ChartDataSets[] = [
+    { data: [650, 590, 800, 810, 560, 550, 400, 1000, 720, 50, 350, 478], label: 'A pagar' },
+    { data: [280, 480, 400, 190, 860, 270, 900, 1200, 810, 610, 350, 520], label: 'A receber' }
+  ];
+
+  // events
+  public chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
+    console.log(event, active);
+  }
+
+  public chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
+    console.log(event, active);
+  }
+
+  public randomize(): void {
+    this.barChartType = this.barChartType === 'bar' ? 'line' : 'bar';
+  }
+  // ========================================================================================
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
-  sortTable(n: any): any {
+  sortTable(n: any): any { // MEtodo utilizado para ordenar a tabela ao clicar no titulo da coluna
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById('myTable');
+    table = document.getElementById('myTable'); // Cria uma variavel para a tabela
     switching = true;
-    dir = 'asc'; 
+    dir = 'asc'; // Define o tipo de ordenação
 
     while (switching) {
       switching = false;

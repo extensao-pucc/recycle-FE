@@ -8,15 +8,15 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./navigation.component.css']
 })
 export class NavigationComponent implements OnInit {
+
+  constructor(private UserService: UserService) {}
   private storegePersonObject = JSON.parse(localStorage.getItem('person'));
-  public person = { 
+  public person = {
     nome: this.storegePersonObject['nome'],
-    foto: (this.storegePersonObject.foto) ?`${environment.apiUrl}${this.storegePersonObject.foto}` : null, 
+    foto: (this.storegePersonObject.foto) ? `${environment.apiUrl}${this.storegePersonObject.foto}` : null,
   };
 
-  constructor(private UserService: UserService) {
-    // console.log(this.storegePersonObject);
-  }
+  navbarOpen = false;
 
   ngOnInit(): void {
   }
@@ -25,11 +25,7 @@ export class NavigationComponent implements OnInit {
     this.UserService.onLogout();
   }
 
-  navbarOpen = false;
-
-  toggleNavbar() {
+  toggleNavbar(): any {
     this.navbarOpen = !this.navbarOpen;
   }
-
-  
 }
