@@ -108,49 +108,20 @@
                       </td>
                       <td></td>
                     </tr>
-                    <tr>
-                        <td>Salario de funcionario</td>
-                        <td>07/08/2021</td>
-                        <td>A pagar</td>
-                        <td>R$ 7.000,00</td>
-                        <td><span class="status green"></span> Pago </td>
-                        <td>
-                          <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                          <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr class="table-row--red">
-                      <td>Recebimento de Fornecedor</td>
-                      <td>08/10/2021</td>
-                      <td>A receber</td>
-                      <td>R$ 500,00</td>
-                      <td><span class="status red"></span> Pendente</td>
+
+                    <tr *ngFor="let item of tempItemsList" [ngClass]="item.situacao === 'Pendente' ? 'table-row--red' : ''">
+                      <td>{{ item?.descricao }}</td>
+                      <td>{{ reverseStringDate(item?.data) | mask: 'd0/M0/0000' }}</td>
+                      <td>{{ item.tipo }}</td>
+                      <td>R$ {{ item.valor }}</td>
                       <td>
-                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                        <button type="button" class="btn btn-light shadow-button">Pagar</button>            
+                        <span [ngClass]="item.situacao === 'Pendente' ? 'status red' : 'status green'"></span>
+                        {{ item.situacao }}
                       </td>
-                    </tr>
-                    <tr>
-                      <td>Conta de luz</td>
-                      <td>21/08/2021</td>
-                      <td>A pagar</td>
-                      <td>R$ 900,00</td>
-                      <td><span class="status green"></span>Pago</td>
                       <td>
                         <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
                         <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Conta de agua</td>
-                      <td>21/06/2021</td>
-                      <td>A receber</td>
-                      <td>R$ 1.100,00</td>
-                      <td><span class="status green"></span>Recebido</td>
-                      <td>
-                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
+                        <button type="button" class="btn btn-light shadow-button" *ngIf="item.situacao === 'Pendente'">Pagar</button>            
                       </td>
                     </tr>
                   </tbody>
@@ -198,26 +169,22 @@
                       </td>
                       <td></td>
                     </tr>
-                    <tr class="table-row--red">
-                      <td>Recebimento de Fornecedor</td>
-                      <td>08/10/2021</td>
-                      <td>R$ 500,00</td>
-                      <td><span class="status red"></span> Pendente</td>
-                      <td>
-                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                        <button type="button" class="btn btn-light shadow-button">Pagar</button>            
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Conta de agua</td>
-                      <td>21/06/2021</td>
-                      <td>R$ 1.100,00</td>
-                      <td><span class="status green"></span>Recebido</td>
-                      <td>
-                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                      </td>
+
+                    <tr *ngFor="let item of tempItemsList" [ngClass]="item.situacao === 'Pendente' ? 'table-row--red' : ''">
+                      <ng-container *ngIf="item.tipo === 'A receber'">
+                        <td>{{ item?.descricao }}</td>
+                        <td>{{ reverseStringDate(item?.data) | mask: 'd0/M0/0000' }}</td>
+                        <td>R$ {{ item.valor }}</td>
+                        <td>
+                          <span [ngClass]="item.situacao === 'Pendente' ? 'status red' : 'status green'"></span>
+                          {{ item.situacao }}
+                        </td>
+                        <td>
+                          <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
+                          <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
+                          <button type="button" class="btn btn-light shadow-button" *ngIf="item.situacao === 'Pendente'">Pagar</button>            
+                        </td>
+                      </ng-container>
                     </tr>
                   </tbody>
                 </table>
@@ -263,26 +230,22 @@
                         </ng-select>
                       </td>
                     </tr>
-                    <tr>
-                        <td>Salario de funcionario</td>
-                        <td>07/08/2021</td>
-                        <td>R$ 7.000,00</td>
-                        <td><span class="status green"></span> Pago </td>
+
+                    <tr *ngFor="let item of tempItemsList" [ngClass]="item.situacao === 'Pendente' ? 'table-row--red' : ''">
+                      <ng-container *ngIf="item.tipo === 'A pagar'">
+                        <td>{{ item?.descricao }}</td>
+                        <td>{{ reverseStringDate(item?.data) | mask: 'd0/M0/0000' }}</td>
+                        <td>R$ {{ item.valor }}</td>
+                        <td>
+                          <span [ngClass]="item.situacao === 'Pendente' ? 'status red' : 'status green'"></span>
+                          {{ item.situacao }}
+                        </td>
                         <td>
                           <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
                           <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
+                          <button type="button" class="btn btn-light shadow-button" *ngIf="item.situacao === 'Pendente'">Pagar</button>            
                         </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                      <td>Conta de luz</td>
-                      <td>21/08/2021</td>
-                      <td>A pagar</td>
-                      <td><span class="status green"></span>Pago</td>
-                      <td>
-                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                      </td>
+                      </ng-container>
                     </tr>
                   </tbody>
                 </table>

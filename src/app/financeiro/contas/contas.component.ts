@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FinanceiroService } from '../financeiro.service';
 import { ModalContas } from '../contas/modal-contas/modal-contas.component';
 import { Moment } from 'moment';
 import * as moment from 'moment';
+import * as _ from 'lodash';
 
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
@@ -14,6 +16,10 @@ import { Label } from 'ng2-charts';
 export class ContasComponent implements OnInit {
   public modalContas: ModalContas = new ModalContas();
   public showModalContas: boolean;
+
+  public contas: any;
+  public tempItemsList: any;
+
   // Data ranger variables ==================================================================
   public selected: {
     startDate: Moment,
@@ -69,12 +75,30 @@ export class ContasComponent implements OnInit {
   }
   // ========================================================================================
 
-  constructor() { }
+  constructor(
+    private financeiroService: FinanceiroService,
+  ) { }
 
   ngOnInit(): void {
+    this.getItems();
   }
 
-  sortTable(n: any): any { // MEtodo utilizado para ordenar a tabela ao clicar no titulo da coluna
+  getItems(): any{
+    this.financeiroService.getItems('contas').subscribe(response => {
+      this.contas = response;
+      this.tempItemsList = _.clone(this.contas);
+    });
+  }
+
+  // Inverte data no padrão americano para o brasileiro
+  reverseStringDate(str): any{
+    if (str){
+      return str.split('-').reverse().join('-'); // reverse yyyy/mm/dd to dd/mm/yyyy
+    }
+  }
+
+  // MEtodo utilizado para ordenar a tabela ao clicar no titulo da coluna
+  sortTable(n: any): any { 
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById('myTable'); // Cria uma variavel para a tabela
     switching = true;
