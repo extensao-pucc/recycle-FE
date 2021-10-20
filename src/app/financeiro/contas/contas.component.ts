@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FinanceiroService } from '../financeiro.service';
 import { ModalContas } from '../contas/modal-contas/modal-contas.component';
+import { ToastService } from 'src/app/shared/toast/toast.service';
+import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
+
 import { Moment } from 'moment';
 import * as moment from 'moment';
 import * as _ from 'lodash';
@@ -16,6 +19,10 @@ import { Label } from 'ng2-charts';
 export class ContasComponent implements OnInit {
   public modalContas: ModalContas = new ModalContas();
   public showModalContas: boolean;
+
+  public yesNoMessage: YesNoMessage = new YesNoMessage();
+  public showYesNoMessage: boolean;
+  public showForm = false;
 
   public contas: any;
   public tempItemsList: any;
@@ -77,6 +84,7 @@ export class ContasComponent implements OnInit {
 
   constructor(
     private financeiroService: FinanceiroService,
+    private toastService: ToastService,
   ) { }
 
   ngOnInit(): void {
@@ -90,6 +98,18 @@ export class ContasComponent implements OnInit {
     });
   }
 
+  // Apaga contas do banco
+  deleteItem(id): void {
+    this.financeiroService.deleteItem('contas', id).subscribe(response => {
+      this.getItems();
+      this.toastService.addToast('Deletado com sucesso');
+    }, err => {
+      this.toastService.addToast(err['message'], 'darkred');
+    });
+
+    this.showForm = false;
+  }
+
   // Inverte data no padrão americano para o brasileiro
   reverseStringDate(str): any{
     if (str){
@@ -97,56 +117,7 @@ export class ContasComponent implements OnInit {
     }
   }
 
-  // MEtodo utilizado para ordenar a tabela ao clicar no titulo da coluna
-  sortTable(n: any): any { 
-    var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
-    table = document.getElementById('myTable'); // Cria uma variavel para a tabela
-    switching = true;
-    dir = 'asc'; // Define o tipo de ordenação
-
-    while (switching) {
-      switching = false;
-      rows = table.rows;
-
-      for (i = 2; i < (rows.length - 1); i++) {
-        shouldSwitch = false;
-
-        x = rows[i].getElementsByTagName('TD')[n];
-        y = rows[i + 1].getElementsByTagName('TD')[n];
-
-        // tslint:disable-next-line: radix
-        let cmpX = isNaN(parseInt(x.innerHTML)) ? x.innerHTML.toLowerCase() : parseInt(x.innerHTML);
-        // tslint:disable-next-line: radix
-        let cmpY = isNaN(parseInt(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseInt(y.innerHTML);
-        cmpX = (cmpX == '-') ? 0 : cmpX;
-        cmpY = (cmpY == '-') ? 0 : cmpY;
-
-        if (dir == 'asc') {
-            if (cmpX > cmpY) {
-                shouldSwitch = true;
-                break;
-            }
-        } else if (dir == 'desc') {
-            if (cmpX < cmpY) {
-                shouldSwitch = true;
-                break;
-            }
-        }
-      }
-
-      if (shouldSwitch) {
-        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
-        switching = true;
-        switchcount ++;
-      } else {
-        if (switchcount == 0 && dir == 'asc') {
-            dir = 'desc';
-            switching = true;
-        }
-      }
-    }
-  }
-
+  // Adicionar uma nova conta
   showModal(title: string, items: any): void {
     this.modalContas = {
       title,
@@ -162,4 +133,75 @@ export class ContasComponent implements OnInit {
     };
     this.showModalContas = true;
   }
+
+  // Confirmação
+  showModalYesNo(title: string, items: any): void {
+    this.yesNoMessage = {
+      title,
+      mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
+      items: [items.descricao],
+      fontAwesomeClass: 'fa-ban',
+      action: {
+        onClickYes: () => {
+          if (title === 'Deletar') {
+            this.deleteItem(items.id);
+          } else if (title === 'Pagar') {
+            console.log('Cliquei no Pagar');
+          }
+        },
+        onClickNo: () => { }
+      }
+    };
+    this.showYesNoMessage = true;
+  }
+
+  // Metodo utilizado para ordenar a tabela ao clicar no titulo da coluna
+  sortTable(n: any, idTable: any): any {
+    let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+    table = document.getElementById(idTable); // Recupera a tabela no html
+    switching = true;
+    dir = 'asc';
+
+    while (switching) {
+      switching = false;
+      rows = table.rows; // recupera as linhas
+
+      for (i = 2; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+
+        x = rows[i].getElementsByTagName('TD')[n];
+        y = rows[i + 1].getElementsByTagName('TD')[n];
+
+        // se conseguir converter para numero, o comparativo é feito numericamente, caso contrario apenas deixa as letras minusculas
+        let cmpX = isNaN(parseFloat(x.innerHTML)) ? x.innerHTML.toLowerCase() : parseFloat(x.innerHTML);
+        let cmpY = isNaN(parseFloat(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseFloat(y.innerHTML);
+        cmpX = (cmpX === '-') ? 0 : cmpX;
+        cmpY = (cmpY === '-') ? 0 : cmpY;
+
+        if (dir === 'asc') {
+            if (cmpX > cmpY) {
+                shouldSwitch = true;
+                break;
+            }
+        } else if (dir === 'desc') {
+            if (cmpX < cmpY) {
+                shouldSwitch = true;
+                break;
+            }
+        }
+      }
+
+      if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount ++;
+      } else {
+        if (switchcount === 0 && dir === 'asc') {
+            dir = 'desc';
+            switching = true;
+        }
+      }
+    }
+  }
+
 }

@@ -32,7 +32,7 @@ export class ClientesComponent implements OnInit, IFormCanDeactivate {
     private formBuilder: FormBuilder,
     private formValidatorService: FormValidatorService,
     private sharedVariableService: SharedVariableService,
-  ) {this.states = this.sharedVariableService.getStates()}
+  ) { this.states = this.sharedVariableService.getStates(); }
 
   ngOnInit(): void {
     this.getItems();
