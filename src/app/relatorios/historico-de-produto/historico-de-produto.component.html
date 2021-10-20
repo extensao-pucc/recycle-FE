@@ -9,13 +9,13 @@
             <div class="form-group col-md-6"> 
                 <label for="produto">Produto</label>                   
                 <ng-select formControlName="product" name="product">
-                    <ng-component *ngFor="let produto of produtos">
+                    <!-- <ng-component *ngFor="let produto of produtos">
                         <ng-option [value]="produto"> 
                             <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
                             <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span> 
                             <span class="productOption companySelection selesctionItem"> {{ produto.fornecedor.razao_social_nome }} </span>
                         </ng-option>
-                        </ng-component>
+                        </ng-component> -->
                     </ng-select>
             </div>  
 
@@ -52,29 +52,29 @@
         <tr>
             <th scope="col"> <i class="fa fa-calendar"></i>Dia</th>
             <th scope="col"> <i class="fa fa-history"></i>Horário</th>
-            <th scope="col"> <i class="fa fa-male"></i>Responsável</th>                    
             <th scope="col"> <i class="fa fa-list"></i>E/S</th>
             <th scope="col"> <i class="fa fa-map-pin" tooltip="Origem da movimentação"></i>Tipo</th>
             <th scope="col"> <i class="fa fa-exclamation-circle" tooltip="Código da origem da movimentação"></i>Número</th>
+            <th scope="col"> <i class="fa fa-question-circle" tooltip="Saldo após a movimentação"></i>Saldo Anterior</th>
             <th scope="col"> <i class="fa fa-question-circle" tooltip="Quantidade que foi movimentada"></i>Movimentado </th>
             <th scope="col"> <i class="fa fa-question-circle" tooltip="Saldo após a movimentação"></i>Saldo </th>
         </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let movimentacao of movimentacoes.reverse()">
-                <td > {{ sharedVariableService.currentDate(movimentacao.data) }} </td>
-                <td> {{ sharedVariableService.currentTime(movimentacao.data) }} </td>
-                <td>Marcos Andrade Silvio de Oliveira </td>
+            <tr *ngFor="let movimentacao of movimentacoes">
+                <td >{{ sharedVariableService.currentDate(movimentacao.data) }}</td>
+                <td>{{ sharedVariableService.currentTime(movimentacao.data) }}</td>
                 <td> 
-                    <div class="saida" *ngIf="movimentacao.entrada_saida === 'S' "> Saida </div>
-                    <div class="entrada" *ngIf="movimentacao.entrada_saida === 'E'"> Entrada </div>
+                    <div class="saida" *ngIf="movimentacao.entrada_saida === 'S' ">Saida</div>
+                    <div class="entrada" *ngIf="movimentacao.entrada_saida === 'E'">Entrada</div>
                 </td>
                 <td>{{ movimentacao.tipo }}</td>
                 <td>{{ movimentacao.numero_tipo }}</td>
+                <td>{{ movimentacao.saldo_anterior }}</td>
                 <td>
-                    <div class="inOutProduct outProduct" *ngIf="movimentacao.entrada_saida === 'S' ">{{ movimentacao.qtd_movimentadang }}</div>
-                    <div class="inOutProduct inProduct" *ngIf="movimentacao.entrada_saida === 'E' ">{{ movimentacao.qtd_movimentada }}</div>
-                </td>
+                    <div *ngIf="movimentacao.entrada_saida === 'S'">- {{ movimentacao.dif }}</div>
+                    <div *ngIf="movimentacao.entrada_saida === 'E'">+ {{ movimentacao.dif }}</div>
+                    </td>
                 <td>{{ movimentacao.saldo_atual }}</td>
             </tr>
         </tbody>

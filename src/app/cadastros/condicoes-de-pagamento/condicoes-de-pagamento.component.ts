@@ -10,7 +10,7 @@ import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 @Component({
   selector: 'app-condicoes-de-pagamento',
   templateUrl: './condicoes-de-pagamento.component.html',
-  styleUrls: ['./condicoes-de-pagamento.component.css', '../../app.component.css']
+  styleUrls: ['./condicoes-de-pagamento.component.css', '../../app.component.css', '../table.css']
 })
 
 export class CondicoesDePagamentoComponent implements OnInit, IFormCanDeactivate {
@@ -185,9 +185,6 @@ export class CondicoesDePagamentoComponent implements OnInit, IFormCanDeactivate
         var cmpY = isNaN(parseInt(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseInt(y.innerHTML);
         cmpX = (cmpX == '-') ? 0 : cmpX;
         cmpY = (cmpY == '-') ? 0 : cmpY;
-
-        console.log(cmpX)
-        console.log(cmpY)
 
         if (dir == "asc") {
             if (cmpX > cmpY) {

@@ -12,6 +12,8 @@ import { SnackbarModule } from 'ngx-snackbar';
 import { NgxMaskModule } from 'ngx-mask';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { AvatarModule } from 'ngx-avatar';
+import { NgxDaterangepickerMd } from 'ngx-daterangepicker-material';
+import { ChartsModule } from 'ng2-charts';
 
 // components
 import { AppRoutingModule } from './app-routing.module';
@@ -24,12 +26,12 @@ import { FamiliasComponent } from './cadastros/familias/familias.component';
 import { FornecedoresComponent } from './cadastros/fornecedores/fornecedores.component';
 import { MotivosDeParadaComponent } from './cadastros/motivos-de-parada/motivos-de-parada.component';
 import { NaturezaDasOperacoesComponent } from './cadastros/natureza-das-operacoes/natureza-das-operacoes.component';
+import { PrecificacaoComponent } from './cadastros/precificacao/precificacao.component';
 import { PrensasComponent } from './cadastros/prensas/prensas.component';
 import { ProdutosComponent } from './cadastros/produtos/produtos.component';
 import { QualidadesComponent } from './cadastros/qualidades/qualidades.component';
 import { SociosComponent } from './cadastros/socios/socios.component';
 import { TransportadorasComponent } from './cadastros/transportadoras/transportadoras.component';
-import { UnidadesDeMedidaComponent } from './cadastros/unidades-de-medida/unidades-de-medida.component';
 import { YesNoMessageComponent } from './shared/yes-no-message/yes-no-message.component';
 import { TriagemComponent } from './producao/triagem/triagem.component';
 
@@ -44,6 +46,11 @@ import { MateriasPrimasComponent } from './cadastros/materias-primas/materias-pr
 import { RelatoriosComponent } from './relatorios/relatorios.component';
 import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
 import { crudDeactivateGuard } from './guards/crud.deactivate.guard';
+import { ConfigScreenComponent } from './config-screen/config-screen.component';
+import { ClientesComponent } from './cadastros/clientes/clientes.component';
+import { VendasComponent } from './financeiro/vendas/vendas.component';
+import { ContasComponent } from './financeiro/contas/contas.component';
+import { ModalContasComponent } from './financeiro/contas/modal-contas/modal-contas.component';
 
 const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
 @NgModule({
@@ -57,12 +64,12 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     FornecedoresComponent,
     MotivosDeParadaComponent,
     NaturezaDasOperacoesComponent,
+    PrecificacaoComponent,
     PrensasComponent,
     ProdutosComponent,
     QualidadesComponent,
     SociosComponent,
     TransportadorasComponent,
-    UnidadesDeMedidaComponent,
     YesNoMessageComponent,
     TriagemComponent,
     PesquisaCepComponent,
@@ -71,7 +78,12 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     RemanufaturaComponent,
     MateriasPrimasComponent,
     RelatoriosComponent,
-    HistoricoDeProdutoComponent
+    HistoricoDeProdutoComponent,
+    ConfigScreenComponent,
+    ClientesComponent,
+    VendasComponent,
+    ContasComponent,
+    ModalContasComponent,
   ],
   imports: [
     BrowserModule,
@@ -84,11 +96,13 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     SnackbarModule.forRoot(),
     NgxMaskModule.forRoot(),
     FormsModule,
+    NgxDaterangepickerMd.forRoot(),
     ReactiveFormsModule,
     NgSelectModule,
+    ChartsModule,
     AvatarModule.forRoot({
       colors: avatarColors
-    })
+    }),
   ],
   providers: [AuthGuard, AuthService, crudDeactivateGuard],
   bootstrap: [AppComponent]

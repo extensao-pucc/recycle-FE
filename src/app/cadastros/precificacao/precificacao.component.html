@@ -1,0 +1,127 @@
+<h2 class="d-flex justify-content-between">Precificação    
+    <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"><i class="fa fa-plus"></i>Cadastrar</button>
+</h2>
+  
+<!-- Tabela -->
+<div class="table-list">
+	<table id="myTable" class="table table-hover" *ngIf="!showForm">
+		<thead class="thead-dark">
+			<tr>
+				<th scope="col" (click)="sortTable(0)">ID</th>
+				<th scope="col" (click)="sortTable(1)">Produto</th>
+				<th scope="col" (click)="sortTable(2)">Fornecedor</th>
+				<th scope="col" (click)="sortTable(3)">Qualidade</th>
+				<th scope="col" (click)="sortTable(4)">Preço de compra</th>
+				<th scope="col" (click)="sortTable(5)">Preço de venda</th>
+				<th scope="col">Opções</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr>
+				<td class="td-medio"><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>
+				<td><input class="form-control" type="search" placeholder="Produto" (input)="Search('produto.descricao', $event.target.value)"></td>
+				<td><input class="form-control" type="search" placeholder="Fornecedor" (input)="Search('fornecedor.razao_social_nome', $event.target.value)"></td>
+				<td><input class="form-control" type="search" placeholder="Qualidade" (input)="Search('qualidade.nome', $event.target.value)"></td>
+				<td class="td-medio"><input class="form-control" type="search" placeholder="Compra" (input)="Search('preco_compra', $event.target.value)"></td>
+				<td class="td-medio"><input class="form-control" type="search" placeholder="Venda" (input)="Search('preco_venda', $event.target.value)"></td>
+				<th></th>
+			</tr>
+
+			<tr *ngFor="let item of tempItemsList">
+				<td class="td-medio">{{ item?.id }}</td>
+				<td>{{ item?.produto.descricao }}</td>
+				<td>{{ item?.fornecedor.razao_social_nome }}</td>
+				<td>{{ item?.qualidade.nome }}</td>
+				<td>R$ {{ item?.preco_compra | mask: 'separator.2'}}</td>
+				<td>R$ {{ item?.preco_venda | mask: 'separator.2'}}</td>
+				<th>
+					<button type="button" class="btn btn-info mr-2" (click)="updateCloneItem(item, 'update')"><i class="fa fa-edit"></i>Editar</button>
+					<button type="button" class="btn btn-danger mr-2" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
+					<button type="button" class="btn btn-light shadow-button" (click)="updateCloneItem(item, 'clone')" tooltip="Duplique seu produto e edite apenas o que precisar"><i class="fa fa-clone"></i>Duplicar</button>
+				</th>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- ========== -->
+  
+<!-- Formulario -->
+<hr>
+<form [formGroup]="itemForm" *ngIf="itemForm && showForm">
+	<input formControlName="id" hidden="true">
+
+	<!-- <div class="form-row"> -->
+	<div class="form-row">
+		<div class="form-group col-md-5">
+			<label>Produto: </label>
+			<ng-select *ngIf="produtos" formControlName="produto" name="produto">
+				<ng-option *ngFor="let produto of produtos" [value]="produto?.id">{{produto.descricao}}</ng-option>
+			</ng-select>
+			<p class="error-msg" *ngIf="itemForm.controls.produto.errors">
+				<i class="fa fa-times"></i> {{ itemForm.controls.produto.errors.msgErro }}
+			</p> 
+		</div>
+
+		<div class="form-group col-md-6">
+			<label>Fornecedor: </label>
+			<ng-select *ngIf="fornecedores" formControlName="fornecedor" name="fornecedor">
+			<ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor?.id">{{fornecedor.CNPJ_CPF}} - {{fornecedor.razao_social_nome}}</ng-option>
+			</ng-select>
+			<p class="error-msg" *ngIf="itemForm.controls.fornecedor.errors">
+			<i class="fa fa-times"></i> {{ itemForm.controls.fornecedor.errors.msgErro }}
+			</p>             
+		</div>
+
+	</div>
+	
+	<div class="form-row">
+		<div class="form-group col-md-4">
+		<label>Qualidade: </label>
+		<ng-select *ngIf="qualidades" formControlName="qualidade" name="qualidade">
+			<ng-option *ngFor="let qualidade of qualidades" [value]="qualidade?.id">{{qualidade.nome}}</ng-option>
+		</ng-select>
+		<p class="error-msg" *ngIf="itemForm.controls.qualidade.errors">
+			<i class="fa fa-times"></i> {{ itemForm.controls.qualidade.errors.msgErro }}
+		</p>             
+		</div>
+
+		<div class="form-group col-md-3">
+			<label>Preço de compra: </label>
+			<input class="form-control" prefix="R$ " mask="separator.2" type="text" maxlength="12" formControlName="preco_compra">
+			<p class="error-msg" *ngIf="itemForm.controls.preco_compra.errors">
+			<i class="fa fa-times"></i> {{ itemForm.controls.preco_compra.errors.msgErro }}
+			</p>
+		</div>
+		
+		<div class="form-group col-md-3">
+			<label>Preço de venda: </label>
+			<input class="form-control" prefix="R$ " mask="separator.2" type="text" maxlength="12" formControlName="preco_venda">
+			<p class="error-msg" *ngIf="itemForm.controls.preco_venda.errors">
+			<i class="fa fa-times"></i> {{ itemForm.controls.preco_venda.errors.msgErro }}
+			</p>
+		</div>
+	</div>
+
+	<div class="row align-items-end">
+		<hr>
+
+		<div>
+		<button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i class="fa fa-save"></i>Salvar</button>
+		<button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i class="fa fa-window-close"></i>Cancelar</button>
+		<button class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value" (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
+		</div>
+	</div>
+			
+</form>
+<!-- ========== -->
+  
+  <!-- Lista sem dados -->
+  <div *ngIf="!showForm && !tempItemsList?.length"  class="alert alert-info " role="alert">
+    <h4 class="alert-heading ">Opa !</h4>
+    <p>Nenhum resultado foi encontrado.</p>
+  </div>
+  <!-- =============== -->
+  
+  <app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>
+  

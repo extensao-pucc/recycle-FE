@@ -1,16 +1,21 @@
-<div class="h-100 d-flex login-background">
-    <div class="center">
-        <img src="../../assets/img/cooperlinia.png" class="img-logo" alt="logo">
-
-        <div class="form-group">
-            <label for="user">Matrícula</label>
-            <input type="text" class="form-control" id="user" name="user" [(ngModel)]="person.matricula">
+<div class="login-background">
+    <div class="container">
+        <div class="center">
+            <img src="../../assets/img/cooperlinia.png" class="img-logo" alt="logo">
+    
+            <div class="form-group">
+                <!-- <label for="user">Matrícula</label> -->
+                <input type="text" class="form-control" id="user" name="user" [(ngModel)]="person.matricula" placeholder="Matrícula" autofocus>
+            </div>
+            <div class="form-group">
+                <!-- <label for="password">Senha</label> -->
+                <input [type]="showPassWord ? 'text' : 'password'" class="form-control" id="password" name="password" [(ngModel)]="person.senha" placeholder="Senha">
+                <span class="password">
+                    <i class="fa fa-eye" *ngIf="showPassWord" (click)="password()"></i>
+                    <i class="fa fa-eye-slash" *ngIf="!showPassWord" (click)="password()"></i>
+                </span>
+            </div>  
+            <button type="button" class="btn btn-success btn-lg btn-block" (click)="LogIn()">Entrar</button>
         </div>
-        <div class="form-group">
-            <label for="password">Senha</label>
-            <input type="password" class="form-control" id="password" name="password" [(ngModel)]="person.senha">
-        </div>
-
-        <button type="button" class="btn btn-success btn-lg btn-block" (click)="LogIn()">Entrar</button>
     </div>
 </div>  

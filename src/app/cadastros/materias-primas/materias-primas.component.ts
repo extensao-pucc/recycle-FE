@@ -10,7 +10,7 @@ import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 @Component({
   selector: 'app-materias-primas',
   templateUrl: './materias-primas.component.html',
-  styleUrls: ['./materias-primas.component.css', '../../app.component.css']
+  styleUrls: ['./materias-primas.component.css', '../../app.component.css', '../table.css']
 })
 export class MateriasPrimasComponent implements OnInit, IFormCanDeactivate {
   @ViewChild('eventForm') public eventListingForm: NgForm;
@@ -183,9 +183,6 @@ export class MateriasPrimasComponent implements OnInit, IFormCanDeactivate {
         var cmpY = isNaN(parseInt(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseInt(y.innerHTML);
         cmpX = (cmpX == '-') ? 0 : cmpX;
         cmpY = (cmpY == '-') ? 0 : cmpY;
-
-        console.log(cmpX)
-        console.log(cmpY)
 
         if (dir == "asc") {
             if (cmpX > cmpY) {

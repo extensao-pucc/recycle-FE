@@ -10,7 +10,7 @@ import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 @Component({
   selector: 'app-prensas',
   templateUrl: './prensas.component.html',
-  styleUrls: ['./prensas.component.css', '../../app.component.css']
+  styleUrls: ['./prensas.component.css', '../../app.component.css', '../table.css']
 })
 export class PrensasComponent implements OnInit,IFormCanDeactivate {
   @ViewChild('eventForm') public eventListingForm: NgForm;
@@ -182,9 +182,6 @@ export class PrensasComponent implements OnInit,IFormCanDeactivate {
         var cmpY = isNaN(parseInt(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseInt(y.innerHTML);
         cmpX = (cmpX == '-') ? 0 : cmpX;
         cmpY = (cmpY == '-') ? 0 : cmpY;
-
-        console.log(cmpX)
-        console.log(cmpY)
 
         if (dir == "asc") {
             if (cmpX > cmpY) {

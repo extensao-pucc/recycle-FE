@@ -21,7 +21,7 @@
       <div class="form-group col-md-4">
             <label for="situacao">Situação</label>
             <input class="form-control" formControlName="situacao" type="text" name="situacao" [attr.disabled]="true">
-        </div>
+      </div>
   </div>
 
   <div class="form-row">                                                  
@@ -36,7 +36,7 @@
 
       <div class="form-group col-md-4">
           <label for="fornecedor">Fornecedor</label>
-          <ng-select formControlName="fornecedor" name="fornecedor" *ngIf="!selectedFornecedor">
+          <ng-select (change)="preChangeFornecedor($event)" formControlName="fornecedor" name="fornecedor" *ngIf="!selectedFornecedor">
             <ng-option *ngFor="let fornecedor of fornecedores" [value]="fornecedor">{{ fornecedor.razao_social_nome }}</ng-option>
           </ng-select>
           <input id="fornecedor-triagem" type="text" *ngIf="selectedFornecedor" value="{{ selectedFornecedor.razao_social_nome }}" tooltip="Não pode ser alterado. Remova os produtos para liberar a edição deste campo" readonly>
@@ -73,7 +73,7 @@
           <th>Término</th>
           <!-- <th>Status</th> -->
           <th class="text-right">
-            <button class="btn btn-success" (click)="showLoteItemModal()" tooltip="Adicionar item ao lote" #itemsLoteTable>
+            <button class="btn btn-success" (click)="showLoteItemModal()" tooltip="Adicionar item ao lote" [disabled]="statusProd != 'Iniciada'" #itemsLoteTable>
               <i class="fa fa-plus"></i>Adicionar</button>
           </th>
         </tr>
@@ -84,10 +84,10 @@
             <span>{{ item.numBag }}</span>
           </td>
           <td class="product">
-            <span tooltip="Descrição: {{ item.product.descricao }}">{{ item.product.descricao }}</span>
+            <span tooltip="Descrição: {{ item.product.prod_desc }}">{{ item.product.prod_desc }}</span>
           </td>
           <td class="quality td-medio">
-            <span>{{ item.product.qualidade.nome }}</span>
+            <span>{{ item.product.qual_nome }}</span>
           </td>
           <td class="qtn td-medio">
             <span *ngIf="!item.edit">{{ item.qtn }} kg</span>
@@ -229,15 +229,15 @@
                     <ng-component *ngFor="let produto of produtos">
                       <ng-component *ngIf="!selectedFornecedor">  
                         <ng-option [value]="produto"> 
-                          <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
-                          <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span> 
-                          <span class="productOption companySelection selesctionItem"> {{ produto.fornecedor.razao_social_nome }} </span>
+                          <span class="productOption productSelection selesctionItem"> {{produto.prod_desc}} </span> 
+                          <span class="productOption reasonSelection selesctionItem"> {{produto.qual_nome}} </span> 
+                          <!-- <span class="productOption companySelection selesctionItem"> {{ produto.fornecedor.razao_social_nome }} </span> -->
                         </ng-option>
                       </ng-component>
 
-                     <ng-option *ngIf="selectedFornecedor && selectedFornecedor.id === produto.fornecedor.id" [value]="produto">
-                      <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
-                      <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span>                       
+                     <ng-option *ngIf="selectedFornecedor" [value]="produto">
+                      <span class="productOption productSelection selesctionItem"> {{produto.prod_desc}} </span> 
+                      <span class="productOption reasonSelection selesctionItem"> {{produto.qual_nome}} </span>                       
                      </ng-option>
                    </ng-component>
                   </ng-select>
@@ -265,4 +265,21 @@
   </div>
 </ng-template>
 
+<!-- Modal de imagem -->
 <app-view-image [viewImage]="viewImage" *ngIf="showModalImage"></app-view-image>
+
+<!-- Sucesso em salvar triagem -->
+<div class="panel" id="success">
+  <div class="panel__content">
+    <div class="success-animation">
+      <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52"><circle class="checkmark__circle" cx="26" cy="26" r="25" fill="none" /><path class="checkmark__check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8" /></svg>
+    </div>
+    <a>
+      Finalizado com sucesso.
+    </a>
+  </div>
+</div>
+
+<!-- <div>
+  <a (click)="teste()">Sucesso</a> 
+</div> -->

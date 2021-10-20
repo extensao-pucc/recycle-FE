@@ -1,0 +1,50 @@
+<ng-template #defaulModalConta>
+    <div class="modal-header modal-header text-dark">
+        <h4 class="modal-title pull-left"><i class="fa fa-briefcase"></i>Nova conta</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="yesNo(false)">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="itemForm" #eventForm="ngForm">            
+            <label>Descrição: </label>
+            <input class="form-control" type="text" maxlength="100" formControlName="descricao">
+            <p class="error-msg" *ngIf="itemForm.controls.descricao.errors">
+              <i class="fa fa-times"></i> {{ itemForm.controls.descricao.errors.msgErro }}
+            </p>
+            
+            <label>Data: </label>
+            <input class="form-control" type="date" formControlName="data">
+            <p class="error-msg" *ngIf="itemForm.controls.data.errors">
+              <i class="fa fa-times"></i> {{ itemForm.controls.data.errors.msgErro }}
+            </p>
+            
+            <label>Tipo: </label>
+            <ng-select formControlName="tipo">
+              <ng-option *ngFor="let type of types" [value]="type.status">{{ type.status }}</ng-option>
+            </ng-select>
+            <p class="error-msg" *ngIf="itemForm.controls.tipo.errors">
+              <i class="fa fa-times"></i> {{ itemForm.controls.tipo.errors.msgErro }}
+            </p>   
+
+            <label>Valor: </label>
+            <input class="form-control" prefix="R$ " mask="separator.2" type="text" maxlength="12" formControlName="valor">
+            <p class="error-msg" *ngIf="itemForm.controls.valor.errors">
+              <i class="fa fa-times"></i> {{ itemForm.controls.valor.errors.msgErro }}
+            </p>
+
+            <label>Situação: </label>
+            <ng-select formControlName="situacao">
+              <ng-option *ngFor="let situation of situations" [value]="situation.status">{{ situation.status }}</ng-option>
+            </ng-select>
+            <p class="error-msg" *ngIf="itemForm.controls.situacao.errors">
+              <i class="fa fa-times"></i> {{ itemForm.controls.situacao.errors.msgErro }}
+            </p>  
+          </form>
+
+        <div class="mt-3 text-right">
+            <button type="button" class="btn btn btn-warning mr-2 yesNoButton" id="btn-no" (click)="yesNo(false)"><i class="fa fa-window-close"></i>Cancelar</button>
+            <button type="button" class="btn btn btn-success mr-2 yesNoButton" id="btn-yes" (click)="createUpdateItem()"><i class="fa fa-save"></i>Salvar</button>
+        </div>
+    </div>
+</ng-template>

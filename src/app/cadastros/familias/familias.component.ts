@@ -11,7 +11,7 @@ import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 @Component({
   selector: 'app-familias',
   templateUrl: './familias.component.html',
-  styleUrls: ['./familias.component.css', '../../app.component.css']
+  styleUrls: ['./familias.component.css', '../../app.component.css', '../table.css']
 })
 export class FamiliasComponent implements OnInit, IFormCanDeactivate {
   @ViewChild('eventForm') public eventListingForm: NgForm;
@@ -184,9 +184,6 @@ export class FamiliasComponent implements OnInit, IFormCanDeactivate {
         var cmpY = isNaN(parseInt(y.innerHTML)) ? y.innerHTML.toLowerCase() : parseInt(y.innerHTML);
         cmpX = (cmpX == '-') ? 0 : cmpX;
         cmpY = (cmpY == '-') ? 0 : cmpY;
-
-        console.log(cmpX)
-        console.log(cmpY)
 
         if (dir == "asc") {
             if (cmpX > cmpY) {

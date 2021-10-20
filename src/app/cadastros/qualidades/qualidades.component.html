@@ -4,28 +4,29 @@
 
 <!-- Tabela -->
 <div class="table-list">
-  <table id="myTable" class="table table-hover" *ngIf="!showForm">
-      <thead class="thead-dark">
+  <input class="form-control not-visible small-input-search" maxlength="100" type="search" placeholder="Busque pelo nome" (input)="Search('nome', $event.target.value)" *ngIf="!showForm">
+  <table id="myTable" class="table" *ngIf="!showForm">
+      <thead class="table-thead thead-dark">
         <tr>
-          <th scope="col" (click)="sortTable(0)">ID</th>
-          <th scope="col" (click)="sortTable(1)">Nome</th>
-          <th scope="col">Opções</th>
+          <th class="table-th" (click)="sortTable(0)">ID</th>
+          <th class="table-th" (click)="sortTable(1)">Nome</th>
+          <th class="table-th">Opções</th>
         </tr>
       </thead>
-
-      <tbody>
+      <tbody class="table__tbody">
         <tr>
-          <td><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
-          <td><input class="form-control" type="search" placeholder="Nome" (input)="Search('nome', $event.target.value)"></td>
-          <th></th>
+          <td class="element-not-visible"><input class="form-control" type="search" placeholder="ID" (input)="Search('id', $event.target.value)"></td>               
+          <td class="element-not-visible"><input class="form-control" type="search" placeholder="Nome" (input)="Search('nome', $event.target.value)"></td>
+          <th class="element-not-visible"></th>
         </tr>
 
-        <tr *ngFor="let item of tempItemsList">
-          <td>{{ item?.id }}</td>
-          <td>{{ item?.nome }}</td>
-          <th>
-              <button type="button" class="btn btn-info mr-2" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
-              <button type="button" class="btn btn-danger" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
+        <tr class="table-row" *ngFor="let item of tempItemsList">
+          <td data-column="ID" class="table-row-td">{{ item?.id }}</td>
+          <td data-column="Nome" class="table-row-td">{{ item?.nome }}</td>
+          <td class="table-row-td not-visible"><button type="button" class="btn btn-info shadow-button" (click)="updateItem(item)"><i class="fa fa-chevron-circle-down">Visualizar</i></button></td>
+          <th class="table-row-td element-not-visible">
+              <button type="button" class="btn btn-info mr-2 element-not-visible" (click)="updateItem(item)"><i class="fa fa-edit"></i>Editar</button>
+              <button type="button" class="btn btn-danger element-not-visible" (click)="showModal('Deletar', item)"><i class="fa fa-trash"></i>Remover</button>
           </th>
         </tr>
       </tbody>

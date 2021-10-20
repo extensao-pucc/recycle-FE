@@ -1,0 +1,70 @@
+<div class="container light-style flex-grow-1 container-p-y">
+  <h2 class="py-3 mb-4">
+    Configurações do sistema
+  </h2>
+
+<div class="card overflow-hidden">
+  <div class="row no-gutters row-bordered row-border-light">
+    <div class="col-md-3 pt-0">
+      <div class="list-group list-group-flush">
+        <a class="list-group-item list-group-item-action active">Gerais</a>
+        <a class="list-group-item list-group-item-action">Configurações de Perfil</a>
+        <a class="list-group-item list-group-item-action">Prefis de acesso ao sistema</a>
+        <a class="list-group-item list-group-item-action">Usuarios bloqueados</a>
+        <a class="list-group-item list-group-item-action">Temas</a>
+      </div>
+    </div>
+
+    <div class="col-md-9">
+      <div class="tab-content">
+        <div class="tab-pane fade active show" id="account-general">
+
+          <div class="card-body media align-items-center">
+            <img src="../../assets/img/cooperlinia-logo.png" alt="" class="d-block logo-image">
+            <div class="media-body ml-4">
+              <label class="btn btn-outline-primary">
+                Escolher novo logo
+                <input type="file" class="logo-settings-fileinput">
+              </label> 
+            </div>
+          </div>
+          <hr class="border-light m-0">
+
+          <div class="card-body">
+            <div class="form-group">
+              <label class="form-label">Unidade de medida padrão:</label>
+              <select name="select" class="form-control">
+                <option value="valor1">TON (Tonelada)</option>
+                <option value="valor2" selected>KG (Quilograma)</option>
+                <option value="valor3">G (Grama)</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Última NFE:</label>
+              <input type="text" class="form-control" placeholder="Exemplo: 1111">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Última NFS:</label>
+              <input type="text" class="form-control mb-1" placeholder="Exemplo: 2222">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Última lote:</label>
+              <input type="text" class="form-control" placeholder="Exemplo: 3333">
+            </div>
+          </div>
+
+        </div>         
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-warning mt-3 text-center">
+    <i class="fa fa-exclamation-triangle"></i>Salve sua alterações antes de sair desta tela.<br>
+    <a> Informações que não foram salvas, serão descartadas.</a>
+  </div>
+
+  <div class="text-right mt-3">
+    <button type="button" class="btn btn-primary">Salvar alterações</button>&nbsp;
+    <button type="button" class="btn btn-default">Cancelar</button>
+  </div>
+</div>

@@ -15,6 +15,10 @@ export class CrudService {
     return this.http.get(`${environment.apiUrl}/${component}`);
   }
 
+  getItemById(component: string, id: number): Observable<any> {
+    return this.http.get(`${environment.apiUrl}/${component}/${id}/`);
+  }
+
   deleteItem(component: string, id: number): Observable<any> {
     return this.http.delete(`${environment.apiUrl}/${component}/${id}/`);
   }

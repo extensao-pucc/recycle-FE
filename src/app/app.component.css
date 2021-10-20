@@ -11,7 +11,7 @@
     align-items: center; /* alinha verticalmente */
     justify-items: center; /* alinha horizontalmente */
     padding: 30px;
-    border: 10px solid #F7F7F8;
+    height: calc(100vh - 80px);
     overflow-x: auto;
     overflow-y: auto;
 }
@@ -20,7 +20,6 @@ label {
     white-space: nowrap;
 }
   
-
 /* Extra small devices (phones, 600px and down) */
 /* Small devices (portrait tablets and large phones, 600px and up) */
 /* Medium devices (landscape tablets, 768px and up) */
@@ -52,20 +51,6 @@ label {
     .navigation {
         height: 80px;
     }
-}
-
-.background {
-    height: 100%;
-    width: 100%;
-    background-color: #E2EEF2;
-}
-
-.center {
-    margin: 0px;
-    background-color: white;
-    box-shadow: 0 4px 10px 0 rgb(0 0 0 / 20%);
-    height: 100%;
-    padding: 50px;
 }
 
 form {
