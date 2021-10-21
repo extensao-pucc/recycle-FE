@@ -1,3 +1,4 @@
+import { ContasComponent } from './../contas.component';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { Component, Input, ElementRef, ViewChild, OnChanges, OnInit } from '@angular/core';
 import { FinanceiroService } from '../../financeiro.service';
@@ -12,7 +13,6 @@ import { ToastService } from 'src/app/shared/toast/toast.service';
 })
 
 export class ModalContasComponent implements OnChanges, OnInit {
-
   @Input() modalContas: any;
   @ViewChild('defaulModalConta', { static: true }) defaultModalConta: ElementRef;
   public modalRef: any;
@@ -22,6 +22,7 @@ export class ModalContasComponent implements OnChanges, OnInit {
   public types: any;
 
   constructor(
+    private contasComponent: ContasComponent,
     private financeiroService: FinanceiroService,
     private formBuilder: FormBuilder,
     private formValidatorService: FormValidatorService,
@@ -30,11 +31,20 @@ export class ModalContasComponent implements OnChanges, OnInit {
   ) {
     this.situations = this.financeiroService.getSituation();
     this.types = this.financeiroService.getType();
-   }
-
-  ngOnInit(): void {
-    this.loadForm();
   }
+
+  ngOnChanges(): void {
+    setTimeout(() => this.modalRef = this.modalService.show(this.defaultModalConta));
+    this.loadForm();
+
+    // Verifica se esta sendo passado um item, se sim aciona o metodo para
+    // preencher as informações
+    if (this.modalContas.items[0] !== 'item'){
+      this.updateItem(this.modalContas.items[0]);
+    }
+  }
+
+  ngOnInit(): void {}
 
   loadForm(): void {
     this.itemForm = this.formBuilder.group({
@@ -47,23 +57,21 @@ export class ModalContasComponent implements OnChanges, OnInit {
     });
   }
 
-  ngOnChanges(): void {
-    setTimeout(() => this.modalRef = this.modalService.show(this.defaultModalConta));
-  }
-
   createUpdateItem(): any{
     const formValues = this.itemForm.value;
     if (this.itemForm.status === 'VALID'){
-      if (formValues.id) {
+      if (formValues.id) { // Se tiver id, entra no fluxo de atualização
         this.financeiroService.updateItem('contas', formValues, formValues.id).subscribe(response => {
+          this.contasComponent.getItems();
           this.loadForm();
           this.yesNo(true);
           this.toastService.addToast('Atualizado com sucesso!');
         }, err => {
           this.toastService.addToast(err['message'], 'darkred');
         });
-      } else {
+      } else { // Caso contrario, cadastra um novo item
         this.financeiroService.createItem('contas', formValues).subscribe(response => {
+          this.contasComponent.getItems();
           this.loadForm();
           this.yesNo(true);
           this.toastService.addToast('Cadastrado com sucesso');
@@ -74,6 +82,15 @@ export class ModalContasComponent implements OnChanges, OnInit {
       } else {
       this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
+  }
+
+  updateItem(item: any): void {
+    this.itemForm.controls.id.setValue(item.id);
+    this.itemForm.controls.descricao.setValue(item.descricao);
+    this.itemForm.controls.data.setValue(item.data);
+    this.itemForm.controls.tipo.setValue(item.tipo);
+    this.itemForm.controls.valor.setValue(item.valor);
+    this.itemForm.controls.situacao.setValue(item.situacao);
   }
 
   yesNo(yesNo: boolean): void {
@@ -88,8 +105,6 @@ export class ModalContasComponent implements OnChanges, OnInit {
 }
 
 export class ModalContas {
-  title: string;
-  mainText: string;
   items: string[];
   fontAwesomeClass?: string;
   action: {

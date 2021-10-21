@@ -326,7 +326,7 @@ export class SociosComponent implements OnInit, IFormCanDeactivate {
     this.itemForm.controls.CEP.setValue(item.cep);
   }
 
-  sortTable(n) {
+  sortTable(n): any {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("myTable");
     switching = true;

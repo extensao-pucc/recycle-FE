@@ -45,7 +45,7 @@ export class ClientesComponent implements OnInit, IFormCanDeactivate {
         return confirm('Tem certeza que deseja sair ? Suas alterações serão perdidas');
       }
     }
-    return true
+    return true;
   }
 
   loadForm(): void {

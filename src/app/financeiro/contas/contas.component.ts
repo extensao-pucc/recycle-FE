@@ -27,6 +27,9 @@ export class ContasComponent implements OnInit {
   public contas: any;
   public tempItemsList: any;
 
+  public situations: any;
+  public types: any;
+
   // Data ranger variables ==================================================================
   public selected: {
     startDate: Moment,
@@ -85,7 +88,10 @@ export class ContasComponent implements OnInit {
   constructor(
     private financeiroService: FinanceiroService,
     private toastService: ToastService,
-  ) { }
+  ) {
+    this.situations = this.financeiroService.getSituation();
+    this.types = this.financeiroService.getType();
+  }
 
   ngOnInit(): void {
     this.getItems();
@@ -117,11 +123,28 @@ export class ContasComponent implements OnInit {
     }
   }
 
+  // =========== Busca personalizada ====================================================
+  Search(campo: any, valor: any): any{
+    this.tempItemsList = _.clone(this.tempItemsList);
+
+    if (campo === 'valor'){
+      valor = valor.replace('R$', '');
+    }
+
+    if (valor !== ''){
+      this.tempItemsList = this.contas.filter(res => {
+        return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
+                valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
+              ));
+      });
+    } else if (valor === '') {
+      this.ngOnInit();
+    }
+  }
+
   // Adicionar uma nova conta
-  showModal(title: string, items: any): void {
+  showModal(items: any): void {
     this.modalContas = {
-      title,
-      mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
       items: [items],
       fontAwesomeClass: 'fa-ban',
       action: {

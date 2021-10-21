@@ -37,10 +37,6 @@
     cursor: pointer;
 }
 
-/* Filtros */
-.filters .initial, .filters .final {
-}
-
 .filters label {
     padding-top: 7px;
     margin-bottom: 0;
@@ -158,6 +154,7 @@ table th:hover{
 
 table th:last-child:hover{
     color: #000;
+    cursor: default;
 }
 
 thead tr {

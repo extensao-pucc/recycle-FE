@@ -53,26 +53,26 @@
 <!-- Tabelas ===================== -->
 <div class="tabset">
   <!-- Todas -->
-  <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
+  <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked (change)="getItems()">
   <label for="tab1">Todas as contas</label>
 
   <!-- A receber -->
-  <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
+  <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier" (change)="getItems()">
   <label for="tab2">A receber</label>
 
   <!-- A pagar -->
-  <input type="radio" name="tabset" id="tab3" aria-controls="dunkles">
+  <input type="radio" name="tabset" id="tab3" aria-controls="dunkles" (change)="getItems()">
   <label for="tab3">A pagar</label>
   
   <div class="tab-panels">
-    <!-- Todas -->
+    <!-- Todas - Tabela -->
     <section id="todas-contas" class="tab-panel">
       <div class="recent-grid">
         <div class="projects">
           <div class="card">
             <div class="card-header">
               <h3>Contas a pagar e receber</h3>
-              <button type="button" (click)="showModal('Deletar', 'item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
+              <button type="button" (click)="showModal('item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
             </div>
       
             <!-- Tabela -->
@@ -91,20 +91,17 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td><input class="form-control" type="search" placeholder="Descrição"></td>
-                      <td><input class="form-control" type="search" placeholder="Data"></td>
+                      <td><input class="form-control" type="search" placeholder="Descrição" (input)="Search('descricao', $event.target.value)"></td>
+                      <td><input class="form-control" type="date" placeholder="Data" (input)="Search('data', $event.target.value)"></td>
                       <td>      
-                        <ng-select name="tipo" placeholder="Tipo">
-                          <ng-option value="A pagar">A pagar</ng-option>
-                          <ng-option value="A receber">A Receber</ng-option>
+                        <ng-select name="tipo" placeholder="Tipo" (change)="Search('tipo', $event)">
+                          <ng-option *ngFor="let type of types" [value]="type.status">{{ type.status }}</ng-option>
                         </ng-select>
                       </td>
-                      <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2"></td>
+                      <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2" (input)="Search('valor', $event.target.value)"></td>
                       <td>
-                        <ng-select name="situacao" placeholder="Situação">
-                          <ng-option value="Pago">Pago</ng-option>
-                          <ng-option value="Recebido">Recebido</ng-option>
-                          <ng-option value="Pedente">Pendente</ng-option>
+                        <ng-select name="situacao" placeholder="Situação" (change)="Search('situacao', $event)">
+                          <ng-option *ngFor="let situation of situations" [value]="situation.status">{{ situation.status }}</ng-option>
                         </ng-select>
                       </td>
                       <td></td>
@@ -120,7 +117,7 @@
                         {{ item.situacao }}
                       </td>
                       <td>
-                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
+                        <button type="button" class="btn btn-info mr-2" (click)="showModal(item)"><i class="fa fa-edit"></i></button>
                         <button type="button" class="btn btn-danger mr-2" *ngIf="item.situacao === 'Pendente'" (click)="showModalYesNo('Deletar', item)"><i class="fa fa-trash"></i></button>
                         <button type="button" class="btn btn-light shadow-button" *ngIf="item.situacao === 'Pendente'" (click)="showModalYesNo('Pagar', item)">Pagar</button>            
                       </td>
@@ -135,14 +132,14 @@
       </div>
     </section>
 
-    <!-- A receber -->
+    <!-- A receber - Tabela -->
     <section id="a-receber" class="tab-panel">
       <div class="recent-grid">
         <div class="projects">
           <div class="card">
             <div class="card-header">
               <h3>A receber</h3>
-              <button type="button" (click)="showModal('Deletar', 'item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
+              <button type="button" (click)="showModal('item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
             </div>
       
             <!-- Tabela -->
@@ -160,13 +157,13 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td><input class="form-control" type="search" placeholder="Descrição"></td>
-                      <td><input class="form-control" type="search" placeholder="Data"></td>
-                      <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2"></td>
+                      <td><input class="form-control" type="search" placeholder="Descrição" (input)="Search('descricao', $event.target.value)"></td>
+                      <td><input class="form-control" type="date" placeholder="Data" (input)="Search('data', $event.target.value)"></td>
+                      <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2" (input)="Search('valor', $event.target.value)"></td>
                       <td>
-                        <ng-select name="situacao" placeholder="Situação">
+                        <ng-select name="situacao" placeholder="Situação" (change)="Search('situacao', $event)">
                           <ng-option value="Recebido">Recebido</ng-option>
-                          <ng-option value="Pedente">Pendente</ng-option>
+                          <ng-option value="Pendente">Pendente</ng-option>
                         </ng-select>
                       </td>
                       <td></td>
@@ -182,7 +179,7 @@
                           {{ item.situacao }}
                         </td>
                         <td>
-                          <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
+                          <button type="button" class="btn btn-info mr-2" (click)="showModal(item)"><i class="fa fa-edit"></i></button>
                           <button type="button" class="btn btn-danger mr-2" *ngIf="item.situacao === 'Pendente'" ><i class="fa fa-trash"></i></button>
                           <button type="button" class="btn btn-light shadow-button" *ngIf="item.situacao === 'Pendente'">Pagar</button>            
                         </td>
@@ -198,14 +195,14 @@
       </div>
     </section>
 
-    <!-- A pagar -->
+    <!-- A pagar - Tabela -->
     <section id="a-pagar" class="tab-panel">
       <div class="recent-grid">
         <div class="projects">
           <div class="card">
             <div class="card-header">
               <h3>A pagar</h3>
-              <button type="button" (click)="showModal('Deletar', 'item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
+              <button type="button" (click)="showModal('item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
             </div>
       
             <!-- Tabela -->
@@ -223,13 +220,13 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td><input class="form-control" type="search" placeholder="Descrição"></td>
-                      <td><input class="form-control" type="search" placeholder="Data"></td>
-                      <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2"></td>
+                      <td><input class="form-control" type="search" placeholder="Descrição" (input)="Search('descricao', $event.target.value)"></td>
+                      <td><input class="form-control" type="date" placeholder="Data" (input)="Search('data', $event.target.value)"></td>
+                      <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2" (input)="Search('valor', $event.target.value)"></td>
                       <td>
-                        <ng-select name="situacao" placeholder="Situação">
+                        <ng-select name="situacao" placeholder="Situação" (change)="Search('situacao', $event)">
                           <ng-option value="Pago">Pago</ng-option>
-                          <ng-option value="Pedente">Pendente</ng-option>
+                          <ng-option value="Pendente">Pendente</ng-option>
                         </ng-select>
                       </td>
                     </tr>
@@ -244,7 +241,7 @@
                           {{ item.situacao }}
                         </td>
                         <td>
-                          <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
+                          <button type="button" class="btn btn-info mr-2" (click)="showModal(item)"><i class="fa fa-edit"></i></button>
                           <button type="button" class="btn btn-danger mr-2" *ngIf="item.situacao === 'Pendente'"><i class="fa fa-trash"></i></button>
                           <button type="button" class="btn btn-light shadow-button" *ngIf="item.situacao === 'Pendente'">Pagar</button>            
                         </td>

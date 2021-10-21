@@ -75,7 +75,7 @@ export class CondicoesDePagamentoComponent implements OnInit, IFormCanDeactivate
       this.ngOnInit();
     }
   }
-
+  
   // =========== CRUD ===================================================================
   deleteItem(id): void {
     this.crudService.deleteItem('condicoesDePagamento', id).subscribe(response => {

@@ -6,7 +6,9 @@
         </button>
     </div>
     <div class="modal-body">
-        <form [formGroup]="itemForm" #eventForm="ngForm">            
+        <form [formGroup]="itemForm" #eventForm="ngForm"> 
+            <input formControlName="id" hidden="true">
+                       
             <label>Descrição: </label>
             <input class="form-control" type="text" maxlength="100" formControlName="descricao">
             <p class="error-msg" *ngIf="itemForm.controls.descricao.errors">
