@@ -1,4 +1,4 @@
-<!-- Graficos com dados das Contas -->
+<!-- Grafico e filtros-->
 <div class="cards">
   <div>
     <div style="display: block">
@@ -30,18 +30,19 @@
           [(ngModel)]="selected"
           name="daterange"
           alwaysShowCalendars = true
-          class="datepicker-calendar-icon"/>
+          class="datepicker-calendar-icon"
+          (change)="convertMomentToDate($event)"/>
     </div>
     <div class="value-filter">   
       <div class="initial">
         <label for="initialValue">Valor inicial</label>
-        <input  class="range-slider__range" type="range" name="initialValue" id="initialValue" min="0" max="1200" step="1" onmousemove="rangeInitialValue.value=value">
+        <input  class="range-slider__range" type="range" name="initialValue" id="initialValue" min="0" max="{{ maxValue + 1 }}" step="1" onmousemove="rangeInitialValue.value=value">
         <output id="rangeInitialValue"></output>
       </div>
 
-      <div class="final">
+      <div class="final"> 
         <label for="finalValue">Valor Final</label>
-        <input  class="range-slider__range" type="range" name="finalValue" id="finalValue" min="0" max="1200" step="1" onmousemove="rangeFinalValue.value=value">
+        <input  class="range-slider__range" type="range" name="finalValue" id="finalValue" min="0" max="{{ maxValue + 1 }}" step="1" onmousemove="rangeFinalValue.value=value">
         <output id="rangeFinalValue"></output>
       </div>
     </div>

@@ -6,7 +6,7 @@ import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.compo
 
 import { Moment } from 'moment';
 import * as moment from 'moment';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
@@ -30,7 +30,10 @@ export class ContasComponent implements OnInit {
   public situations: any;
   public types: any;
 
-  // Data ranger variables ==================================================================
+  public valuesVector: any = [];
+  public maxValue: any;
+
+  // Date ranger variables ==================================================================
   public selected: {
     startDate: Moment,
     endDate: Moment
@@ -47,10 +50,8 @@ export class ContasComponent implements OnInit {
   // ========================================================================================
 
   // Chart variables ==================================================================
-  // Bar
   public barChartOptions: ChartOptions = {
     responsive: true,
-    // We use these empty structures as placeholders for dynamic theming.
     scales: { xAxes: [{}], yAxes: [{}] },
     plugins: {
       datalabels: {
@@ -60,11 +61,13 @@ export class ContasComponent implements OnInit {
     }
   };
 
-  public barChartLabels: Label[] = ['Jnaeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-                                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  public barChartLabels: Label[] = [
+    'Jnaeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+  ];
+
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
-  // public barChartPlugins = [pluginDataLabels];
 
   public barChartData: ChartDataSets[] = [
     { data: [650, 590, 800, 810, 560, 550, 400, 1000, 720, 50, 350, 478], label: 'A pagar' },
@@ -93,6 +96,13 @@ export class ContasComponent implements OnInit {
     this.types = this.financeiroService.getType();
   }
 
+  convertMomentToDate(fullDate: any): any{
+    if (fullDate.start && fullDate.end){
+      console.log(fullDate.start.format('YYYY-MM-DD'));
+      console.log(fullDate.end.format('YYYY-MM-DD'));
+    }
+  }
+
   ngOnInit(): void {
     this.getItems();
   }
@@ -101,6 +111,14 @@ export class ContasComponent implements OnInit {
     this.financeiroService.getItems('contas').subscribe(response => {
       this.contas = response;
       this.tempItemsList = _.clone(this.contas);
+
+      // Monta um vetor com os valores contidos no response
+      this.contas.forEach(element => {
+        this.valuesVector.push(parseFloat(element.valor));
+      });
+
+      // Verifica qual p maior valor no vetor
+      this.maxValue = this.valuesVector.reduce((a: number, b: number) => Math.max(a, b));
     });
   }
 
@@ -127,6 +145,7 @@ export class ContasComponent implements OnInit {
   Search(campo: any, valor: any): any{
     this.tempItemsList = _.clone(this.tempItemsList);
 
+    console.log(valor)
     if (campo === 'valor'){
       valor = valor.replace('R$', '');
     }

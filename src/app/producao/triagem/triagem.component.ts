@@ -8,6 +8,7 @@ import { SharedVariableService } from '../../shared/shared-variable.service';
 import { FormBuilder } from '@angular/forms';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { from, interval, Subject } from 'rxjs';
+import { resourceUsage } from 'process';
 
 @Component({
   selector: 'app-triagem',
@@ -64,6 +65,8 @@ export class TriagemComponent implements OnInit {
     public totalTimeBreak: any; // Tempo total de que as paradas durou
     public totalTimeProduction: any; // Tempo total que a produção durou da triagem
   // =======================================================
+
+  public alterCheck;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -204,17 +207,14 @@ export class TriagemComponent implements OnInit {
 
     /* Chama metodo de Modal para confirmar a ação e em caso de positivo
     chama o metodo responsavel por atualizar o Fornecedor */
-    preChangeFornecedor(event: any): any {
-      const triagemInfoItems = JSON.parse(localStorage.getItem('triagemInfoItems'));
-      if (triagemInfoItems){
-        if (triagemInfoItems.length >= 1){
-          const alterCheck: boolean = this.showModal('Fornecedor');
-          if (alterCheck){
-            this.changeFornecedor(event);
-          }
-        }
-      }
-      }
+    // preChangeFornecedor(event: any): any {
+    //   const triagemInfoItems = JSON.parse(localStorage.getItem('triagemInfoItems'));
+    //   if (triagemInfoItems){
+    //     if (triagemInfoItems.length >= 1){
+    //       this.showModal('Fornecedor').then(() => this.changeFornecedor(event));
+    //     }
+    //   }
+    // }
   // ============================================================================
 
   // Objetos Form ===============================================================
@@ -518,8 +518,9 @@ export class TriagemComponent implements OnInit {
               this.stopProduction();
             } else if (title === 'Etiquetas'){
               this.toastService.addToast('Desculpa, ainda não temos essa funcionalidade', 'darkred');
-            } else {
-              return true;
+            } else if (title === 'Fornecedor') {
+              this.alterCheck = true;
+              return;
             }
           },
           onClickNo: () => { }
@@ -616,7 +617,7 @@ export class TriagemComponent implements OnInit {
       this.crudService.getItems('fornecedores').subscribe(response => this.fornecedores = response);
       this.crudService.getItems('motivosDeParada').subscribe(response => this.motivosDeParada = response);
       this.crudService.getItems('materiasPrimas').subscribe(response => this.materiasPrimas = response);
-  
+
       if (this.selectedFornecedor) {
         this.productionService.getProdByFornecedor(String(this.selectedFornecedor['id'])).subscribe(response => this.produtos = response );
       }
