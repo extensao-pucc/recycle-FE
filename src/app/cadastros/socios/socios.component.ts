@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, NgForm, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ViewImage } from 'src/app/shared/view-image/view-image.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
@@ -326,7 +326,7 @@ export class SociosComponent implements OnInit, IFormCanDeactivate {
     this.itemForm.controls.CEP.setValue(item.cep);
   }
 
-  sortTable(n) {
+  sortTable(n): any {
     var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
     table = document.getElementById("myTable");
     switching = true;

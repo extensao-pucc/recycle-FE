@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, NgForm, Validators } from '@angular/forms';
 import { CrudService } from '../../cadastros/crud.service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ViewImage } from 'src/app/shared/view-image/view-image.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
@@ -12,7 +12,7 @@ import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
 @Component({
   selector: 'app-vendas',
   templateUrl: './vendas.component.html',
-  styles: ['./vendas.component.css', '../../app.component.css', '../table.css']
+  styleUrls: ['./vendas.component.css', '../../app.component.css', '../../cadastros/table.css']
 })
 export class VendasComponent implements OnInit, IFormCanDeactivate {
   @ViewChild('eventForm') public eventListingForm: NgForm;
