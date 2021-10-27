@@ -36,13 +36,13 @@
     <div class="value-filter">   
       <div class="initial">
         <label for="initialValue">Valor inicial</label>
-        <input  class="range-slider__range" type="range" name="initialValue" id="initialValue" min="0" max="{{ maxValue + 1 }}" step="1" onmousemove="rangeInitialValue.value=value">
+        <input  class="range-slider__range" type="range" name="initialValue" id="initialValue" min="0" max="{{ maxValue + 1 }}" step="1" onmousemove="rangeInitialValue.value=value" (change)="filterValueBeteween('valor_inicial', $event)">
         <output id="rangeInitialValue"></output>
       </div>
 
       <div class="final"> 
         <label for="finalValue">Valor Final</label>
-        <input  class="range-slider__range" type="range" name="finalValue" id="finalValue" min="0" max="{{ maxValue + 1 }}" step="1" onmousemove="rangeFinalValue.value=value">
+        <input  class="range-slider__range" type="range" name="finalValue" id="finalValue" min="0" max="{{ maxValue + 1 }}" step="1" onmousemove="rangeFinalValue.value=value" (change)="filterValueBeteween('valor_final', $event)">
         <output id="rangeFinalValue"></output>
       </div>
     </div>
@@ -52,214 +52,79 @@
 <!-- ============================= -->
 
 <!-- Tabelas ===================== -->
-<div class="tabset">
-  <!-- Todas -->
-  <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked (change)="getItems()">
-  <label for="tab1">Todas as contas</label>
-
-  <!-- A receber -->
-  <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier" (change)="getItems()">
-  <label for="tab2">A receber</label>
-
-  <!-- A pagar -->
-  <input type="radio" name="tabset" id="tab3" aria-controls="dunkles" (change)="getItems()">
-  <label for="tab3">A pagar</label>
+<section id="todas-contas" class="tab-panel">
+  <div class="recent-grid">
+    <div class="projects">
+      <div class="card">
+        <div class="card-header">
+          <h3>Contas a pagar e receber</h3>
+          <button type="button" (click)="showModal('item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
+        </div>
   
-  <div class="tab-panels">
-    <!-- Todas - Tabela -->
-    <section id="todas-contas" class="tab-panel">
-      <div class="recent-grid">
-        <div class="projects">
-          <div class="card">
-            <div class="card-header">
-              <h3>Contas a pagar e receber</h3>
-              <button type="button" (click)="showModal('item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
-            </div>
-      
-            <!-- Tabela -->
-            <div class="card-body">
-              <div class="table-responsive">
-                <table  id="TodasAsContas" width="100%" #filteredTable>
-                  <thead>
-                    <tr>
-                      <th (click)="sortTable(0, 'TodasAsContas')"><i class="fa fa-file"></i>Descrição</th>
-                      <th (click)="sortTable(1, 'TodasAsContas')"><i class="fa fa-calendar"></i>Data</th>
-                      <th (click)="sortTable(2, 'TodasAsContas')"><i class="fa fa-marker"></i>Tipo</th>
-                      <th (click)="sortTable(3, 'TodasAsContas')"><i class="fa fa-money"></i>Valor (R$)</th>
-                      <th (click)="sortTable(4, 'TodasAsContas')">Situação</th>
-                      <th>Opções</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><input class="form-control" type="search" placeholder="Descrição" (input)="Search('descricao', $event.target.value)"></td>
-                      <td><input class="form-control" type="date" placeholder="Data" (input)="Search('data', $event.target.value)"></td>
-                      <td>      
-                        <ng-select name="tipo" placeholder="Tipo" (change)="Search('tipo', $event)">
-                          <ng-option *ngFor="let type of types" [value]="type.status">{{ type.status }}</ng-option>
-                        </ng-select>
-                      </td>
-                      <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2" (input)="Search('valor', $event.target.value)"></td>
-                      <td>
-                        <ng-select name="situacao" placeholder="Situação" (change)="Search('situacao', $event)">
-                          <ng-option *ngFor="let situation of situations" [value]="situation.status">{{ situation.status }}</ng-option>
-                        </ng-select>
-                      </td>
-                      <td></td>
-                    </tr>
+        <!-- Tabela -->
+        <div class="card-body">
+          <div class="table-responsive">
+            <table  id="TodasAsContas" width="100%" #filteredTable>
+              <thead>
+                <tr>
+                  <th (click)="sortTable(0, 'TodasAsContas')"><i class="fa fa-file"></i>Descrição</th>
+                  <th (click)="sortTable(1, 'TodasAsContas')"><i class="fa fa-calendar"></i>Data</th>
+                  <th (click)="sortTable(2, 'TodasAsContas')"><i class="fa fa-marker"></i>Tipo</th>
+                  <th (click)="sortTable(3, 'TodasAsContas')"><i class="fa fa-money"></i>Valor (R$)</th>
+                  <th (click)="sortTable(4, 'TodasAsContas')">Situação</th>
+                  <th>Opções</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input class="form-control" type="search" placeholder="Descrição" (input)="Search('descricao', $event.target.value)"></td>
+                  <td><input class="form-control" type="date" placeholder="Data" (input)="Search('data', $event.target.value)"></td>
+                  <td>      
+                    <ng-select name="tipo" placeholder="Tipo" (change)="Search('tipo', $event)">
+                      <ng-option *ngFor="let type of types" [value]="type.status">{{ type.status }}</ng-option>
+                    </ng-select>
+                  </td>
+                  <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2" (input)="Search('valor', $event.target.value)"></td>
+                  <td>
+                    <ng-select name="situacao" placeholder="Situação" (change)="Search('situacao', $event)">
+                      <ng-option *ngFor="let situation of situations" [value]="situation.status">{{ situation.status }}</ng-option>
+                    </ng-select>
+                  </td>
+                  <td></td>
+                </tr>
 
-                    <tr *ngFor="let item of tempItemsList" [ngClass]="item.situacao === 'Pendente' ? 'table-row--red' : ''">
-                      <td>{{ item?.descricao }}</td>
-                      <td>{{ reverseStringDate(item?.data) | mask: 'd0/M0/0000' }}</td>
-                      <td>{{ item.tipo }}</td>
-                      <td>{{ item.valor }}</td>
-                      <td>
-                        <span [ngClass]="item.situacao === 'Pendente' ? 'status red' : 'status green'"></span>
-                        {{ item.situacao }}
-                      </td>
-                      <td>
-                        <button type="button" class="btn btn-info mr-2" (click)="showModal(item)"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger mr-2" *ngIf="item.situacao === 'Pendente'" (click)="showModalYesNo('Deletar', item)"><i class="fa fa-trash"></i></button>
-                        <button type="button" class="btn btn-light shadow-button" *ngIf="item.situacao === 'Pendente'" (click)="showModalYesNo('Pagar', item)">Pagar</button>            
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!-- ------ -->
+                <tr *ngFor="let item of tempItemsList" [ngClass]="item.situacao === 'Pendente' ? 'table-row--red' : ''">
+                  <td>{{ item?.descricao }}</td>
+                  <td>{{ reverseStringDate(item?.data) | mask: 'd0/M0/0000' }}</td>
+                  <td>{{ item.tipo }}</td>
+                  <td>{{ item.valor }}</td>
+                  <td>
+                    <span [ngClass]="item.situacao === 'Pendente' ? 'status red' : 'status green'"></span>
+                    {{ item.situacao }}
+                  </td>
+                  <td>
+                    <button type="button" class="btn btn-info mr-2" (click)="showModal(item)"><i class="fa fa-edit"></i></button>
+                    <button type="button" class="btn btn-danger mr-2" *ngIf="item.situacao === 'Pendente'" (click)="showModalYesNo('Deletar', item)"><i class="fa fa-trash"></i></button>
+                    <button type="button" class="btn btn-light shadow-button" *ngIf="item.situacao === 'Pendente'" (click)="showModalYesNo('Pagar', item)">Pagar</button>            
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
+        <!-- ------ -->
       </div>
-    </section>
-
-    <!-- A receber - Tabela -->
-    <section id="a-receber" class="tab-panel">
-      <div class="recent-grid">
-        <div class="projects">
-          <div class="card">
-            <div class="card-header">
-              <h3>A receber</h3>
-              <button type="button" (click)="showModal('item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
-            </div>
-      
-            <!-- Tabela -->
-            <div class="card-body">
-              <div class="table-responsive">
-                <table  id="contasReceber" width="100%" #filteredTable>
-                  <thead>
-                    <tr>
-                      <th (click)="sortTable(0, 'contasReceber')"><i class="fa fa-file"></i>Descrição</th>
-                      <th (click)="sortTable(1, 'contasReceber')"><i class="fa fa-calendar"></i>Data</th>
-                      <th (click)="sortTable(2, 'contasReceber')"><i class="fa fa-money"></i>Valor (R$)</th>
-                      <th (click)="sortTable(3, 'contasReceber')">Situação</th>
-                      <th>Opções</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><input class="form-control" type="search" placeholder="Descrição" (input)="Search('descricao', $event.target.value)"></td>
-                      <td><input class="form-control" type="date" placeholder="Data" (input)="Search('data', $event.target.value)"></td>
-                      <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2" (input)="Search('valor', $event.target.value)"></td>
-                      <td>
-                        <ng-select name="situacao" placeholder="Situação" (change)="Search('situacao', $event)">
-                          <ng-option value="Recebido">Recebido</ng-option>
-                          <ng-option value="Pendente">Pendente</ng-option>
-                        </ng-select>
-                      </td>
-                      <td></td>
-                    </tr>
-
-                    <ng-container *ngFor="let item of tempItemsList">
-                      <tr *ngIf="item.tipo === 'A receber'" [ngClass]="item.situacao === 'Pendente' ? 'table-row--red' : ''">
-                        <td>{{ item?.descricao }}</td>
-                        <td>{{ reverseStringDate(item?.data) | mask: 'd0/M0/0000' }}</td>
-                        <td>{{ item.valor }}</td>
-                        <td>
-                          <span [ngClass]="item.situacao === 'Pendente' ? 'status red' : 'status green'"></span>
-                          {{ item.situacao }}
-                        </td>
-                        <td>
-                          <button type="button" class="btn btn-info mr-2" (click)="showModal(item)"><i class="fa fa-edit"></i></button>
-                          <button type="button" class="btn btn-danger mr-2" *ngIf="item.situacao === 'Pendente'" ><i class="fa fa-trash"></i></button>
-                          <button type="button" class="btn btn-light shadow-button" *ngIf="item.situacao === 'Pendente'">Pagar</button>            
-                        </td>
-                      </tr>
-                    </ng-container>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!-- ------ -->
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- A pagar - Tabela -->
-    <section id="a-pagar" class="tab-panel">
-      <div class="recent-grid">
-        <div class="projects">
-          <div class="card">
-            <div class="card-header">
-              <h3>A pagar</h3>
-              <button type="button" (click)="showModal('item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
-            </div>
-      
-            <!-- Tabela -->
-            <div class="card-body">
-              <div class="table-responsive">
-                <table id="contasPagar" width="100%" #filteredTable>
-                  <thead>
-                    <tr>
-                      <th (click)="sortTable(0, 'contasPagar')"><i class="fa fa-file"></i>Descrição</th>
-                      <th (click)="sortTable(1, 'contasPagar')"><i class="fa fa-calendar"></i>Data</th>
-                      <th (click)="sortTable(2, 'contasPagar')"><i class="fa fa-money"></i>Valor (R$)</th>
-                      <th (click)="sortTable(3, 'contasPagar')">Situação</th>
-                      <th>Opções</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><input class="form-control" type="search" placeholder="Descrição" (input)="Search('descricao', $event.target.value)"></td>
-                      <td><input class="form-control" type="date" placeholder="Data" (input)="Search('data', $event.target.value)"></td>
-                      <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2" (input)="Search('valor', $event.target.value)"></td>
-                      <td>
-                        <ng-select name="situacao" placeholder="Situação" (change)="Search('situacao', $event)">
-                          <ng-option value="Pago">Pago</ng-option>
-                          <ng-option value="Pendente">Pendente</ng-option>
-                        </ng-select>
-                      </td>
-                    </tr>
-
-                    <ng-container *ngFor="let item of tempItemsList">
-                      <tr *ngIf="item.tipo === 'A pagar'" [ngClass]="item.situacao === 'Pendente' ? 'table-row--red' : ''">
-                        <td>{{ item?.descricao }}</td>
-                        <td>{{ reverseStringDate(item?.data) | mask: 'd0/M0/0000' }}</td>
-                        <td>{{ item.valor }}</td>
-                        <td>
-                          <span [ngClass]="item.situacao === 'Pendente' ? 'status red' : 'status green'"></span>
-                          {{ item.situacao }}
-                        </td>
-                        <td>
-                          <button type="button" class="btn btn-info mr-2" (click)="showModal(item)"><i class="fa fa-edit"></i></button>
-                          <button type="button" class="btn btn-danger mr-2" *ngIf="item.situacao === 'Pendente'"><i class="fa fa-trash"></i></button>
-                          <button type="button" class="btn btn-light shadow-button" *ngIf="item.situacao === 'Pendente'">Pagar</button>            
-                        </td>
-                      </tr>
-                    </ng-container>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!-- ------ -->
-          </div>
-        </div>
-      </div>
-    </section>
-  </div> 
-</div>
+    </div>
+  </div>
+</section>
 <!-- ============================= -->
+
+<!-- Lista sem dados -->
+<div *ngIf="!showForm && !tempItemsList?.length"  class="alert alert-info " role="alert">
+  <h4 class="alert-heading ">Opa !</h4>
+  <p>Nenhum resultado foi encontrado.</p>
+</div>
+<!-- =============== -->
 
 <app-modal-contas [modalContas]="modalContas" *ngIf="showModalContas"></app-modal-contas>
 <app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>

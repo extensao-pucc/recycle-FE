@@ -235,7 +235,6 @@ export class SociosComponent implements OnInit, IFormCanDeactivate {
 
           formData.append('foto', file);
         } else {
-          console.log("To no arquivo vazio")
           formData.append('foto', '');
         }
       }

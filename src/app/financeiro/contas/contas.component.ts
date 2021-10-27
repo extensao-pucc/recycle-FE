@@ -32,6 +32,10 @@ export class ContasComponent implements OnInit {
 
   public valuesVector: any = [];
   public maxValue: any;
+  public valuesBeteween: any = {
+    'valor_inicial': '',
+    'valor_final': ''
+  };
 
   // Date ranger variables ==================================================================
   public selected: {
@@ -98,8 +102,15 @@ export class ContasComponent implements OnInit {
 
   convertMomentToDate(fullDate: any): any{
     if (fullDate.start && fullDate.end){
-      console.log(fullDate.start.format('YYYY-MM-DD'));
-      console.log(fullDate.end.format('YYYY-MM-DD'));
+      const dates = {
+        'data_inicial': fullDate.start.format('DD/MM/YYYY'),
+        'data_final': fullDate.end.format('DD/MM/YYYY')
+      };
+
+      this.financeiroService.getDateBeteween('dateToPay', dates).subscribe(response => {
+        this.contas = response;
+        this.tempItemsList = _.clone(this.contas);
+      });
     }
   }
 
@@ -134,6 +145,22 @@ export class ContasComponent implements OnInit {
     this.showForm = false;
   }
 
+  filterValueBeteween(posicao, event): any{
+    if (posicao === 'valor_inicial'){
+      this.valuesBeteween['valor_inicial'] = event.target.value;
+    } else if (posicao === 'valor_final'){
+      this.valuesBeteween['valor_final'] = event.target.value;
+    }
+
+    if ((this.valuesBeteween['valor_inicial'] !== '') && (this.valuesBeteween['valor_final'] !== '')){
+      this.financeiroService.getDateBeteween('valueToPay', this.valuesBeteween).subscribe(response => {
+        this.contas = response;
+        this.tempItemsList = _.clone(this.contas);
+      });
+    }
+
+  }
+
   // Inverte data no padrão americano para o brasileiro
   reverseStringDate(str): any{
     if (str){
@@ -143,9 +170,6 @@ export class ContasComponent implements OnInit {
 
   // =========== Busca personalizada ====================================================
   Search(campo: any, valor: any): any{
-    this.tempItemsList = _.clone(this.tempItemsList);
-
-    console.log(valor)
     if (campo === 'valor'){
       valor = valor.replace('R$', '');
     }

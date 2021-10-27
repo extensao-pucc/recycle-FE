@@ -124,7 +124,7 @@ export class TriagemComponent implements OnInit {
       this.changeProductionStatus();
       this.crudService.getItems('parametros').subscribe(response =>
         // Checa na tabela Parametros e recupera o valor da triagem no banco, caso não exista seta como ZERO
-        response.triagem !== undefined ? this.lastTriagem = Number(response[0].triagem) : this.lastTriagem = 0
+        response[0].triagem !== undefined ? this.lastTriagem = Number(response[0].triagem) : this.lastTriagem = 0
       );
     }
     this.getItems();
