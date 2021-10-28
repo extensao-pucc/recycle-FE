@@ -26,6 +26,7 @@ export class ContasComponent implements OnInit {
 
   public contas: any;
   public tempItemsList: any;
+  public tempCompareList: any = [];
 
   public situations: any;
   public types: any;
@@ -74,8 +75,8 @@ export class ContasComponent implements OnInit {
   public barChartLegend = true;
 
   public barChartData: ChartDataSets[] = [
-    { data: [650, 590, 800, 810, 560, 550, 400, 1000, 720, 50, 350, 478], label: 'A pagar' },
-    { data: [280, 480, 400, 190, 860, 270, 900, 1200, 810, 610, 350, 520], label: 'A receber' }
+    { data: [0, 590, 800, 810, 560, 550, 400, 1000, 720, 50, 350, 478], label: 'A pagar' },
+    { data: [100, 480, 400, 190, 860, 270, 900, 1200, 810, 610, 350, 520], label: 'A receber' }
   ];
 
   // events
@@ -103,8 +104,8 @@ export class ContasComponent implements OnInit {
   convertMomentToDate(fullDate: any): any{
     if (fullDate.start && fullDate.end){
       const dates = {
-        'data_inicial': fullDate.start.format('DD/MM/YYYY'),
-        'data_final': fullDate.end.format('DD/MM/YYYY')
+        'data_inicial': fullDate.start.format('YYYY-MM-DD'),
+        'data_final': fullDate.end.format('YYYY-MM-DD')
       };
 
       this.financeiroService.getDateBeteween('dateToPay', dates).subscribe(response => {
@@ -134,15 +135,13 @@ export class ContasComponent implements OnInit {
   }
 
   // Apaga contas do banco
-  deleteItem(id): void {
-    this.financeiroService.deleteItem('contas', id).subscribe(response => {
+  updateItem(title, item): void {
+    this.financeiroService.updateItem('contas', item, item.id).subscribe(response => {
       this.getItems();
-      this.toastService.addToast('Deletado com sucesso');
+      this.toastService.addToast('Conta' + title.toLowerCase() + 'com sucesso!');
     }, err => {
       this.toastService.addToast(err['message'], 'darkred');
     });
-
-    this.showForm = false;
   }
 
   filterValueBeteween(posicao, event): any{
@@ -170,18 +169,22 @@ export class ContasComponent implements OnInit {
 
   // =========== Busca personalizada ====================================================
   Search(campo: any, valor: any): any{
-    if (campo === 'valor'){
-      valor = valor.replace('R$', '');
-    }
+    if (valor !== undefined){
+      if (campo === 'valor'){
+        valor = valor.replace('R$', '');
+      }
 
-    if (valor !== ''){
-      this.tempItemsList = this.contas.filter(res => {
-        return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
-                valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
-              ));
-      });
-    } else if (valor === '') {
-      this.ngOnInit();
+      if (valor !== ''){
+        this.tempItemsList = this.contas.filter(res => {
+          return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
+                  valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
+                ));
+        });
+      } else if (valor === '') {
+        this.ngOnInit();
+      }
+    } else {
+      this.getItems();
     }
   }
 
@@ -191,10 +194,8 @@ export class ContasComponent implements OnInit {
       items: [items],
       fontAwesomeClass: 'fa-ban',
       action: {
-        onClickYes: () => {
-          console.log('Cliquei no sim');
-        },
-        onClickNo: () => { }
+        onClickYes: () => {},
+        onClickNo: () => {}
       }
     };
     this.showModalContas = true;
@@ -209,10 +210,12 @@ export class ContasComponent implements OnInit {
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {
-          if (title === 'Deletar') {
-            this.deleteItem(items.id);
+          if (title === 'Cancelar') {
+            items.situacao = 'Cancelado';
+            this.updateItem(title, items);
           } else if (title === 'Pagar') {
-            console.log('Cliquei no Pagar');
+            items.situacao = 'Pago';
+            this.updateItem(title, items);
           }
         },
         onClickNo: () => { }

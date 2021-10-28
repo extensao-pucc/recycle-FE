@@ -37,7 +37,9 @@
 
             <label>Situação: </label>
             <ng-select formControlName="situacao">
-              <ng-option *ngFor="let situation of situations" [value]="situation.status">{{ situation.status }}</ng-option>
+              <ng-component *ngFor="let situation of situations">
+                <ng-option *ngIf="situation.status !== 'Cancelado'"  [value]="situation.status">{{ situation.status }}</ng-option>
+              </ng-component>
             </ng-select>
             <p class="error-msg" *ngIf="itemForm.controls.situacao.errors">
               <i class="fa fa-times"></i> {{ itemForm.controls.situacao.errors.msgErro }}

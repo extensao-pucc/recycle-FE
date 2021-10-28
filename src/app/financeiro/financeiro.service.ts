@@ -39,6 +39,7 @@ export class FinanceiroService {
   // Situação para o contas a pagar e receber
   getSituation(): any[]{
     const situation = [
+      {status: 'Cancelado'},
       {status: 'Pago'},
       {status: 'Pendente'},
       {status: 'Recebido'}
