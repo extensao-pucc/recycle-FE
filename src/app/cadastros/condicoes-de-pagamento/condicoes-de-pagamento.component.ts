@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ɵCompiler_compileModuleAndAllComponentsAsync__POST_R3__, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, NgForm, Validators } from '@angular/forms';
 import { CrudService } from '../crud.service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
@@ -32,14 +32,14 @@ export class CondicoesDePagamentoComponent implements OnInit, IFormCanDeactivate
     private formBuilder: FormBuilder,
     private formValidatorService: FormValidatorService
   ) { }
-  
+
   canDeactivate(): boolean {
     if (this.eventListingForm) {
       if (this.eventListingForm.dirty) {
         return confirm('Tem certeza que deseja sair ? Suas alterações serão perdidas');
       }
     }
-    return true
+    return true;
   }
 
   ngOnInit(): void {
@@ -138,7 +138,7 @@ export class CondicoesDePagamentoComponent implements OnInit, IFormCanDeactivate
 
 
   // =========== Modal de confirmação ===================================================
-  showModal(title: string, items: any) {
+  showModal(title: string, items: any): any {
     const formValues = this.itemForm.value;
 
     this.yesNoMessage = {
@@ -160,7 +160,7 @@ export class CondicoesDePagamentoComponent implements OnInit, IFormCanDeactivate
         onClickNo: () => { }
       }
     };
-  
+
     this.showYesNoMessage = true;
   }
   // ====================================================================================

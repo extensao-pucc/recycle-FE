@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import { FormBuilder, Validators, FormControl, NgForm } from '@angular/forms';
 import { CrudService } from '../crud.service';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';

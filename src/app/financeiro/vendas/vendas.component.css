@@ -1,96 +1,275 @@
-.image-profile, .my-avatar-profile /deep/ .avatar-content {
-    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 10%);
-    margin-bottom: 30px;
-}
-
-.image-profile {
-  height: 90%; 
-  width: 90%;
-}
-
-/* .my-avatar-profile /deep/ .avatar-content {
-  height: 250px;
-  width: 250px;
-} */
-
-.image-upload > input {
-  display: none;
-}
-
-img {
-  cursor: pointer;
-}
-
 h5 {
-    padding-top: 30px;
+  padding-top: 30px;
 }
 
 .center-icon {
-    margin-right: 1px;
+  margin-right: 1px;
 }
 
 .shadow-button {
-    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 30%);
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 30%);
 }
 
-/* Status do Sócio ====================== */
-.table-row--red {
-  box-shadow: 0 2px 7px 0 rgb(0 0 0 / 20%);
-  background-color: #f7000029;
-  border-radius: 20px;
-  padding: 10px 15px;
+/* ===== Produtos na venda ===== */
+.cf:before, .cf:after {
+  content: " ";
+  display: table;
 }
 
-.table-row--green {
-  box-shadow: 0 2px 7px 0 rgb(0 0 0 / 20%);
-  background-color:  #ecfaeb;
-  border-radius: 20px;
-  padding: 10px 20px;
+.cf:after {
+  clear: both;
 }
 
-.status:before {
-  content: '';
-  margin-bottom: 0;
-  width: 9px;
-  height: 9px;
+.wrap {
+  width: 75%;
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2% 0;
+}
+
+.heading {
+  padding: 1em 0;
+  border-bottom: 1px solid #d0d0d0;
+}
+
+.heading h1 {
+  font-size: 2em;
+  float: left;
+}
+
+.heading a.continue:link, .heading a.continue:visited {
+  text-decoration: none;
+  font-family: 'Montserrat', sans-serif;
+  letter-spacing: -0.015em;
+  font-size: 0.9em;
+  padding: 1em;
+  color: #fff;
+  background: #28A745;
+  border-radius: 50px;
+  float: right;
+  text-align: right;
+  -webkit-transition: all 0.25s linear;
+  -moz-transition: all 0.25s linear;
+  -ms-transition: all 0.25s linear;
+  -o-transition: all 0.25s linear;
+  transition: all 0.25s linear;
+}
+
+.heading a.continue:hover, .heading a.continue:focus, .heading a.continue:active {
+  background: #82CA9C;
+}
+
+.cart {
+  padding: 1em 0;
+}
+
+.cart .items {
+  display: block;
+  width: 100%;
+  padding: 1.5em;
+  border-bottom: 1px solid #fafafa;
+}
+
+.cart .items.even {
+  background: #f1f1f1;
+}
+
+.cart .items .infoWrap {
+  display: table;
+  width: 100%;
+}
+
+.cart .items .cartSection {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.cart .items .cartSection .itemNumber {
+  font-size: 0.75em;
+  color: #777;
+  margin-bottom: 0.5em;
+}
+
+.cart .items .cartSection h3 {
+  font-size: 1em;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.025em;
+}
+
+.cart .items .cartSection p {
   display: inline-block;
-  margin-right: 7px;
-  border-radius: 50%; 
+  font-size: 0.85em;
+  color: #777;
 }
 
-.status--red:before {
-  background-color: #dc3545;
+.cart .items .cartSection p.stockStatus {
+  color: #82ca9c;
+  font-weight: bold;
+  padding: 0.5em 0 0 1em;
+  text-transform: uppercase;
 }
-  
-.status--red {
-  color:#dc3545;
-}
-  
-.status--green:before{
-  background-color: #37c93a;
-}
-.status--green {
-  color: #37c93a;
+.cart .items .cartSection p.stockStatus.out {
+  color: #f69679;
 }
 
-/* Perfil Socio ========================================= */
-.profile-blue {
-    background-color: #4e67f1;
-    color: white;
-    border-radius: 20px;
-    padding: 1px 15px;
+.cart .items .cartSection.prodTotal {
+  text-align: center;
 }
 
-.profile-orange {
-    background-color:  #f1a54e;
-    color: white;
-    border-radius: 20px;
-    padding: 1px 15px;
+.cart .items .cartSection.prodTotal p {
+  font-weight: bold;
+  font-size: 1.25em;
+}
+.cart .items .cartSection input.qty {
+  width: 4em;
+  text-align: center;
+  font-size: 1em;
+  padding: 0.25em;
+  margin: 1em 0.5em 0 0;
 }
 
-.profile-red {
-    background-color:  #fa4068;
-    color: white;
-    border-radius: 20px;
-    padding: 1px 15px;
+a.remove {
+  color: #fff;
+  background: #e0e0e0;
+  padding: 0.5em;
+  display: inline-block;
+  line-height: 0.85;
+  -webkit-transition: all 0.25s linear;
+  -moz-transition: all 0.25s linear;
+  -ms-transition: all 0.25s linear;
+  -o-transition: all 0.25s linear;
+  transition: all 0.25s linear;
 }
+
+a.remove:hover {
+  background: #f30;
+}
+
+.promoCode {
+  border: 2px solid #efefef;
+  float: left;
+  width: 35%;
+  padding: 2%;
+}
+
+.promoCode label {
+  display: block;
+  width: 100%;
+  font-style: italic;
+  font-size: 1.15em;
+  margin-bottom: 0.5em;
+  letter-spacing: -0.025em;
+}
+
+.promoCode input {
+  width: 85%;
+  font-size: 1em;
+  padding: 0.5em;
+  float: left;
+  border: 1px solid #dadada;
+}
+
+.promoCode input:active, .promoCode input:focus {
+  outline: 0;
+}
+
+.btn:link, .btn:visited {
+  text-decoration: none;
+  letter-spacing: -0.015em;
+  font-size: 1em;
+  padding: 1em 3em;
+  color: #fff;
+  background: #28A745;
+  border-radius: 50px;
+  float: right;
+  text-align: right;
+  -webkit-transition: all 0.25s linear;
+  -moz-transition: all 0.25s linear;
+  -ms-transition: all 0.25s linear;
+  -o-transition: all 0.25s linear;
+  transition: all 0.25s linear;
+}
+
+.btn:hover, .btn:focus, .btn:active {
+  background: #82CA9C;
+}
+
+/* ===== Finalizar venda ===== */
+.subtotal {
+  float: right;
+  width: 35%;
+}
+
+.subtotal .totalRow {
+  padding: 0.5em;
+  text-align: right;
+}
+
+.subtotal .totalRow.final {
+  font-size: 1.25em;
+  font-weight: bold;
+}
+
+.subtotal .totalRow span {
+  display: inline-block;
+  padding: 0 0 0 1em;
+  text-align: right;
+}
+
+.subtotal .totalRow .label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.85em;
+  text-transform: uppercase;
+  color: #777;
+}
+
+.subtotal .totalRow .value {
+  letter-spacing: -0.025em;
+  width: 35%;
+}
+
+@media only screen and (max-width: 991px) {
+  .wrap {
+    width: 98%;
+    padding: 2% 0;
+ }
+
+  .heading {
+    padding: 1em;
+    font-size: 90%;
+ }
+  .cart .items .cartSection {
+    width: 90%;
+    display: block;
+    float: left;
+ }
+  .cart .items .cartSection.qtyWrap {
+    width: 10%;
+    text-align: center;
+    padding: 0.5em 0;
+    float: right;
+ }
+  .cart .items .cartSection.qtyWrap:before {
+    content: "QTY";
+    display: block;
+    font-family: 'Montserrat', sans-serif;
+    padding: 0.25em;
+    font-size: 0.75em;
+ }
+  .cart .items .cartSection.prodTotal, .cart .items .cartSection.removeWrap {
+    display: none;
+ }
+  .cart .items .cartSection .itemImg {
+    width: 25%;
+ }
+
+ .promoCode, .subtotal {
+  width: 100%;
+  }
+
+  a.btn.continue {
+    width: 100%;
+    text-align: center;
+ }
+} 

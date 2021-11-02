@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FinanceiroService } from '../financeiro.service';
 import { ModalContas } from '../contas/modal-contas/modal-contas.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
@@ -6,10 +6,11 @@ import { YesNoMessage } from 'src/app/shared/yes-no-message/yes-no-message.compo
 
 import { Moment } from 'moment';
 import * as moment from 'moment';
-import * as _ from 'lodash';
+import * as _ from 'lodash-es';
 
 import { ChartDataSets, ChartOptions, ChartType } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { NgSelectComponent } from '@ng-select/ng-select';
 
 @Component({
   selector: 'app-contas',
@@ -17,6 +18,9 @@ import { Label } from 'ng2-charts';
   styleUrls: ['./contas.component.css']
 })
 export class ContasComponent implements OnInit {
+  // Access ng-select
+  @ViewChild(NgSelectComponent) ngSelectComponent: NgSelectComponent;
+
   public modalContas: ModalContas = new ModalContas();
   public showModalContas: boolean;
 
@@ -25,9 +29,23 @@ export class ContasComponent implements OnInit {
   public showForm = false;
 
   public contas: any;
+  public graphicValuesToPay: any;
+  public graphicValuesToReceive: any;
   public tempItemsList: any;
+  public tempCompareList: any = [];
+  public showCancel = false;
 
-  // Data ranger variables ==================================================================
+  public situations: any;
+  public types: any;
+
+  public valuesVector: any = [];
+  public maxValue: any;
+  public valuesBeteween: any = {
+    'valor_inicial': '',
+    'valor_final': ''
+  };
+
+  // Date ranger variables ==================================================================
   public selected: {
     startDate: Moment,
     endDate: Moment
@@ -44,10 +62,8 @@ export class ContasComponent implements OnInit {
   // ========================================================================================
 
   // Chart variables ==================================================================
-  // Bar
   public barChartOptions: ChartOptions = {
     responsive: true,
-    // We use these empty structures as placeholders for dynamic theming.
     scales: { xAxes: [{}], yAxes: [{}] },
     plugins: {
       datalabels: {
@@ -57,15 +73,17 @@ export class ContasComponent implements OnInit {
     }
   };
 
-  public barChartLabels: Label[] = ['Jnaeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
-                                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'];
+  public barChartLabels: Label[] = [
+    'Jnaeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+  ];
+
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
-  // public barChartPlugins = [pluginDataLabels];
 
   public barChartData: ChartDataSets[] = [
-    { data: [650, 590, 800, 810, 560, 550, 400, 1000, 720, 50, 350, 478], label: 'A pagar' },
-    { data: [280, 480, 400, 190, 860, 270, 900, 1200, 810, 610, 350, 520], label: 'A receber' }
+    { data: [], label: 'A pagar' },
+    { data: [], label: 'A receber' }
   ];
 
   // events
@@ -85,29 +103,106 @@ export class ContasComponent implements OnInit {
   constructor(
     private financeiroService: FinanceiroService,
     private toastService: ToastService,
-  ) { }
+  ) {
+    this.situations = this.financeiroService.getSituation();
+    this.types = this.financeiroService.getType();
+  }
+
+  clearInput(name: any): any {
+    // Limpa todas as inputs de busca da tela
+    const entradas = document.querySelectorAll('input[name=\'' + name + '\']');
+    [].map.call(entradas, entrada => entrada.value = '');
+
+    // Limpa as ng-selects da tela
+    const entragasOptions = document.querySelectorAll('ng-select[name=\'' + name + '\']');
+    [].map.call(entragasOptions, entrada => console.log(entrada.value));
+
+    this.showCancel = false;
+    this.getItems();
+  }
+
+  convertMomentToDate(fullDate: any): any{
+    if (fullDate.start && fullDate.end){
+      const dates = {
+        'data_inicial': fullDate.start.format('YYYY-MM-DD'),
+        'data_final': fullDate.end.format('YYYY-MM-DD')
+      };
+
+      this.financeiroService.getDateBeteween('dateToPay', dates).subscribe(response => {
+        this.contas = response;
+        this.tempItemsList = _.clone(this.contas);
+      });
+    }
+  }
 
   ngOnInit(): void {
     this.getItems();
   }
 
   getItems(): any{
+    // Busca por todas as contas a pagar e receber no banco
     this.financeiroService.getItems('contas').subscribe(response => {
-      this.contas = response;
+      this.contas = response.sort((a, b) => (a.data > b.data) ? -1 : 1);
       this.tempItemsList = _.clone(this.contas);
+
+      // Monta um vetor com os valores contidos no response
+      this.contas.forEach(element => {
+        this.valuesVector.push(parseFloat(element.valor));
+      });
+
+      // Verifica qual p maior valor no vetor
+      this.maxValue = this.valuesVector.reduce((a: number, b: number) => Math.max(a, b));
+    });
+
+    //  Busca os valores a pagar no ano atual
+    this.financeiroService.getItems('payTotalValueMonthly').subscribe( response => {
+      this.graphicValuesToPay = response;
+
+      const valuesToPay = [];
+      this.graphicValuesToPay.forEach(element => {
+        valuesToPay.push(element.soma);
+      });
+
+      this.barChartData[0].data = valuesToPay;
+    });
+
+    // Busca os valores a receber no ano atual
+    this.financeiroService.getItems('receiveTotalValueMonthly').subscribe( response => {
+      this.graphicValuesToReceive = response;
+
+      const valuesToReceive = [];
+      this.graphicValuesToReceive.forEach(element => {
+        valuesToReceive.push(element.soma);
+      });
+
+      this.barChartData[1].data = valuesToReceive;
     });
   }
 
   // Apaga contas do banco
-  deleteItem(id): void {
-    this.financeiroService.deleteItem('contas', id).subscribe(response => {
+  updateItem(title, item): void {
+    this.financeiroService.updateItem('contas', item, item.id).subscribe(response => {
       this.getItems();
-      this.toastService.addToast('Deletado com sucesso');
+      this.toastService.addToast('Conta ' + title.toLowerCase() + ' com sucesso!');
     }, err => {
       this.toastService.addToast(err['message'], 'darkred');
     });
+  }
 
-    this.showForm = false;
+  filterValueBeteween(posicao, event): any{
+    if (posicao === 'valor_inicial'){
+      this.valuesBeteween['valor_inicial'] = event.target.value;
+    } else if (posicao === 'valor_final'){
+      this.valuesBeteween['valor_final'] = event.target.value;
+    }
+
+    if ((this.valuesBeteween['valor_inicial'] !== '') && (this.valuesBeteween['valor_final'] !== '')){
+      this.financeiroService.getDateBeteween('valueToPay', this.valuesBeteween).subscribe(response => {
+        this.contas = response;
+        this.tempItemsList = _.clone(this.contas);
+      });
+    }
+
   }
 
   // Inverte data no padrão americano para o brasileiro
@@ -117,18 +212,44 @@ export class ContasComponent implements OnInit {
     }
   }
 
+  // =========== Busca personalizada ====================================================
+  Search(campo: any, valor: any): any{
+    if (valor !== undefined && valor !== ''){
+      if (campo === 'valor'){
+        valor = valor.replace('R$', '');
+      }
+
+      if (valor === 'Cancelado' && campo === 'situacao'){
+        this.showCancel = true;
+      } else {
+        this.showCancel = false;
+      }
+
+      if (valor !== '' && this.tempItemsList){
+        this.tempItemsList = this.contas.filter(res => {
+          return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').match(
+                  valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''
+                ));
+        });
+      } else if (valor === '') {
+        this.ngOnInit();
+      }
+    } else {
+      this.getItems();
+      if (campo === 'situacao'){
+        this.showCancel = true;
+      }
+    }
+  }
+
   // Adicionar uma nova conta
-  showModal(title: string, items: any): void {
+  showModal(items: any): void {
     this.modalContas = {
-      title,
-      mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
       items: [items],
       fontAwesomeClass: 'fa-ban',
       action: {
-        onClickYes: () => {
-          console.log('Cliquei no sim');
-        },
-        onClickNo: () => { }
+        onClickYes: () => {},
+        onClickNo: () => {}
       }
     };
     this.showModalContas = true;
@@ -143,10 +264,16 @@ export class ContasComponent implements OnInit {
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {
-          if (title === 'Deletar') {
-            this.deleteItem(items.id);
+          if (title === 'Cancelar') {
+            items.situacao = 'Cancelado';
+            this.updateItem(title, items);
           } else if (title === 'Pagar') {
-            console.log('Cliquei no Pagar');
+            if (items.tipo === 'A pagar'){
+              items.situacao = 'Pago';
+            } else {
+              items.situacao = 'Recebido';
+            }
+            this.updateItem(title, items);
           }
         },
         onClickNo: () => { }
