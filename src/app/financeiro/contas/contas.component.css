@@ -148,6 +148,10 @@
     height: 200px;
 }
 
+button:focus {
+    outline:0;
+}
+
 /* ======= */
 
 tr button i {
@@ -224,7 +228,7 @@ ng-select {
 }
 
 .table-responsive {
-    min-height: 250px;
+    min-height: 280px;
     width: 100%;
     overflow-x: auto;
 }

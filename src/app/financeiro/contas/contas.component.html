@@ -1,7 +1,7 @@
 <!-- Grafico e filtros-->
 <div class="cards">
   <div>
-    <h5>Gráfico</h5>
+    <h5>Gráfico de contas no ano</h5>
     <hr>
     <div style="display: block">
       <canvas baseChart
@@ -19,7 +19,7 @@
 
   <!--Filtros -->
   <div class="filters">   
-    <h5>Filtros Tabela</h5>
+    <h5>Filtros da Tabela</h5>
     <hr>
     <div class="date-filter">
       <label for="data-ranger-picker">Período: </label>
@@ -34,7 +34,7 @@
           endKey="end"
           [ranges]="ranges"
           [(ngModel)]="selected"
-          name="daterange"
+          name="entrada"
           alwaysShowCalendars = true
           class="datepicker-calendar-icon"
           (change)="convertMomentToDate($event)"/>
@@ -43,19 +43,19 @@
     <div class="value-filter">   
       <div class="initial">
         <label for="initialValue">Valor inicial</label>
-        <input  class="range-slider__range" type="range" name="initialValue" id="initialValue" min="0" max="{{ maxValue + 1 }}" step="1" onmousemove="rangeInitialValue.value=value" (change)="filterValueBeteween('valor_inicial', $event)" value="0">
+        <input  class="range-slider__range" type="range" name="entrada" id="initialValue" min="0" max="{{ maxValue + 1 }}" step="1" onmousemove="rangeInitialValue.value=value" (change)="filterValueBeteween('valor_inicial', $event)" value="0">
         <output id="rangeInitialValue"></output>
       </div>
 
       <div class="final"> 
         <label for="finalValue">Valor Final</label>
-        <input  class="range-slider__range" type="range" name="finalValue" id="finalValue" min="0" max="{{ maxValue + 1 }}" step="1" onmousemove="rangeFinalValue.value=value" (change)="filterValueBeteween('valor_final', $event);" value="{{ maxValue + 1 }}">
+        <input  class="range-slider__range" type="range" name="entrada" id="finalValue" min="0" max="{{ maxValue + 1 }}" step="1" onmousemove="rangeFinalValue.value=value" (change)="filterValueBeteween('valor_final', $event);" value="{{ maxValue + 1 }}">
         <output id="rangeFinalValue"></output>
       </div>
     </div>
 
-    <button class="button-alter-filters">
-      Limpa Filtros
+    <button class="button-alter-filters" (click)="clearInput('entrada')">
+      Limpa Todos os Filtros
     </button>
 
   </div>
@@ -92,43 +92,47 @@
               </thead>
               <tbody>
                 <tr>
-                  <td><input class="form-control" type="search" placeholder="Descrição" (input)="Search('descricao', $event.target.value)"></td>
-                  <td><input class="form-control" type="date" placeholder="Data" (input)="Search('data', $event.target.value)"></td>
+                  <td><input id="descricao" name="entrada" class="form-control" type="search" placeholder="Descrição" (input)="Search('descricao', $event.target.value)"></td>
+                  <td><input id="data" name="entrada" class="form-control" type="date" placeholder="Data" (input)="Search('data', $event.target.value)"></td>
                   <td>      
-                    <ng-select name="tipo" placeholder="Tipo" (change)="Search('tipo', $event)">
+                    <ng-select id="tipo" name="entrada" placeholder="Tipo" (change)="Search('tipo', $event)">
                       <ng-option *ngFor="let type of types" [value]="type.status">{{ type.status }}</ng-option>
+                      <ng-option [value]="''">Todos</ng-option>
                     </ng-select>
                   </td>
-                  <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2" (input)="Search('valor', $event.target.value)"></td>
+                  <td><input id="valor" name="entrada" class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2" (input)="Search('valor', $event.target.value)"></td>
                   <td>
-                    <ng-select name="situacao" placeholder="Situação" (change)="Search('situacao', $event)">
+                    <ng-select id="situacao" name="entrada" placeholder="Situação" (change)="Search('situacao', $event)">
                       <ng-option *ngFor="let situation of situations" [value]="situation.status">{{ situation.status }}</ng-option>
+                      <ng-option [value]="''">Todos</ng-option>
                     </ng-select>
                   </td>
                   <td></td>
                 </tr>
 
-                <tr *ngFor="let item of tempItemsList" 
-                    [ngClass]="item.situacao === 'Pendente' ? 'table-row--red' : 'table-row'">
-                  <td>{{ item?.descricao }}</td>
-                  <td>{{ reverseStringDate(item?.data) | mask: 'd0/M0/0000' }}</td>
-                  <td>{{ item.tipo }}</td>
-                  <td>{{ item.valor }}</td>
-                  <td>
-                    <span [ngClass]="item.situacao === 'Pendente' ? 'status red' : 
-                                     item.situacao === 'Cancelado' ? 'status yellow' : 'status green'">
-                    </span>
-                    {{ item.situacao }}
-                  </td>
-                  <td>
-                    <button type="button" class="btn btn-info mr-3" *ngIf="item.situacao !== 'Cancelado'" (click)="showModalYesNo('Cancelar', item)">
-                      <i class="fa fa-window-close"></i> Cancelar
-                    </button>
-                    <button type="button" class="btn btn-light shadow-button" *ngIf="item.situacao === 'Pendente'" (click)="showModalYesNo('Pagar', item)">
-                      <i class="fa fa-money"></i> Pagar
-                    </button>            
-                  </td>
-                </tr>
+                <ng-container *ngFor="let item of tempItemsList">
+                  <tr *ngIf="item.situacao !== 'Cancelado' || showCancel"  
+                      [ngClass]="item.situacao === 'Pendente' ? 'table-row--red' : 'table-row'">
+                    <td>{{ item?.descricao }}</td>
+                    <td>{{ reverseStringDate(item?.data) | mask: 'd0/M0/0000' }}</td>
+                    <td>{{ item.tipo }}</td>
+                    <td>{{ item.valor }}</td>
+                    <td>
+                      <span [ngClass]="item.situacao === 'Pendente' ? 'status red' : 
+                                       item.situacao === 'Cancelado' ? 'status yellow' : 'status green'">
+                      </span>
+                      {{ item.situacao }}
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-info mr-3" *ngIf="item.situacao !== 'Cancelado'" (click)="showModalYesNo('Cancelar', item)">
+                        <i class="fa fa-window-close"></i> Cancelar
+                      </button>
+                      <button type="button" class="btn btn-light shadow-button" *ngIf="item.situacao === 'Pendente'" (click)="showModalYesNo('Pagar', item)">
+                        <i class="fa fa-money"></i> Pagar
+                      </button>            
+                    </td>
+                  </tr>
+                </ng-container>
               </tbody>
             </table>
 
