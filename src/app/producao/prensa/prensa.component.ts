@@ -444,13 +444,14 @@ export class PrensaComponent implements OnInit {
       if (prensaInfoItems.filter(item => item.edit === true).length === 0) { // Verifica se algum item ainda não foi fechado
 
         if (prensaInfoHead.socioProduzido && prensaInfoHead.produtoProduzido) {
-          let arrayUniqueByKey = [...new Map(prensaInfoItems.map(item => [item.product.id, item.product])).values()];
 
+          let arrayUniqueByKey = [...new Map(prensaInfoItems.map(item => [item.product.id, item.product])).values()];
           arrayUniqueByKey.forEach(item => {
             item['quantidade'] = 0;
             prensaInfoItems.forEach(element => {
-              // tslint:disable-next-line: max-line-length
-              if ((element.product.produto.id === item['produto'].id)  && (element.product.fornecedor.id === item['fornecedor'].id) && (element.product.qualidade.id === item['qualidade'].id)) {
+              if ((element.product.produto.id === item['produto'].id) &&
+                  (element.product.fornecedor.id === item['fornecedor'].id) &&
+                  (element.product.qualidade.id === item['qualidade'].id)) {
                 item['quantidade'] += Number(element.qtn);
                 item['fornecedor_id'] = element.product.fornecedor.id;
               }
@@ -540,7 +541,7 @@ export class PrensaComponent implements OnInit {
 
         this.verificaProdutoProduzido = true;
         this.produtoProduzidoPrensa = prensaInfoHead['produtoProduzido'];
-        
+
         this.loadLoteProduzido();
         this.modalRef.hide();
       } else {

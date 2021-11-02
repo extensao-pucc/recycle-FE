@@ -577,7 +577,6 @@ export class TriagemComponent implements OnInit {
 
         this.lotItems.push(triagemElement);
     });
-    console.log(triagemInfoItems);
     localStorage.setItem('triagemInfoItems', JSON.stringify(this.lotItems));
 
     localStorage.removeItem('triagemInfoHead');
