@@ -380,6 +380,7 @@ export class TriagemComponent implements OnInit {
             item['quantidade'] = 0;
             triagemInfoItems.forEach(element => {
               if (element.product.precificacao_id === item['precificacao_id']) {
+
                 item['quantidade'] += Number(element.qtn);
                 item['fornecedor_id'] = triagemInfoHead.fornecedor.id;
               }
