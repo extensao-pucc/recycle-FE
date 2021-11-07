@@ -155,13 +155,12 @@ export class PrensaComponent implements OnInit {
     } else {
       this.loadHeadForm();
       this.changeProductionStatus();
-      this.crudService.getItems('parametros').subscribe(response => {
-        if (!isNaN(response[0].presa)){
-          this.lastPrensa =  Number(response[0].presa);
-        } else {
-          this.lastPrensa = 0;
-        }
-      });
+
+      this.crudService.getItems('lote').subscribe(response =>
+        // Checa na tabela de lote e recupera o valor para prensa no banco, caso não exista seta como ZERO
+        response.at(-1).num_lote !== undefined ? this.lastPrensa = Number(response.at(-1).num_lote) : this.lastPrensa = 0
+        // console.log(response)
+      );
     }
 
     const prensaInfoItems = JSON.parse(localStorage.getItem('prensaInfoItems'));

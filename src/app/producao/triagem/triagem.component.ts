@@ -122,9 +122,10 @@ export class TriagemComponent implements OnInit {
     } else {
       this.loadHeadForm();
       this.changeProductionStatus();
-      this.crudService.getItems('parametros').subscribe(response =>
+      this.crudService.getItems('lote').subscribe(response =>
         // Checa na tabela Parametros e recupera o valor da triagem no banco, caso não exista seta como ZERO
-        response[0].triagem !== undefined ? this.lastTriagem = Number(response[0].triagem) : this.lastTriagem = 0
+        response.at(-1).num_lote !== undefined ? this.lastTriagem = Number(response.at(-1).num_lote) : this.lastTriagem = 0
+        // console.log(response)
       );
     }
     this.getItems();

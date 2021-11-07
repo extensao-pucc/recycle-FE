@@ -165,7 +165,6 @@ export class ProductionService {
     let movimentacoes = [];
     this.getPrecificacao();
 
-    console.log(arrayUniqueByKey)
     arrayUniqueByKey.forEach(item => {
       const precificacao = this.precificacoes.filter(resp => resp['id'] === item.id)[0];
       const saldoAtual = String(Number(precificacao.quantidade) - Number(item.quantidade));
@@ -185,9 +184,9 @@ export class ProductionService {
       movimentacoes.push(monvimento);
     });
 
-    const precificacao = this.precificacoes.filter(resp => resp['id'] === prodInfoHead.produtoProduzido.id)[0];
-    let saldoAtual = String(Number(precificacao.quantidade) + Number(prodInfoHead.produtoProduzido.quantidade));
-    let diferenca =  String(Number(saldoAtual) - Number(precificacao.quantidade));
+    const precificacaoEntrada = this.precificacoes.filter(resp => resp['id'] === prodInfoHead.produtoProduzido.id)[0];
+    let saldoAtual = String(Number(precificacaoEntrada.quantidade) + Number(prodInfoHead.produtoProduzido.quantidade));
+    let diferenca =  String(Number(saldoAtual) - Number(precificacaoEntrada.quantidade));
 
     const monvimento = {
       'id': '',
@@ -195,12 +194,13 @@ export class ProductionService {
       'entrada_saida': 'E',
       'tipo': 'Prensa',
       'numero_tipo': prodInfoHead.currentLote,
-      'cod_produto': prodInfoHead.produtoProduzido.produto.id,
-      'saldo_anterior': Number(precificacao.quantidade),
+      'cod_produto': prodInfoHead.produtoProduzido.id,
+      'saldo_anterior': Number(precificacaoEntrada.quantidade),
       'saldo_atual': Number(saldoAtual),
       'dif': Number(diferenca)
     };
     movimentacoes.push(monvimento);
+    console.log(monvimento)
     return movimentacoes;
   }
 
