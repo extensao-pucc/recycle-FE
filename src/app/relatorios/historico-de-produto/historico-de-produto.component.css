@@ -131,3 +131,7 @@ td div {
 .companySelection {
     background-color:  #397cc2;
 }
+
+.alert-secondary {
+    padding: 50px;
+}

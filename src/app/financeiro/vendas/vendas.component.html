@@ -1,6 +1,6 @@
 <h2 class="d-flex justify-content-between">Vendas
   <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"><i
-      class="fa fa-plus"></i>Efetuar venda</button>
+      class="fa fa-plus"></i>Nova venda</button>
 </h2>
 
 <!-- Tabela -->
@@ -39,7 +39,7 @@
         <td data-column="Nome" class="table-row-td">{{ item?.nome }}</td>
         <td data-column="Nome" class="table-row-td">{{ item?.nome }}</td>
         <td data-column="Nome" class="table-row-td">{{ item?.nome }}</td>
-        <td class="table-row-td not-visible"><button type="button" class="btn btn-info shadow-button"
+        <td class="table-row-td"><button type="button" class="btn btn-info shadow-button"
           (click)="viewProducts(item)"><i class="fa fa-chevron-circle-down"> Visualizar</i></button></td>
       </tr>
     </tbody>
@@ -48,7 +48,7 @@
 <!-- ========== -->
 
 <!-- Formulario -->
-<hr>
+<!-- <hr> -->
 <form [formGroup]="itemForm" *ngIf="itemForm && showForm" #eventForm="ngForm">
   <input formControlName="id" hidden="true">
 
@@ -56,7 +56,6 @@
 
     <div class="col-md-9">
       <div class="form-row">
-
         <div class="form-group col-md-4">
           <label>Vendedor: </label>
           <input class="form-control" type="text" maxlength="100" formControlName="nome">
@@ -93,62 +92,98 @@
     </div>
   </div>
 
-  <h5>Produtos</h5>
   <hr>
-  <div class="form-row">
-    <div class="form-group col-md-2">
-      <label>CEP: </label>
-      <app-pesquisa-cep (retornaPesquisaCep)="populaDados($event)" valor="{{ itemForm.controls.CEP.value }}">
-      </app-pesquisa-cep>
-      <p class="error-msg" *ngIf="itemForm.controls.CEP.errors">
-        <i class="fa fa-times"></i> {{ itemForm.controls.CEP.errors.msgErro }}
-      </p>
+  <div class="wrap cf">
+    <div class="heading cf">
+      <h1>Produtos da venda</h1>
+      <a href="#" class="continue">Adicionar produto</a>
+    </div>
+    <div class="cart">
+      <ul class="cartWrap">
+        <li class="items odd">       
+          <div class="infoWrap"> 
+              <div class="cartSection">
+                <p class="itemNumber">#10001</p>
+                <h3>Latinha</h3>     
+                <p> <input type="text" class="qty"/> x R$15,00</p>       
+                <p class="stockStatus">Em estoque</p>
+              </div>  
+                
+              <div class="prodTotal cartSection">
+                <p>R$15,00</p>
+              </div>
+              <div class="cartSection removeWrap">
+                <a class="remove">x</a>
+              </div>
+          </div>
+        </li>
+  
+        <li class="items even">       
+          <div class="infoWrap"> 
+            <div class="cartSection">   
+              <p class="itemNumber">#10002</p>
+              <h3>Metal</h3>    
+              <p><input type="text" class="qty"/> x R$5,00</p>      
+              <p class="stockStatus">Em estoque</p>
+            </div>  
+          
+            <div class="prodTotal cartSection">
+              <p>R$5,00</p>
+            </div>
+              <div class="cartSection removeWrap">
+              <a class="remove">x</a>
+            </div>
+          </div>
+        </li>
+        
+        <li class="items odd">  
+          <div class="infoWrap"> 
+            <div class="cartSection">           
+              <p class="itemNumber">#10003</p>
+              <h3>Papelão A25</h3>       
+              <p> <input type="text" class="qty"/> x R$20,00</p>          
+              <p class="stockStatus out"> Sem estoque</p>
+            </div>  
+           
+            <div class="prodTotal cartSection">
+              <p>R$20,00</p>
+            </div>
+              <div class="cartSection removeWrap">
+              <a class="remove">x</a>
+            </div>
+          </div>
+        </li> 
+      </ul>
     </div>
 
-    <div class="form-group col-md-2">
-      <label>Número: </label>
-      <input class="form-control" type="text" maxlength="100" formControlName="numero">
-      <p class="error-msg" *ngIf="itemForm.controls.numero.errors">
-        <i class="fa fa-times"></i> {{ itemForm.controls.numero.errors.msgErro }}
-      </p>
+    <hr> 
+    <div class="promoCode">
+      <label for="promo">Teve algum desconto na venda?</label>
+      <label for="">Qual foi o valor?</label>
+      <input type="text" name="promo" placholder="Enter Code" />
     </div>
 
-    <div class="form-group col-md-2">
-      <label>UF: </label>
-      <ng-select formControlName="UF" name="UF">
-        <ng-option *ngFor="let state of states" [value]="state.uf">{{state.state}}</ng-option>
-      </ng-select>
-      <p class="error-msg" *ngIf="itemForm.controls.UF.errors">
-        <i class="fa fa-times"></i> {{ itemForm.controls.UF.errors.msgErro }}
-      </p>
-    </div>
-
-    <div class="form-group col-md-6">
-      <label>Complemento: </label>
-      <input class="form-control" type="text" maxlength="100" formControlName="complemento">
-      <p class="error-msg" *ngIf="itemForm.controls.complemento.errors">
-        <i class="fa fa-times"></i> {{ itemForm.controls.complemento.errors.msgErro }}
-      </p>
+    <div class="subtotal cf">
+      <ul>
+        <li class="totalRow">
+          <span class="label">Subtotal</span>
+          <span class="value">R$40,00</span>
+        </li>
+        <li class="totalRow">
+          <span class="label">Desconto</span>
+          <span class="value">- R$5,00</span>
+        </li>
+        <li class="totalRow final">
+          <span class="label">Total</span>
+          <span class="value">R$35,00</span>
+        </li>
+        <li class="totalRow">
+          <a href="#" class="btn continue">Finalizar Venda</a>
+        </li>
+      </ul>
     </div>
   </div>
-
-  <div class="form-row">
-    <div class="form-group col-md-5">
-      <label>Logradouro: </label>
-      <input class="form-control" type="text" maxlength="100" formControlName="endereco">
-      <p class="error-msg" *ngIf="itemForm.controls.endereco.errors">
-        <i class="fa fa-times"></i> {{ itemForm.controls.endereco.errors.msgErro }}
-      </p>
-    </div>
-
-    <div class="form-group col-md-5">
-      <label>Cidade: </label>
-      <input class="form-control" type="text" maxlength="100" formControlName="cidade">
-      <p class="error-msg" *ngIf="itemForm.controls.cidade.errors">
-        <i class="fa fa-times"></i> {{ itemForm.controls.cidade.errors.msgErro }}
-      </p>
-    </div>
-  </div>
+  <hr> 
 
   <div class="row align-items-end">
     <hr>

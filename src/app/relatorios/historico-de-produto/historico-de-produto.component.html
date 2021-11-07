@@ -2,21 +2,20 @@
 <h3>Historico de produto</h3>
 
 <!-- form cabeçalho -->
-<div class="cabecalho">
-    <form [formGroup]="headForm">
-        <div class="form-row">
-            
+<form [formGroup]="headForm">
+    <div class="cabecalho">
+        <div class="form-row">           
             <div class="form-group col-md-6"> 
                 <label for="produto">Produto</label>                   
                 <ng-select formControlName="product" name="product">
-                    <!-- <ng-component *ngFor="let produto of produtos">
+                    <ng-component *ngFor="let produto of produtos">
                         <ng-option [value]="produto"> 
-                            <span class="productOption productSelection selesctionItem"> {{produto.descricao}} </span> 
-                            <span class="productOption reasonSelection selesctionItem"> {{produto.qualidade.nome}} </span> 
+                            <span class="productOption productSelection selesctionItem"> {{ produto.produto.descricao }} </span> 
+                            <span class="productOption reasonSelection selesctionItem"> {{ produto.qualidade.nome }} </span> 
                             <span class="productOption companySelection selesctionItem"> {{ produto.fornecedor.razao_social_nome }} </span>
                         </ng-option>
-                        </ng-component> -->
-                    </ng-select>
+                    </ng-component>
+                </ng-select>
             </div>  
 
             <div class="form-group col-md-3">
@@ -29,25 +28,19 @@
                 <input class="form-control" formControlName="fim" name="fim" type="date">
             </div>  
         </div>
-    </form>
-</div>          
+
+    </div>
+
+    <div class="row d-flex justify-content-around btn-prod">
+        <button type="button"  class="btn btn-success btn-lg" (click)="generateReport()"><i class="fa fa-print"></i>Gerar Relatório</button>
+        <button type="button"  class="btn btn-primary btn-lg" (click)="exportReport()"><i class="fa fa-play-circle"></i>Baixar Relatório</button>
+    </div>
+</form>
 <!-- ============== -->
 
-<div class="row d-flex justify-content-around btn-prod">
-    <button type="button"  class="btn btn-success btn-lg"><i class="fa fa-print"></i>Gerar Relatório</button>
-    <button type="button"  class="btn btn-primary btn-lg"><i class="fa fa-play-circle"></i>Baixar Relatório</button>
-</div>
 
-<!-- <ng-select formControlName="product" name="product">
-    <ng-component *ngFor="let movimentacao of movimentacoes">
-        <ng-option [value]="movimentacao"> 
-            <span class="productOption productSelection selesctionItem"> {{ movimentacao.data }} </span> 
-        </ng-option>
-        </ng-component>
-    </ng-select> -->
-
-<div class="table-list table-shadow">
-    <table class="table table-hover">
+<div class="table-list table-shadow" id="tabHistoryProduct">
+    <table class="table table-hover" *ngIf="showTable">
         <thead class="thead-dark">
         <tr>
             <th scope="col"> <i class="fa fa-calendar"></i>Dia</th>
@@ -61,7 +54,7 @@
         </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let movimentacao of movimentacoes">
+            <tr *ngFor="let movimentacao of tempItemsList">
                 <td >{{ sharedVariableService.currentDate(movimentacao.data) }}</td>
                 <td>{{ sharedVariableService.currentTime(movimentacao.data) }}</td>
                 <td> 
@@ -80,5 +73,17 @@
         </tbody>
     </table>
 </div>
+
+<!-- Lista sem dados -->
+<div *ngIf="!showForm && !tempItemsList?.length" class="alert alert-info" role="alert">
+    <h4 class="alert-heading ">Opa !</h4>
+    <p>Nenhum resultado foi encontrado.</p>
+</div>
+
+<div class="alert alert-secondary" role="alert" *ngIf="!showTable">
+    <h4 class="alert-heading ">Relatório ainda não gerado !</h4>
+    <p>Selecione as opções desejadas e busque pelo seu produto para ver o historico de movimentações.</p> 
+</div>
+<!-- =============== -->
 
 

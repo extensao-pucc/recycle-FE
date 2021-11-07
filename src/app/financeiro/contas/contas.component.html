@@ -1,8 +1,9 @@
-<!-- Graficos com dados das Contas -->
+<!-- Grafico e filtros-->
 <div class="cards">
   <div>
+    <h5>Gráfico de contas no ano</h5>
+    <hr>
     <div style="display: block">
-      <button mat-button mat-raised-button color="primary" (click)="randomize()">Alternar visualização</button>
       <canvas baseChart
         [datasets]="barChartData"
         [labels]="barChartLabels"
@@ -11,10 +12,15 @@
         [chartType]="barChartType">
       </canvas>
     </div>
+    <button class="button-alter-canvas" mat-button mat-raised-button (click)="randomize()">
+      Alternar visualização do gráfico
+    </button>
   </div>
 
   <!--Filtros -->
-  <div class="filters">
+  <div class="filters">   
+    <h5>Filtros da Tabela</h5>
+    <hr>
     <div class="date-filter">
       <label for="data-ranger-picker">Período: </label>
       <input id="data-ranger-picker" placeholder="-- Selecione o período --"
@@ -28,273 +34,122 @@
           endKey="end"
           [ranges]="ranges"
           [(ngModel)]="selected"
-          name="daterange"
+          name="entrada"
           alwaysShowCalendars = true
-          class="datepicker-calendar-icon"/>
+          class="datepicker-calendar-icon"
+          (change)="convertMomentToDate($event)"/>
     </div>
+
     <div class="value-filter">   
       <div class="initial">
         <label for="initialValue">Valor inicial</label>
-        <input  class="range-slider__range" type="range" name="initialValue" id="initialValue" min="0" max="1200" step="1" onmousemove="rangeInitialValue.value=value">
+        <input  class="range-slider__range" type="range" name="entrada" id="initialValue" min="0" max="{{ maxValue + 1 }}" step="1" onmousemove="rangeInitialValue.value=value" (change)="filterValueBeteween('valor_inicial', $event)" value="0">
         <output id="rangeInitialValue"></output>
       </div>
 
-      <div class="final">
+      <div class="final"> 
         <label for="finalValue">Valor Final</label>
-        <input  class="range-slider__range" type="range" name="finalValue" id="finalValue" min="0" max="1200" step="1" onmousemove="rangeFinalValue.value=value">
+        <input  class="range-slider__range" type="range" name="entrada" id="finalValue" min="0" max="{{ maxValue + 1 }}" step="1" onmousemove="rangeFinalValue.value=value" (change)="filterValueBeteween('valor_final', $event);" value="{{ maxValue + 1 }}">
         <output id="rangeFinalValue"></output>
       </div>
     </div>
+
+    <button class="button-alter-filters" (click)="clearInput('entrada')">
+      Limpa Todos os Filtros
+    </button>
+
   </div>
   <!-- ========== -->
+
 </div>
 <!-- ============================= -->
 
 <!-- Tabelas ===================== -->
-<div class="tabset">
-  <!-- Todas -->
-  <input type="radio" name="tabset" id="tab1" aria-controls="marzen" checked>
-  <label for="tab1">Todas as contas</label>
-
-  <!-- A receber -->
-  <input type="radio" name="tabset" id="tab2" aria-controls="rauchbier">
-  <label for="tab2">A receber</label>
-
-  <!-- A pagar -->
-  <input type="radio" name="tabset" id="tab3" aria-controls="dunkles">
-  <label for="tab3">A pagar</label>
+<section id="todas-contas" class="tab-panel">
+  <div class="recent-grid">
+    <div class="projects">
+      <div class="card">
+        <div class="card-header">
+          <h3>Contas a pagar e receber</h3>
+          <button type="button" (click)="showModal('item')">
+            <i class="fa fa-plus"></i> Nova conta
+          </button>
+        </div>
   
-  <div class="tab-panels">
-    <section id="todas-contas" class="tab-panel">
-      <div class="recent-grid">
-        <div class="projects">
-          <div class="card">
-            <div class="card-header">
-              <h3>Contas a pagar e receber</h3>
-              <button type="button" (click)="showModal('Deletar', 'item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
-            </div>
-      
-            <!-- Tabela -->
-            <div class="card-body">
-              <div class="table-responsive">
-                <table  id="myTable" width="100%" #filteredTable>
-                  <thead>
-                    <tr>
-                      <th (click)="sortTable(0)"><i class="fa fa-file"></i>Descrição</th>
-                      <th (click)="sortTable(1)"><i class="fa fa-calendar"></i>Data</th>
-                      <th (click)="sortTable(2)"><i class="fa fa-marker"></i>Tipo</th>
-                      <th (click)="sortTable(3)"><i class="fa fa-money"></i>Valor</th>
-                      <th (click)="sortTable(4)">Situação</th>
-                      <th>Opções</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><input class="form-control" type="search" placeholder="Descrição"></td>
-                      <td><input class="form-control" type="search" placeholder="Data"></td>
-                      <td>      
-                        <ng-select name="tipo" placeholder="Tipo">
-                          <ng-option value="A pagar">A pagar</ng-option>
-                          <ng-option value="A receber">A Receber</ng-option>
-                        </ng-select>
-                      </td>
-                      <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2"></td>
-                      <td>
-                        <ng-select name="situacao" placeholder="Situação">
-                          <ng-option value="Pago">Pago</ng-option>
-                          <ng-option value="Recebido">Recebido</ng-option>
-                          <ng-option value="Pedente">Pendente</ng-option>
-                        </ng-select>
-                      </td>
-                      <td></td>
-                    </tr>
-                    <tr>
-                        <td>Salario de funcionario</td>
-                        <td>07/08/2021</td>
-                        <td>A pagar</td>
-                        <td>R$ 7.000,00</td>
-                        <td><span class="status green"></span> Pago </td>
-                        <td>
-                          <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                          <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                        </td>
-                    </tr>
-                    <tr class="table-row--red">
-                      <td>Recebimento de Fornecedor</td>
-                      <td>08/10/2021</td>
-                      <td>A receber</td>
-                      <td>R$ 500,00</td>
-                      <td><span class="status red"></span> Pendente</td>
-                      <td>
-                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                        <button type="button" class="btn btn-light shadow-button">Pagar</button>            
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Conta de luz</td>
-                      <td>21/08/2021</td>
-                      <td>A pagar</td>
-                      <td>R$ 900,00</td>
-                      <td><span class="status green"></span>Pago</td>
-                      <td>
-                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Conta de agua</td>
-                      <td>21/06/2021</td>
-                      <td>A receber</td>
-                      <td>R$ 1.100,00</td>
-                      <td><span class="status green"></span>Recebido</td>
-                      <td>
-                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!-- ------ -->
-          </div>
-        </div>
-      </div>
-    </section>
+        <!-- Tabela -->
+        <div class="card-body">
+          <div class="table-responsive">
+            <table  id="TodasAsContas" width="100%" #filteredTable>
+              <thead>
+                <tr>
+                  <th (click)="sortTable(0, 'TodasAsContas')"><i class="fa fa-file"></i>Descrição</th>
+                  <th (click)="sortTable(1, 'TodasAsContas')"><i class="fa fa-calendar"></i>Data</th>
+                  <th (click)="sortTable(2, 'TodasAsContas')"><i class="fa fa-marker"></i>Tipo</th>
+                  <th (click)="sortTable(3, 'TodasAsContas')"><i class="fa fa-money"></i>Valor (R$)</th>
+                  <th (click)="sortTable(4, 'TodasAsContas')">Situação</th>
+                  <th>Opções</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input id="descricao" name="entrada" class="form-control" type="search" placeholder="Descrição" (input)="Search('descricao', $event.target.value)"></td>
+                  <td><input id="data" name="entrada" class="form-control" type="date" placeholder="Data" (input)="Search('data', $event.target.value)"></td>
+                  <td>      
+                    <ng-select id="tipo" name="entrada" placeholder="Tipo" (change)="Search('tipo', $event)">
+                      <ng-option *ngFor="let type of types" [value]="type.status">{{ type.status }}</ng-option>
+                      <ng-option [value]="''">Todos</ng-option>
+                    </ng-select>
+                  </td>
+                  <td><input id="valor" name="entrada" class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2" (input)="Search('valor', $event.target.value)"></td>
+                  <td>
+                    <ng-select id="situacao" name="entrada" placeholder="Situação" (change)="Search('situacao', $event)">
+                      <ng-option *ngFor="let situation of situations" [value]="situation.status">{{ situation.status }}</ng-option>
+                      <ng-option [value]="''">Todos</ng-option>
+                    </ng-select>
+                  </td>
+                  <td></td>
+                </tr>
 
-    <section id="a-receber" class="tab-panel">
-      <div class="recent-grid">
-        <div class="projects">
-          <div class="card">
-            <div class="card-header">
-              <h3>A receber</h3>
-              <button type="button" (click)="showModal('Deletar', 'item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
-            </div>
-      
-            <!-- Tabela -->
-            <div class="card-body">
-              <div class="table-responsive">
-                <table  id="myTable" width="100%" #filteredTable>
-                  <thead>
-                    <tr>
-                      <th (click)="sortTable(0)"><i class="fa fa-file"></i>Descrição</th>
-                      <th (click)="sortTable(1)"><i class="fa fa-calendar"></i>Data</th>
-                      <th (click)="sortTable(3)"><i class="fa fa-money"></i>Valor</th>
-                      <th (click)="sortTable(4)">Situação</th>
-                      <th>Opções</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><input class="form-control" type="search" placeholder="Descrição"></td>
-                      <td><input class="form-control" type="search" placeholder="Data"></td>
-                      <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2"></td>
-                      <td>
-                        <ng-select name="situacao" placeholder="Situação">
-                          <ng-option value="Recebido">Recebido</ng-option>
-                          <ng-option value="Pedente">Pendente</ng-option>
-                        </ng-select>
-                      </td>
-                      <td></td>
-                    </tr>
-                    <tr class="table-row--red">
-                      <td>Recebimento de Fornecedor</td>
-                      <td>08/10/2021</td>
-                      <td>R$ 500,00</td>
-                      <td><span class="status red"></span> Pendente</td>
-                      <td>
-                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                        <button type="button" class="btn btn-light shadow-button">Pagar</button>            
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>Conta de agua</td>
-                      <td>21/06/2021</td>
-                      <td>R$ 1.100,00</td>
-                      <td><span class="status green"></span>Recebido</td>
-                      <td>
-                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!-- ------ -->
-          </div>
-        </div>
-      </div>
-    </section>
+                <ng-container *ngFor="let item of tempItemsList">
+                  <tr *ngIf="item.situacao !== 'Cancelado' || showCancel"  
+                      [ngClass]="item.situacao === 'Pendente' ? 'table-row--red' : 'table-row'">
+                    <td>{{ item?.descricao }}</td>
+                    <td>{{ reverseStringDate(item?.data) | mask: 'd0/M0/0000' }}</td>
+                    <td>{{ item.tipo }}</td>
+                    <td>{{ item.valor }}</td>
+                    <td>
+                      <span [ngClass]="item.situacao === 'Pendente' ? 'status red' : 
+                                       item.situacao === 'Cancelado' ? 'status yellow' : 'status green'">
+                      </span>
+                      {{ item.situacao }}
+                    </td>
+                    <td>
+                      <button type="button" class="btn btn-info mr-3" *ngIf="item.situacao !== 'Cancelado'" (click)="showModalYesNo('Cancelar', item)">
+                        <i class="fa fa-window-close"></i> Cancelar
+                      </button>
+                      <button type="button" class="btn btn-light shadow-button" *ngIf="item.situacao === 'Pendente'" (click)="showModalYesNo('Pagar', item)">
+                        <i class="fa fa-money"></i> Pagar
+                      </button>            
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
 
-    <section id="a-pagar" class="tab-panel">
-      <div class="recent-grid">
-        <div class="projects">
-          <div class="card">
-            <div class="card-header">
-              <h3>A pagar</h3>
-              <button type="button" (click)="showModal('Deletar', 'item')"> <i class="fa fa-plus"></i>Nova conta<span class="las la-arrow-right"></span></button>
+            <!-- Lista sem dados -->
+            <div *ngIf="!showForm && !tempItemsList?.length"  class="alert alert-info empty" role="alert">
+              <h4 class="alert-heading ">Opa !</h4>
+              <p>Nenhum resultado foi encontrado.</p>
             </div>
-      
-            <!-- Tabela -->
-            <div class="card-body">
-              <div class="table-responsive">
-                <table  id="myTable" width="100%" #filteredTable>
-                  <thead>
-                    <tr>
-                      <th (click)="sortTable(0)"><i class="fa fa-file"></i>Descrição</th>
-                      <th (click)="sortTable(1)"><i class="fa fa-calendar"></i>Data</th>
-                      <th (click)="sortTable(3)"><i class="fa fa-money"></i>Valor</th>
-                      <th (click)="sortTable(4)">Situação</th>
-                      <th>Opções</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td><input class="form-control" type="search" placeholder="Descrição"></td>
-                      <td><input class="form-control" type="search" placeholder="Data"></td>
-                      <td><input class="form-control" type="search" placeholder="Valor" prefix="R$ " mask="separator.2"></td>
-                      <td>
-                        <ng-select name="situacao" placeholder="Situação">
-                          <ng-option value="Pago">Pago</ng-option>
-                          <ng-option value="Pedente">Pendente</ng-option>
-                        </ng-select>
-                      </td>
-                    </tr>
-                    <tr>
-                        <td>Salario de funcionario</td>
-                        <td>07/08/2021</td>
-                        <td>R$ 7.000,00</td>
-                        <td><span class="status green"></span> Pago </td>
-                        <td>
-                          <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                          <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                        </td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                      <td>Conta de luz</td>
-                      <td>21/08/2021</td>
-                      <td>A pagar</td>
-                      <td><span class="status green"></span>Pago</td>
-                      <td>
-                        <button type="button" class="btn btn-info mr-2"><i class="fa fa-edit"></i></button>
-                        <button type="button" class="btn btn-danger mr-2"><i class="fa fa-trash"></i></button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-            </div>
-            <!-- ------ -->
+            <!-- =============== -->
           </div>
         </div>
+        <!-- ------ -->
       </div>
-    </section>
-  </div> 
-</div>
+    </div>
+  </div>
+</section>
 <!-- ============================= -->
 
 <app-modal-contas [modalContas]="modalContas" *ngIf="showModalContas"></app-modal-contas>
+<app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>

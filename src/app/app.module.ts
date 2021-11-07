@@ -51,6 +51,7 @@ import { ClientesComponent } from './cadastros/clientes/clientes.component';
 import { VendasComponent } from './financeiro/vendas/vendas.component';
 import { ContasComponent } from './financeiro/contas/contas.component';
 import { ModalContasComponent } from './financeiro/contas/modal-contas/modal-contas.component';
+import { EstoqueComponent } from './estoque/estoque.component';
 
 const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
 @NgModule({
@@ -84,6 +85,7 @@ const avatarColors = ['#FFB6C1', '#2c3e50', '#95a5a6', '#f39c12', '#1abc9c'];
     VendasComponent,
     ContasComponent,
     ModalContasComponent,
+    EstoqueComponent,
   ],
   imports: [
     BrowserModule,
