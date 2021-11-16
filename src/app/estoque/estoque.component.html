@@ -2,7 +2,7 @@
 <div id="busca-valor">
     <div class="container">
         <div class="input-group">
-          <input class="form-control" type="text" placeholder="Busque pelo código ou nome do produto" name="produto" (input)="filterCode($event.target.value)"/>
+          <input class="form-control" type="text" placeholder="Busque pelo código do produto" name="produto" (input)="filterCode($event.target.value)"/>
           <div class="input-group-append">
             <button class="btn btn-primary" id="buscar" (click)="Search()">Buscar</button>
           </div>
@@ -11,7 +11,7 @@
 </div>
 
 <section>
-    <table class="table table-bordered" id="tabela-estoque">
+    <table class="table table-bordered table-striped" id="tabela-estoque">
       <thead>
         <tr>
           <th scope="col" (click)="sortTable(0, 'tabela-estoque')">Código</th>
