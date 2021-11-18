@@ -1,3 +1,4 @@
+import { EstoqueComponent } from './estoque/estoque.component';
 import { ContasComponent } from './financeiro/contas/contas.component';
 import { crudDeactivateGuard } from './guards/crud.deactivate.guard';
 import { HistoricoDeProdutoComponent } from './relatorios/historico-de-produto/historico-de-produto.component';
@@ -26,9 +27,9 @@ import { TransportadorasComponent } from './cadastros/transportadoras/transporta
 import { TriagemComponent } from './producao/triagem/triagem.component';
 import { PrensaComponent } from './producao/prensa/prensa.component';
 import { RemanufaturaComponent } from './producao/remanufatura/remanufatura.component';
-import { RelatoriosComponent } from './relatorios/relatorios.component';
 import { ConfigScreenComponent } from './config-screen/config-screen.component';
 import { from } from 'rxjs';
+import { HistoricoDeProducoesComponent } from './relatorios/historico-de-producoes/historico-de-producoes.component';
 
 
 const routes: Routes = [
@@ -51,9 +52,10 @@ const routes: Routes = [
   { path: 'prensa', component: PrensaComponent, canActivate: [AuthGuard] },
   { path: 'remanufatura', component: RemanufaturaComponent, canActivate: [AuthGuard] },
   { path: 'contas', component: ContasComponent, canActivate: [AuthGuard] },
-  { path: 'relatorios', component: RelatoriosComponent, canActivate: [AuthGuard] },
-  { path: 'historicoDeProduto', component: HistoricoDeProdutoComponent, canActivate: [AuthGuard] }, 
-  { path: 'configiScreen', component: ConfigScreenComponent, canActivate: [AuthGuard] }, 
+  { path: 'estoque', component: EstoqueComponent, canActivate: [AuthGuard] },
+  { path: 'historicoDeProduto', component: HistoricoDeProdutoComponent, canActivate: [AuthGuard] },
+  { path: 'historicoDeProducoes', component: HistoricoDeProducoesComponent, canActivate: [AuthGuard] },
+  { path: 'configiScreen', component: ConfigScreenComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent},
   { path: '**', redirectTo: '' }
 ];

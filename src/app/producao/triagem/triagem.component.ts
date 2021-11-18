@@ -122,9 +122,10 @@ export class TriagemComponent implements OnInit {
     } else {
       this.loadHeadForm();
       this.changeProductionStatus();
-      this.crudService.getItems('parametros').subscribe(response =>
+      this.crudService.getItems('lote').subscribe(response =>
         // Checa na tabela Parametros e recupera o valor da triagem no banco, caso não exista seta como ZERO
-        response.triagem !== undefined ? this.lastTriagem = Number(response[0].triagem) : this.lastTriagem = 0
+        response.at(-1).num_lote !== undefined ? this.lastTriagem = Number(response.at(-1).num_lote) : this.lastTriagem = 0
+        // console.log(response)
       );
     }
     this.getItems();
@@ -380,6 +381,7 @@ export class TriagemComponent implements OnInit {
             item['quantidade'] = 0;
             triagemInfoItems.forEach(element => {
               if (element.product.precificacao_id === item['precificacao_id']) {
+
                 item['quantidade'] += Number(element.qtn);
                 item['fornecedor_id'] = triagemInfoHead.fornecedor.id;
               }
@@ -577,7 +579,6 @@ export class TriagemComponent implements OnInit {
 
         this.lotItems.push(triagemElement);
     });
-    console.log(triagemInfoItems);
     localStorage.setItem('triagemInfoItems', JSON.stringify(this.lotItems));
 
     localStorage.removeItem('triagemInfoHead');

@@ -190,7 +190,7 @@ export class VendasComponent implements OnInit {
     this.yesNoMessage = {
       title,
       mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
-      items: [title === 'Deletar' ? items : 'f'],
+      items: [title = ''],
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {

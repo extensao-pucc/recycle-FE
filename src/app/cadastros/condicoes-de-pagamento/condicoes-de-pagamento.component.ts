@@ -32,14 +32,14 @@ export class CondicoesDePagamentoComponent implements OnInit, IFormCanDeactivate
     private formBuilder: FormBuilder,
     private formValidatorService: FormValidatorService
   ) { }
-  
+
   canDeactivate(): boolean {
     if (this.eventListingForm) {
       if (this.eventListingForm.dirty) {
         return confirm('Tem certeza que deseja sair ? Suas alterações serão perdidas');
       }
     }
-    return true
+    return true;
   }
 
   ngOnInit(): void {
@@ -75,7 +75,7 @@ export class CondicoesDePagamentoComponent implements OnInit, IFormCanDeactivate
       this.ngOnInit();
     }
   }
-  
+
   // =========== CRUD ===================================================================
   deleteItem(id): void {
     this.crudService.deleteItem('condicoesDePagamento', id).subscribe(response => {
@@ -138,7 +138,7 @@ export class CondicoesDePagamentoComponent implements OnInit, IFormCanDeactivate
 
 
   // =========== Modal de confirmação ===================================================
-  showModal(title: string, items: any) {
+  showModal(title: string, items: any): any {
     const formValues = this.itemForm.value;
 
     this.yesNoMessage = {
@@ -160,7 +160,7 @@ export class CondicoesDePagamentoComponent implements OnInit, IFormCanDeactivate
         onClickNo: () => { }
       }
     };
-  
+
     this.showYesNoMessage = true;
   }
   // ====================================================================================

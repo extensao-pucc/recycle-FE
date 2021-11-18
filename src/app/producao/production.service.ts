@@ -68,15 +68,12 @@ export class ProductionService {
   // Atualiza as movimentações do Item
   movimentacoesToJson(arrayUniqueByKey, currentLote): any{
     let movimentacoes = [];
+    this.getPrecificacao();
 
     arrayUniqueByKey.forEach(item => {
-      const precificacao = this.precificacoes.filter(resp => resp['id'] == item.prod_id)[0];
-
-      let saldoAtual = String(Number(precificacao.quantidade) + Number(item.quantidade));
-      saldoAtual = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
-      item.quantidade = saldoAtual;
-      let diferenca =  String(Number(saldoAtual) - Number(precificacao.quantidade));
-      diferenca =  diferenca.includes('.') ? diferenca : diferenca + '.00';
+      const precificacao = this.precificacoes.filter(resp => resp['id'] === item.precificacao_id)[0];
+      const saldoAtual = String(Number(precificacao.quantidade) + Number(item.quantidade));
+      const diferenca =  String(Number(saldoAtual) - Number(precificacao.quantidade));
 
       const monvimento = {
         'id': '',
@@ -84,7 +81,7 @@ export class ProductionService {
         'entrada_saida': 'E',
         'tipo': 'Triagem',
         'numero_tipo': currentLote,
-        'cod_produto': item.prod_id,
+        'cod_produto': item.precificacao_id,
         'saldo_anterior': Number(precificacao.quantidade),
         'saldo_atual': Number(saldoAtual),
         'dif': Number(diferenca)
@@ -160,22 +157,17 @@ export class ProductionService {
     };
 
     lote_itens.push(items);
-
-    console.log(prodInfoHead)
     return lote_itens;
   }
 
   prensaMovimentacoesToJson(arrayUniqueByKey, prodInfoHead): any{
     let movimentacoes = [];
+    this.getPrecificacao();
 
     arrayUniqueByKey.forEach(item => {
-      const precificacao = this.precificacoes.filter(resp => resp['id'] == item.produto.id)[0];
-
-      let saldoAtual = String(Number(precificacao.quantidade) - Number(item.quantidade));
-      saldoAtual = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
-      item.quantidade = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
-      let diferenca =  String(Number(precificacao.quantidade) - Number(saldoAtual));
-      diferenca =  diferenca.includes('.') ? diferenca : diferenca + '.00';
+      const precificacao = this.precificacoes.filter(resp => resp['id'] === item.id)[0];
+      const saldoAtual = String(Number(precificacao.quantidade) - Number(item.quantidade));
+      const diferenca =  String(Number(precificacao.quantidade) - Number(saldoAtual));
 
       const monvimento = {
         'id': '',
@@ -183,22 +175,17 @@ export class ProductionService {
         'entrada_saida': 'S',
         'tipo': 'Prensa',
         'numero_tipo': prodInfoHead.currentLote,
-        'cod_produto': item.produto.id,
+        'cod_produto': item.id,
         'saldo_anterior': Number(precificacao.quantidade),
         'saldo_atual': Number(saldoAtual),
         'dif': Number(diferenca)
       };
-
       movimentacoes.push(monvimento);
     });
 
-    const precificacao = this.precificacoes.filter(resp => resp['id'] == prodInfoHead.produtoProduzido.id)[0];
-
-    let saldoAtual = String(Number(precificacao.quantidade) + Number(prodInfoHead.produtoProduzido.quantidade));
-    saldoAtual = saldoAtual.includes('.') ? saldoAtual : saldoAtual + '.00';
-    prodInfoHead.produtoProduzido.quantidade = saldoAtual;
-    let diferenca =  String(Number(saldoAtual) - Number(precificacao.quantidade));
-    diferenca =  diferenca.includes('.') ? diferenca : diferenca + '.00';
+    const precificacaoEntrada = this.precificacoes.filter(resp => resp['id'] === prodInfoHead.produtoProduzido.id)[0];
+    let saldoAtual = String(Number(precificacaoEntrada.quantidade) + Number(prodInfoHead.produtoProduzido.quantidade));
+    let diferenca =  String(Number(saldoAtual) - Number(precificacaoEntrada.quantidade));
 
     const monvimento = {
       'id': '',
@@ -206,13 +193,13 @@ export class ProductionService {
       'entrada_saida': 'E',
       'tipo': 'Prensa',
       'numero_tipo': prodInfoHead.currentLote,
-      'cod_produto': prodInfoHead.produtoProduzido.produto.id,
-      'saldo_anterior': Number(precificacao.quantidade),
+      'cod_produto': prodInfoHead.produtoProduzido.id,
+      'saldo_anterior': Number(precificacaoEntrada.quantidade),
       'saldo_atual': Number(saldoAtual),
       'dif': Number(diferenca)
     };
-
     movimentacoes.push(monvimento);
+    console.log(monvimento)
     return movimentacoes;
   }
 

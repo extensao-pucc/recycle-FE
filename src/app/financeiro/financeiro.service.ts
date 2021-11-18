@@ -10,6 +10,7 @@ export class FinanceiroService {
 
   constructor(private http: HttpClient) { }
 
+  // CRUD ====
   getItems(component): Observable<any> {
     return this.http.get(`${environment.apiUrl}/${component}`);
   }
@@ -29,6 +30,11 @@ export class FinanceiroService {
   updateItem(component: string, item: any, id: any): Observable<any> {
     return this.http.put(`${environment.apiUrl}/${component}/${id}/`, item);
   }
+  // ====
+
+  getDateBeteween(component: string, item: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/${component}/`, item);
+  }
 
   createVenda(item:any): Observable<any> {
     console.log(item)
@@ -38,6 +44,7 @@ export class FinanceiroService {
   // Situação para o contas a pagar e receber
   getSituation(): any[]{
     const situation = [
+      {status: 'Cancelado'},
       {status: 'Pago'},
       {status: 'Pendente'},
       {status: 'Recebido'}

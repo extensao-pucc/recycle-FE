@@ -1,0 +1,29 @@
+#busca-valor {
+    height: 60px;
+    /* background-color: #F1F4F9; */
+    padding: 11px 0;
+}
+
+#tabela-estoque {
+    margin:  40px 0;
+}
+
+table thead{
+    background-color: #F1F4F9;
+}
+
+table th:hover {
+    color: #01b9d1;
+    cursor: pointer;
+}
+
+td.stockStatus {
+    color: #82ca9c;
+    font-weight: bold;
+    padding: 0.5em 0 0 1em;
+    text-transform: uppercase;
+  }
+
+td.stockStatus.out {
+    color: #f69679;
+}

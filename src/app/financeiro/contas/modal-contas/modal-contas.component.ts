@@ -60,26 +60,16 @@ export class ModalContasComponent implements OnChanges, OnInit {
   createUpdateItem(): any{
     const formValues = this.itemForm.value;
     if (this.itemForm.status === 'VALID'){
-      if (formValues.id) { // Se tiver id, entra no fluxo de atualização
-        this.financeiroService.updateItem('contas', formValues, formValues.id).subscribe(response => {
-          this.contasComponent.getItems();
-          this.loadForm();
-          this.yesNo(true);
-          this.toastService.addToast('Atualizado com sucesso!');
-        }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
-        });
-      } else { // Caso contrario, cadastra um novo item
-        this.financeiroService.createItem('contas', formValues).subscribe(response => {
-          this.contasComponent.getItems();
-          this.loadForm();
-          this.yesNo(true);
-          this.toastService.addToast('Cadastrado com sucesso');
-        }, err => {
-          this.toastService.addToast(err['message'], 'darkred');
-        });
-      }
-      } else {
+      // Caso contrario, cadastra um novo item
+      this.financeiroService.createItem('contas', formValues).subscribe(response => {
+        this.contasComponent.getItems();
+        this.loadForm();
+        this.yesNo(true);
+        this.toastService.addToast('Cadastrado com sucesso');
+      }, err => {
+        this.toastService.addToast(err['message'], 'darkred');
+      });
+    } else {
       this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
     }
   }

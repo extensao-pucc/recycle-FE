@@ -1,0 +1,41 @@
+
+<div id="busca-valor">
+    <div class="container">
+        <div class="input-group">
+          <input class="form-control" type="text" placeholder="Busque pelo código do produto" name="produto" (input)="filterCode($event.target.value)"/>
+          <div class="input-group-append">
+            <button class="btn btn-primary" id="buscar" (click)="Search()">Buscar</button>
+          </div>
+        </div>
+    </div>
+</div>
+
+<section>
+    <table class="table table-bordered table-striped" id="tabela-estoque">
+      <thead>
+        <tr>
+          <th scope="col" (click)="sortTable(0, 'tabela-estoque')">Código</th>
+          <th scope="col" (click)="sortTable(1, 'tabela-estoque')">Nome do Produto</th>
+          <th scope="col" (click)="sortTable(2, 'tabela-estoque')">Qualidade</th>
+          <th scope="col" (click)="sortTable(3, 'tabela-estoque')">Fornecedor</th>
+          <th scope="col" (click)="sortTable(4, 'tabela-estoque')">Quantidade(KG)</th>
+          <th scope="col" (click)="sortTable(5, 'tabela-estoque')">Situação</th>
+          <th scope="col" (click)="sortTable(6, 'tabela-estoque')">Preço de venda(R$)</th>
+          <th scope="col" (click)="sortTable(7, 'tabela-estoque')">Valor total de venda(R$)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let produto of estoque">
+            <td>{{ produto?.produto.codigo }}</td>
+            <td>{{ produto?.produto.descricao }}</td>
+            <td>{{ produto?.qualidade.nome }}</td>
+            <td>{{ produto?.fornecedor.razao_social_nome }}</td>
+            <td>{{ produto.quantidade }}</td>
+            <td *ngIf="produto.quantidade > 0"  class="stockStatus">Em estoque</td>
+            <td *ngIf="produto.quantidade <= 0"  class="stockStatus out">Sem estoque</td>
+            <td>{{ produto?.preco_venda | mask: 'separator.2'}}</td>
+            <td>{{ (produto.quantidade * produto?.preco_venda) | mask: 'separator.2'}}</td>
+        </tr>
+      </tbody>
+    </table>
+</section>

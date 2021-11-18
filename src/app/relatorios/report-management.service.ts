@@ -17,4 +17,8 @@ export class ReportManagementService {
   getHistory(item: any): Observable<any> {
     return this.http.get(`${environment.apiUrl}/movimentacoes`);
   }
+
+  getDateBeteween(component: string, item: any): Observable<any> {
+    return this.http.post(`${environment.apiUrl}/${component}/`, item);
+  }
 }
