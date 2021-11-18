@@ -89,7 +89,7 @@
     </div>
     <div class="heading cf">
       <h1>Produtos da venda</h1>
-      <a *ngIf="!activeItem" (click)="ShowModalProd()" class="continue">Adicionar produto</a>
+      <button *ngIf="!activeItem" (click)="ShowModalProd()" class="btn btn-success pull-right">Adicionar produto</button>
     </div>
     <div class="cart" *ngFor="let item of vendaItens; let idx=index;">
       <ul class="cartWrap">
@@ -123,7 +123,7 @@
           <span class="value">R${{ vendaTotal }}</span>
         </li>
         <li class="totalRow">
-          <a *ngIf="!activeItem" class="btn continue" (click)="showModal('Salvar', '')">Finalizar Venda</a>
+          <a *ngIf="!activeItem" class="btn btn-success" (click)="showModal('Salvar', '')">Finalizar Venda</a>
         </li>
       </ul>
     </div>
@@ -166,7 +166,7 @@
               <div class="form-group col">
                 <ng-select [items]="produtos"
                   [virtualScroll]="true"
-                  bindLabel="produto.descricao"
+                  bindLabel="produtoName"
                   bindValue="id"
                   placeholder="Produto"
                   [(ngModel)]="selectedProduto">

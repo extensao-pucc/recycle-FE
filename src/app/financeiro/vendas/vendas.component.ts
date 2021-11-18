@@ -81,7 +81,10 @@ export class VendasComponent implements OnInit {
     this.crudService.getItems('socios').subscribe(response => this.vendedores = response);
     this.crudService.getItems('clientes').subscribe(response => this.clientes = response);
     this.crudService.getItems('condicoesDePagamento').subscribe(response => this.condicoesDePagamento = response);
-    this.crudService.getItems('precificacao').subscribe(response => this.produtos = response);
+    this.crudService.getItems('precificacao').subscribe(response => {
+      this.produtos = response;
+      this.produtos.map((i) => { i.produtoName = i.produto.descricao + ' - ' + i.qualidade.nome + ' - ' + i.fornecedor.razao_social_nome; return i; });
+    });
     //recebe vendas e produtos da venda
     this.crudService.getItems('baglist').subscribe(response => {
       this.vendas = response;
@@ -96,23 +99,11 @@ export class VendasComponent implements OnInit {
   }
 
   deleteItem(idx, value): void {
-    console.log(value)
+    console.log(this.produtos)
+    // this.vendaItens.slice(idx, 1);
+    // console.log(this.vendaItens)
 
-    var myFish = ["angel", "clown", "mandarin", "surgeon"];
-
-    //remove 0 elementos a partir do índice 2, e insere "drum"
-    var removed = myFish.splice(2, 0, "drum");
-    //myFish é ["angel", "clown", "drum", "mandarin", "surgeon"]
-    //removed é [], nenhum elemento removido
-
-    //remove 1 elemento do índice 3
-    removed = myFish.splice(3, 1);
-    //myFish é ["angel", "clown", "drum", "surgeon"]
-    //removed é ["mandarim"]
-
-    // this.vendaItens = this.vendaItens.filter(obj => obj.numBag !== numBag)
-    // this.vendaItens[idx].quantidade_da_venda = value;
-    this.calculateTotalVenda();
+    // this.calculateTotalVenda();
   }
 
   // abre modal com produtos da venda
