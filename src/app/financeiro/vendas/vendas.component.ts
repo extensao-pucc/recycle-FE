@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, NgForm, Validators } from '@angular/forms';
 import { CrudService } from '../../cadastros/crud.service';
 import * as _ from 'lodash-es';
@@ -7,27 +7,41 @@ import { ViewImage } from 'src/app/shared/view-image/view-image.component';
 import { ToastService } from 'src/app/shared/toast/toast.service';
 import { FormValidatorService } from '../../shared/formValidator/form-validator.service';
 import { SharedVariableService } from '../../shared/shared-variable.service';
-import { IFormCanDeactivate } from 'src/app/guards/iform-candeactivate';
+import { BsModalService } from 'ngx-bootstrap/modal';
+import { FinanceiroService } from '../financeiro.service';
 
 @Component({
   selector: 'app-vendas',
   templateUrl: './vendas.component.html',
   styleUrls: ['./vendas.component.css', '../../app.component.css', '../../cadastros/table.css']
 })
-export class VendasComponent implements OnInit, IFormCanDeactivate {
+export class VendasComponent implements OnInit {
   @ViewChild('eventForm') public eventListingForm: NgForm;
+  @ViewChild('produtoScreen', { static: true }) produtoScreen: ElementRef;
 
-  public tempItemsList: any;
-  public itemsList: any;
+  public tempVendas: any;
+  public vendas: any;
+  public vendaItens = [];
   public itemForm: any;
   public showForm = false;
   public yesNoMessage: YesNoMessage = new YesNoMessage();
   public showYesNoMessage: boolean;
+  public activeItem = null;
+  public modalRef: any;
+  public selectedProduto: any;
+  public selectedVendedor: any;
+  public selectedCliente: any;
+  public selectedFormaDePagamento: any;
 
   public states: any;
   public profiles: any;
   public status: any;
   public organs: any;
+  public produtos: any;
+  public vendedores: any;
+  public clientes: any;
+  public condicoesDePagamento: any;
+  public vendaTotal: 0;
 
   public selectedFile: File;
   public imageInput: any = undefined;
@@ -38,8 +52,10 @@ export class VendasComponent implements OnInit, IFormCanDeactivate {
 
   constructor(
     private crudService: CrudService,
+    private financeiroService: FinanceiroService,
     private toastService: ToastService,
     private formBuilder: FormBuilder,
+    private modalService: BsModalService,
     private formValidatorService: FormValidatorService,
     private sharedVariableService: SharedVariableService
   ) {
@@ -51,16 +67,6 @@ export class VendasComponent implements OnInit, IFormCanDeactivate {
 
   ngOnInit(): void {
     this.getItems();
-    this.loadForm();
-  }
-
-  canDeactivate(): boolean {
-    if (this.eventListingForm) {
-      if (this.eventListingForm.dirty) {
-        return confirm('Tem certeza que deseja sair ? Suas alterações serão perdidas');
-      }
-    }
-    return true;
   }
 
   // formata a data
@@ -70,166 +76,129 @@ export class VendasComponent implements OnInit, IFormCanDeactivate {
     }
   }
 
-  // carrega formulario
-  loadForm(): void {
-    this.itemForm = this.formBuilder.group({
-      id: [null],
-      matricula: ['', [this.formValidatorService.isEmpty]],
-      nome: ['', [this.formValidatorService.isEmpty]],
-      data_de_nascimento: ['', [this.formValidatorService.isEmpty]],
-      RG: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validRG]],
-      data_emissao: ['', [this.formValidatorService.isEmpty]],
-      local_emissao: ['', [this.formValidatorService.isEmpty]],
-      orgao_expedidor: ['', [this.formValidatorService.isEmpty]],
-      CPF: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validCPF_CNPJ]],
-      titulo_de_Eleitor: ['', [this.formValidatorService.isEmpty]],
-      PIS_PASEP: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validPIS_PASEP]],
-      NIT: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
-      nome_da_Mae: ['', [this.formValidatorService.isEmpty]],
-      nome_do_Pai: [''],
-      endereco: ['', [this.formValidatorService.isEmpty]],
-      numero: ['', [this.formValidatorService.isEmpty, this.formValidatorService.isNumeric]],
-      complemento: [''],
-      CEP: ['', [this.formValidatorService.validCEP]],
-      UF: ['', [this.formValidatorService.isEmpty]],
-      cidade: ['', [this.formValidatorService.isEmpty]],
-      telefone: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validTelefone]],
-      email: ['', [this.formValidatorService.isEmpty, this.formValidatorService.validEmail]],
-      data_de_admissao: ['', [this.formValidatorService.isEmpty]],
-      data_de_demissao: [''],
-      situacao: ['', [this.formValidatorService.isEmpty]],
-      foto: [''],
-      perfil: ['', [this.formValidatorService.isEmpty]],
-    });
-    this.imageInputView = '';
-  }
-
   // carrega os dados para popular a tela
   getItems(): void {
-    this.crudService.getItems('socios').subscribe(response => {
-      this.itemsList = response;
-      this.tempItemsList = _.clone(this.itemsList);
+    this.crudService.getItems('socios').subscribe(response => this.vendedores = response);
+    this.crudService.getItems('clientes').subscribe(response => this.clientes = response);
+    this.crudService.getItems('condicoesDePagamento').subscribe(response => this.condicoesDePagamento = response);
+    this.crudService.getItems('precificacao').subscribe(response => this.produtos = response);
+    //recebe vendas e produtos da venda
+    this.crudService.getItems('baglist').subscribe(response => {
+      this.vendas = response;
+      this.tempVendas = _.clone(this.vendas);
     });
+  }
+
+  /* Atualiza a quantidade do item do lote */
+  updateQtn(idx, value): void {
+    this.vendaItens[idx].quantidade_da_venda = value;
+    this.calculateTotalVenda();
+  }
+
+  deleteItem(idx, value): void {
+    console.log(value)
+
+    var myFish = ["angel", "clown", "mandarin", "surgeon"];
+
+    //remove 0 elementos a partir do índice 2, e insere "drum"
+    var removed = myFish.splice(2, 0, "drum");
+    //myFish é ["angel", "clown", "drum", "mandarin", "surgeon"]
+    //removed é [], nenhum elemento removido
+
+    //remove 1 elemento do índice 3
+    removed = myFish.splice(3, 1);
+    //myFish é ["angel", "clown", "drum", "surgeon"]
+    //removed é ["mandarim"]
+
+    // this.vendaItens = this.vendaItens.filter(obj => obj.numBag !== numBag)
+    // this.vendaItens[idx].quantidade_da_venda = value;
+    this.calculateTotalVenda();
   }
 
   // abre modal com produtos da venda
   viewProducts(item: any): void {
-    this.showForm = true;
+    if (item == null) {
+      this.showForm = true;
+      this.selectedVendedor = null;
+      this.selectedCliente = null;
+      this.selectedFormaDePagamento = null;
+      this.activeItem = false;
+      this.vendaItens = [];
+      this.vendaTotal = 0;
+    } else {
+      this.crudService.getItemById('vendas', item.id).subscribe(response => {
+        this.selectedVendedor = response.vendedor.id;
+        this.selectedCliente = response.cliente.id;
+        this.selectedFormaDePagamento = response.forma_de_pagamento.id;
+      });
 
-    this.itemForm.controls.id.setValue(item.id);
-    this.itemForm.controls.matricula.setValue(item.matricula);
-    this.itemForm.controls.nome.setValue(item.nome);
-    this.itemForm.controls.data_de_nascimento.setValue(item.data_de_nascimento);
-    this.itemForm.controls.RG.setValue(item.RG);
-    this.itemForm.controls.data_emissao.setValue(item.data_emissao);
-    this.itemForm.controls.local_emissao.setValue(item.local_emissao);
-    this.itemForm.controls.orgao_expedidor.setValue(item.orgao_expedidor);
-    this.itemForm.controls.CPF.setValue(item.CPF);
-    this.itemForm.controls.titulo_de_Eleitor.setValue(item.titulo_de_Eleitor);
-    this.itemForm.controls.PIS_PASEP.setValue(item.PIS_PASEP);
-    this.itemForm.controls.NIT.setValue(item.NIT);
-    this.itemForm.controls.nome_da_Mae.setValue(item.nome_da_Mae);
-    this.itemForm.controls.nome_do_Pai.setValue(item.nome_do_Pai);
-    this.itemForm.controls.endereco.setValue(item.endereco);
-    this.itemForm.controls.numero.setValue(item.numero);
-    this.itemForm.controls.complemento.setValue(item.complemento);
-    this.itemForm.controls.CEP.setValue(item.CEP);
-    this.itemForm.controls.UF.setValue(item.UF);
-    this.itemForm.controls.cidade.setValue(item.cidade);
-    this.itemForm.controls.telefone.setValue(item.telefone);
-    this.itemForm.controls.email.setValue(item.email);
-    this.itemForm.controls.data_de_admissao.setValue(item.data_de_admissao);
-    if (item.data_de_demissao != null){
-      this.itemForm.controls.data_de_demissao.setValue(item.data_de_demissao);
+      this.showForm = true;
+      this.activeItem = item;
+      this.vendaItens = this.activeItem.itens;
+      this.calculateTotalVenda();
     }
-    this.itemForm.controls.situacao.setValue(item.situacao);
-    this.itemForm.controls.perfil.setValue(item.perfil);
-
-    this.imageInputView = item.foto;    
   }
 
-  async createUpdateItem() {
-    const formValues = this.itemForm.value;
+  ShowModalProd(): void {
+    this.modalRef = this.modalService.show(this.produtoScreen)
+  }
 
-    if (this.itemForm.status === 'VALID'){
-      const formData = new FormData();
-      formData.append('id', this.itemForm.get('id').value);
-      formData.append('matricula', this.itemForm.get('matricula').value);
-      formData.append('local_emissao', this.itemForm.get('local_emissao').value);
-      formData.append('nome', this.itemForm.get('nome').value);
-      formData.append('data_de_nascimento', this.itemForm.get('data_de_nascimento').value);
-      formData.append('RG', this.itemForm.get('RG').value);
-      formData.append('data_emissao', this.itemForm.get('data_emissao').value);
-      formData.append('local_emissao', this.itemForm.get('local_emissao').value);
-      formData.append('orgao_expedidor', this.itemForm.get('orgao_expedidor').value);
-      formData.append('CPF', this.itemForm.get('CPF').value);
-      formData.append('titulo_de_Eleitor', this.itemForm.get('titulo_de_Eleitor').value);
-      formData.append('PIS_PASEP', this.itemForm.get('PIS_PASEP').value);
-      formData.append('NIT', this.itemForm.get('NIT').value);
-      formData.append('nome_da_Mae', this.itemForm.get('nome_da_Mae').value);
-      formData.append('nome_do_Pai', this.itemForm.get('nome_do_Pai').value);
-      formData.append('endereco', this.itemForm.get('endereco').value);
-      formData.append('numero', this.itemForm.get('numero').value);
-      formData.append('complemento', this.itemForm.get('complemento').value);
-      formData.append('CEP', this.itemForm.controls.CEP.value);
-      formData.append('UF', this.itemForm.get('UF').value);
-      formData.append('cidade', this.itemForm.get('cidade').value);
-      formData.append('telefone', this.itemForm.get('telefone').value);
-      formData.append('email', this.itemForm.get('email').value);
-      formData.append('data_de_admissao', this.itemForm.get('data_de_admissao').value);
-      formData.append('data_de_demissao', this.itemForm.get('data_de_demissao').value);
-      formData.append('situacao', this.itemForm.get('situacao').value);
-      if (this.imageInput != undefined){
-        formData.append('foto', this.imageInput);
-        this.imageInput = undefined;
-      } else {
-        if (this.imageInputView !== null && this.imageInputView !== ""){
-          var b: any = await fetch(this.imageInputView).then(r => r.blob());
-          var file = new File([b], this.itemForm.get('matricula').value + ".jpeg", {type: "image/jpeg", lastModified: Date.now()});
+  addItemVenda(): void {
+    this.crudService.getItemById('precificacao', this.selectedProduto).subscribe(response => {
+      this.vendaItens.push({
+        fornecedor: response.fornecedor.CNPJ_CPF,
+        id: response.id,
+        preco_compra: response.preco_compra,
+        preco_venda: response.preco_venda,
+        produto: response.produto.descricao,
+        qualidade: response.qualidade.nome,
+        quantidade_da_venda: 0,
+        quantidade_estoque: response.quantidade
+      });
+    });
+  }
 
-          formData.append('foto', file);
-        } else {
-          console.log("To no arquivo vazio")
-          formData.append('foto', '');
-        }
+  calculateTotalVenda(): any {
+    this.vendaTotal = 0;
+    this.vendaItens.forEach(element => {
+      this.vendaTotal += element['quantidade_da_venda'] * element['preco_venda'];
+    });
+  }
+
+  createVenda() {
+      const request = {
+        'cliente': this.selectedCliente,
+        'data': new Date(),
+        'forma_de_pagamento': this.selectedFormaDePagamento,
+        'valor': this.vendaTotal,
+        'vendedor': this.selectedVendedor,
+        'itens': this.vendaItens
       }
-      formData.append('perfil', this.itemForm.get('perfil').value);
-      formData.append('senha', this.itemForm.get('matricula').value.split('').reverse().join(''));
-      this.crudService.createItem('socios', formData).subscribe(response => {
-        this.getItems();
-        this.loadForm();
 
+      // this.financeiroService.createVenda(request);
+      this.financeiroService.createVenda(request).subscribe(response => {
+        this.getItems();
         this.showForm = false;
         this.toastService.addToast('Cadastrado com sucesso');
       }, err => {
-        if (err.error.matricula){
-          this.itemForm.controls.matricula.errors = {'msgErro': 'Sócio com essa matrícula já existe'};
-          this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
-        }else {
-          this.toastService.addToast(err['message'], 'darkred');
-        }
+        console.log(err);
       });
-      
-    } else {
-      this.toastService.addToast('Informações inválidas, verifique para continuar', 'darkred');
-    }
+  
   }
 
   showModal(title: string, items: any): void {
-    const formValues = this.itemForm.value;
-
     this.yesNoMessage = {
       title,
       mainText: 'Tem certeza que deseja ' + title.toLowerCase(),
-      items: [title === 'Deletar' ? items.nome : formValues.nome],
+      items: [title === 'Deletar' ? items : 'f'],
       fontAwesomeClass: 'fa-ban',
       action: {
         onClickYes: () => {
           if (title === 'Salvar'){
-            this.createUpdateItem();
+            this.createVenda();
           } else if (title === 'Cancelar edição') {
             this.showForm = false;
-            this.loadForm();
+            // this.loadForm();
           }
         },
         onClickNo: () => { }
@@ -296,10 +265,10 @@ export class VendasComponent implements OnInit, IFormCanDeactivate {
 
   // Busca personalizada
   Search(campo: any, valor: any): any{
-    this.tempItemsList = _.clone(this.tempItemsList);
+    this.tempVendas = _.clone(this.tempVendas);
 
     if (valor !== ''){
-      this.tempItemsList = this.itemsList.filter(res => {
+      this.tempVendas = this.vendas.filter(res => {
         return res[campo].toString().trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f-\.|\-\(\) '\/]/g, '').match(
                valor.trim().toLocaleLowerCase().normalize('NFD').replace(/[\u0300-\u036f-\.|\-\(\) '\/]/g, ''
               ));
@@ -308,5 +277,5 @@ export class VendasComponent implements OnInit, IFormCanDeactivate {
       this.ngOnInit();
     }
   }
-
+  
 }

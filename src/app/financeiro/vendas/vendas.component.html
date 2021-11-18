@@ -1,6 +1,5 @@
 <h2 class="d-flex justify-content-between">Vendas
-  <button class="btn btn-success" *ngIf="!showForm" (click)="showForm = !showForm; loadForm()"><i
-      class="fa fa-plus"></i>Nova venda</button>
+  <button class="btn btn-success" *ngIf="!showForm" (click)="viewProducts(null)"><i class="fa fa-plus"></i>Nova venda</button>
 </h2>
 
 <!-- Tabela -->
@@ -32,15 +31,14 @@
         <th class="element-not-visible"></th>
       </tr>
 
-      <tr [ngClass]="item?.situacao === 'Ativo' ? 'table-row' : ' table-row table-row--red'"
-        *ngFor="let item of tempItemsList">
+      <tr class="table-row" *ngFor="let venda of tempVendas">
         <td data-column="Nascimento" class="table-row-td element-not-visible">
-          {{ reverseStringDate(item?.data_de_nascimento) | mask: 'd0/M0/0000' }}</td>
-        <td data-column="Nome" class="table-row-td">{{ item?.nome }}</td>
-        <td data-column="Nome" class="table-row-td">{{ item?.nome }}</td>
-        <td data-column="Nome" class="table-row-td">{{ item?.nome }}</td>
+          {{ reverseStringDate(venda?.data) | mask: 'd0/M0/0000' }}</td>
+        <td data-column="Nome" class="table-row-td">{{ venda?.vendedor }}</td>
+        <td data-column="Nome" class="table-row-td">{{ venda?.cliente }}</td>
+        <td data-column="Nome" class="table-row-td">{{ venda?.forma_de_pagamento }}</td>
         <td class="table-row-td"><button type="button" class="btn btn-info shadow-button"
-          (click)="viewProducts(item)"><i class="fa fa-chevron-circle-down"> Visualizar</i></button></td>
+          (click)="viewProducts(venda)"><i class="fa fa-chevron-circle-down"> Visualizar</i></button></td>
       </tr>
     </tbody>
   </table>
@@ -49,136 +47,83 @@
 
 <!-- Formulario -->
 <!-- <hr> -->
-<form [formGroup]="itemForm" *ngIf="itemForm && showForm" #eventForm="ngForm">
-  <input formControlName="id" hidden="true">
-
-  <!-- <div class="form-row">
-
-    <div class="col-md-9">
-      <div class="form-row">
-        <div class="form-group col-md-4">
-          <label>Vendedor: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="nome">
-          <p class="error-msg" *ngIf="itemForm.controls.nome.errors">
-            <i class="fa fa-times"></i> {{ itemForm.controls.nome.errors.msgErro }}
-          </p>
-        </div>
-
-        <div class="form-group col-md-4">
-          <label>Cliente: </label>
-          <input class="form-control" type="text" maxlength="100" formControlName="nome">
-          <p class="error-msg" *ngIf="itemForm.controls.nome.errors">
-            <i class="fa fa-times"></i> {{ itemForm.controls.nome.errors.msgErro }}
-          </p>
-        </div>
-
-        <div class="form-group col-md-3">
-          <label>Forma de pagamento: </label>
-          <ng-select formControlName="perfil" name="perfil">
-            <ng-option *ngFor="let profile of profiles " [value]="profile.profile">
-              <span [ngClass]="{ 'profile-blue': profile?.profile === 'Administrador', 
-                                'profile-orange': profile?.profile === 'Usuário',
-                                'profile-red': profile?.profile === 'Sem acesso'}">
-                {{profile.profile}}
-              </span>
-            </ng-option>
-          </ng-select>
-          <p class="error-msg" *ngIf="itemForm.controls.perfil.errors">
-            <i class="fa fa-times"></i> {{ itemForm.controls.perfil.errors.msgErro }}
-          </p>
-        </div>
-
-      </div>
-    </div>
-  </div> -->
-
+<div *ngIf="showForm">
   <hr>
   <div class="wrap cf">
     <div class="heading cf">
-      <h1>Produtos da venda</h1>
-      <a href="#" class="continue">Adicionar produto</a>
+      <div class="form-row"> 
+        <h1>Informações da venda</h1>
+      </div>
+      <div class="form-row">
+        <div class="form-group col-md-4">  
+          <ng-select [items]="vendedores"
+            [virtualScroll]="true"
+            bindLabel="nome"
+            bindValue="id"
+            placeholder="Vendedor"
+            [disabled]="activeItem"
+            [(ngModel)]="selectedVendedor">
+          </ng-select>
+        </div>
+        <div class="form-group col-md-4">  
+          <ng-select [items]="clientes"
+            [virtualScroll]="true"
+            bindLabel="razao_social_nome"
+            bindValue="id"
+            placeholder="Cliente"
+            [disabled]="activeItem"
+            [(ngModel)]="selectedCliente">
+          </ng-select>
+        </div>
+        <div class="form-group col-md-4">
+          <ng-select [items]="condicoesDePagamento"
+          [virtualScroll]="true"
+          bindLabel="descricao"
+          bindValue="id"
+          placeholder="Forma de Pagamento"
+          [disabled]="activeItem"
+          [(ngModel)]="selectedFormaDePagamento">
+          </ng-select>
+        </div>
+      </div>
     </div>
-    <div class="cart">
+    <div class="heading cf">
+      <h1>Produtos da venda</h1>
+      <a *ngIf="!activeItem" (click)="ShowModalProd()" class="continue">Adicionar produto</a>
+    </div>
+    <div class="cart" *ngFor="let item of vendaItens; let idx=index;">
       <ul class="cartWrap">
-        <li class="items odd">       
+        <li class="items odd">
           <div class="infoWrap"> 
               <div class="cartSection">
-                <p class="itemNumber">#10001</p>
-                <h3>Latinha</h3>     
-                <p> <input type="text" class="qty"/> x R$15,00</p>       
-                <p class="stockStatus">Em estoque</p>
+                <p class="itemNumber">Código #{{ item.id }}</p>
+                <h3 *ngIf="!activeItem">{{ item.produto }} - {{ item.qualidade }}</h3>     
+                <h3 *ngIf="activeItem">{{ item.produto }} - {{ item.qualidade }}</h3>     
+                <p> <input type="text" [disabled]="activeItem" (keyup)="updateQtn(idx, $event.target.value)" class="qty" value="{{ item.quantidade_da_venda }}"/> x R${{ item.preco_venda }}</p>       
+                <p class="stockStatus" *ngIf="!activeItem">{{ item.quantidade_estoque }} Em estoque</p>
               </div>  
                 
               <div class="prodTotal cartSection">
-                <p>R$15,00</p>
+                <p>R${{ item.quantidade_da_venda * item.preco_venda }}</p>
               </div>
-              <div class="cartSection removeWrap">
-                <a class="remove">x</a>
+              <div *ngIf="!activeItem" class="cartSection removeWrap">
+                <a (click)="deleteItem(idx, item)" class="remove">x</a>
               </div>
           </div>
         </li>
-  
-        <li class="items even">       
-          <div class="infoWrap"> 
-            <div class="cartSection">   
-              <p class="itemNumber">#10002</p>
-              <h3>Metal</h3>    
-              <p><input type="text" class="qty"/> x R$5,00</p>      
-              <p class="stockStatus">Em estoque</p>
-            </div>  
-          
-            <div class="prodTotal cartSection">
-              <p>R$5,00</p>
-            </div>
-              <div class="cartSection removeWrap">
-              <a class="remove">x</a>
-            </div>
-          </div>
-        </li>
-        
-        <li class="items odd">  
-          <div class="infoWrap"> 
-            <div class="cartSection">           
-              <p class="itemNumber">#10003</p>
-              <h3>Papelão A25</h3>       
-              <p> <input type="text" class="qty"/> x R$20,00</p>          
-              <p class="stockStatus out"> Sem estoque</p>
-            </div>  
-           
-            <div class="prodTotal cartSection">
-              <p>R$20,00</p>
-            </div>
-              <div class="cartSection removeWrap">
-              <a class="remove">x</a>
-            </div>
-          </div>
-        </li> 
       </ul>
     </div>
 
     <hr> 
-    <div class="promoCode">
-      <label for="promo">Teve algum desconto na venda?</label>
-      <label for="">Qual foi o valor?</label>
-      <input type="text" name="promo" placholder="Enter Code" />
-    </div>
 
     <div class="subtotal cf">
       <ul>
-        <li class="totalRow">
-          <span class="label">Subtotal</span>
-          <span class="value">R$40,00</span>
-        </li>
-        <li class="totalRow">
-          <span class="label">Desconto</span>
-          <span class="value">- R$5,00</span>
-        </li>
         <li class="totalRow final">
           <span class="label">Total</span>
-          <span class="value">R$35,00</span>
+          <span class="value">R${{ vendaTotal }}</span>
         </li>
         <li class="totalRow">
-          <a href="#" class="btn continue">Finalizar Venda</a>
+          <a *ngIf="!activeItem" class="btn continue" (click)="showModal('Salvar', '')">Finalizar Venda</a>
         </li>
       </ul>
     </div>
@@ -189,24 +134,49 @@
     <hr>
 
     <div>
-      <button class="btn btn-success ml-1 mt-3 pull-right" (click)="showModal('Salvar', '')"><i
-          class="fa fa-save"></i>Salvar</button>
-      <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')"><i
-          class="fa fa-window-close"></i>Cancelar</button>
-      <button class="btn btn-danger ml-1 mt-3 pull-right" *ngIf="itemForm.controls.id.value"
-        (click)="showModal('Deletar', itemForm.controls.id.value)"><i class="fa fa-trash"></i>Remover</button>
+      <button class="btn btn-warning ml-1 mt-3 pull-right" (click)="showModal('Cancelar edição', '')">
+        <i class="fa fa-window-close"></i>Cancelar</button>
     </div>
   </div>
 
-</form>
+</div>
 <!-- ========== -->
 
 <!-- Lista sem dados -->
-<div *ngIf="!showForm && !tempItemsList?.length" class="alert alert-info " role="alert">
+<div *ngIf="!showForm && !tempVendas?.length" class="alert alert-info " role="alert">
   <h4 class="alert-heading ">Opa !</h4>
   <p>Nenhum resultado foi encontrado.</p>
 </div>
 <!-- =============== -->
 
 <app-yes-no-message [yesNoMessage]="yesNoMessage" *ngIf="showYesNoMessage"></app-yes-no-message>
-<app-view-image [viewImage]="viewImage" *ngIf="showModalImage"></app-view-image>
+<!-- =============== -->
+
+<ng-template #produtoScreen>
+  <div class="modal-header modal-header text-dark">
+      <h4 class="modal-title pull-left"> Adicionar Produto</h4>
+      <button type="button" class="close pull-right" (click)="modalRef.hide()">
+          <span aria-hidden="true">&times;</span>
+      </button>
+  </div>
+  <div class="modal-body">
+      <div class="row pause-screen-body">
+          <div class="col pt-2">
+              <p class="font-weight-bold">Selecione o produto</p>
+              <div class="form-group col">
+                <ng-select [items]="produtos"
+                  [virtualScroll]="true"
+                  bindLabel="produto.descricao"
+                  bindValue="id"
+                  placeholder="Produto"
+                  [(ngModel)]="selectedProduto">
+                </ng-select>
+            </div>
+          </div>
+      </div>
+      <div class="mt-3 text-center">
+          <button type="button" class="btn btn btn-danger mr-2 yesNoButton" id="btn-no" (click)="modalRef.hide()"><i class="fa fa-times-circle"></i>Cancelar</button>
+          <button type="button" class="btn btn btn-success mr-2 yesNoButton" id="btn-yes" (click)="addItemVenda(); modalRef.hide()"><i class="fa fa-check-circle"></i>Salvar</button>
+      </div>
+  </div>
+</ng-template>

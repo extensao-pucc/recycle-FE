@@ -30,6 +30,11 @@ export class FinanceiroService {
     return this.http.put(`${environment.apiUrl}/${component}/${id}/`, item);
   }
 
+  createVenda(item:any): Observable<any> {
+    console.log(item)
+    return this.http.post(`${environment.apiUrl}/saveBaglist/`, item);
+  }
+
   // Situação para o contas a pagar e receber
   getSituation(): any[]{
     const situation = [

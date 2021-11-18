@@ -45,7 +45,7 @@ const routes: Routes = [
   { path: 'produtos', component: ProdutosComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'qualidades', component: QualidadesComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'socios', component: SociosComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
-  { path: 'vendas', component: VendasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
+  { path: 'vendas', component: VendasComponent, canActivate: [AuthGuard] },
   { path: 'transportadoras', component: TransportadorasComponent, canActivate: [AuthGuard], canDeactivate: [crudDeactivateGuard] },
   { path: 'triagem', component: TriagemComponent, canActivate: [AuthGuard] },
   { path: 'prensa', component: PrensaComponent, canActivate: [AuthGuard] },
